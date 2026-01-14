@@ -1,0 +1,171 @@
+---
+import { getCollection } from 'astro:content';
+
+const pages = await getCollection('pages');
+const sortedPages = pages.sort((a, b) => {
+  const orderA = a.data.order ?? 999;
+  const orderB = b.data.order ?? 999;
+  return orderA - orderB;
+}).slice(0, 15); // Show up to 15 pages in nav
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav>
+  <div class="container">
+    <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+    </button>
+
+    <ul class="nav-menu">
+      <li><a href="/" class={currentPath === '/' ? 'active' : ''}>Home</a></li>
+      {sortedPages.filter(page => page.slug !== 'index').map((page) => (
+        <li>
+          <a href={`/${page.slug}`} class={currentPath === `/${page.slug}` || currentPath === `/${page.slug}/` ? 'active' : ''}>
+            {page.data.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  nav {
+    background-color: var(--color-primary);
+    padding: 0;
+    box-shadow: var(--shadow-natural);
+    position: relative;
+  }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+  }
+
+  .hamburger {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: all 0.3s ease;
+  }
+
+  .nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    color: white;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: var(--text-sm);
+    padding: 1rem 1.5rem;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  a:hover {
+    background-color: var(--color-link-hover);
+    text-decoration: none;
+  }
+
+  a.active {
+    background-color: var(--color-link-hover);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+  }
+
+  @media (max-width: 1024px) {
+    .container {
+      padding: 0;
+    }
+
+    .mobile-menu-toggle {
+      display: flex;
+    }
+
+    .nav-menu {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .nav-menu.open {
+      display: flex;
+      max-height: 1000px;
+    }
+
+    li {
+      width: 100%;
+    }
+
+    a {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+    }
+
+    a.active {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-left: 4px solid white;
+    }
+  }
+</style>
+
+<script>
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const menu = document.querySelector('.nav-menu');
+
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        const isOpen = menu.classList.contains('open');
+        menu.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', (!isOpen).toString());
+      });
+
+      // Close menu when clicking a link
+      const links = menu.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  });
+</script>

@@ -1,0 +1,27 @@
+---
+import { getEntry } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+
+// Try to get the index page from content
+const indexPage = await getEntry('pages', 'index');
+
+// If index page exists, use it; otherwise show default
+const title = indexPage?.data.title || 'Welcome to Lincoln Township';
+const description = indexPage?.data.description || 'Official website of Lincoln Township, Michigan';
+
+let Content;
+if (indexPage) {
+  const rendered = await indexPage.render();
+  Content = rendered.Content;
+}
+---
+
+<PageLayout title={title} description={description}>
+  <h1>{title}</h1>
+  {Content ? <Content /> : (
+    <div>
+      <p>Welcome to the official website of Lincoln Township, Michigan.</p>
+      <p>This site is currently being updated. Please check back soon for more information.</p>
+    </div>
+  )}
+</PageLayout>

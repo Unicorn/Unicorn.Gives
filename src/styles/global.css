@@ -1,0 +1,199 @@
+:root {
+  /* unicorn.love brand colors */
+  --color-primary: #6361ad;
+  --color-link: #7c7ac8;
+  --color-link-hover: #47458f;
+  --color-selection: #c5cde9;
+  --color-dark-bg: #0a0a0a;
+
+  /* Typography */
+  --font-body: 'Barlow', sans-serif;
+  --font-heading: 'Barlow Condensed', sans-serif;
+  --font-title: 'Bebas Neue', sans-serif;
+
+  /* Spacing & Layout */
+  --max-width: 1200px;
+  --spacing-unit: 1rem;
+  --gap-default: 0.5em;
+  --gap-column: 2em;
+
+  /* Shadows */
+  --shadow-natural: 6px 6px 9px rgba(0, 0, 0, 0.2);
+  --shadow-deep: 12px 12px 50px rgba(0, 0, 0, 0.4);
+
+  /* Border Radius */
+  --radius-button: 9999px;
+
+  /* Font Sizes */
+  --text-xs: 13px;
+  --text-sm: 14px;
+  --text-base: 15px;
+  --text-lg: 17px;
+  --text-xl: 20px;
+  --text-2xl: 42px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+::selection {
+  background-color: var(--color-selection);
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: 0px;
+}
+
+h1 {
+  font-family: var(--font-title);
+  font-size: var(--text-2xl);
+  color: var(--color-primary);
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: var(--color-primary);
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.1rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* Links */
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+}
+
+/* Lists */
+ul, ol {
+  margin: 0 0 1rem 2rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: var(--color-primary);
+  color: white;
+  font-family: var(--font-heading);
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Buttons */
+button, .button {
+  font-family: var(--font-heading);
+  padding: calc(0.667em + 2px) calc(1.333em + 2px);
+  border-radius: var(--radius-button);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover, .button:hover {
+  background-color: var(--color-link-hover);
+}
+
+/* Main layout */
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: calc(100vh - 200px);
+}
+
+/* Utility classes */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :root {
+    --text-2xl: 32px;
+  }
+
+  main {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
