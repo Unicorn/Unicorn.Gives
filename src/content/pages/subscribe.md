@@ -2,6 +2,8 @@
 title: "Subscribe"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Information"
+subcategory: "Resources"
 order: 999
 ---
 

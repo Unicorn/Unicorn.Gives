@@ -2,6 +2,8 @@
 title: "Lincoln Township Fire Department"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Services"
+subcategory: "Public Safety"
 order: 15
 ---
 

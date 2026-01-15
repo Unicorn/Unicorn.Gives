@@ -2,6 +2,8 @@
 title: "Lincoln Township Events Calendar"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Government"
+subcategory: "Meetings & Calendar"
 order: 11
 ---
 

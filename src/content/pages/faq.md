@@ -2,6 +2,8 @@
 title: "Faq"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Information"
+subcategory: "Resources"
 order: 10
 ---
 

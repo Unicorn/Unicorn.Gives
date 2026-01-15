@@ -1,0 +1,113 @@
+---
+import { generateBreadcrumbs } from '../utils/navigation';
+
+interface Props {
+  slug: string;
+  pageTitle: string;
+}
+
+const { slug, pageTitle } = Astro.props;
+const breadcrumbs = generateBreadcrumbs(slug, pageTitle);
+
+// Don't show breadcrumbs on homepage
+const shouldShowBreadcrumbs = slug !== '' && slug !== 'index';
+
+// Generate structured data for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbs.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.label,
+    ...(item.href && item.href !== '' ? { "item": `${Astro.site}${item.href}` } : {})
+  }))
+};
+---
+
+{shouldShowBreadcrumbs && (
+  <>
+    <nav aria-label="Breadcrumb navigation" class="breadcrumbs-nav">
+      <ol class="breadcrumbs">
+        {breadcrumbs.map((item, index) => {
+          const isLast = index === breadcrumbs.length - 1;
+          return (
+            <li class="breadcrumb-item">
+              {isLast ? (
+                <span aria-current="page" class="breadcrumb-current">{item.label}</span>
+              ) : (
+                <a href={item.href} class="breadcrumb-link">{item.label}</a>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+
+    <!-- Schema.org structured data for SEO -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </>
+)}
+
+<style>
+  .breadcrumbs-nav {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .breadcrumb-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .breadcrumb-item:not(:last-child)::after {
+    content: '→';
+    margin-left: 0.5rem;
+    color: var(--color-primary, #6361ad);
+    font-weight: bold;
+  }
+
+  .breadcrumb-link {
+    color: var(--color-link, #7c7ac8);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--color-link-hover, #47458f);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-link:focus {
+    outline: 2px solid var(--color-primary, #6361ad);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .breadcrumb-current {
+    color: #4b5563;
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .breadcrumbs {
+      font-size: 0.8rem;
+    }
+
+    .breadcrumbs-nav {
+      padding: 0.75rem 0;
+      margin-bottom: 1rem;
+    }
+  }
+</style>

@@ -2,6 +2,8 @@
 title: "Parks"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Community"
+subcategory: "Facilities"
 order: 20
 ---
 

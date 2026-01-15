@@ -2,6 +2,8 @@
 title: "Lincoln Township Board of Trustees Meetings"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Government"
+subcategory: "Board & Leadership"
 order: 9
 ---
 Individuals with disabilities requiring auxiliary aids or services should

@@ -2,6 +2,8 @@
 title: "Seniors"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Community"
+subcategory: "Resources"
 order: 10
 ---
 

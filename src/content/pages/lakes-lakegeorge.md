@@ -2,6 +2,8 @@
 title: "Lakes Lakegeorge"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Natural Resources"
+subcategory: "Lakes"
 order: 999
 ---
 

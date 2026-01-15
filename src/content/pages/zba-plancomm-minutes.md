@@ -2,6 +2,8 @@
 title: "Zba Plancomm Minutes"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Planning & Zoning"
+subcategory: "Commissions"
 order: 999
 ---
 **|  |  |  |

@@ -2,6 +2,8 @@
 title: "Lincoln Township Plat Maps"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Information"
+subcategory: "Resources"
 order: 4
 ---
  [Section 19](docs/plat-maps/metes_bounds/Sec19.pdf) || [Section 4](docs/plat-maps/metes_bounds/Sec4.pdf) | [Section 20](docs/plat-maps/metes_bounds/Sec20.pdf) |

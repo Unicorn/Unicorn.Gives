@@ -2,6 +2,8 @@
 title: "Archive of Lincoln Township Board Meeting Minutes"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Government"
+subcategory: "Board & Leadership"
 order: 31
 ---
 **|  |  |  |

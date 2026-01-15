@@ -2,6 +2,8 @@
 title: "Lincoln Township Newsletter"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Community"
+subcategory: "Resources"
 order: 16
 ---
 

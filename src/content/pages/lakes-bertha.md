@@ -2,6 +2,8 @@
 title: "Lakes Bertha"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Natural Resources"
+subcategory: "Lakes"
 order: 999
 ---
   [10 Ways to Protect Your Lake](docs/lakes/10ways_protect_lake.pdf)

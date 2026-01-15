@@ -2,6 +2,8 @@
 title: "Planning_Commission"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Planning & Zoning"
+subcategory: "Commissions"
 order: 10
 ---
 ![](/web/20240705161132im_/https://www.lincolntwp.com/images/bluebar.gif)

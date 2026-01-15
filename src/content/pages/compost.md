@@ -2,6 +2,8 @@
 title: "Lincoln Township Compost Yard"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Services"
+subcategory: "Other Services"
 order: 13
 ---
 

@@ -2,6 +2,8 @@
 title: "Lincoln Township Zoning"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Planning & Zoning"
+subcategory: "Regulations"
 order: 21
 ---
 **|  |  |  |

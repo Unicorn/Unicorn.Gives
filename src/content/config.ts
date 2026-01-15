@@ -8,6 +8,11 @@ const pagesCollection = defineCollection({
     lastUpdated: z.string(),
     department: z.string().optional(),
     order: z.number().optional(),
+    // Navigation fields for 3-level hierarchy
+    category: z.string().optional(),
+    subcategory: z.string().optional(),
+    navTitle: z.string().optional(),
+    hideFromNav: z.boolean().optional(),
   }),
 });
 

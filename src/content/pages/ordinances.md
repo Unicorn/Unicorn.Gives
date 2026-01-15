@@ -2,6 +2,8 @@
 title: "Lincoln Township Ordinances"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Planning & Zoning"
+subcategory: "Regulations"
 order: 17
 ---
  **Control of Dogs Ordinance** || **[Ordinance 30](ordinances/30.pdf)** | **Parks & Public Grounds Ordinance** |

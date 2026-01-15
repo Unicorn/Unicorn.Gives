@@ -2,6 +2,8 @@
 title: "Lincoln Township Building Department"
 description: ""
 lastUpdated: "2026-01-14"
+category: "Services"
+subcategory: "Building & Development"
 order: 10
 ---
 
