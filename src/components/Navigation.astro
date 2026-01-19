@@ -152,6 +152,7 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
   .desktop-nav {
     list-style: none;
     display: flex;
+    justify-content: space-between;
     gap: 0;
     margin: 0;
     padding: 0;
@@ -169,7 +170,7 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
     text-transform: uppercase;
     font-weight: 600;
     font-size: var(--text-sm);
-    padding: 1rem 1.5rem;
+    padding: 1rem 1rem;
     transition: background-color 0.2s ease;
     white-space: nowrap;
   }
@@ -194,7 +195,7 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
     text-transform: uppercase;
     font-weight: 600;
     font-size: var(--text-sm);
-    padding: 1rem 1.5rem;
+    padding: 1rem 1rem;
     background: none;
     border: none;
     cursor: pointer;
