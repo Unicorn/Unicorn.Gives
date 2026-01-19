@@ -12,11 +12,9 @@ Click [HERE](#zbaminutes) for ZBA Meeting Minutes ~ [Zoning Board of Appeals Byl
 
 |  |  |  |  |  |  |  |  |  |  |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **[Zoning Ordinance](/zoningbody.pdf)   (2 Mb)   Some of these documents are PDF Files -- [Acrobat Reader](http://www.adobe.com/products/acrobat/readstep2.html) is needed for PDF files--FREE download**  **View the Township Zoning Map: [Zoning Map](/zoning.map.pdf)**   Related Forms:   Both the Building Permit and the Zoning Permit are needed to begin a building project.  |  | | --- | | - **[Zoning Permit Application](/forms/zoning_permit.pdf)    27 Kb** | | - **[Zoning Permit Application   for Recreational Vehicles and Temporary Storage Structures on a Vacant   Lot](/forms/zoning_permit_rv.pdf)    12 Kb** | | - **[Building Permit Application Form   and Fees](/forms/building_permit.pdf) 455 kb** | | - **[Z.B.A.   Application for Variance Form](forms/zoning_variance_app.pdf) 31 kb** | | - [Ordinance Violation   Report Form](forms/zoning_complaint.pdf)    68 kb           [Violation Report Form Procedures](docs/zoning_complaint_procedure.pdf) | | - **[Petition for Text Amendment to Ordinance](forms/petition_ordinance_change.pdf) 142 kb** | | - **[Parcel Division   Application](forms/parcel_division_app.pdf) 24 Kb** | | - **[Special Exemption Use   Permit](forms/special_use_permit.pdf)    36 kb** - **[Home Occupation   Permit](forms/home_occupation_permit.pdf)    24 kb** | |  |
+**[Zoning Ordinance](/zoningbody.pdf)**  **View the Township Zoning Map: [Zoning Map](/zoning.map.pdf)**   Related Forms:   Both the Building Permit and the Zoning Permit are needed to begin a building project.  |  | | --- | | - **[Zoning Permit Application](/forms/zoning_permit.pdf)** | | - **[Zoning Permit Application   for Recreational Vehicles and Temporary Storage Structures on a Vacant   Lot](/forms/zoning_permit_rv.pdf)** | | - **[Building Permit Application Form   and Fees](/forms/building_permit.pdf)** | | - **[Z.B.A.   Application for Variance Form](forms/zoning_variance_app.pdf)** | | - [Ordinance Violation   Report Form](forms/zoning_complaint.pdf)           [Violation Report Form Procedures](docs/zoning_complaint_procedure.pdf) | | - **[Petition for Text Amendment to Ordinance](forms/petition_ordinance_change.pdf)** | | - **[Parcel Division   Application](forms/parcel_division_app.pdf)** | | - **[Special Exemption Use   Permit](forms/special_use_permit.pdf)** - **[Home Occupation   Permit](forms/home_occupation_permit.pdf)    24 kb** | |  |
 
-![](/web/20250504073209im_/https://www.lincolntwp.com/images/bluebar.gif)
-
-ZBA MEETING MINUTES  
+### ZBA Meeting Minutes  
 
 ONLY Approved Minutes may be posted
 (approval does not happen until there is another variance

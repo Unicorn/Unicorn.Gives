@@ -8,4 +8,5 @@ order: 6
 ---
 
 ## F.O.I.A.
-| **These Documents are PDF files   [Acrobat Reader](http://get.adobe.com/reader/) is needed for PDF files--FREE download  |  | | --- | | - [Lincoln Township's Policy regarding the Inspection of Public Records, Including   Property Tax Records](docs/foia/foia_lincolntwp_policy.pdf) - [Public   Summary of FOIA Procedures and Guidelines](docs/foia/foia_public_procedures_guidelines.pdf) - [FOIA   Procedures and Guidelines](docs/foia/foia_procedures_guidelines.pdf) - [FOIA Forms   Packet](docs/foia/foia_forms.pdf) - [Lincoln Township FOIA Request for Detailed Cost Itemization](docs/foia/foia_cost_itemization.pdf) |** 
+
+### FOIA Documents - [Lincoln Township's Policy regarding the Inspection of Public Records, Including   Property Tax Records](docs/foia/foia_lincolntwp_policy.pdf) - [Public   Summary of FOIA Procedures and Guidelines](docs/foia/foia_public_procedures_guidelines.pdf) - [FOIA   Procedures and Guidelines](docs/foia/foia_procedures_guidelines.pdf) - [FOIA Forms   Packet](docs/foia/foia_forms.pdf) - [Lincoln Township FOIA Request for Detailed Cost Itemization](docs/foia/foia_cost_itemization.pdf) |** 
