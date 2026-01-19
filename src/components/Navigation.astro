@@ -317,7 +317,11 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
     }
 
     .container {
-      padding: 0;
+      padding: 0 1rem;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
     }
 
     /* Mobile toggle button */
@@ -329,10 +333,6 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
       cursor: pointer;
       flex-direction: column;
       gap: 4px;
-      position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
       z-index: 1001;
     }
 
