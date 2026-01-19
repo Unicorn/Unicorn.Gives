@@ -36,12 +36,10 @@ const imageURL = new URL(image, Astro.site);
 <meta name="twitter:image" content={imageURL} />
 
 <!-- Structured Data -->
-<script type="application/ld+json">
-{
+<script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org",
   "@type": "GovernmentOrganization",
   "name": "Lincoln Township",
-  "url": "https://unicorn.gives",
+  "url": Astro.site?.toString().replace(/\/$/, '') || '',
   "description": "Official website of Lincoln Township, Michigan"
-}
-</script>
+})} />

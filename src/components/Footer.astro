@@ -6,7 +6,7 @@ const currentYear = new Date().getFullYear();
   <div class="container">
     <div class="footer-content">
       <p>&copy; {currentYear} Lincoln Township, Michigan. All rights reserved.</p>
-      <p class="credit">Powered by <a href="https://unicorn.gives" target="_blank">unicorn.gives</a></p>
+      <p class="credit">Powered by <a href={Astro.site?.toString().replace(/\/$/, '') || ''} target="_blank">unicorn.gives</a></p>
     </div>
   </div>
 </footer>

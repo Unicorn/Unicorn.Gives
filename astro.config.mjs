@@ -5,8 +5,8 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://unicorn.github.io',
-  base: '/Unicorn.Gives',
+  site: 'https://unicorn.gives',
+  base: '/',
   integrations: [
     mdx(),
     sitemap(),
