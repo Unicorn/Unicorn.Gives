@@ -1,0 +1,54 @@
+---
+interface Props {
+  title?: string;
+  columns?: 2 | 3 | 4;
+}
+
+const { title, columns = 3 } = Astro.props;
+---
+
+<section class="feature-grid-section">
+  {title && <h2 class="section-title">{title}</h2>}
+  <div class={`feature-grid columns-${columns}`}>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .feature-grid-section {
+    margin: 3rem 0;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+    margin-bottom: 2.5rem;
+    font-weight: 600;
+  }
+
+  .feature-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid.columns-2 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .feature-grid.columns-3 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .feature-grid.columns-4 {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    .feature-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

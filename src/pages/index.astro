@@ -1,27 +1,243 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import Section from '../components/Section.astro';
 import { getEntry } from 'astro:content';
-import PageLayout from '../layouts/PageLayout.astro';
 
-// Try to get the index page from content
-const indexPage = await getEntry('pages', 'index');
-
-// If index page exists, use it; otherwise show default
-const title = indexPage?.data.title || 'Welcome to Lincoln Township';
-const description = indexPage?.data.description || 'Official website of Lincoln Township, Michigan';
-
-let Content;
-if (indexPage) {
-  const rendered = await indexPage.render();
-  Content = rendered.Content;
-}
+const page = await getEntry('pages', 'index');
 ---
 
-<PageLayout title={title} description={description}>
-  <h1>{title}</h1>
-  {Content ? <Content /> : (
-    <div>
-      <p>Welcome to the official website of Lincoln Township, Michigan.</p>
-      <p>This site is currently being updated. Please check back soon for more information.</p>
+<BaseLayout
+  title="Lincoln Township, Clare County, Michigan"
+  description="Official website of Lincoln Township, Clare County, Michigan - Government services, community resources, and township information"
+>
+  <Hero
+    title="Welcome to Lincoln Township"
+    subtitle="Serving our community in Clare County, Michigan with pride and dedication"
+    ctaText="Contact Us"
+    ctaLink="/board"
+    secondaryCtaText="View Services"
+    secondaryCtaLink="#services"
+  />
+
+  <Section padding="lg">
+    <FeatureGrid title="Government & Services" columns={3}>
+      <FeatureCard
+        title="Board of Trustees"
+        description="Meet our township board members and access meeting information"
+        icon="🏛️"
+        href="/board"
+      />
+      <FeatureCard
+        title="Board Meeting Minutes"
+        description="View current and archived board meeting minutes"
+        icon="📋"
+        href="/board-minutes"
+      />
+      <FeatureCard
+        title="Meeting Calendar"
+        description="Stay informed about upcoming township meetings and events"
+        icon="📅"
+        href="/calendar"
+      />
+    </FeatureGrid>
+  </Section>
+
+  <Section background="gray" padding="lg" id="services">
+    <FeatureGrid title="Township Services" columns={4}>
+      <FeatureCard
+        title="Building Department"
+        description="Permits, inspections, and construction requirements"
+        icon="🏗️"
+        href="/building"
+      />
+      <FeatureCard
+        title="Fire Department"
+        description="Fire safety, burn permits, and emergency services"
+        icon="🚒"
+        href="/fire"
+      />
+      <FeatureCard
+        title="Permits & Forms"
+        description="Download forms and apply for permits online"
+        icon="📄"
+        href="/permits-forms"
+      />
+      <FeatureCard
+        title="Election Information"
+        description="Voter registration and absentee ballot information"
+        icon="🗳️"
+        href="/elections"
+      />
+    </FeatureGrid>
+  </Section>
+
+  <Section padding="lg">
+    <FeatureGrid title="Community Resources" columns={4}>
+      <FeatureCard
+        title="Parks & Recreation"
+        description="Explore our parks at Bertha, Shingle, and Silver Lakes"
+        icon="🌲"
+        href="/parks"
+      />
+      <FeatureCard
+        title="Senior Services"
+        description="Dining center, activities, and resources for seniors"
+        icon="👥"
+        href="/seniors"
+      />
+      <FeatureCard
+        title="Township Lakes"
+        description="Information about Lake George, Shingle, Bertha, and Silver"
+        icon="🏞️"
+        href="/lakes"
+      />
+      <FeatureCard
+        title="Cemeteries"
+        description="Cemetery plots, fees, and burial service information"
+        icon="⛪"
+        href="/cemeteries"
+      />
+    </FeatureGrid>
+  </Section>
+
+  <Section background="gray" padding="lg">
+    <FeatureGrid title="Planning & Zoning" columns={3}>
+      <FeatureCard
+        title="Zoning Information"
+        description="Zoning ordinances, permits, and planning resources"
+        icon="📍"
+        href="/zba"
+      />
+      <FeatureCard
+        title="Planning Commission"
+        description="Meeting minutes, agendas, and zoning information"
+        icon="🗺️"
+        href="/planning-commission"
+      />
+      <FeatureCard
+        title="Ordinances"
+        description="Township ordinances, regulations, and codes"
+        icon="📜"
+        href="/ordinances"
+      />
+    </FeatureGrid>
+  </Section>
+
+  <Section padding="lg">
+    <div class="contact-section">
+      <h2>Contact Lincoln Township</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>Township Office</h3>
+          <p><strong>Phone:</strong> <a href="tel:989-588-9841">989-588-9841</a></p>
+        </div>
+        <div class="contact-card">
+          <h3>Supervisor</h3>
+          <p><strong>Dennis Zimmerman</strong></p>
+          <p><a href="tel:989-588-9343">989-588-9343</a></p>
+        </div>
+        <div class="contact-card">
+          <h3>Clerk</h3>
+          <p><strong>Carol Majewski</strong></p>
+          <p><a href="tel:989-588-9069">989-588-9069</a></p>
+        </div>
+        <div class="contact-card">
+          <h3>Treasurer</h3>
+          <p><strong>Maggie Carey</strong></p>
+          <p><a href="tel:989-588-2574">989-588-2574</a></p>
+        </div>
+      </div>
+      <div class="additional-links">
+        <a href="/faq">FAQs</a>
+        <a href="/foia">FOIA Requests</a>
+        <a href="/links">Helpful Links</a>
+        <a href="/plat-maps">Plat Maps</a>
+      </div>
     </div>
-  )}
-</PageLayout>
+  </Section>
+</BaseLayout>
+
+<style>
+  .contact-section {
+    text-align: center;
+  }
+
+  .contact-section h2 {
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+    margin-bottom: 2.5rem;
+    font-weight: 600;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .contact-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .contact-card h3 {
+    color: var(--color-primary);
+    font-size: var(--text-lg);
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-card p {
+    margin: 0.5rem 0;
+    color: #374151;
+  }
+
+  .contact-card a {
+    color: var(--color-link);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .contact-card a:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+  }
+
+  .additional-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .additional-links a {
+    color: var(--color-link);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: var(--text-base);
+    transition: color 0.3s ease;
+  }
+
+  .additional-links a:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .additional-links {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>

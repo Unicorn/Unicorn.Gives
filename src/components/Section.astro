@@ -1,0 +1,77 @@
+---
+interface Props {
+  background?: 'white' | 'gray' | 'primary';
+  padding?: 'sm' | 'md' | 'lg';
+}
+
+const { background = 'white', padding = 'md' } = Astro.props;
+---
+
+<section class={`section bg-${background} padding-${padding}`}>
+  <div class="section-content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    width: 100%;
+  }
+
+  .section-content {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .bg-white {
+    background-color: white;
+  }
+
+  .bg-gray {
+    background-color: #f9fafb;
+  }
+
+  .bg-primary {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .padding-sm {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .padding-md {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .padding-lg {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  @media (max-width: 768px) {
+    .section-content {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .padding-sm {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .padding-md {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .padding-lg {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+  }
+</style>
