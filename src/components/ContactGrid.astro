@@ -1,0 +1,62 @@
+---
+interface Props {
+  title?: string;
+  columns?: 2 | 3 | 4 | 5;
+}
+
+const { title, columns = 3 } = Astro.props;
+---
+
+<section class="contact-grid-section">
+  {title && <h2 class="section-title">{title}</h2>}
+  <div class={`contact-grid columns-${columns}`}>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .contact-grid-section {
+    margin: 2rem 0;
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+
+  .contact-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  .contact-grid.columns-2 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .contact-grid.columns-3 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .contact-grid.columns-4 {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .contact-grid.columns-5 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .section-title {
+      font-size: var(--text-xl);
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>
