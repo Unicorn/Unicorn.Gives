@@ -1,5 +1,5 @@
 ---
-title: "Seniors"
+title: "Senior Services"
 description: "Senior services, dining center, activities, and resources for Lincoln Township residents"
 lastUpdated: "2025-01-19"
 category: "Community"
@@ -7,4 +7,114 @@ subcategory: "Resources"
 order: 10
 ---
 
-## Senior Services | For Information on Issues Important to Senior Citizens Contact  Carol Majewski   **Nutrition Director for Clare County Senior Services,   Council on Aging, Clare Co.**  majewskic@clareco.net  Phone 989-539-8870 |  |  | | --- | | ***Call Clare County Senior Services at 989-539-8870 for addition information or assistance.*** |  [Visit the Clare County Senior Services Website](https://clarecoseniors-coa.net/)  [Monthly Menus](https://clarecoseniors-coa.net/menus/) ~ [Monthly Activities Calendar](https://clarecoseniors-coa.net/activities/)       |  |  | | --- | --- | | Lincoln Twp. Senior Dining Center:  175 Lake George Ave., Lake George, Mi 48633  **989-588-9841** | Visit the *[Growing Bolder](http://growingbolder.com/)* website for 50+ Seniors!  Check out the Exciting things Seniors are up to! | | **[Disabled Vets Homestead Property Tax Exemption](http://www.michigan.gov/documents/taxes/Disabled_Veterans_Exemption_FAQ_082614_466519_7.pdf)  [Download Disabled Veterans Property Tax Exemption Form](docs/vet_exemption_form.pdf)** | | | HELPFUL RESOURCE LINKS FOR SENIORS: | | | - [Legal Resources for Seniors](https://www.justgreatlawyers.com/legal-resources-considerations-seniors-special-needs) - [Veterans   Benefits for Seniors](http://www.military.com/benefits) - [Services for Seniors: Laws and Programs for Senior Adults](docs/services_for_seniors.pdf) - [Guide for Seniors: Protect Yourself form Abuse & Fraud](docs/guide_for_seniors_abuse-fraud.pdf) - [Disaster Preparedness for Seniors](docs/disaster_preparedness_for_seniors.pdf) - [GrandFacts: Fact Sheets for Grandparents](docs/grandfacts-michigan.pdf) - [Senior Preferences- A Guide to Resources in Your Community](http://www.seniorpreferences.com/) | - [Advanced Care Planning](http://www.eldercare.gov/Public/Resources/Advanced_Care/Index.aspx) - [Home Accommodations for Seniors](http://www.homeadvisor.com/r/budget-friendly-smart-home-accommodations-for-seniors-and-individuals-with-special-needs/#.WYt3GMaQzbg) - [Tips for Seniors to Declutter/Organize their Home](https://www.yourstoragefinder.com/declutter-and-organize-your-home-seniors-special-needs) - [Elder Care Resources](http://www.eldercare.gov/Public/Resources/Index.aspx) - [Central Mich. Region Office of the Alzheimers Association](http://www.alz.org/gmc/index.asp)       (800) 272-3900 or (989) 839-9910 |    |  | | --- | | LINCOLN TOWNSHIP SENIOR DINING CENTER HOURS  Monday through Friday, 9:30 am to 1:30 pm  Call the day before to reserve lunch. Lunch is free for those 60+ years old (a $2.25 donation recommended). Under 60 is $5.00.  The Senior center offers a variety of activities, bingo, euchre, music, and Wii.  Call Deb for information  588-9841 ext. 1.  [Download the Lunch Menus](https://clarecoseniors-coa.net/menus/)  **** |        |  |  | | --- | --- | | Lincoln Township Senior Activities Gallery | | | *Meals On Wheels Fundraiser -- St. Patrick's Weekend*  March 16, 2013 at the Castle Senior Dining Center | | |  | | | **Volunteers at the Lk. George Children's Christmas Party, 2011** | | |  | | | Halloween Party 2008 | | |  |  | | Hillbilly Hoedown, Sept. 2008 | | |  |  | | JUNE BIRTHDAYS, 2008  Left to Right: The Twins, Mary & Peggy, Jim Pauquette--80th Birthday's,  Other birthdays: Dorothy Wenzel, a guest, Minnie Hammond, and George Crisp | | 
+## Senior Services
+
+### Lincoln Township Senior Dining Center
+
+**Location**
+175 Lake George Ave., Lake George, MI 48633
+
+**Hours**
+Monday through Friday, 9:30 AM to 1:30 PM
+
+**Phone**
+989-588-9841 ext. 1
+
+**Lunch Program**
+- Call the day before to reserve lunch
+- Free for those 60+ years old ($2.25 donation recommended)
+- $5.00 for those under 60
+- [Download Monthly Lunch Menus](https://clarecoseniors-coa.net/menus/)
+
+**Activities**
+The Senior Center offers a variety of activities including:
+- Bingo
+- Euchre
+- Music
+- Wii gaming
+- Special events and parties
+
+**Contact**
+Call Deb at 988-9841 ext. 1 for information.
+
+### Clare County Senior Services
+
+**Clare County Council on Aging**
+- Phone: 989-539-8870
+- Website: [clarecoseniors-coa.net](https://clarecoseniors-coa.net/)
+- [Monthly Activities Calendar](https://clarecoseniors-coa.net/activities/)
+
+**Nutrition Director**
+- Carol Majewski
+- Email: majewskic@clareco.net
+- Phone: 989-539-8870
+
+**Services Offered**
+- Meals and nutrition programs
+- Transportation assistance
+- Activities and social programs
+- Information and assistance
+- Health and wellness programs
+
+### Resources for Seniors
+
+#### Veterans Benefits
+
+**Disabled Veterans Property Tax Exemption**
+- [Information and FAQs](http://www.michigan.gov/documents/taxes/Disabled_Veterans_Exemption_FAQ_082614_466519_7.pdf)
+- [Download Exemption Form](docs/vet_exemption_form.pdf)
+
+**Veterans Services**
+- Clare County Veterans Services: 989-539-7108
+- [Military.com Veterans Benefits](http://www.military.com/benefits)
+
+#### Legal & Financial Resources
+
+- [Legal Resources for Seniors](https://www.justgreatlawyers.com/legal-resources-considerations-seniors-special-needs)
+- [Services for Seniors: Laws and Programs](docs/services_for_seniors.pdf)
+- [Protect Yourself from Abuse & Fraud](docs/guide_for_seniors_abuse-fraud.pdf)
+
+#### Health & Wellness
+
+- [Advanced Care Planning](http://www.eldercare.gov/Public/Resources/Advanced_Care/Index.aspx)
+- [Central Michigan Region Alzheimer's Association](http://www.alz.org/gmc/index.asp)
+  - Phone: 800-272-3900 or 989-839-9910
+- [Elder Care Resources](http://www.eldercare.gov/Public/Resources/Index.aspx)
+
+#### Home & Safety
+
+- [Home Accommodations for Seniors](http://www.homeadvisor.com/r/budget-friendly-smart-home-accommodations-for-seniors-and-individuals-with-special-needs/)
+- [Tips to Declutter and Organize Your Home](https://www.yourstoragefinder.com/declutter-and-organize-your-home-seniors-special-needs)
+- [Disaster Preparedness for Seniors](docs/disaster_preparedness_for_seniors.pdf)
+
+#### Family Resources
+
+- [GrandFacts: Fact Sheets for Grandparents](docs/grandfacts-michigan.pdf)
+- [Senior Preferences: Guide to Community Resources](http://www.seniorpreferences.com/)
+
+### Active Aging
+
+**Growing Bolder**
+Visit the [Growing Bolder website](http://growingbolder.com/) to see exciting things seniors are doing! A great resource for 50+ seniors.
+
+### Contact Information
+
+**For Township Senior Services**
+- Lincoln Township Senior Dining Center
+- Phone: 989-588-9841 ext. 1
+
+**For County Senior Services**
+- Clare County Council on Aging
+- Phone: 989-539-8870
+- Website: [clarecoseniors-coa.net](https://clarecoseniors-coa.net/)
+
+**For Issues Important to Senior Citizens**
+- Carol Majewski, Nutrition Director
+- Email: majewskic@clareco.net
+- Phone: 989-539-8870
+
+### Related Resources
+
+- [Community Resources & Links](/links)
+- [Frequently Asked Questions](/faq)
+- [Board of Trustees](/board)

@@ -8,4 +8,85 @@ order: 14
 ---
 
 ## Elections & Voting Information
-| ***[Click for the list of "Deadlines"](#deadlines)*  |  | | --- | | Next Election: TBD  [Due to the passing of Proposal 18-3, anyone is eligible to request an Absentee Ballot](#deadlines).  You can sign up for an automatic application for Absentee Ballot for all elections in your jurisdiction. Contact Carol Majewski at 989-588-9069 or at clm@lincolntwp.com to request an Absent Ballot or to be put on the Permanent Absentee Voter List.  [Download an Application for an Absentee Ballot](docs/absentee_ballot_app.pdf)  **The Ballot Drop Box is now available at the Township Hall**  Voters can obtain an application for absentee ballot by contacting the Township Clerk, Carol Majewski, at 989-588-9069 or by email at clm@lincolntwp.com. It is never too early to request an absentee ballot!    DEADLINES TO NOTE:  SUBMISSION OF ABSENT VOTER BALLOT APPLICATIONS:   The election official or other authorized personnel appointed by the election official must be available in the election officials office or at some other published or posted location to facilitate the receipt and processing of absent voter ballot requests as follows:  Regular Request Deadline: If the ballot must be issued by mail, the application for the ballot must reach the election official no later than 5:00 p.m. on the Friday prior to the election.     Late Request Deadline: Absent voter ballots can be picked up by the voter in person anytime up to 4:00 p.m. on the day prior to the election. A voter who visits his or her clerks office or school election coordinators office on the day prior to the election to obtain an absent voter ballot must vote the ballot in the office; the voter is not permitted to leave the office with the ballot.  Same Day Voter Registration Request Deadline: A voter who registers to vote on Election Day by appearing in person at his or her clerks office is also eligible to obtain an absent voter ballot until 8:00 p.m. on Election Day.     Emergency Request Deadline: An elector may make an emergency request for an absentee ballot if he or she cannot attend the polls because of 1) personal disablement or 2) a family death or illness which will require that the elector leave the community for the entire time the polls are open on Election Day.  Emergency requests for absentee ballots must be made after the deadline for making regular requests for absentee ballots (5:00 p.m. on the Friday before the election) and before 4:00 p.m. on Election Day. The emergency must have occurred at a time which made it impossible for the voter to apply for an absentee ballot by the statutory deadline for regular applications If an emergency absent voter ballot is requested, the person making the application may authorize the person delivering the application to pick up and deliver the ballot. The authorization to pick up and deliver the ballot must be in writing and must be signed by the applicant. An emergency absentee ballot may also be delivered by hand to the applicant by a person authorized by the clerk to handle this task.  ALL BALLOTS MUST BE RETURNED TO THE CLERK BY 8:00 PM ON ELECTION DAY. |** 
+
+### Voter Registration & Absentee Voting
+
+Due to the passing of Proposal 18-3, **anyone is eligible to request an Absentee Ballot** for any reason.
+
+**Lincoln Township Clerk**
+- Carol Majewski
+- Phone: 989-588-9069
+- Email: clm@lincolntwp.com
+
+### How to Get an Absentee Ballot
+
+**Option 1: Automatic Application (Recommended)**
+Sign up for an automatic absentee ballot application for all elections in your jurisdiction.
+
+**Option 2: Request by Application**
+- [Download Absentee Ballot Application](docs/absentee_ballot_app.pdf)
+- Contact Carol Majewski at 989-588-9069 or clm@lincolntwp.com
+
+**Option 3: Use the Ballot Drop Box**
+A secure ballot drop box is available at Lincoln Township Hall.
+
+### Absentee Ballot Deadlines
+
+**Regular Request Deadline**
+If the ballot must be issued by mail, the application must reach the township clerk by **5:00 PM on the Friday before the election**.
+
+**Late Request (In-Person)**
+Absentee ballots can be picked up in person at the clerk's office anytime up to **4:00 PM on the day before the election**. You must vote the ballot in the office.
+
+**Same Day Voter Registration**
+Voters who register on Election Day can obtain an absentee ballot until **8:00 PM on Election Day**.
+
+**Emergency Request**
+Emergency requests (due to personal disability or family death/illness) must be made after the regular deadline and before **4:00 PM on Election Day**.
+
+**Return Deadline**
+**ALL BALLOTS MUST BE RETURNED TO THE CLERK BY 8:00 PM ON ELECTION DAY.**
+
+### Voter Registration
+
+**Register to Vote**
+- In person: Lincoln Township Clerk's office
+- Same-day registration available on Election Day
+- Contact: Carol Majewski at 989-588-9069
+
+### County Election Information
+
+**Clare County Clerk** (Elections Office)
+- Phone: 989-539-7131
+- Website: [clareclerkrod.com](http://clareclerkrod.com/)
+- Services: Voter registration, election information, sample ballots
+
+**Address**
+225 West Main, Harrison, MI 48625
+
+### Additional Resources
+
+**Michigan Voter Information Center**
+- [michigan.gov/vote](https://www.michigan.gov/vote)
+- Check registration status
+- View sample ballot
+- Find polling location
+
+**Secretary of State**
+- [michigan.gov/sos](https://www.michigan.gov/sos)
+- Voter registration
+- Election information
+- Absentee voting details
+
+### Contact the Township Clerk
+
+For questions about voting, registration, or absentee ballots:
+- **Carol Majewski, Township Clerk**
+- Phone: 989-588-9069
+- Email: clm@lincolntwp.com
+
+### Related Resources
+
+- [Board Meeting Calendar](/calendar)
+- [Frequently Asked Questions](/faq)
+- [Community Resources](/links)
