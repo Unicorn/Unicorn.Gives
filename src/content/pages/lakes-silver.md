@@ -1,12 +1,40 @@
 ---
-title: "Lakes Silver"
-description: ""
-lastUpdated: "2026-01-14"
+title: "Silver Lake"
+description: "Silver Lake information, parks, and resources"
+lastUpdated: "2025-01-19"
 category: "Natural Resources"
 subcategory: "Lakes"
 order: 999
 ---
-  [10 Ways to Protect Your Lake](docs/lakes/10ways_protect_lake.pdf)
+
+## Silver Lake
+
+Silver Lake is one of Lincoln Township's beautiful natural resources, providing recreation and enjoyment for residents and visitors.
+
+### Township Park
+
+Lincoln Township maintains a public park at Silver Lake with access for residents and guests.
+
+[Learn more about our parks →](/parks)
+
+### Lake Management
+
+For lake-related questions or concerns, contact the Lake Commissioner:
+
+**Roger Carey, Lake Commissioner**
+- Phone: 989-588-9538
+- Email: mcarey55@charter.net
+
+### Resources for Lake Property Owners
+
+- [All Township Lakes](/lakes)
+- [Lake Management Information](/lakes)
+- [Shoreland Zoning Information](/zoning)
+- [Dock and Lake Ordinances](/ordinances)
+
+### Lake Management Resources
+
+- [10 Ways to Protect Your Lake](docs/lakes/10ways_protect_lake.pdf)
 - Michigan Lakes Info:
   [Lake Lingo- Cutting Through the Jargon](docs/lakes/lake_lingo.pdf)
 - Michigan Lakes Info:
@@ -15,24 +43,3 @@ order: 999
 - National Lakes Assessment:
   [Shoreland Overlay Zoning](docs/lakes/shoreland_overlay_zoning.pdf)
 - [Watershed Management](docs/lakes/watershed_management.pdf)
-
-**|
-[Home](/) |
-[Calendar](/calendar) |
-[Fire Dept.](/fire) |
-[Building
-Dept.](/building) |
-[Plan. Comm.](/planning-commission) |
-[Zoning](/zba) |
-[Permits/Forms](/permits-forms)
-|  
-|
-[Board Minutes](/board-minutes) |
-[Ordinances](/ordinances) |
-[Cemeteries](/cemeteries) |
-[Seniors](/seniors) |
-[FOIA](/foia) \
-[FAQ](/faq) |**
-
-**Contact the Web Manager at [sherjudd@gmail.com](mailto:sherjudd@gmail.com)  
-[Rabbit Web Design](http://www.juddweb.net/)**

@@ -1,14 +1,45 @@
 ---
 title: "Lincoln Township Events Calendar"
-description: ""
-lastUpdated: "2026-01-14"
+description: "Board meetings, events, and important dates for Lincoln Township"
+lastUpdated: "2025-01-19"
 category: "Government"
 subcategory: "Meetings & Calendar"
-order: 11
+order: 205
 ---
 
-|  |  |  |  |  |
-| --- | --- | --- | --- | --- |
-| - [Home](/)    - [Twp. Board](/board)   - [Twp. Description](/#description)   - [Twp. Plat Maps](/plat-maps)   - [Contact Info.](/#phone)   - [F.A.Q.](/faq)   - [F.O.I.A.](/foia)   - [Helpful Links](/links) - [Assessor](/assessor)    - [F.A.Q.](/faq#assess) - [Board](/board)    - [Meeting Minutes](/board-minutes)     - [Archive of Minutes](/board-minutes#archive)   - [Meeting Schedule](/board-minutes) - [Building Dept.](/building) - [Calendar](/calendar) - [Cemeteries](/cemeteries) - [Compost Field](/compost) - [Election/Voting Info.](/elections) - [Fire Dept.](/fire) - Meeting Minutes   - [Twp Board Minutes](/board-minutes#minutes)   - [Plan. Comm. Minutes](/planning-commission#pcminutes)   - [ZBA Minutes](/zba#zbaminutes) - [Newsletter](/newsletters)    - [Newsletter Archive](/newsletters#newsletter_archive) - [Ordinances](/ordinances) - [Planning Commission](/planning-commission)    - [Meeting Minutes](/planning-commission#pcminutes)   - [Permits/Forms](/permits-forms)   - [Ordinances](/ordinances) - [Seniors](/seniors)    - [Montly Menus](https://clarecoseniors-coa.net/menus/)   - [Monthly Activities](https://clarecoseniors-coa.net/activities/)   - [News](/seniors#senior_news) - [Township Lakes](/lakes)    - [Lake George](/lakes-lakegeorge)   - [Shingle Lake](/lakes-shingle)   - [Bertha Lake](/lakes-bertha)   - [Silver Lake](/lakes-silver) - [Township Parks](/parks)    - [Bertha Lake Park](/parks)   - [Shingle Lake Park](/parks#shingle)   - [Silver Lake Park](/parks#silver) - [Zoning / ZBA](/zba)    - [Meeting Minutes](/zba#zbaminutes)   - [Ordinances](/ordinances)   - [FAQ](/faq#zoning) | |  |  |  | | --- | --- | --- | | **| ***Lincoln Township  Clare County, Michigan*** |  |** |
-| ***Events Calendar*** |
-| **|  | | --- | |  |   [Back to Top](#top)**                 **| [Home](/) | [Calendar](/calendar) | [Fire Dept.](/fire) | [Building Dept.](/building) | [Plan. Comm.](/planning-commission) | [Zoning](/zba) | [Permits/Forms](/permits-forms) |  | [Board Minutes](/board-minutes) | [Ordinances](/ordinances) | [Cemeteries](/cemeteries) | [Seniors](/seniors) | [FOIA](/foia) \ [FAQ](/faq) |**    **Contact the Web Manager at [sherjudd@gmail.com](mailto:sherjudd@gmail.com)  [Rabbit Web Design](http://www.juddweb.net/)** |
+## Events Calendar
+
+### Regular Meeting Schedule
+
+**Board of Trustees**
+- Regular meetings held throughout the year
+- Location: Lincoln Township Hall
+- [View meeting minutes →](/board-minutes)
+
+**Planning Commission**
+- Meeting schedule varies
+- [More information →](/planning-commission)
+
+**Zoning Board of Appeals**
+- Meets as needed
+- [More information →](/zba)
+
+### Important Dates
+
+**Tax Deadlines**
+- Summer taxes due: September 14
+- Winter taxes due: February 14
+
+**Elections**
+- [View election information and dates →](/elections)
+
+### Special Meetings
+
+Special meetings are posted at Township Hall at least 18 hours in advance as required by Michigan's Open Meetings Act.
+
+### Contact
+
+For current meeting schedules and dates, contact the Township Clerk:
+- **Carol Majewski**
+- Phone: 989-588-9069
+- Email: clm@lincolntwp.com

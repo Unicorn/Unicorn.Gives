@@ -1,7 +1,7 @@
 ---
 title: "Lincoln Township Plat Maps"
-description: ""
-lastUpdated: "2026-01-14"
+description: "Subdivision plat maps and property information for Lincoln Township"
+lastUpdated: "2025-01-19"
 category: "Information"
 subcategory: "Resources"
 order: 4
@@ -28,7 +28,6 @@ order: 4
 | [Section 16](docs/plat-maps/metes_bounds/Sec16.pdf) | [Section 35](docs/plat-maps/metes_bounds/Sec35.pdf) |
 | [Section 16, Gov. Lot 5](docs/plat-maps/metes_bounds/Sec16GovLot5.pdf) | [Section 36](docs/plat-maps/metes_bounds/Sec36.pdf) |
 
-[Back to Top](#top)
 
 WHITE BIRCH
 
@@ -82,25 +81,3 @@ Bertha Pleasure Resort through Woodmere
 | [Woodmere First Addition, Section 16](docs/plat-maps/bertha_through_woodmere/WoodmereFirstAdditionSec16.pdf) |
 | [Woodmere Government Lots 1, 2, 3 & 4, Section 17](docs/plat-maps/bertha_through_woodmere/WoodmereGovLots1_2_3_4Sec17.pdf) |
 
-**[Back to Top](#top)**
-
-**|
-[Home](/) |
-[Calendar](/calendar) |
-[Fire Dept.](/fire) |
-[Building
-Dept.](/building) |
-[Plan. Comm.](/planning-commission) |
-[Zoning](/zba) |
-[Permits/Forms](/permits-forms)
-|  
-|
-[Board Minutes](/board-minutes) |
-[Ordinances](/ordinances) |
-[Cemeteries](/cemeteries) |
-[Seniors](/seniors) |
-[FOIA](/foia) \
-[FAQ](/faq) |**
-
-**Contact the Web Manager at [sherjudd@gmail.com](mailto:sherjudd@gmail.com)  
-[Rabbit Web Design](http://www.juddweb.net/)**

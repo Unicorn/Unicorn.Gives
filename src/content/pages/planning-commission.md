@@ -1,17 +1,14 @@
 ---
 title: "Planning_Commission"
-description: ""
-lastUpdated: "2026-01-14"
+description: "Planning Commission meeting minutes, agendas, and zoning information"
+lastUpdated: "2025-01-19"
 category: "Planning & Zoning"
 subcategory: "Commissions"
 order: 10
 ---
-![](/web/20240705161132im_/https://www.lincolntwp.com/images/bluebar.gif)
+## Planning Commission Meeting Minutes
 
-PLANNING COMMISSION MEETING MINUTES
-
-[CLICK HERE TO BE NOTIFIED WHENEVER
-THE PLANNING COMMISSION OR ZBA MINUTES ARE UPDATED.](subscribe.htm)
+[Subscribe for notifications when minutes are updated →](/subscribe)
 
 For Minutes from 2011-2013 Click
 [HERE](#2011-2013) and

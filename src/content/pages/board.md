@@ -1,14 +1,48 @@
 ---
-title: "Board"
-description: ""
-lastUpdated: "2026-01-14"
+title: "Board of Trustees"
+description: "Lincoln Township Board members, meeting schedule, and contact information"
+lastUpdated: "2025-01-19"
 category: "Government"
 subcategory: "Board & Leadership"
 order: 200
 ---
 
-|  |  |  |  |  |
-| --- | --- | --- | --- | --- |
-| - [Home](/)    - [Twp. Board](/board)   - [Twp. Description](/#description)   - [Twp. Plat Maps](/plat-maps)   - [Contact Info.](/#phone)   - [F.A.Q.](/faq)   - [F.O.I.A.](/foia)   - [Helpful Links](/links) - [Assessor](/assessor)    - [F.A.Q.](/faq#assess) - [Board](/board)    - [Meeting Minutes](/board-minutes)     - [Archive of Minutes](/board-minutes#archive)   - [Meeting Schedule](/board-minutes) - [Building Dept.](/building) - [Calendar](/calendar) - [Cemeteries](/cemeteries) - [Compost Field](/compost) - [Election/Voting Info.](/elections) - [Fire Dept.](/fire) - Meeting Minutes   - [Twp Board Minutes](/board-minutes#minutes)   - [Plan. Comm. Minutes](/planning-commission#pcminutes)   - [ZBA Minutes](/zba#zbaminutes) - [Newsletter](/newsletters)    - [Newsletter Archive](/newsletters#newsletter_archive) - [Ordinances](/ordinances) - [Planning Commission](/planning-commission)    - [Meeting Minutes](/planning-commission#pcminutes)   - [Permits/Forms](/permits-forms)   - [Ordinances](/ordinances) - [Seniors](/seniors)    - [Montly Menus](https://clarecoseniors-coa.net/menus/)   - [Monthly Activities](https://clarecoseniors-coa.net/activities/)   - [News](/seniors#senior_news) - [Township Lakes](/lakes)    - [Lake George](/lakes-lakegeorge)   - [Shingle Lake](/lakes-shingle)   - [Bertha Lake](/lakes-bertha)   - [Silver Lake](/lakes-silver) - [Township Parks](/parks)    - [Bertha Lake Park](/parks)   - [Shingle Lake Park](/parks#shingle)   - [Silver Lake Park](/parks#silver) - [Zoning / ZBA](/zba)    - [Meeting Minutes](/zba#zbaminutes)   - [Ordinances](/ordinances)   - [FAQ](/faq#zoning) | |  |  |  | | --- | --- | --- | | **| ***Lincoln Township  Clare County, Michigan*** |  |** |
-| Township Board |
-| **Supervisor: [Dennis Zimmerman](mailto:denniszimm@charter.net) (989) 588-9343  Clerk: [Carol Majewski](mailto:clm@lincolntwp.com) (989) 588-9069  Treasurer: [Maggie Carey](mailto:mc@lincolntwp.com) (989) 588-2574  Trustee: [Jerry Bridges](mailto:Jbridges@toast.net) (989) 588-6212  Trustee: [Mike Tobin](mailto:mtobin@lincolntwp.com) (989) 588-2311**                     **| [Home](/) | [Calendar](/calendar) | [Fire Dept.](/fire) | [Building Dept.](/building) | [Plan. Comm.](/planning-commission) | [Zoning](/zba) | [Permits/Forms](/permits-forms) |  | [Board Minutes](/board-minutes) | [Ordinances](/ordinances) | [Cemeteries](/cemeteries) | [Seniors](/seniors) | [FOIA](/foia) \ [FAQ](/faq) |**    **Contact the Web Manager at [sherjudd@gmail.com](mailto:sherjudd@gmail.com)  [Rabbit Web Design](http://www.juddweb.net/)** |
+## Board of Trustees
+
+The Lincoln Township Board of Trustees governs the township and makes policy decisions for our community.
+
+### Board Members
+
+**Supervisor**: Dennis Zimmerman
+- Email: denniszimm@charter.net
+- Phone: 989-588-9343
+
+**Clerk**: Carol Majewski
+- Email: clm@lincolntwp.com
+- Phone: 989-588-9069
+
+**Treasurer**: Maggie Carey
+- Email: mc@lincolntwp.com
+- Phone: 989-588-2574
+
+**Trustee**: Jerry Bridges
+- Email: Jbridges@toast.net
+- Phone: 989-588-6212
+
+**Trustee**: Mike Tobin
+- Email: mtobin@lincolntwp.com
+- Phone: 989-588-2311
+
+### Board Meetings
+
+Regular board meetings are held throughout the year. Special meetings are posted at Township Hall at least 18 hours in advance.
+
+[View meeting minutes and schedule →](/board-minutes)
+
+### Contact the Board
+
+For questions or concerns, please contact the Township Supervisor or attend a board meeting.
+
+### Accessibility
+
+Individuals with disabilities requiring auxiliary aids or services should contact Carol Majewski at 989-588-9069 or clm@lincolntwp.com.

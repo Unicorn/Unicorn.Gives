@@ -1,7 +1,7 @@
 ---
 title: "Lincoln Township Board of Trustees Meetings"
-description: ""
-lastUpdated: "2026-01-14"
+description: "Lincoln Township Board of Trustees meeting minutes and archives"
+lastUpdated: "2025-01-19"
 category: "Government"
 subcategory: "Board & Leadership"
 order: 9
@@ -15,18 +15,9 @@ arrangements can be made.
 Special meetings are posted no less than 18 hours in advance on the front door
 of the township hall.  
 
-![](/web/20211102081136im_/http://www.lincolntwp.com/images/bluebar.gif)
+## Current Board Minutes
 
-Current Board Minutes
-![](/web/20211102081136im_/http://www.lincolntwp.com/images/PDF.gif)  
-
-[Acrobat Reader](http://www.adobe.com/products/acrobat/readstep2.html) is needed for PDF files--FREE download  
-The approval of these Minutes will be voted on at
-the next meeting.
-
-|  |
-| --- |
-| [Update Minutes](nimda) |
+The approval of these Minutes will be voted on at the next meeting.
 
  [Click to go to the
 Archive of Board Minutes 2005 - 2013](/minutes-archive)

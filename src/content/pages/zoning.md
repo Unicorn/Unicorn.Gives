@@ -1,22 +1,14 @@
 ---
 title: "Lincoln Township Zoning"
-description: ""
-lastUpdated: "2026-01-14"
+description: "Zoning ordinances, permits, and planning information for Lincoln Township"
+lastUpdated: "2025-01-19"
 category: "Planning & Zoning"
 subcategory: "Regulations"
 order: 21
 ---
-**|  |  |  |
-| --- | --- | --- |
-|  | - [Home](/)    - [Twp. Board](/board)   - [Twp. Description](/#description)   - [Contact Info](/#phone)   - [F.A.Q.](/faq)   - [F.O.I.A.](/foia)   - [Helpful Links](/links) - [Board](/board)    - [Meeting Minutes](/board-minutes)     - [Archive of Minutes](/board-minutes#archive)   - [Meeting Schedule](/board-minutes) - [Calendar](/calendar) - [Planning/Zoning](/zoning)    - [Planning Comm. Minutes](/zba-plancomm-minutes)   - [ZBA Minutes](/zba-plancomm-minutes)   - [Permits/Forms](/permits-forms)   - [Ordinances](/ordinances)   - [F.A.Q.](/faq#zoning)   - [New Zoning Ordinance Initiative](/ordinances-zoning-ord-creation) - [Newsletter](/newsletters)    - [Newsletter Archive](/newsletters#newsletter_archive) - [Seniors](/seniors)    - [Menus](https://clarecoseniors-coa.net/menus/)   - [Activities](https://clarecoseniors-coa.net/activities/)   - [News](/seniors#senior_news) - [Election/Voting Info](/elections) - [Fire Dept.](/fire) - [Cemeteries](/cemeteries) - [Assessor](/assessor)    - [F.A.Q.](/faq#assess) |  |
+## Planning Commission / Zoning Board
 
-|  |  |  |
-| --- | --- | --- |
-|  | ***Lincoln Township  Clare County, Michigan*** |  |
-
-Planning Commission / Zoning Board  
-*[Get
-Answers to Frequently Asked Questions about Zoning.](/faq#zoning)*
+*[Get Answers to Frequently Asked Questions about Zoning.](/faq#zoning)*
 
 Lincoln Township is in the process of creating a wholly new
 Zoning Ordinance.  

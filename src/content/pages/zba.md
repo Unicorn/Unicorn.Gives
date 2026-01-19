@@ -1,18 +1,14 @@
 ---
 title: "Zba"
-description: ""
-lastUpdated: "2026-01-14"
+description: "Zoning Board of Appeals information, meeting minutes, and variance applications"
+lastUpdated: "2025-01-19"
 category: "Planning & Zoning"
 subcategory: "Commissions"
 order: 120
 ---
- **Alternate, TBD |**
+## Zoning Board of Appeals
 
-Click [HERE](#zbaminutes)
-for ZBA Meeting Minutes ~
-[Zoning Board of Appeals Bylaws](docs/zba_bylaws.pdf)
-
-![](/web/20250504073209im_/https://www.lincolntwp.com/images/PDF.gif)
+Click [HERE](#zbaminutes) for ZBA Meeting Minutes ~ [Zoning Board of Appeals Bylaws](docs/zba_bylaws.pdf)
 
 |  |  |  |  |  |  |  |  |  |  |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

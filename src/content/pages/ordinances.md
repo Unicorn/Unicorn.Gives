@@ -1,7 +1,7 @@
 ---
 title: "Lincoln Township Ordinances"
-description: ""
-lastUpdated: "2026-01-14"
+description: "Lincoln Township ordinances, regulations, and municipal codes"
+lastUpdated: "2025-01-19"
 category: "Planning & Zoning"
 subcategory: "Regulations"
 order: 17
