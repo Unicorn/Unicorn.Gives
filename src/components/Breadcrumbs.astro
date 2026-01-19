@@ -51,7 +51,7 @@ const structuredData = {
 
 <style>
   .breadcrumbs-nav {
-    padding: 1rem 0;
+    padding: 1rem 2rem;
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 1.5rem;
   }
@@ -64,6 +64,8 @@ const structuredData = {
     padding: 0;
     margin: 0;
     font-size: 0.875rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
   }
 
   .breadcrumb-item {
@@ -100,13 +102,13 @@ const structuredData = {
     font-weight: 500;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .breadcrumbs {
       font-size: 0.8rem;
     }
 
     .breadcrumbs-nav {
-      padding: 0.75rem 0;
+      padding: 0.75rem 1rem;
       margin-bottom: 1rem;
     }
   }
