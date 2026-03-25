@@ -23,7 +23,7 @@ Lincoln Township works with **Clare County** to provide permit services. Here's 
 **Township-Level Permits** (Lincoln Township)
 - Zoning permits
 - Park pavilion use
-- Contact: 989-588-9538
+- Contact: (989) 588-9841 ext. 5
 
 ## Building & Construction Permits
 
@@ -34,7 +34,7 @@ Lincoln Township works with **Clare County** to provide permit services. Here's 
 ### Step-by-Step Guide
 
 1. **Contact the Zoning Administrator** to discuss your project
-   - Roger Carey: 989-588-9538 or zoning@lincolntwp.com
+   - Dick Hassberger: (989) 588-9841 ext. 5 or zoning@lincolntwp.com
 
 2. **Download and complete application forms** (see below)
 
@@ -43,8 +43,8 @@ Lincoln Township works with **Clare County** to provide permit services. Here's 
    - Phone: 989-539-2761
 
 4. **Submit Zoning Permit applications** to Lincoln Township Zoning Administrator
-   - Roger Carey, P.O. Box 239, Lake George, MI 48633
-   - Phone: 989-588-9538
+   - Dick Hassberger, P.O. Box 239, Lake George, MI 48633
+   - Phone: (989) 588-9841 ext. 5
 
 5. **Pay permit fees** when applications are approved
 
@@ -61,7 +61,7 @@ Lincoln Township works with **Clare County** to provide permit services. Here's 
 - [Mechanical Permit Application](forms/mechanical_permit.pdf) - Nate Caulkins: 989-539-2741
 
 **Township-Level Permits** (Submit to Lincoln Township)
-- [Zoning Permit Application](forms/zoning_permit.pdf) - Roger Carey: 989-588-9538
+- [Zoning Permit Application](forms/zoning_permit.pdf) - Dick Hassberger: (989) 588-9841 ext. 5
 
 ### Additional Construction Permits
 

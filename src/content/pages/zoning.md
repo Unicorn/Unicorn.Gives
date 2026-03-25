@@ -6,54 +6,57 @@ category: "Planning & Zoning"
 subcategory: "Regulations"
 order: 21
 ---
+
 ## Planning Commission / Zoning Board
 
 *[Get Answers to Frequently Asked Questions about Zoning.](/faq#zoning)*
 
-Lincoln Township is in the process of creating a wholly new
-Zoning Ordinance.  
-Click *[HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf)*
-to follow this process.
+Lincoln Township is in the process of creating a wholly new Zoning Ordinance.
+Click [HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) to follow this process.
 
-|  |  |
-| --- | --- |
-| **Board Members:** | |
-| **Planning Commission:  Kim Hamilton, Chair  Tamara McCaslin, Vice Chair / ZBA Rep.  Sharon Bridges Gary Szczepanski  Mike Tobin, Twp. Rep.** | **Zoning Board of Appeals**:  Marshall Swanson, Vice Chair  Tom Godau, Chair  Marshall Swanson, Vice Chair  Cynthia Englehardt, Secretary  Jerry Bridges  Tamara McCaslin  Kim Smith, Alternate |
+### Planning Commission
 
-|  |  |
-| --- | --- |
-| **Zoning Administrator:   Roger Carey Zoning Administrator  email: [zoning@lincolntwp.com](mailto:zoning@lincolntwp.com)**  [Master Planner Certificate](images/photos/people/MCP-Cert_Carey114.jpg) [Zoning Administrator Certificate](images/photos/people/ZA-Certificate_Carey114.jpg)  click certificates for larger images | **Building Inspector:   Werner Mantei Building Inspector** |
+- Phil Blisdell, Chair
+- Jim Ostrowski, Vice Chair
+- Gary Szczepanski, Secretary
+- Tami McCaslin, ZBA ex Officio
+- Mike Tobin, Township Board ex Officio
 
-Download the *[LINCOLN TOWNSHIP MASTER PLAN](docs/master_plan.pdf)*
-![](/web/20170316053957im_/http://www.lincolntwp.com/images/PDF.gif)
+### Zoning Administrator
 
-|  |  |  |  |  |  |  |  |  |  |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **[Zoning Ordinance](/zoningbody.pdf)   (2 Mb)   Some of these documents are PDF Files -- [Acrobat Reader](http://www.adobe.com/products/acrobat/readstep2.html) is needed for PDF files--FREE download**  **View our Zoning Map: [zoning map](/zoning.map.pdf)**  Click for [Z.B.A. Meeting Minutes](/zba-plancomm-minutes)  Click for [Planning Commission Meeting Minutes](/zba-plancomm-minutes)   Related Forms Also Available Online:  |  | | --- | | - **[Z.B.A.   Application for Variance Form](forms/zoning_variance_app.pdf) (31 kb)** | | **- [Zoning Complaint Form](forms/zoning_complaint.pdf)    (68 kb) |** | - **[Zoning Permit Application](/forms/zoning_permit.pdf)    (27   Kb)** | | - **[Parcel Division   Application](forms/parcel_division_app.pdf)   (24   Kb PDF file)** | | - [Conditional Rezoning Application](forms/conditional_rezoning_app.pdf) **(28 kb)         [Conditional Rezoning Procedure Information](docs/conditional_rezoning_info.pdf)** | | - **[Special Exemption Use   Permit](forms/special_use_permit.pdf)    (36 kb)** - **[Home Occupation   Permit](forms/home_occupation_permit.pdf)    (24 kb)** | | **- **[Building Permit Application Form   and Fees](/forms/building_permit.pdf)   (455 kb)** |** | ****Both the Building Permit and the Zoning Permit are needed to begin a building project.** |** |  |
+**Dick Hassberger**
+- Phone: (989) 588-9841 ext. 5
+- Email: [zoning@lincolntwp.com](mailto:zoning@lincolntwp.com)
 
-Related Soil Erosion Links:
+### Building Inspector
 
-- [Clare County Soil Erosion Information](http://www.clarecd.org/)
-  (Clare Conservation District Website)
-- [Soil
-  Erosion and Sedimentation Control Permit Filing Schedule](http://www.clarecd.org/Soil%20Erosion/soil%20erosion%20app%2010-1-10.pdf) 
-  (PDF file)
+- Phone: (989) 539-2761
 
-[Back to Top](#top)
+### Key Documents
 
-**|
-[Home](/) |
-[Calendar](/calendar) |
-[Fire Dept.](/fire) |
-[Newsletter](/newsletters) |
-[Seniors](/seniors) |
-[Zoning](/zoning) |
-[Permits/Forms](/permits-forms) |
-[Board Minutes](/board-minutes) |
-[Ordinances](/ordinances) |
-[Cemeteries](/cemeteries) |
-[Links](/links) |**
+- [Lincoln Township Master Plan](docs/master_plan.pdf)
+- [Zoning Ordinance](/zoningbody.pdf) (2 MB)
+- [Zoning Map](/zoning.map.pdf)
 
-**Contact the Web Manager at
-[sherjudd@gmail.com](mailto:sherjudd@gmail.com)  
-[Rabbit Web Design](http://www.juddweb.net/)****
+### Meeting Minutes
+
+- [ZBA Meeting Minutes](/zba-plancomm-minutes)
+- [Planning Commission Meeting Minutes](/zba-plancomm-minutes)
+
+### Zoning Forms
+
+- [ZBA Application for Variance Form](forms/zoning_variance_app.pdf)
+- [Zoning Complaint Form](forms/zoning_complaint.pdf)
+- [Zoning Permit Application](forms/zoning_permit.pdf)
+- [Parcel Division Application](forms/parcel_division_app.pdf)
+- [Conditional Rezoning Application](forms/conditional_rezoning_app.pdf) — [Conditional Rezoning Procedure Information](docs/conditional_rezoning_info.pdf)
+- [Special Exemption Use Permit](forms/special_use_permit.pdf)
+- [Home Occupation Permit](forms/home_occupation_permit.pdf)
+- [Building Permit Application Form and Fees](forms/building_permit.pdf)
+
+**Both the Building Permit and the Zoning Permit are needed to begin a building project.**
+
+### Soil Erosion Resources
+
+- [Clare County Soil Erosion Information](http://www.clarecd.org/) (Clare Conservation District Website)
+- [Soil Erosion and Sedimentation Control Permit Filing Schedule](http://www.clarecd.org/Soil%20Erosion/soil%20erosion%20app%2010-1-10.pdf)

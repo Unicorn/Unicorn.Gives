@@ -20,7 +20,7 @@ const Tag = href ? 'a' : 'div';
 <style>
   .feature-card {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--color-outline-light);
     border-radius: 12px;
     padding: 2rem;
     transition: all 0.3s ease;
@@ -32,7 +32,7 @@ const Tag = href ? 'a' : 'div';
 
   .feature-card:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 8px 24px rgba(99, 97, 173, 0.12);
+    box-shadow: 0 8px 24px rgba(91, 27, 0, 0.12);
     transform: translateY(-4px);
   }
 
@@ -52,7 +52,7 @@ const Tag = href ? 'a' : 'div';
 
   .card-description {
     font-size: var(--text-base);
-    color: #6b7280;
+    color: var(--color-on-surface-variant);
     line-height: 1.6;
     margin: 0;
   }

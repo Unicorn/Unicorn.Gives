@@ -7,6 +7,11 @@ const currentPath = Astro.url.pathname;
 
 // Create a map of slugs to page data for quick lookup
 const pageMap = new Map(pages.map(page => [page.slug, page]));
+
+// Pages that exist as dedicated Astro routes (not in content collection)
+const standalonePages: Record<string, { title: string; navTitle?: string }> = {
+  'news': { title: 'News & Updates' },
+};
 ---
 
 <nav role="navigation" aria-label="Main navigation">
@@ -40,9 +45,11 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
                   <ul class="subcategory-pages">
                     {subcategory.pages.map((pageSlug) => {
                       const page = pageMap.get(pageSlug);
-                      if (!page) return null;
-                      const pageHref = `/${pageSlug}`;
-                      const isActive = currentPath === pageHref || currentPath === `${pageHref}/`;
+                      const standalone = standalonePages[pageSlug];
+                      if (!page && !standalone) return null;
+                      const pageHref = pageSlug === 'news' ? '/news/' : `/${pageSlug}`;
+                      const isActive = currentPath === pageHref || currentPath === `/${pageSlug}/` || currentPath === `/${pageSlug}`;
+                      const label = page ? (page.data.navTitle || page.data.title) : (standalone?.navTitle || standalone?.title);
                       return (
                         <li>
                           <a
@@ -50,7 +57,7 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
                             class={isActive ? 'active' : ''}
                             aria-current={isActive ? 'page' : undefined}
                           >
-                            {page.data.navTitle || page.data.title}
+                            {label}
                           </a>
                         </li>
                       );
@@ -177,7 +184,7 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
 
   .desktop-nav > li > a:hover,
   .desktop-nav > li > a.active {
-    background-color: var(--color-link-hover);
+    background-color: var(--color-primary-light);
     text-decoration: none;
   }
 
@@ -204,7 +211,7 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
   }
 
   .nav-category-button:hover {
-    background-color: var(--color-link-hover);
+    background-color: var(--color-primary-light);
   }
 
   .nav-category-button:focus {
@@ -277,14 +284,14 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
   .subcategory-pages a {
     display: block;
     padding: 0.5rem 0.75rem;
-    color: #374151;
+    color: var(--color-on-surface);
     font-size: 0.875rem;
     transition: background-color 0.15s ease, color 0.15s ease;
     border-radius: 4px;
   }
 
   .subcategory-pages a:hover {
-    background-color: #f3f4f6;
+    background-color: var(--color-surface-dim);
     color: var(--color-link-hover);
     text-decoration: none;
   }
@@ -472,16 +479,16 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
       align-items: center;
       justify-content: space-between;
       padding: 1rem 1.5rem;
-      color: #374151;
+      color: var(--color-on-surface);
       font-family: var(--font-heading);
       font-size: 1rem;
       font-weight: 600;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--color-outline-light);
       transition: background-color 0.15s ease;
       width: 100%;
       background: none;
       border: none;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--color-outline-light);
       text-align: left;
       cursor: pointer;
       text-transform: uppercase;
@@ -489,7 +496,7 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
 
     .mobile-menu-list a:hover,
     .mobile-category-button:hover {
-      background-color: #f9fafb;
+      background-color: var(--color-surface-container);
       text-decoration: none;
     }
 
@@ -562,17 +569,17 @@ const pageMap = new Map(pages.map(page => [page.slug, page]));
     .mobile-page-list a {
       display: block;
       padding: 0.75rem 1.5rem;
-      color: #374151;
+      color: var(--color-on-surface);
       font-size: 0.875rem;
       font-weight: 500;
-      border-bottom: 1px solid #f3f4f6;
+      border-bottom: 1px solid var(--color-surface-dim);
       transition: background-color 0.15s ease;
       font-family: var(--font-body);
       text-transform: none;
     }
 
     .mobile-page-list a:hover {
-      background-color: #f9fafb;
+      background-color: var(--color-surface-container);
       text-decoration: none;
     }
 

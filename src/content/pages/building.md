@@ -19,8 +19,8 @@ Lincoln Township building permits are administered by **Clare County Community D
 - Website: [clareco.net](https://clareco.net/)
 
 **Lincoln Township Zoning Administrator**
-- Roger Carey
-- Phone: 989-588-9538
+- Dick Hassberger
+- Phone: (989) 588-9841 ext. 5
 - Email: zoning@lincolntwp.com
 
 ## How to Get a Building Permit
@@ -37,7 +37,7 @@ Lincoln Township building permits are administered by **Clare County Community D
 **Zoning Permit** (Township-level)
 - Required for: All construction to ensure compliance with township zoning ordinances
 - Administered by: Lincoln Township Zoning Administrator
-- Phone: 989-588-9538
+- Phone: (989) 588-9841 ext. 5
 
 ### Step 2: Download and Complete Application Forms
 
@@ -59,10 +59,9 @@ Harrison, MI 48625
 Phone: 989-539-2761
 
 **Submit Zoning Permit Applications to:**
-Roger Carey, Zoning Administrator
-P.O. Box 239
-Lake George, MI 48633
-Phone: 989-588-9538
+Dick Hassberger, Zoning Administrator
+Lincoln Township Hall
+Phone: (989) 588-9841 ext. 5
 Email: zoning@lincolntwp.com
 
 ### Step 4: Pay Permit Fees

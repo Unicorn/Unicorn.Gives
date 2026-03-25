@@ -31,7 +31,12 @@ export const navigationStructure: NavigationCategory[] = [
       {
         id: 'meetings-calendar',
         label: 'Meetings & Calendar',
-        pages: ['calendar']
+        pages: ['calendar', 'public-notices']
+      },
+      {
+        id: 'budget-finances',
+        label: 'Budget & Finances',
+        pages: ['budget', 'financial-reports']
       }
     ]
   },
@@ -77,36 +82,50 @@ export const navigationStructure: NavigationCategory[] = [
     label: 'Community',
     subcategories: [
       {
-        id: 'resources',
-        label: 'Resources',
-        pages: ['seniors', 'newsletters']
+        id: 'unicorn-gives',
+        label: 'Unicorn Gives',
+        pages: ['about-unicorn-gives', 'programs', 'volunteer', 'donate']
       },
       {
-        id: 'facilities',
-        label: 'Facilities',
-        pages: ['cemeteries', 'parks']
-      }
-    ]
-  },
-  {
-    id: 'natural-resources',
-    label: 'Natural Resources',
-    subcategories: [
+        id: 'the-horn',
+        label: 'The Horn',
+        pages: ['about-the-horn', 'events-horn', 'membership', 'hours-horn']
+      },
+      {
+        id: 'the-mane',
+        label: 'The Mane',
+        pages: ['about-the-mane', 'services-mane', 'book-appointment', 'hours-mane']
+      },
+      {
+        id: 'resources',
+        label: 'Resources',
+        pages: ['seniors', 'newsletters', 'cemeteries', 'parks']
+      },
       {
         id: 'lakes',
         label: 'Lakes',
         pages: ['lakes', 'lakes-lakegeorge', 'lakes-shingle', 'lakes-bertha', 'lakes-silver']
+      },
+      {
+        id: 'township-info',
+        label: 'Township Info',
+        pages: ['faq', 'foia', 'links', 'subscribe', 'plat-maps']
       }
     ]
   },
   {
-    id: 'information',
-    label: 'Information',
+    id: 'news-events',
+    label: 'News & Events',
     subcategories: [
       {
-        id: 'resources',
-        label: 'Resources',
-        pages: ['faq', 'foia', 'links', 'subscribe', 'plat-maps']
+        id: 'community-events',
+        label: 'Community Events',
+        pages: ['events']
+      },
+      {
+        id: 'news-updates',
+        label: 'News & Updates',
+        pages: ['news']
       }
     ]
   }

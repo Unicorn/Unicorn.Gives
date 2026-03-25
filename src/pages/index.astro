@@ -1,29 +1,195 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
 import FeatureGrid from '../components/FeatureGrid.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import Section from '../components/Section.astro';
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
-const page = await getEntry('pages', 'index');
+const allNews = await getCollection('news');
+const sortedNews = allNews
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const featuredPost = sortedNews.find(p => p.data.featured) || sortedNews[0];
+const sideNews = sortedNews.filter(p => p.slug !== featuredPost?.slug).slice(0, 3);
+
+const categoryLabels: Record<string, string> = {
+  'township': 'Township',
+  'unicorn-gives': 'Unicorn Gives',
+  'the-horn': 'The Horn',
+  'the-mane': 'The Mane',
+  'community': 'Community',
+};
+
+const categoryColors: Record<string, string> = {
+  'township': '#5b1b00',
+  'unicorn-gives': '#6361ad',
+  'the-horn': '#446733',
+  'the-mane': '#802a00',
+  'community': '#446733',
+};
 ---
 
 <BaseLayout
-  title="Lincoln Township, Clare County, Michigan"
-  description="Official website of Lincoln Township, Clare County, Michigan - Government services, community resources, and township information"
+  title="Lincoln Township | Unicorn Gives Community Hub"
+  description="Your community hub for Lincoln Township, Clare County, Michigan — government services, community events, news, and local resources"
 >
-  <Hero
-    title="Welcome to Lincoln Township"
-    subtitle="Serving our community in Clare County, Michigan with pride and dedication"
-    ctaText="Contact Us"
-    ctaLink="/board"
-    secondaryCtaText="View Services"
-    secondaryCtaLink="#services"
-  />
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <span class="hero-badge">Proudly Local</span>
+      <h1 class="hero-headline">
+        Rooted in Heritage,<br/>
+        <span class="hero-headline-italic">Growing Together.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Lincoln Township, Clare County — a community built on shared values, natural beauty, and neighbors helping neighbors since 1867.
+      </p>
+      <div class="hero-ctas">
+        <a href="/parks" class="hero-btn hero-btn-solid">Explore Our Parks</a>
+        <a href="#services" class="hero-btn hero-btn-outline">Resident Services</a>
+      </div>
+    </div>
+  </section>
 
+  <!-- Quick Access Bento Grid -->
+  <Section background="gray" padding="lg">
+    <div class="bento-section">
+      <h2 class="home-section-title">How can we help?</h2>
+      <p class="home-section-subtitle">Quick access to the services you need most</p>
+      <div class="bento-grid">
+        <a href="/permits-forms" class="bento-card">
+          <span class="bento-icon" aria-hidden="true">📄</span>
+          <h3>Permits & Forms</h3>
+          <p>Building permits, zoning applications, and downloadable forms</p>
+        </a>
+        <a href="/fire" class="bento-card">
+          <span class="bento-icon" aria-hidden="true">🚒</span>
+          <h3>Fire Department</h3>
+          <p>Burn permits, fire safety, and emergency services info</p>
+        </a>
+        <a href="/elections" class="bento-card">
+          <span class="bento-icon" aria-hidden="true">🗳️</span>
+          <h3>Elections</h3>
+          <p>Voter registration, polling locations, and ballot information</p>
+        </a>
+        <a href="/assessor" class="bento-card">
+          <span class="bento-icon" aria-hidden="true">🏠</span>
+          <h3>Assessor</h3>
+          <p>Property assessments, tax information, and appeals</p>
+        </a>
+        <a href="/events" class="bento-card">
+          <span class="bento-icon" aria-hidden="true">📅</span>
+          <h3>Calendar</h3>
+          <p>Upcoming meetings, community events, and important dates</p>
+        </a>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Township News & Updates -->
+  {sortedNews.length > 0 && (
+    <Section padding="lg">
+      <div class="news-section">
+        <h2 class="home-section-title">News & Updates</h2>
+        <p class="home-section-subtitle">Stay informed about what is happening in Lincoln Township</p>
+        <div class="news-layout">
+          {/* Featured article */}
+          {featuredPost && (
+            <a href={`/news/${featuredPost.slug}/`} class="news-featured">
+              <div class="news-featured-image">
+                {featuredPost.data.image ? (
+                  <img src={featuredPost.data.image} alt="" loading="lazy" />
+                ) : (
+                  <div class="news-featured-placeholder"></div>
+                )}
+                {featuredPost.data.category && (
+                  <span class="news-tag" style={`background: ${categoryColors[featuredPost.data.category] || '#5b1b00'}`}>
+                    {categoryLabels[featuredPost.data.category] || featuredPost.data.category}
+                  </span>
+                )}
+              </div>
+              <div class="news-featured-body">
+                <time datetime={featuredPost.data.date}>
+                  {new Date(featuredPost.data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </time>
+                <h3>{featuredPost.data.title}</h3>
+                <p>{featuredPost.data.description}</p>
+              </div>
+            </a>
+          )}
+
+          {/* Side news list */}
+          <div class="news-sidebar">
+            {sideNews.map((post) => (
+              <a href={`/news/${post.slug}/`} class="news-sidebar-item">
+                <div class="news-sidebar-thumb">
+                  {post.data.image ? (
+                    <img src={post.data.image} alt="" loading="lazy" />
+                  ) : (
+                    <div class="news-thumb-placeholder"></div>
+                  )}
+                </div>
+                <div class="news-sidebar-body">
+                  {post.data.category && (
+                    <span class="news-tag-sm" style={`background: ${categoryColors[post.data.category] || '#5b1b00'}`}>
+                      {categoryLabels[post.data.category] || post.data.category}
+                    </span>
+                  )}
+                  <h4>{post.data.title}</h4>
+                  <time datetime={post.data.date}>
+                    {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </time>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="news-cta">
+          <a href="/news/">View All News &rarr;</a>
+        </div>
+      </div>
+    </Section>
+  )}
+
+  <!-- Newsletter / Subscribe CTA -->
+  <Section padding="md">
+    <div class="subscribe-banner">
+      <div class="subscribe-content">
+        <h2>Stay Connected with Lincoln Township</h2>
+        <p>Get township news, meeting reminders, event announcements, and community updates delivered to your inbox.</p>
+        <a href="/subscribe" class="subscribe-btn">Subscribe to Updates</a>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Our Organizations -->
   <Section padding="lg">
-    <FeatureGrid title="Government & Services" columns={3}>
+    <FeatureGrid title="Our Community" columns={3}>
+      <FeatureCard
+        title="Unicorn Gives"
+        description="A non-profit dedicated to strengthening our community through events, outreach, and bringing people together"
+        icon="🦄"
+        href="/about-unicorn-gives"
+      />
+      <FeatureCard
+        title="The Horn"
+        description="Lincoln Township's community center and club — events, gatherings, and a place to connect"
+        icon="📯"
+        href="/about-the-horn"
+      />
+      <FeatureCard
+        title="The Mane"
+        description="Our boutique salon — hair, beauty, and self-care services in the heart of the community"
+        icon="💇"
+        href="/about-the-mane"
+      />
+    </FeatureGrid>
+  </Section>
+
+  <!-- Township Government -->
+  <Section background="gray" padding="lg">
+    <FeatureGrid title="Township Government" columns={4}>
       <FeatureCard
         title="Board of Trustees"
         description="Meet our township board members and access meeting information"
@@ -31,21 +197,28 @@ const page = await getEntry('pages', 'index');
         href="/board"
       />
       <FeatureCard
-        title="Board Meeting Minutes"
+        title="Meeting Minutes"
         description="View current and archived board meeting minutes"
         icon="📋"
         href="/board-minutes"
       />
       <FeatureCard
-        title="Meeting Calendar"
-        description="Stay informed about upcoming township meetings and events"
-        icon="📅"
-        href="/calendar"
+        title="Budget & Finances"
+        description="Township budget, spending reports, and financial transparency"
+        icon="💰"
+        href="/budget"
+      />
+      <FeatureCard
+        title="Public Notices"
+        description="Official announcements, hearing notices, and ordinance changes"
+        icon="📢"
+        href="/public-notices"
       />
     </FeatureGrid>
   </Section>
 
-  <Section background="gray" padding="lg" id="services">
+  <!-- Services -->
+  <Section padding="lg" id="services">
     <FeatureGrid title="Township Services" columns={4}>
       <FeatureCard
         title="Building Department"
@@ -61,20 +234,21 @@ const page = await getEntry('pages', 'index');
       />
       <FeatureCard
         title="Permits & Forms"
-        description="Download forms and apply for permits online"
+        description="Download forms and apply for permits"
         icon="📄"
         href="/permits-forms"
       />
       <FeatureCard
-        title="Election Information"
-        description="Voter registration and absentee ballot information"
+        title="Elections"
+        description="Voter registration and ballot information"
         icon="🗳️"
         href="/elections"
       />
     </FeatureGrid>
   </Section>
 
-  <Section padding="lg">
+  <!-- Community Resources -->
+  <Section background="gray" padding="lg">
     <FeatureGrid title="Community Resources" columns={4}>
       <FeatureCard
         title="Parks & Recreation"
@@ -90,64 +264,43 @@ const page = await getEntry('pages', 'index');
       />
       <FeatureCard
         title="Township Lakes"
-        description="Information about Lake George, Shingle, Bertha, and Silver"
+        description="Lake George, Shingle, Bertha, and Silver"
         icon="🏞️"
         href="/lakes"
       />
       <FeatureCard
-        title="Cemeteries"
-        description="Cemetery plots, fees, and burial service information"
-        icon="⛪"
-        href="/cemeteries"
+        title="Events Calendar"
+        description="Community events from all organizations"
+        icon="📅"
+        href="/events"
       />
     </FeatureGrid>
   </Section>
 
-  <Section background="gray" padding="lg">
-    <FeatureGrid title="Planning & Zoning" columns={3}>
-      <FeatureCard
-        title="Zoning Information"
-        description="Zoning ordinances, permits, and planning resources"
-        icon="📍"
-        href="/zba"
-      />
-      <FeatureCard
-        title="Planning Commission"
-        description="Meeting minutes, agendas, and zoning information"
-        icon="🗺️"
-        href="/planning-commission"
-      />
-      <FeatureCard
-        title="Ordinances"
-        description="Township ordinances, regulations, and codes"
-        icon="📜"
-        href="/ordinances"
-      />
-    </FeatureGrid>
-  </Section>
-
+  <!-- Contact -->
   <Section padding="lg">
     <div class="contact-section">
-      <h2>Contact Lincoln Township</h2>
+      <h2 class="home-section-title">Contact Lincoln Township</h2>
       <div class="contact-grid">
         <div class="contact-card">
           <h3>Township Office</h3>
-          <p><strong>Phone:</strong> <a href="tel:989-588-9841">989-588-9841</a></p>
+          <p><strong>Phone:</strong> <a href="tel:989-588-9841">(989) 588-9841</a></p>
+          <p>175 Lake George Ave<br/>PO Box 239<br/>Lake George, MI 48633</p>
         </div>
         <div class="contact-card">
           <h3>Supervisor</h3>
-          <p><strong>Dennis Zimmerman</strong></p>
-          <p><a href="tel:989-588-9343">989-588-9343</a></p>
+          <p><strong>Troy Kibbey</strong></p>
+          <p><a href="tel:989-588-9841">(989) 588-9841 ext. 4</a></p>
         </div>
         <div class="contact-card">
           <h3>Clerk</h3>
           <p><strong>Carol Majewski</strong></p>
-          <p><a href="tel:989-588-9069">989-588-9069</a></p>
+          <p><a href="tel:989-588-9069">(989) 588-9069</a></p>
         </div>
         <div class="contact-card">
           <h3>Treasurer</h3>
           <p><strong>Maggie Carey</strong></p>
-          <p><a href="tel:989-588-2574">989-588-2574</a></p>
+          <p><a href="tel:989-588-2574">(989) 588-2574</a></p>
         </div>
       </div>
       <div class="additional-links">
@@ -155,35 +308,496 @@ const page = await getEntry('pages', 'index');
         <a href="/foia">FOIA Requests</a>
         <a href="/links">Helpful Links</a>
         <a href="/plat-maps">Plat Maps</a>
+        <a href="/subscribe">Subscribe to Updates</a>
       </div>
     </div>
   </Section>
 </BaseLayout>
 
 <style>
-  .contact-section {
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    background-image: url('/images/hero-sunset.jpg');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(91, 27, 0, 0.88) 0%, rgba(128, 42, 0, 0.4) 100%);
+    z-index: 1;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    width: 100%;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    color: white;
+    font-family: var(--font-heading);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-headline {
+    font-family: var(--font-title);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    color: white;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  .hero-headline-italic {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+    font-size: 0.75em;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-btn {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .hero-btn-solid {
+    background: white;
+    color: var(--color-primary);
+  }
+
+  .hero-btn-solid:hover {
+    background: var(--color-surface);
+    color: var(--color-primary);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .hero-btn-outline {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+  }
+
+  .hero-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 400px;
+    }
+
+    .hero-inner {
+      padding: 3rem 1.5rem;
+    }
+
+    .hero-ctas {
+      flex-direction: column;
+    }
+
+    .hero-btn {
+      text-align: center;
+    }
+  }
+
+  /* ===== HOME SECTION TITLES ===== */
+  .home-section-title {
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .home-section-subtitle {
+    text-align: center;
+    color: var(--color-on-surface-variant);
+    font-size: var(--text-lg);
+    margin-bottom: 3rem;
+  }
+
+  /* ===== BENTO GRID ===== */
+  .bento-section {
     text-align: center;
   }
 
-  .contact-section h2 {
-    font-size: var(--text-2xl);
-    color: var(--color-primary);
-    margin-bottom: 2.5rem;
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+  }
+
+  .bento-card {
+    background: white;
+    border: 1px solid var(--color-outline-light);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .bento-card:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(91, 27, 0, 0.18);
+    text-decoration: none;
+  }
+
+  .bento-card:hover h3,
+  .bento-card:hover p {
+    color: white;
+  }
+
+  .bento-icon {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+    line-height: 1;
+  }
+
+  .bento-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
     font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+    transition: color 0.25s ease;
+  }
+
+  .bento-card p {
+    font-size: var(--text-sm);
+    color: var(--color-on-surface-variant);
+    line-height: 1.5;
+    margin: 0;
+    transition: color 0.25s ease;
+  }
+
+  @media (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 400px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== NEWS LAYOUT ===== */
+  .news-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .news-featured {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid var(--color-outline-light);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .news-featured:hover {
+    box-shadow: 0 8px 24px rgba(91, 27, 0, 0.12);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  .news-featured-image {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--color-surface-dim);
+    overflow: hidden;
+  }
+
+  .news-featured-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .news-featured-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-surface-dim) 0%, var(--color-outline-light) 100%);
+  }
+
+  .news-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: white;
+    padding: 0.2rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .news-featured-body {
+    padding: 1.5rem;
+  }
+
+  .news-featured-body time {
+    font-size: var(--text-sm);
+    color: var(--color-on-surface-variant);
+  }
+
+  .news-featured-body h3 {
+    font-size: 1.35rem;
+    color: var(--color-primary);
+    margin: 0.5rem 0 0.75rem;
+    line-height: 1.3;
+  }
+
+  .news-featured-body p {
+    font-size: var(--text-base);
+    color: var(--color-on-surface);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Sidebar news items */
+  .news-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .news-sidebar-item {
+    display: flex;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid var(--color-outline-light);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    align-items: start;
+  }
+
+  .news-sidebar-item:hover {
+    box-shadow: 0 4px 12px rgba(91, 27, 0, 0.1);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  .news-sidebar-thumb {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--color-surface-dim);
+  }
+
+  .news-sidebar-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .news-thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-surface-dim) 0%, var(--color-outline-light) 100%);
+  }
+
+  .news-tag-sm {
+    display: inline-block;
+    color: white;
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+  }
+
+  .news-sidebar-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .news-sidebar-body h4 {
+    font-size: 1rem;
+    color: var(--color-primary);
+    margin: 0.25rem 0 0.35rem;
+    line-height: 1.3;
+  }
+
+  .news-sidebar-body time {
+    font-size: var(--text-xs);
+    color: var(--color-on-surface-variant);
+  }
+
+  .news-cta {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  .news-cta a {
+    color: var(--color-link);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: var(--text-lg);
+    transition: color 0.2s ease;
+  }
+
+  .news-cta a:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .news-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .news-sidebar-item {
+      flex-direction: row;
+    }
+  }
+
+  /* ===== SUBSCRIBE BANNER ===== */
+  .subscribe-banner {
+    background: var(--color-primary-light);
+    border-radius: 20px;
+    padding: 3.5rem 2.5rem;
+    text-align: center;
+  }
+
+  .subscribe-content h2 {
+    font-family: var(--font-title);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: white;
+    margin-bottom: 0.75rem;
+    letter-spacing: 1px;
+  }
+
+  .subscribe-content p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: var(--text-lg);
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.6;
+  }
+
+  .subscribe-btn {
+    display: inline-block;
+    background: white;
+    color: var(--color-primary);
+    padding: 0.9rem 2.25rem;
+    border-radius: 50px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .subscribe-btn:hover {
+    background: var(--color-surface);
+    color: var(--color-primary);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    .subscribe-banner {
+      padding: 2.5rem 1.5rem;
+    }
+  }
+
+  /* ===== CONTACT SECTION ===== */
+  .contact-section {
+    text-align: center;
   }
 
   .contact-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    text-align: left;
   }
 
   .contact-card {
     background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 1.5rem;
+    border: 1px solid var(--color-outline-light);
+    border-radius: 12px;
+    padding: 1.75rem;
   }
 
   .contact-card h3 {
@@ -193,8 +807,10 @@ const page = await getEntry('pages', 'index');
   }
 
   .contact-card p {
-    margin: 0.5rem 0;
-    color: #374151;
+    margin: 0.4rem 0;
+    color: var(--color-on-surface);
+    font-size: var(--text-base);
+    line-height: 1.5;
   }
 
   .contact-card a {
@@ -213,7 +829,7 @@ const page = await getEntry('pages', 'index');
     gap: 1.5rem;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
   }
 
   .additional-links a {
@@ -221,7 +837,7 @@ const page = await getEntry('pages', 'index');
     text-decoration: none;
     font-weight: 500;
     font-size: var(--text-base);
-    transition: color 0.3s ease;
+    transition: color 0.2s ease;
   }
 
   .additional-links a:hover {
@@ -237,7 +853,7 @@ const page = await getEntry('pages', 'index');
 
     .additional-links {
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.75rem;
     }
   }
 </style>

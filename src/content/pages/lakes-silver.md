@@ -21,9 +21,8 @@ Lincoln Township maintains a public park at Silver Lake with access for resident
 
 For lake-related questions or concerns, contact the Lake Commissioner:
 
-**Roger Carey, Lake Commissioner**
-- Phone: 989-588-9538
-- Email: mcarey55@charter.net
+**Lincoln Township Office**
+- Phone: (989) 588-9841
 
 ### Resources for Lake Property Owners
 

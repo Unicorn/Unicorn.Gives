@@ -13,8 +13,11 @@ The Assessor establishes the taxable value of all property in Lincoln Township.
 
 ### Contact Information
 
+**Casey Guthrie, Township Assessor**
+- Phone: (231) 350-9123
+
 **Lincoln Township Office**
-- Phone: 989-588-9841
+- Phone: (989) 588-9841
 - For assessment questions and information
 
 **Online Property Assessment Data**
@@ -81,7 +84,7 @@ The County Equalization Department works with township assessors to ensure fair 
 Your assessment notice is mailed in March. Review it carefully when received.
 
 **Step 2: Contact the Assessor**
-If you believe your assessment is incorrect, contact the township office at 989-588-9841.
+If you believe your assessment is incorrect, contact the assessor, Casey Guthrie, at (231) 350-9123 or the township office at (989) 588-9841.
 
 **Step 3: March Board of Review**
 If you cannot resolve the issue with the assessor, you may appeal to the March Board of Review:

@@ -51,9 +51,9 @@ const structuredData = {
 
 <style>
   .breadcrumbs-nav {
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--color-outline-light);
     margin-bottom: 1.5rem;
-    background-color: #f9fafb;
+    background-color: var(--color-surface-dim);
   }
 
   .breadcrumbs {
@@ -75,29 +75,29 @@ const structuredData = {
   .breadcrumb-item:not(:last-child)::after {
     content: '→';
     margin-left: 0.5rem;
-    color: var(--color-primary, #6361ad);
+    color: var(--color-primary);
     font-weight: bold;
   }
 
   .breadcrumb-link {
-    color: var(--color-link, #7c7ac8);
+    color: var(--color-link);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .breadcrumb-link:hover {
-    color: var(--color-link-hover, #47458f);
+    color: var(--color-link-hover);
     text-decoration: underline;
   }
 
   .breadcrumb-link:focus {
-    outline: 2px solid var(--color-primary, #6361ad);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
   .breadcrumb-current {
-    color: #4b5563;
+    color: var(--color-on-surface-variant);
     font-weight: 500;
   }
 

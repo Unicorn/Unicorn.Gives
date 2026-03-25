@@ -1,11 +1,46 @@
 ---
 title: "Lincoln Township Fire Department"
 description: "Lincoln Township Fire Department information, burn permits, safety resources, and emergency contacts"
-lastUpdated: "2025-01-19"
+lastUpdated: "2026-03-25"
 category: "Services"
 subcategory: "Public Safety"
 order: 15
 ---
 
-## Fire Department
-| **Lincoln Township Fire Hall Fire Danger Sign  Ben Garver Lincoln Twp 2022 Firefighter of the year  Firefighter of the Year    |  |  | | --- | --- | | TOWNSHIP SIRENS  *Tornado Warning Siren:*   A Three Minute Continuous Blast  *All Clear:*   Intermittent Siren--after the warning.  *Siren Test:* 1st Thursday of each month at 3:00 pm. | **Special Notice:   The number for burn permits is  1-866-922-2676  This is the toll free state wide system for burning permits.**  pointer [DNR Burn Permit Management System](http://www.dnr.state.mi.us/burnpermits/)  Regulating illegal open burning:  As part of ongoing outreach to communities, the MDEQ has started a video series called the MDEQ Minute. October features an MDEQ Minute on Open Burning. The video is just over a minute and quickly reviews what is OK to burn and what is not. Please check it out [https://youtu.be/MvWbRlZXV7g](https://youtu.be/MvWbRlZXV7g).    Feel free to use the [Open Burning Regulations in Michigan](https://www.michigan.gov/documents/deq/deq-aqd-open-burning-brochure_273553_7.pdf). |  Helpful FEMA Documents to download:   |  |  | | --- | --- | | **[FEMA Winter Storm Fact Sheet](docs/fire_dept/fema_winterstorm_fact_sheet.pdf)** | **[Emergency Kit Checklist](docs/fire_dept/emergency_supplies_checklist.pdf)** | | **[Family Communications Plan](docs/fire_dept/family_communication_plan.pdf)** | **[FEMA Homefires Fact Sheet](docs/fire_dept/fema_home_fire_fact_sheet.pdf)** | | **[FEMA Tornadoes Fact Sheet](docs/fire_dept/fema_tornado_fact_sheet.pdf)** | **[FEMA Thunderstorms and Lightning Fact Sheet](docs/fire_dept/fema_thunderstorm_fact_sheet.pdf)** |   The Lincoln Township Fire Department is a volunteer fire department established and operated pursuant to the laws of the State of Michigan, and is subject (pursuant to Michigan Law) to the overall supervision and control of the Lincoln Township Board.  The Lincoln Township Fire Department, as its primary duty, is responsible for the Fire and Rescue protection throughout Lincoln and Freeman Townships, together with any mutual aid contracts entered into by or on behalf of the Lincoln Township Fire Department.  Download statement of our [Public Protection Classification Rating by ISO](docs/firedept_PPC_rating.pdf)  |  |  |  | | --- | --- | --- | |  | **Officers:**   **Chief:  Dale Majewski  Assistant Chief:  John (Toby) Cogswell  Captain:  Ken Logan**  **Lieutenant:** **Fred Witchell** |  |    |  | | --- | | Firefighters: | | Terry Brown, MFR | | **Ben Garver** | | **Chick Witchell** | |  | |  | |  | |  | |  | 
+The Lincoln Township Fire Department is a volunteer fire department established and operated pursuant to the laws of the State of Michigan. Under the supervision of the Lincoln Township Board, the department is responsible for fire and rescue protection throughout Lincoln and Freeman Townships, along with any mutual aid contracts.
+
+## Township Sirens
+
+- **Tornado Warning Siren:** A three-minute continuous blast
+- **All Clear:** Intermittent siren after the warning
+- **Siren Test:** 1st Thursday of each month at 3:00 PM
+
+## Burn Permits
+
+The number for burn permits is **1-866-922-2676** (toll-free statewide system).
+
+- [DNR Burn Permit Management System](http://www.dnr.state.mi.us/burnpermits/)
+- [Open Burning Regulations in Michigan](https://www.michigan.gov/documents/deq/deq-aqd-open-burning-brochure_273553_7.pdf)
+
+## Officers & Personnel
+
+**Officers:**
+- **Chief:** Dale Majewski — [(989) 429-8887](tel:989-429-8887)
+- **Assistant Chief:** John (Toby) Cogswell
+- **Captain:** Ken Logan
+- **Lieutenant:** Fred Witchell
+
+**Firefighters:**
+- Terry Brown, MFR
+- Ben Garver
+- Chick Witchell
+
+## Contact
+
+**Fire Chief Dale Majewski**
+Phone: [(989) 429-8887](tel:989-429-8887)
+Address: 310 Bringold Ave, Lake, MI 48632
+
+## Volunteer
+
+The Lincoln Township Fire Department is always looking for dedicated volunteers. If you're interested in serving your community, contact Fire Chief Dale Majewski or attend a board meeting to learn more.
