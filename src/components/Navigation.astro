@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { navigationStructure } from '../config/navigation';
+import ThemeToggle from './ThemeToggle.astro';
 
 const pages = await getCollection('pages');
 const currentPath = Astro.url.pathname;
@@ -83,12 +84,14 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
         </li>
       ))}
     </ul>
+    <ThemeToggle />
 
     <!-- Mobile navigation -->
     <div class="mobile-nav-overlay" aria-hidden="true"></div>
     <div class="mobile-nav-container">
       <div class="mobile-nav-header">
         <h2 class="mobile-nav-title">Menu</h2>
+        <ThemeToggle />
         <button class="mobile-nav-close" aria-label="Close menu">
           <span aria-hidden="true">×</span>
         </button>
@@ -163,9 +166,9 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
 
 <style>
   nav {
-    background-color: var(--color-primary);
+    background-color: var(--nav-bg);
     padding: 0;
-    box-shadow: var(--shadow-natural);
+    box-shadow: var(--shadow-md);
     position: relative;
     z-index: 1000;
   }
@@ -196,7 +199,7 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
 
   .desktop-nav > li > a {
     display: block;
-    color: white;
+    color: var(--nav-text);
     font-family: var(--font-heading);
     text-transform: uppercase;
     font-weight: 600;
@@ -208,12 +211,12 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
 
   .desktop-nav > li > a:hover,
   .desktop-nav > li > a.active {
-    background-color: var(--color-primary-light);
+    background-color: var(--nav-hover);
     text-decoration: none;
   }
 
   .desktop-nav > li > a.active {
-    border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 3px solid var(--nav-text);
   }
 
   /* Category button (for dropdowns) */
@@ -221,7 +224,7 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    color: white;
+    color: var(--nav-text);
     font-family: var(--font-heading);
     text-transform: uppercase;
     font-weight: 600;
@@ -235,11 +238,11 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
   }
 
   .nav-category-button:hover {
-    background-color: var(--color-primary-light);
+    background-color: var(--nav-hover);
   }
 
   .nav-category-button:focus {
-    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline: 2px solid var(--nav-text);
     outline-offset: -2px;
   }
 
@@ -257,8 +260,8 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
     position: absolute;
     top: 100%;
     left: 0;
-    background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: var(--surface-card);
+    box-shadow: var(--shadow-md);
     min-width: 400px;
     opacity: 0;
     visibility: hidden;
@@ -288,11 +291,11 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
     font-family: var(--font-heading);
     font-size: 0.875rem;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--text-primary);
     text-transform: uppercase;
     margin: 0 0 0.75rem 0;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--color-primary);
+    border-bottom: 2px solid var(--text-primary);
   }
 
   .subcategory-pages {
@@ -308,26 +311,26 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
   .subcategory-pages a {
     display: block;
     padding: 0.5rem 0.75rem;
-    color: var(--color-on-surface);
+    color: var(--text-primary);
     font-size: 0.875rem;
     transition: background-color 0.15s ease, color 0.15s ease;
     border-radius: 4px;
   }
 
   .subcategory-pages a:hover {
-    background-color: var(--color-surface-dim);
-    color: var(--color-link-hover);
+    background-color: var(--surface-dim);
+    color: var(--link-hover);
     text-decoration: none;
   }
 
   .subcategory-pages a.active {
-    background-color: var(--color-primary);
-    color: white;
+    background-color: var(--nav-bg);
+    color: var(--nav-text);
     font-weight: 600;
   }
 
   .subcategory-pages a:focus {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
   }
 
@@ -341,20 +344,20 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
   }
 
   .microsite-nav-link:hover {
-    background-color: var(--color-surface-dim);
+    background-color: var(--surface-dim);
     text-decoration: none;
   }
 
   .microsite-nav-link.active .subcategory-title {
-    color: white;
+    color: var(--nav-text);
   }
 
   .microsite-nav-link.active {
-    background-color: var(--color-primary);
+    background-color: var(--nav-bg);
   }
 
   .microsite-nav-link:focus {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
   }
 
@@ -399,7 +402,7 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       display: block;
       width: 25px;
       height: 3px;
-      background-color: white;
+      background-color: var(--nav-text);
       transition: all 0.3s ease;
     }
 
@@ -423,7 +426,7 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--surface-overlay);
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -444,12 +447,12 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       width: 85%;
       max-width: 400px;
       height: 100%;
-      background: white;
+      background: var(--surface-card);
       transform: translateX(100%);
       transition: transform 0.3s ease;
       z-index: 1001;
       overflow-y: auto;
-      box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-md);
     }
 
     .mobile-nav-container.open {
@@ -462,9 +465,9 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       justify-content: space-between;
       align-items: center;
       padding: 1.5rem;
-      background: var(--color-primary);
-      color: white;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      background: var(--nav-bg);
+      color: var(--nav-text);
+      border-bottom: 1px solid var(--nav-hover);
     }
 
     .mobile-nav-title {
@@ -478,7 +481,7 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
     .mobile-nav-close {
       background: none;
       border: none;
-      color: white;
+      color: var(--nav-text);
       font-size: 2rem;
       line-height: 1;
       cursor: pointer;
@@ -497,7 +500,7 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       left: 0;
       width: 100%;
       height: 100%;
-      background: white;
+      background: var(--surface-card);
       transform: translateX(100%);
       transition: transform 0.3s ease;
       padding-top: 5rem; /* Space for header */
@@ -530,16 +533,16 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       align-items: center;
       justify-content: space-between;
       padding: 1rem 1.5rem;
-      color: var(--color-on-surface);
+      color: var(--text-primary);
       font-family: var(--font-heading);
       font-size: 1rem;
       font-weight: 600;
-      border-bottom: 1px solid var(--color-outline-light);
+      border-bottom: 1px solid var(--border-light);
       transition: background-color 0.15s ease;
       width: 100%;
       background: none;
       border: none;
-      border-bottom: 1px solid var(--color-outline-light);
+      border-bottom: 1px solid var(--border-light);
       text-align: left;
       cursor: pointer;
       text-transform: uppercase;
@@ -547,18 +550,18 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
 
     .mobile-menu-list a:hover,
     .mobile-category-button:hover {
-      background-color: var(--color-surface-container);
+      background-color: var(--surface-dim);
       text-decoration: none;
     }
 
     .mobile-menu-list a.active {
-      background-color: var(--color-primary);
-      color: white;
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
     }
 
     .mobile-arrow {
       font-size: 1.25rem;
-      color: var(--color-primary);
+      color: var(--text-primary);
     }
 
     /* Mobile back button */
@@ -567,8 +570,8 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       align-items: center;
       gap: 0.5rem;
       padding: 1rem 1.5rem;
-      background: var(--color-primary);
-      color: white;
+      background: var(--nav-bg);
+      color: var(--nav-text);
       font-family: var(--font-heading);
       font-weight: 600;
       text-transform: uppercase;
@@ -586,11 +589,11 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       font-family: var(--font-heading);
       font-size: 1.25rem;
       font-weight: 700;
-      color: var(--color-primary);
+      color: var(--text-primary);
       text-transform: uppercase;
       margin: 1rem 1.5rem;
       padding-bottom: 0.75rem;
-      border-bottom: 2px solid var(--color-primary);
+      border-bottom: 2px solid var(--text-primary);
     }
 
     /* Mobile subcategory */
@@ -602,7 +605,7 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
       font-family: var(--font-heading);
       font-size: 0.875rem;
       font-weight: 700;
-      color: var(--color-link);
+      color: var(--link);
       text-transform: uppercase;
       margin: 0 1.5rem 0.5rem;
     }
@@ -620,49 +623,49 @@ const standalonePages: Record<string, { title: string; navTitle?: string }> = {
     .mobile-page-list a {
       display: block;
       padding: 0.75rem 1.5rem;
-      color: var(--color-on-surface);
+      color: var(--text-primary);
       font-size: 0.875rem;
       font-weight: 500;
-      border-bottom: 1px solid var(--color-surface-dim);
+      border-bottom: 1px solid var(--surface-dim);
       transition: background-color 0.15s ease;
       font-family: var(--font-body);
       text-transform: none;
     }
 
     .mobile-page-list a:hover {
-      background-color: var(--color-surface-container);
+      background-color: var(--surface-dim);
       text-decoration: none;
     }
 
     .mobile-page-list a.active {
-      background-color: var(--color-primary);
-      color: white;
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
       font-weight: 600;
-      border-left: 4px solid var(--color-link-hover);
+      border-left: 4px solid var(--link-hover);
     }
 
     /* Mobile microsite link */
     .mobile-microsite-link {
       display: block;
       padding: 0.75rem 1.5rem;
-      color: var(--color-on-surface);
+      color: var(--text-primary);
       font-family: var(--font-heading);
       font-size: 0.875rem;
       font-weight: 700;
       text-transform: uppercase;
       text-decoration: none;
-      border-bottom: 1px solid var(--color-surface-dim);
+      border-bottom: 1px solid var(--surface-dim);
       transition: background-color 0.15s ease;
     }
 
     .mobile-microsite-link:hover {
-      background-color: var(--color-surface-container);
+      background-color: var(--surface-dim);
       text-decoration: none;
     }
 
     .mobile-microsite-link.active {
-      background-color: var(--color-primary);
-      color: white;
+      background-color: var(--nav-bg);
+      color: var(--nav-text);
     }
   }
 

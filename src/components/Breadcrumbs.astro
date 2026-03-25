@@ -51,9 +51,9 @@ const structuredData = {
 
 <style>
   .breadcrumbs-nav {
-    border-bottom: 1px solid var(--color-outline-light);
+    border-bottom: 1px solid var(--border-light);
     margin-bottom: 1.5rem;
-    background-color: var(--color-surface-dim);
+    background-color: var(--surface-dim);
   }
 
   .breadcrumbs {
@@ -75,29 +75,29 @@ const structuredData = {
   .breadcrumb-item:not(:last-child)::after {
     content: '→';
     margin-left: 0.5rem;
-    color: var(--color-primary);
+    color: var(--text-muted);
     font-weight: bold;
   }
 
   .breadcrumb-link {
-    color: var(--color-link);
+    color: var(--link);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .breadcrumb-link:hover {
-    color: var(--color-link-hover);
+    color: var(--link-hover);
     text-decoration: underline;
   }
 
   .breadcrumb-link:focus {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
   .breadcrumb-current {
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
     font-weight: 500;
   }
 

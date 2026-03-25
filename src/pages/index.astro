@@ -4,6 +4,7 @@ import FeatureGrid from '../components/FeatureGrid.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import Section from '../components/Section.astro';
 import { getCollection } from 'astro:content';
+import { categoryColors, eventCategoryColors, eventCategoryLabels, defaultCategoryColor } from '../config/colors';
 
 const allNews = await getCollection('news');
 const sortedNews = allNews
@@ -31,38 +32,6 @@ const categoryLabels: Record<string, string> = {
   'public-notice': 'Public Notice',
   'infrastructure': 'Infrastructure',
   'election': 'Election',
-};
-
-const categoryColors: Record<string, string> = {
-  'township': '#2d4a4a',
-  'unicorn-gives': '#9b8ec4',
-  'the-horn': '#8a9a7c',
-  'the-mane': '#3d6060',
-  'community': '#8a9a7c',
-  'ordinance-change': '#2d4a4a',
-  'government-action': '#2d4a4a',
-  'public-safety': '#b91c1c',
-  'public-notice': '#92400e',
-  'infrastructure': '#2d4a4a',
-  'election': '#9b8ec4',
-};
-
-const eventCategoryColors: Record<string, string> = {
-  government: '#2d4a4a',
-  community: '#8a9a7c',
-  conservation: '#2d6a4f',
-  seniors: '#9b8ec4',
-  horn: '#8a9a7c',
-  'unicorn-gives': '#9b8ec4',
-};
-
-const eventCategoryLabels: Record<string, string> = {
-  government: 'Government',
-  community: 'Community',
-  conservation: 'Conservation',
-  seniors: 'Seniors',
-  horn: 'The Horn',
-  'unicorn-gives': 'Unicorn Gives',
 };
 ---
 
@@ -147,7 +116,7 @@ const eventCategoryLabels: Record<string, string> = {
                   <span class="event-day-home">{day}</span>
                 </div>
                 <div class="event-body-home">
-                  <span class="event-tag-home" style={`background: ${eventCategoryColors[event.data.category] || '#2d4a4a'}`}>
+                  <span class="event-tag-home" style={`background: ${eventCategoryColors[event.data.category] || defaultCategoryColor}`}>
                     {eventCategoryLabels[event.data.category] || event.data.category}
                   </span>
                   <h3>{event.data.title}</h3>
@@ -180,7 +149,7 @@ const eventCategoryLabels: Record<string, string> = {
                   <div class="news-featured-placeholder"></div>
                 )}
                 {featuredPost.data.category && (
-                  <span class="news-tag" style={`background: ${categoryColors[featuredPost.data.category] || '#2d4a4a'}`}>
+                  <span class="news-tag" style={`background: ${categoryColors[featuredPost.data.category] || defaultCategoryColor}`}>
                     {categoryLabels[featuredPost.data.category] || featuredPost.data.category}
                   </span>
                 )}
@@ -207,7 +176,7 @@ const eventCategoryLabels: Record<string, string> = {
                 </div>
                 <div class="news-sidebar-body">
                   {post.data.category && (
-                    <span class="news-tag-sm" style={`background: ${categoryColors[post.data.category] || '#2d4a4a'}`}>
+                    <span class="news-tag-sm" style={`background: ${categoryColors[post.data.category] || defaultCategoryColor}`}>
                       {categoryLabels[post.data.category] || post.data.category}
                     </span>
                   )}
@@ -344,7 +313,7 @@ const eventCategoryLabels: Record<string, string> = {
   .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(91, 27, 0, 0.88) 0%, rgba(128, 42, 0, 0.4) 100%);
+    background: var(--hero-overlay);
     z-index: 1;
   }
 
@@ -361,7 +330,7 @@ const eventCategoryLabels: Record<string, string> = {
     display: inline-block;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(4px);
-    color: white;
+    color: var(--hero-text);
     font-family: var(--font-heading);
     font-size: var(--text-sm);
     font-weight: 600;
@@ -376,7 +345,7 @@ const eventCategoryLabels: Record<string, string> = {
   .hero-headline {
     font-family: var(--font-title);
     font-size: clamp(2.8rem, 6vw, 5rem);
-    color: white;
+    color: var(--hero-text);
     line-height: 1.05;
     margin-bottom: 1.5rem;
     letter-spacing: 2px;
@@ -392,7 +361,7 @@ const eventCategoryLabels: Record<string, string> = {
 
   .hero-subtitle {
     font-size: clamp(1rem, 1.8vw, 1.25rem);
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--hero-text);
     max-width: 560px;
     line-height: 1.7;
     margin-bottom: 2rem;
@@ -416,13 +385,13 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .hero-btn-solid {
-    background: white;
-    color: var(--color-primary);
+    background: var(--surface-card);
+    color: var(--text-primary);
   }
 
   .hero-btn-solid:hover {
-    background: var(--color-surface);
-    color: var(--color-primary);
+    background: var(--surface-dim);
+    color: var(--text-primary);
     text-decoration: none;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
@@ -430,14 +399,14 @@ const eventCategoryLabels: Record<string, string> = {
 
   .hero-btn-outline {
     background: transparent;
-    color: white;
+    color: var(--hero-text);
     border: 2px solid rgba(255, 255, 255, 0.7);
   }
 
   .hero-btn-outline:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: white;
-    color: white;
+    border-color: var(--hero-text);
+    color: var(--hero-text);
     text-decoration: none;
     transform: translateY(-2px);
   }
@@ -452,7 +421,7 @@ const eventCategoryLabels: Record<string, string> = {
   /* ===== HOME SECTION TITLES ===== */
   .home-section-title {
     font-size: var(--text-2xl);
-    color: var(--color-primary);
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 0.5rem;
     font-weight: 600;
@@ -460,7 +429,7 @@ const eventCategoryLabels: Record<string, string> = {
 
   .home-section-subtitle {
     text-align: center;
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
     font-size: var(--text-lg);
     margin-bottom: 3rem;
   }
@@ -475,8 +444,8 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .bento-card {
-    background: white;
-    border: 1px solid var(--color-outline-light);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
     border-radius: 16px;
     padding: 2rem 1.5rem;
     text-align: center;
@@ -487,20 +456,20 @@ const eventCategoryLabels: Record<string, string> = {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-sm);
   }
 
   .bento-card:hover {
-    background: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
+    background: var(--nav-bg);
+    color: var(--text-inverse);
+    border-color: var(--nav-bg);
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(91, 27, 0, 0.18);
+    box-shadow: var(--shadow-lg);
     text-decoration: none;
   }
 
   .bento-card:hover h3,
-  .bento-card:hover p { color: white; }
+  .bento-card:hover p { color: var(--text-inverse); }
 
   .bento-icon {
     font-size: 2.25rem;
@@ -512,14 +481,14 @@ const eventCategoryLabels: Record<string, string> = {
     font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
     transition: color 0.25s ease;
   }
 
   .bento-card p {
     font-size: var(--text-sm);
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
     line-height: 1.5;
     margin: 0;
     transition: color 0.25s ease;
@@ -543,8 +512,8 @@ const eventCategoryLabels: Record<string, string> = {
   .event-card-home {
     display: flex;
     gap: 1rem;
-    background: white;
-    border: 1px solid var(--color-outline-light);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
     border-radius: 10px;
     padding: 1rem;
     align-items: flex-start;
@@ -554,8 +523,8 @@ const eventCategoryLabels: Record<string, string> = {
     flex-shrink: 0;
     width: 50px;
     text-align: center;
-    background: var(--color-primary);
-    color: white;
+    background: var(--nav-bg);
+    color: var(--text-inverse);
     border-radius: 8px;
     padding: 0.4rem;
     display: flex;
@@ -578,14 +547,14 @@ const eventCategoryLabels: Record<string, string> = {
   .event-body-home h3 {
     font-size: var(--text-base);
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--text-primary);
     margin: 0.25rem 0 0.15rem;
     line-height: 1.3;
   }
 
   .event-tag-home {
     display: inline-block;
-    color: white;
+    color: var(--text-inverse);
     padding: 0.1rem 0.5rem;
     border-radius: 3px;
     font-size: 0.6rem;
@@ -596,7 +565,7 @@ const eventCategoryLabels: Record<string, string> = {
 
   .event-time-home {
     font-size: var(--text-xs);
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
   }
 
   .events-cta {
@@ -605,14 +574,14 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .events-cta a {
-    color: var(--color-link);
+    color: var(--link);
     text-decoration: none;
     font-weight: 600;
     font-size: var(--text-lg);
   }
 
   .events-cta a:hover {
-    color: var(--color-link-hover);
+    color: var(--link-hover);
     text-decoration: underline;
   }
 
@@ -630,13 +599,13 @@ const eventCategoryLabels: Record<string, string> = {
     color: inherit;
     border-radius: 16px;
     overflow: hidden;
-    background: white;
-    border: 1px solid var(--color-outline-light);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
     transition: box-shadow 0.25s ease, transform 0.25s ease;
   }
 
   .news-featured:hover {
-    box-shadow: 0 8px 24px rgba(91, 27, 0, 0.12);
+    box-shadow: var(--shadow-lg);
     transform: translateY(-2px);
     text-decoration: none;
   }
@@ -644,7 +613,7 @@ const eventCategoryLabels: Record<string, string> = {
   .news-featured-image {
     position: relative;
     aspect-ratio: 16 / 9;
-    background: var(--color-surface-dim);
+    background: var(--surface-dim);
     overflow: hidden;
   }
 
@@ -653,14 +622,14 @@ const eventCategoryLabels: Record<string, string> = {
   .news-featured-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--color-surface-dim) 0%, var(--color-outline-light) 100%);
+    background: linear-gradient(135deg, var(--surface-dim) 0%, var(--border-light) 100%);
   }
 
   .news-tag {
     position: absolute;
     top: 1rem;
     left: 1rem;
-    color: white;
+    color: var(--text-inverse);
     padding: 0.2rem 0.65rem;
     border-radius: 6px;
     font-size: 0.7rem;
@@ -670,9 +639,9 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .news-featured-body { padding: 1.5rem; }
-  .news-featured-body time { font-size: var(--text-sm); color: var(--color-on-surface-variant); }
-  .news-featured-body h3 { font-size: 1.35rem; color: var(--color-primary); margin: 0.5rem 0 0.75rem; line-height: 1.3; }
-  .news-featured-body p { font-size: var(--text-base); color: var(--color-on-surface); line-height: 1.6; margin: 0; }
+  .news-featured-body time { font-size: var(--text-sm); color: var(--text-secondary); }
+  .news-featured-body h3 { font-size: 1.35rem; color: var(--text-primary); margin: 0.5rem 0 0.75rem; line-height: 1.3; }
+  .news-featured-body p { font-size: var(--text-base); color: var(--text-primary); line-height: 1.6; margin: 0; }
 
   .news-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
 
@@ -681,8 +650,8 @@ const eventCategoryLabels: Record<string, string> = {
     gap: 1rem;
     text-decoration: none;
     color: inherit;
-    background: white;
-    border: 1px solid var(--color-outline-light);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
     padding: 1rem;
     transition: box-shadow 0.25s ease, transform 0.25s ease;
@@ -690,7 +659,7 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .news-sidebar-item:hover {
-    box-shadow: 0 4px 12px rgba(91, 27, 0, 0.1);
+    box-shadow: var(--shadow-md);
     transform: translateY(-2px);
     text-decoration: none;
   }
@@ -701,19 +670,19 @@ const eventCategoryLabels: Record<string, string> = {
     height: 80px;
     border-radius: 8px;
     overflow: hidden;
-    background: var(--color-surface-dim);
+    background: var(--surface-dim);
   }
 
   .news-sidebar-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
   .news-thumb-placeholder {
     width: 100%; height: 100%;
-    background: linear-gradient(135deg, var(--color-surface-dim) 0%, var(--color-outline-light) 100%);
+    background: linear-gradient(135deg, var(--surface-dim) 0%, var(--border-light) 100%);
   }
 
   .news-tag-sm {
     display: inline-block;
-    color: white;
+    color: var(--text-inverse);
     padding: 0.1rem 0.5rem;
     border-radius: 4px;
     font-size: 0.65rem;
@@ -724,12 +693,12 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .news-sidebar-body { flex: 1; min-width: 0; }
-  .news-sidebar-body h4 { font-size: 1rem; color: var(--color-primary); margin: 0.25rem 0 0.35rem; line-height: 1.3; }
-  .news-sidebar-body time { font-size: var(--text-xs); color: var(--color-on-surface-variant); }
+  .news-sidebar-body h4 { font-size: 1rem; color: var(--text-primary); margin: 0.25rem 0 0.35rem; line-height: 1.3; }
+  .news-sidebar-body time { font-size: var(--text-xs); color: var(--text-secondary); }
 
   .news-cta { text-align: center; margin-top: 2.5rem; }
-  .news-cta a { color: var(--color-link); text-decoration: none; font-weight: 600; font-size: var(--text-lg); }
-  .news-cta a:hover { color: var(--color-link-hover); text-decoration: underline; }
+  .news-cta a { color: var(--link); text-decoration: none; font-weight: 600; font-size: var(--text-lg); }
+  .news-cta a:hover { color: var(--link-hover); text-decoration: underline; }
 
   @media (max-width: 768px) {
     .news-layout { grid-template-columns: 1fr; }
@@ -737,7 +706,7 @@ const eventCategoryLabels: Record<string, string> = {
 
   /* ===== SUBSCRIBE BANNER ===== */
   .subscribe-banner {
-    background: var(--color-primary-light);
+    background: var(--nav-hover);
     border-radius: 20px;
     padding: 3.5rem 2.5rem;
     text-align: center;
@@ -746,13 +715,13 @@ const eventCategoryLabels: Record<string, string> = {
   .subscribe-content h2 {
     font-family: var(--font-title);
     font-size: clamp(1.8rem, 3vw, 2.5rem);
-    color: white;
+    color: var(--hero-text);
     margin-bottom: 0.75rem;
     letter-spacing: 1px;
   }
 
   .subscribe-content p {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--hero-text);
     font-size: var(--text-lg);
     max-width: 500px;
     margin: 0 auto 1.5rem;
@@ -761,8 +730,8 @@ const eventCategoryLabels: Record<string, string> = {
 
   .subscribe-btn {
     display: inline-block;
-    background: white;
-    color: var(--color-primary);
+    background: var(--surface-card);
+    color: var(--text-primary);
     padding: 0.9rem 2.25rem;
     border-radius: 50px;
     font-family: var(--font-heading);
@@ -773,11 +742,11 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .subscribe-btn:hover {
-    background: var(--color-surface);
-    color: var(--color-primary);
+    background: var(--surface-dim);
+    color: var(--text-primary);
     text-decoration: none;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-lg);
   }
 
   @media (max-width: 768px) {
@@ -796,16 +765,16 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .contact-card {
-    background: white;
-    border: 1px solid var(--color-outline-light);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
     padding: 1.75rem;
   }
 
-  .contact-card h3 { color: var(--color-primary); font-size: var(--text-lg); margin-bottom: 0.75rem; }
-  .contact-card p { margin: 0.4rem 0; color: var(--color-on-surface); font-size: var(--text-base); line-height: 1.5; }
-  .contact-card a { color: var(--color-link); text-decoration: none; font-weight: 500; }
-  .contact-card a:hover { color: var(--color-link-hover); text-decoration: underline; }
+  .contact-card h3 { color: var(--text-primary); font-size: var(--text-lg); margin-bottom: 0.75rem; }
+  .contact-card p { margin: 0.4rem 0; color: var(--text-primary); font-size: var(--text-base); line-height: 1.5; }
+  .contact-card a { color: var(--link); text-decoration: none; font-weight: 500; }
+  .contact-card a:hover { color: var(--link-hover); text-decoration: underline; }
 
   .additional-links {
     display: flex;
@@ -816,13 +785,13 @@ const eventCategoryLabels: Record<string, string> = {
   }
 
   .additional-links a {
-    color: var(--color-link);
+    color: var(--link);
     text-decoration: none;
     font-weight: 500;
     font-size: var(--text-base);
   }
 
-  .additional-links a:hover { color: var(--color-link-hover); text-decoration: underline; }
+  .additional-links a:hover { color: var(--link-hover); text-decoration: underline; }
 
   @media (max-width: 768px) {
     .contact-grid { grid-template-columns: 1fr; gap: 1rem; }

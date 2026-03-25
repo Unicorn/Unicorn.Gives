@@ -19,8 +19,8 @@ const Tag = href ? 'a' : 'div';
 
 <style>
   .feature-card {
-    background: white;
-    border: 1px solid var(--color-outline-light);
+    background: var(--surface-card);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 2rem;
     transition: all 0.3s ease;
@@ -31,8 +31,8 @@ const Tag = href ? 'a' : 'div';
   }
 
   .feature-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 8px 24px rgba(91, 27, 0, 0.12);
+    border-color: var(--link);
+    box-shadow: var(--card-shadow-hover);
     transform: translateY(-4px);
   }
 
@@ -45,14 +45,14 @@ const Tag = href ? 'a' : 'div';
   .card-title {
     font-size: var(--text-lg);
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--text-primary);
     margin-bottom: 0.75rem;
     line-height: 1.3;
   }
 
   .card-description {
     font-size: var(--text-base);
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
     line-height: 1.6;
     margin: 0;
   }
@@ -62,7 +62,7 @@ const Tag = href ? 'a' : 'div';
     top: 1.5rem;
     right: 1.5rem;
     font-size: 1.5rem;
-    color: var(--color-primary);
+    color: var(--link);
     opacity: 0;
     transition: opacity 0.3s ease;
   }

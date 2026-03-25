@@ -53,7 +53,7 @@ const categoryLabels: Record<string, string> = {
   .content-page {
     max-width: 100%;
     margin: 0 auto;
-    background: white;
+    background: var(--surface-card);
   }
 
   .page-header {
@@ -66,11 +66,11 @@ const categoryLabels: Record<string, string> = {
   .page-header h1 {
     margin: 0;
     font-size: var(--text-2xl);
-    color: var(--color-primary);
+    color: var(--text-primary);
   }
 
   .page-subtitle {
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
     margin-top: 0.75rem;
     font-size: var(--text-lg);
   }
@@ -83,7 +83,7 @@ const categoryLabels: Record<string, string> = {
 
   .no-posts {
     text-align: center;
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
     font-size: var(--text-lg);
     padding: 3rem 0;
   }
@@ -96,8 +96,8 @@ const categoryLabels: Record<string, string> = {
 
   .news-card {
     display: block;
-    background: var(--color-surface);
-    border: 1px solid var(--color-outline-light);
+    background: var(--surface);
+    border: 1px solid var(--border-light);
     border-radius: 8px;
     padding: 1.5rem;
     text-decoration: none;
@@ -106,8 +106,8 @@ const categoryLabels: Record<string, string> = {
   }
 
   .news-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 2px 8px rgba(91, 27, 0, 0.15);
+    border-color: var(--text-primary);
+    box-shadow: 0 2px 8px var(--shadow-md);
     text-decoration: none;
   }
 
@@ -117,12 +117,12 @@ const categoryLabels: Record<string, string> = {
     gap: 1rem;
     margin-bottom: 0.75rem;
     font-size: var(--text-sm);
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
   }
 
   .news-category {
-    background: var(--color-secondary);
-    color: white;
+    background: var(--green-400);
+    color: var(--text-inverse);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -134,14 +134,14 @@ const categoryLabels: Record<string, string> = {
   .news-card h2 {
     margin: 0 0 0.5rem;
     font-size: 1.3rem;
-    color: var(--color-primary);
+    color: var(--text-primary);
     border: none;
     padding: 0;
   }
 
   .news-card p {
     margin: 0;
-    color: var(--color-on-surface);
+    color: var(--text-primary);
     line-height: 1.6;
   }
 

@@ -30,8 +30,8 @@ const { title, subtitle, ctaText, ctaLink, secondaryCtaText, secondaryCtaLink } 
 
 <style>
   .hero {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--nav-bg) 0%, var(--nav-hover) 100%);
+    color: var(--hero-text);
     padding: 5rem 2rem;
     margin: -2rem -2rem 3rem -2rem;
     text-align: center;
@@ -63,7 +63,7 @@ const { title, subtitle, ctaText, ctaLink, secondaryCtaText, secondaryCtaLink } 
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 700;
     margin-bottom: 1rem;
-    color: white;
+    color: var(--hero-text);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
@@ -93,21 +93,21 @@ const { title, subtitle, ctaText, ctaLink, secondaryCtaText, secondaryCtaLink } 
   }
 
   .btn-primary {
-    background: white;
-    color: var(--color-primary);
+    background: var(--surface-card);
+    color: var(--nav-bg);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .btn-primary:hover {
-    background: #f8f9fa;
+    background: var(--surface-dim);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 
   .btn-secondary {
     background: transparent;
-    color: white;
-    border: 2px solid white;
+    color: var(--hero-text);
+    border: 2px solid var(--hero-text);
   }
 
   .btn-secondary:hover {

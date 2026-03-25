@@ -84,7 +84,7 @@ const categoryLabels: Record<string, string> = {
   .ord-detail {
     max-width: var(--max-width);
     margin: 0 auto;
-    background: white;
+    background: var(--surface-card);
   }
 
   .ord-header {
@@ -99,8 +99,8 @@ const categoryLabels: Record<string, string> = {
   }
 
   .ord-number-badge {
-    background: var(--color-primary);
-    color: white;
+    background: var(--nav-bg);
+    color: var(--text-inverse);
     padding: 0.25rem 0.85rem;
     border-radius: 50px;
     font-size: var(--text-xs);
@@ -110,8 +110,8 @@ const categoryLabels: Record<string, string> = {
   }
 
   .ord-category-badge {
-    background: var(--color-secondary);
-    color: white;
+    background: var(--green-400);
+    color: var(--text-inverse);
     padding: 0.25rem 0.75rem;
     border-radius: 50px;
     font-size: var(--text-xs);
@@ -121,8 +121,8 @@ const categoryLabels: Record<string, string> = {
   }
 
   .ord-jurisdiction-badge {
-    background: var(--color-surface-dim);
-    color: var(--color-on-surface-variant);
+    background: var(--surface-dim);
+    color: var(--text-secondary);
     padding: 0.25rem 0.75rem;
     border-radius: 50px;
     font-size: var(--text-xs);
@@ -133,13 +133,13 @@ const categoryLabels: Record<string, string> = {
 
   .ord-header h1 {
     font-size: clamp(1.5rem, 3vw, var(--text-2xl));
-    color: var(--color-primary);
+    color: var(--text-primary);
     margin-bottom: 0.75rem;
   }
 
   .ord-description {
     font-size: var(--text-lg);
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
     line-height: 1.6;
     max-width: 700px;
   }
@@ -153,14 +153,14 @@ const categoryLabels: Record<string, string> = {
 
   .ord-dates span {
     font-size: var(--text-sm);
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
   }
 
   .ord-pdf-btn {
     display: inline-block;
     margin-top: 1.25rem;
-    background: var(--color-primary);
-    color: white;
+    background: var(--nav-bg);
+    color: var(--text-inverse);
     padding: 0.7rem 1.5rem;
     border-radius: 50px;
     font-family: var(--font-heading);
@@ -171,10 +171,10 @@ const categoryLabels: Record<string, string> = {
   }
 
   .ord-pdf-btn:hover {
-    background: var(--color-primary-light);
+    background: var(--nav-hover);
     transform: translateY(-1px);
     text-decoration: none;
-    color: white;
+    color: var(--text-inverse);
   }
 
   .ord-content {
@@ -183,11 +183,11 @@ const categoryLabels: Record<string, string> = {
   }
 
   .ord-content h2 {
-    color: var(--color-primary);
+    color: var(--text-primary);
     font-size: 1.35rem;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--color-outline-light);
+    border-bottom: 2px solid var(--border-light);
   }
 
   .ord-content :global(p) {
@@ -215,7 +215,7 @@ const categoryLabels: Record<string, string> = {
   .ord-nav-link {
     flex: 1;
     padding: 1rem;
-    background: var(--color-surface-dim);
+    background: var(--surface-dim);
     border-radius: 10px;
     text-decoration: none;
     color: inherit;
@@ -223,7 +223,7 @@ const categoryLabels: Record<string, string> = {
   }
 
   .ord-nav-link:hover {
-    background: var(--color-outline-light);
+    background: var(--border-light);
     text-decoration: none;
   }
 
@@ -234,7 +234,7 @@ const categoryLabels: Record<string, string> = {
   .ord-nav-label {
     display: block;
     font-size: var(--text-xs);
-    color: var(--color-on-surface-variant);
+    color: var(--text-secondary);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -243,7 +243,7 @@ const categoryLabels: Record<string, string> = {
 
   .ord-nav-title {
     font-size: var(--text-sm);
-    color: var(--color-primary);
+    color: var(--link);
     font-weight: 500;
   }
 
@@ -252,7 +252,7 @@ const categoryLabels: Record<string, string> = {
   }
 
   .ord-back a {
-    color: var(--color-link);
+    color: var(--link);
     text-decoration: none;
     font-weight: 500;
   }

@@ -93,7 +93,7 @@ import Section from '../components/Section.astro';
   .intro-text {
     text-align: center;
     font-size: var(--text-lg);
-    color: var(--color-on-surface);
+    color: var(--text-primary);
     max-width: 800px;
     margin: 0 auto 3rem;
     line-height: 1.6;
@@ -106,7 +106,7 @@ import Section from '../components/Section.astro';
   }
 
   .info-section h2 {
-    color: var(--color-primary);
+    color: var(--text-primary);
     margin-bottom: 1rem;
   }
 
@@ -120,8 +120,8 @@ import Section from '../components/Section.astro';
     font-family: var(--font-heading);
     padding: calc(0.667em + 2px) calc(1.333em + 2px);
     border-radius: var(--radius-button);
-    background-color: var(--color-primary);
-    color: white;
+    background-color: var(--nav-bg);
+    color: var(--text-inverse);
     border: none;
     text-decoration: none;
     cursor: pointer;
@@ -131,7 +131,7 @@ import Section from '../components/Section.astro';
   }
 
   .button-link:hover {
-    background-color: var(--color-link-hover);
+    background-color: var(--link-hover);
     text-decoration: none;
   }
 
@@ -144,26 +144,26 @@ import Section from '../components/Section.astro';
   }
 
   .info-card {
-    background: white;
-    border: 1px solid var(--color-outline-light);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
     padding: 2rem;
   }
 
   .info-card h3 {
-    color: var(--color-primary);
+    color: var(--text-primary);
     font-size: var(--text-lg);
     margin-bottom: 1rem;
   }
 
   .info-card p {
-    color: var(--color-on-surface);
+    color: var(--text-primary);
     line-height: 1.6;
     margin: 0;
   }
 
   .info-card a {
-    color: var(--color-link);
+    color: var(--link);
     font-weight: 500;
   }
 

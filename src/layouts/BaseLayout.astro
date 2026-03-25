@@ -29,6 +29,16 @@ const { title, description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <SEO title={title} description={description} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <!-- FOUC prevention: apply theme before paint -->
+    <script is:inline>
+      (function() {
+        var theme = localStorage.getItem('theme');
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
   </head>
   <body>
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
