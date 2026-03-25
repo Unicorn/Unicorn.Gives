@@ -1,0 +1,352 @@
+/* ============================================================
+   Design Tokens — UNI-Gives Design System
+   ============================================================
+   Color families with 50-900 monochrome scales.
+   Semantic tokens remap per theme (light/dark).
+   NEVER use raw hex values in components — use these tokens.
+   ============================================================ */
+
+/* ---- Primitive Color Scales ---- */
+:root {
+  /* Neutral (base: #4e4e5a) — text, nav, general UI */
+  --neutral-50:  #f4f4f5;
+  --neutral-100: #e8e8ea;
+  --neutral-200: #c9c9ce;
+  --neutral-300: #a9a9b1;
+  --neutral-400: #7b7b86;
+  --neutral-500: #4e4e5a;
+  --neutral-600: #3e3e48;
+  --neutral-700: #2e2e36;
+  --neutral-800: #1f1f25;
+  --neutral-900: #101014;
+
+  /* Green (anchors: #07877a, #578b7b, #caed8f) — government/municipal */
+  --green-50:  #edfdf9;
+  --green-100: #caed8f;
+  --green-200: #a5d4a0;
+  --green-300: #7dbf8c;
+  --green-400: #578b7b;
+  --green-500: #07877a;
+  --green-600: #066d63;
+  --green-700: #05544c;
+  --green-800: #033b35;
+  --green-900: #02221f;
+
+  /* Purple (anchors: #866bff, #a2a0e6, #c5b8ff) — community + news */
+  --purple-50:  #f5f3ff;
+  --purple-100: #e9e5ff;
+  --purple-200: #c5b8ff;
+  --purple-300: #a2a0e6;
+  --purple-400: #9985ff;
+  --purple-500: #866bff;
+  --purple-600: #6b50e0;
+  --purple-700: #5138b8;
+  --purple-800: #382590;
+  --purple-900: #201468;
+
+  /* Gold (anchors: #efd48a, #ebb100, #d6bd3f) — help/resources */
+  --gold-50:  #fefaed;
+  --gold-100: #fdf2cc;
+  --gold-200: #efd48a;
+  --gold-300: #d6bd3f;
+  --gold-400: #e3c520;
+  --gold-500: #ebb100;
+  --gold-600: #c49400;
+  --gold-700: #9c7600;
+  --gold-800: #745800;
+  --gold-900: #4c3a00;
+
+  /* Status (semantic) */
+  --status-success: var(--green-500);
+  --status-warning: var(--gold-500);
+  --status-error:   #b91c1c;
+  --status-info:    var(--purple-500);
+
+  /* Status surfaces (light backgrounds for badges) */
+  --status-success-surface: var(--green-50);
+  --status-warning-surface: var(--gold-100);
+  --status-error-surface:   #fef2f2;
+  --status-info-surface:    var(--purple-50);
+}
+
+/* ---- Light Theme (default) ---- */
+:root,
+[data-theme="light"] {
+  /* Text */
+  --text-primary:   var(--neutral-800);
+  --text-secondary: var(--neutral-600);
+  --text-muted:     var(--neutral-400);
+  --text-inverse:   var(--neutral-50);
+
+  /* Surfaces */
+  --surface:        #fcf9f4;
+  --surface-dim:    #f0ede8;
+  --surface-card:   #ffffff;
+  --surface-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Borders */
+  --border:         var(--neutral-200);
+  --border-light:   var(--neutral-100);
+
+  /* Navigation */
+  --nav-bg:         var(--neutral-800);
+  --nav-text:       var(--neutral-50);
+  --nav-hover:      var(--neutral-700);
+  --nav-active:     var(--neutral-600);
+
+  /* Header */
+  --header-bg:      var(--surface-card);
+  --header-text:    var(--neutral-800);
+  --header-border:  var(--neutral-300);
+
+  /* Footer */
+  --footer-bg:      var(--neutral-900);
+  --footer-text:    var(--neutral-200);
+  --footer-text-dim: var(--neutral-400);
+  --footer-heading: var(--neutral-50);
+  --footer-border:  rgba(255, 255, 255, 0.1);
+  --footer-link:    var(--neutral-300);
+  --footer-link-hover: var(--neutral-50);
+
+  /* Links */
+  --link:           var(--green-600);
+  --link-hover:     var(--green-700);
+
+  /* Focus */
+  --focus-ring:     var(--purple-500);
+
+  /* Selection */
+  --selection-bg:   var(--purple-200);
+
+  /* Code blocks */
+  --code-bg:        var(--neutral-800);
+  --code-text:      var(--neutral-100);
+  --code-inline-bg: var(--surface-dim);
+
+  /* Shadows */
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md:  0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg:  0 12px 24px rgba(0, 0, 0, 0.15);
+
+  /* Section-specific CTA colors */
+  --cta-government:       var(--green-500);
+  --cta-government-hover: var(--green-600);
+  --cta-government-text:  var(--neutral-50);
+  --cta-community:        var(--purple-500);
+  --cta-community-hover:  var(--purple-600);
+  --cta-community-text:   var(--neutral-50);
+  --cta-help:             var(--gold-500);
+  --cta-help-hover:       var(--gold-600);
+  --cta-help-text:        var(--neutral-900);
+  --cta-default:          var(--neutral-700);
+  --cta-default-hover:    var(--neutral-800);
+  --cta-default-text:     var(--neutral-50);
+
+  /* Hero overlay */
+  --hero-overlay:   rgba(16, 16, 20, 0.75);
+  --hero-text:      var(--neutral-50);
+
+  /* Card hover shadow base */
+  --card-shadow:       var(--shadow-sm);
+  --card-shadow-hover: var(--shadow-md);
+}
+
+/* ---- Dark Theme ---- */
+[data-theme="dark"] {
+  --text-primary:   var(--neutral-100);
+  --text-secondary: var(--neutral-300);
+  --text-muted:     var(--neutral-400);
+  --text-inverse:   var(--neutral-900);
+
+  --surface:        var(--neutral-900);
+  --surface-dim:    var(--neutral-800);
+  --surface-card:   var(--neutral-800);
+  --surface-overlay: rgba(0, 0, 0, 0.7);
+
+  --border:         var(--neutral-700);
+  --border-light:   var(--neutral-800);
+
+  --nav-bg:         var(--neutral-900);
+  --nav-text:       var(--neutral-100);
+  --nav-hover:      var(--neutral-800);
+  --nav-active:     var(--neutral-700);
+
+  --header-bg:      var(--neutral-900);
+  --header-text:    var(--neutral-100);
+  --header-border:  var(--neutral-700);
+
+  --footer-bg:      #0a0a0d;
+  --footer-text:    var(--neutral-300);
+  --footer-text-dim: var(--neutral-500);
+  --footer-heading: var(--neutral-100);
+  --footer-border:  var(--neutral-800);
+  --footer-link:    var(--neutral-400);
+  --footer-link-hover: var(--neutral-100);
+
+  --link:           var(--green-300);
+  --link-hover:     var(--green-200);
+
+  --focus-ring:     var(--purple-400);
+  --selection-bg:   var(--purple-700);
+
+  --code-bg:        var(--neutral-800);
+  --code-text:      var(--neutral-200);
+  --code-inline-bg: var(--neutral-700);
+
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md:  0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg:  0 12px 24px rgba(0, 0, 0, 0.5);
+
+  --cta-government:       var(--green-400);
+  --cta-government-hover: var(--green-300);
+  --cta-government-text:  var(--neutral-900);
+  --cta-community:        var(--purple-400);
+  --cta-community-hover:  var(--purple-300);
+  --cta-community-text:   var(--neutral-900);
+  --cta-help:             var(--gold-300);
+  --cta-help-hover:       var(--gold-200);
+  --cta-help-text:        var(--neutral-900);
+  --cta-default:          var(--neutral-300);
+  --cta-default-hover:    var(--neutral-200);
+  --cta-default-text:     var(--neutral-900);
+
+  --hero-overlay:   rgba(16, 16, 20, 0.85);
+  --hero-text:      var(--neutral-100);
+
+  --card-shadow:       var(--shadow-sm);
+  --card-shadow-hover: var(--shadow-md);
+
+  /* Status surfaces — darker in dark mode */
+  --status-success-surface: var(--green-900);
+  --status-warning-surface: var(--gold-900);
+  --status-error-surface:   #450a0a;
+  --status-info-surface:    var(--purple-900);
+}
+
+/* ---- System preference auto-detection ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --text-primary:   var(--neutral-100);
+    --text-secondary: var(--neutral-300);
+    --text-muted:     var(--neutral-400);
+    --text-inverse:   var(--neutral-900);
+
+    --surface:        var(--neutral-900);
+    --surface-dim:    var(--neutral-800);
+    --surface-card:   var(--neutral-800);
+    --surface-overlay: rgba(0, 0, 0, 0.7);
+
+    --border:         var(--neutral-700);
+    --border-light:   var(--neutral-800);
+
+    --nav-bg:         var(--neutral-900);
+    --nav-text:       var(--neutral-100);
+    --nav-hover:      var(--neutral-800);
+    --nav-active:     var(--neutral-700);
+
+    --header-bg:      var(--neutral-900);
+    --header-text:    var(--neutral-100);
+    --header-border:  var(--neutral-700);
+
+    --footer-bg:      #0a0a0d;
+    --footer-text:    var(--neutral-300);
+    --footer-text-dim: var(--neutral-500);
+    --footer-heading: var(--neutral-100);
+    --footer-border:  var(--neutral-800);
+    --footer-link:    var(--neutral-400);
+    --footer-link-hover: var(--neutral-100);
+
+    --link:           var(--green-300);
+    --link-hover:     var(--green-200);
+
+    --focus-ring:     var(--purple-400);
+    --selection-bg:   var(--purple-700);
+
+    --code-bg:        var(--neutral-800);
+    --code-text:      var(--neutral-200);
+    --code-inline-bg: var(--neutral-700);
+
+    --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md:  0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg:  0 12px 24px rgba(0, 0, 0, 0.5);
+
+    --cta-government:       var(--green-400);
+    --cta-government-hover: var(--green-300);
+    --cta-government-text:  var(--neutral-900);
+    --cta-community:        var(--purple-400);
+    --cta-community-hover:  var(--purple-300);
+    --cta-community-text:   var(--neutral-900);
+    --cta-help:             var(--gold-300);
+    --cta-help-hover:       var(--gold-200);
+    --cta-help-text:        var(--neutral-900);
+    --cta-default:          var(--neutral-300);
+    --cta-default-hover:    var(--neutral-200);
+    --cta-default-text:     var(--neutral-900);
+
+    --hero-overlay:   rgba(16, 16, 20, 0.85);
+    --hero-text:      var(--neutral-100);
+
+    --card-shadow:       var(--shadow-sm);
+    --card-shadow-hover: var(--shadow-md);
+
+    --status-success-surface: var(--green-900);
+    --status-warning-surface: var(--gold-900);
+    --status-error-surface:   #450a0a;
+    --status-info-surface:    var(--purple-900);
+  }
+}
+
+/* ---- Section CTA utility classes ---- */
+.cta-government {
+  background-color: var(--cta-government);
+  color: var(--cta-government-text);
+}
+.cta-government:hover {
+  background-color: var(--cta-government-hover);
+}
+
+.cta-community {
+  background-color: var(--cta-community);
+  color: var(--cta-community-text);
+}
+.cta-community:hover {
+  background-color: var(--cta-community-hover);
+}
+
+.cta-help {
+  background-color: var(--cta-help);
+  color: var(--cta-help-text);
+}
+.cta-help:hover {
+  background-color: var(--cta-help-hover);
+}
+
+.cta-default {
+  background-color: var(--cta-default);
+  color: var(--cta-default-text);
+}
+.cta-default:hover {
+  background-color: var(--cta-default-hover);
+}
+
+/* ---- Status badge utility classes ---- */
+.badge-success {
+  background-color: var(--status-success-surface);
+  color: var(--status-success);
+}
+.badge-warning {
+  background-color: var(--status-warning-surface);
+  color: var(--status-warning);
+}
+.badge-error {
+  background-color: var(--status-error-surface);
+  color: var(--status-error);
+}
+.badge-info {
+  background-color: var(--status-info-surface);
+  color: var(--status-info);
+}
+.badge-neutral {
+  background-color: var(--surface-dim);
+  color: var(--text-secondary);
+}
