@@ -152,18 +152,7 @@ const categoryColors: Record<string, string> = {
     </Section>
   )}
 
-  <!-- Newsletter / Subscribe CTA -->
-  <Section padding="md">
-    <div class="subscribe-banner">
-      <div class="subscribe-content">
-        <h2>Stay Connected with Lincoln Township</h2>
-        <p>Get township news, meeting reminders, event announcements, and community updates delivered to your inbox.</p>
-        <a href="/subscribe" class="subscribe-btn">Subscribe to Updates</a>
-      </div>
-    </div>
-  </Section>
-
-  <!-- Our Organizations -->
+  <!-- Our Community -->
   <Section padding="lg">
     <FeatureGrid title="Our Community" columns={3}>
       <FeatureCard
@@ -187,8 +176,8 @@ const categoryColors: Record<string, string> = {
     </FeatureGrid>
   </Section>
 
-  <!-- Township Government -->
-  <Section background="gray" padding="lg">
+  <!-- Township Government & Services -->
+  <Section background="gray" padding="lg" id="services">
     <FeatureGrid title="Township Government" columns={4}>
       <FeatureCard
         title="Board of Trustees"
@@ -203,24 +192,6 @@ const categoryColors: Record<string, string> = {
         href="/board-minutes"
       />
       <FeatureCard
-        title="Budget & Finances"
-        description="Township budget, spending reports, and financial transparency"
-        icon="💰"
-        href="/budget"
-      />
-      <FeatureCard
-        title="Public Notices"
-        description="Official announcements, hearing notices, and ordinance changes"
-        icon="📢"
-        href="/public-notices"
-      />
-    </FeatureGrid>
-  </Section>
-
-  <!-- Services -->
-  <Section padding="lg" id="services">
-    <FeatureGrid title="Township Services" columns={4}>
-      <FeatureCard
         title="Building Department"
         description="Permits, inspections, and construction requirements"
         icon="🏗️"
@@ -233,23 +204,17 @@ const categoryColors: Record<string, string> = {
         href="/fire"
       />
       <FeatureCard
-        title="Permits & Forms"
-        description="Download forms and apply for permits"
-        icon="📄"
-        href="/permits-forms"
-      />
-      <FeatureCard
         title="Elections"
         description="Voter registration and ballot information"
         icon="🗳️"
         href="/elections"
       />
-    </FeatureGrid>
-  </Section>
-
-  <!-- Community Resources -->
-  <Section background="gray" padding="lg">
-    <FeatureGrid title="Community Resources" columns={4}>
+      <FeatureCard
+        title="Budget & Finances"
+        description="Township budget, spending reports, and financial transparency"
+        icon="💰"
+        href="/budget"
+      />
       <FeatureCard
         title="Parks & Recreation"
         description="Explore our parks at Bertha, Shingle, and Silver Lakes"
@@ -262,23 +227,22 @@ const categoryColors: Record<string, string> = {
         icon="👥"
         href="/seniors"
       />
-      <FeatureCard
-        title="Township Lakes"
-        description="Lake George, Shingle, Bertha, and Silver"
-        icon="🏞️"
-        href="/lakes"
-      />
-      <FeatureCard
-        title="Events Calendar"
-        description="Community events from all organizations"
-        icon="📅"
-        href="/events"
-      />
     </FeatureGrid>
   </Section>
 
+  <!-- Subscribe CTA -->
+  <Section padding="md">
+    <div class="subscribe-banner">
+      <div class="subscribe-content">
+        <h2>Stay Connected with Lincoln Township</h2>
+        <p>Get township news, meeting reminders, event announcements, and community updates delivered to your inbox.</p>
+        <a href="/subscribe" class="subscribe-btn">Subscribe to Updates</a>
+      </div>
+    </div>
+  </Section>
+
   <!-- Contact -->
-  <Section padding="lg">
+  <Section background="gray" padding="lg">
     <div class="contact-section">
       <h2 class="home-section-title">Contact Lincoln Township</h2>
       <div class="contact-grid">

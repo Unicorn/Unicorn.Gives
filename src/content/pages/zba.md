@@ -13,7 +13,7 @@ order: 120
 
 ### Key Documents
 
-- [Zoning Ordinance](/zoningbody.pdf)
+- [Zoning Ordinance](/zoning) — available at Township Hall or by request
 - [Township Zoning Map](/zoning.map.pdf)
 
 ### Related Forms

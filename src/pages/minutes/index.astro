@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const allMinutes = await getCollection('minutes');
+
+// Sort newest first
+allMinutes.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+// Group by year
+const byYear: Record<string, typeof allMinutes> = {};
+for (const entry of allMinutes) {
+  const year = new Date(entry.data.date + 'T12:00:00').getFullYear().toString();
+  if (!byYear[year]) byYear[year] = [];
+  byYear[year].push(entry);
+}
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<PageLayout title="Board Meeting Minutes" description="Complete archive of Lincoln Township Board of Trustees meeting minutes" slug="minutes">
+  <p>Regular board meetings are held on the second Monday of each month at 7:00 PM at Lincoln Township Hall, 175 Lake George Ave, Lake George, MI 48633.</p>
+  <p><em>The most recent minutes are pending approval at the next board meeting.</em></p>
+  <hr />
+  {years.map((year) => (
+    <section>
+      <h2>{year} Board Meeting Minutes</h2>
+      <ul class="minutes-list">
+        {byYear[year].map((entry) => {
+          const dateObj = new Date(entry.data.date + 'T12:00:00');
+          const formatted = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+          return (
+            <li>
+              <a href={`/minutes/${entry.slug}`}>{formatted} &mdash; {entry.data.meetingType}</a>
+              {entry.data.status === 'pending' && <span class="badge-pending">Pending</span>}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  ))}
+  <hr />
+  <h2>2005&ndash;2013 Archive</h2>
+  <p>Historical meeting minutes from 2005 through 2013 are available in the <a href="/minutes-archive">Board Minutes Archive</a>.</p>
+</PageLayout>
+
+<style>
+  .minutes-list {
+    list-style: none;
+    padding: 0;
+  }
+  .minutes-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-light, #e8e0d6);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .minutes-list li:last-child {
+    border-bottom: none;
+  }
+  .minutes-list a {
+    color: var(--primary, #6b2d14);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .minutes-list a:hover {
+    text-decoration: underline;
+  }
+  .badge-pending {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    background: #fef3cd;
+    color: #856404;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+</style>

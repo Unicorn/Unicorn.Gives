@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const minutes = await getCollection('minutes');
+  return minutes.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const dateObj = new Date(entry.data.date + 'T12:00:00');
+const formattedDate = dateObj.toLocaleDateString('en-US', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const statusLabel = entry.data.status === 'pending' ? 'Pending Approval' :
+  entry.data.status === 'draft' ? 'Draft' : 'Approved';
+const statusClass = entry.data.status === 'pending' ? 'status-pending' :
+  entry.data.status === 'draft' ? 'status-draft' : 'status-approved';
+---
+
+<PageLayout title={entry.data.title} description={`${entry.data.meetingType} minutes for ${formattedDate}`} slug={`minutes/${entry.slug}`}>
+  <div class="minutes-meta">
+    <p class="minutes-date">{formattedDate}</p>
+    <p class="minutes-type">{entry.data.meetingType}</p>
+    {entry.data.status && <span class={`minutes-status ${statusClass}`}>{statusLabel}</span>}
+  </div>
+  <hr />
+  <div class="minutes-content">
+    <Content />
+  </div>
+  <hr />
+  <p class="minutes-back"><a href="/board-minutes">&larr; Back to Board Meeting Minutes</a></p>
+</PageLayout>
+
+<style>
+  .minutes-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .minutes-date {
+    font-size: 1.05rem;
+    color: var(--text-secondary, #555);
+    margin: 0;
+  }
+  .minutes-type {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #555);
+    margin: 0;
+    padding: 0.2rem 0.6rem;
+    background: var(--bg-subtle, #f5f1eb);
+    border-radius: 4px;
+  }
+  .minutes-status {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .status-pending {
+    background: #fef3cd;
+    color: #856404;
+  }
+  .status-approved {
+    background: #d4edda;
+    color: #155724;
+  }
+  .status-draft {
+    background: #e2e3e5;
+    color: #383d41;
+  }
+  .minutes-content {
+    line-height: 1.7;
+  }
+  .minutes-back {
+    margin-top: 2rem;
+  }
+  .minutes-back a {
+    color: var(--primary, #6b2d14);
+  }
+</style>

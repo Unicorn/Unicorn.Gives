@@ -16,6 +16,17 @@ const pagesCollection = defineCollection({
   }),
 });
 
+const minutesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    date: z.string(),
+    meetingType: z.string(),
+    status: z.enum(['approved', 'pending', 'draft']).optional(),
+    description: z.string().optional(),
+  }),
+});
+
 const newsCollection = defineCollection({
   type: 'content',
   schema: z.object({
@@ -31,5 +42,6 @@ const newsCollection = defineCollection({
 
 export const collections = {
   pages: pagesCollection,
+  minutes: minutesCollection,
   news: newsCollection,
 };

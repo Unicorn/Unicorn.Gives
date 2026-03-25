@@ -35,7 +35,7 @@ Click [HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) to 
 ### Key Documents
 
 - [Lincoln Township Master Plan](docs/master_plan.pdf)
-- [Zoning Ordinance](/zoningbody.pdf) (2 MB)
+- Zoning Ordinance — available at Township Hall or by request. Contact Dick Hassberger at (989) 588-9841 ext. 5.
 - [Zoning Map](/zoning.map.pdf)
 
 ### Meeting Minutes

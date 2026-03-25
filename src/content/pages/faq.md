@@ -107,7 +107,7 @@ Office hours vary from month-to-month. Hours are posted on-line at www.lincolntw
 ### Township Zoning FAQs {#zoning}
 
 **Where do I get Township Zoning information?**
-[See the Lincoln Township Zoning Ordinance](/zoningbody.pdf) or call the Zoning Administrator, Dick Hassberger, at (989) 588-9841 ext. 5. You can email him at [zoning@lincolntwp.com](mailto:zoning@lincolntwp.com).
+See the [Lincoln Township Zoning page](/zoning) for ordinance details, or call the Zoning Administrator, Dick Hassberger, at (989) 588-9841 ext. 5. You can email him at [zoning@lincolntwp.com](mailto:zoning@lincolntwp.com).
 
 ---
 

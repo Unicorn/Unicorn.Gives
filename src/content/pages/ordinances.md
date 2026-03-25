@@ -21,7 +21,7 @@ order: 17
 - [Ordinance 42](ordinances/42.pdf) — Fireworks Control
 - [Ordinance 46](ordinances/46.pdf) — Cemeteries Ordinance
 - [Ordinance 46](ordinances/46.pdf) — Prohibition of Rec. Marijuana Establishments
-- [Ordinance 44](/zoningbody.pdf) — Zoning Ordinance
+- [Ordinance 44 — Zoning Ordinance](/zoning) — available at Township Hall or by request
 
 ### Ordinance Enforcement
 
