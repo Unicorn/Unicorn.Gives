@@ -1,15 +1,15 @@
-// Navigation structure for 3-level hierarchical navigation
-// Category → Subcategory → Pages
+// Navigation structure for 4-pillar model
+// Solve → Govern → Inform → Connect
 
 export interface NavigationPage {
   slug: string;
-  label?: string; // Optional override for display label
+  label?: string;
 }
 
 export interface NavigationSubcategory {
   id: string;
   label: string;
-  pages: string[]; // Array of page slugs
+  pages: string[];
 }
 
 export interface NavigationCategory {
@@ -20,65 +20,75 @@ export interface NavigationCategory {
 
 export const navigationStructure: NavigationCategory[] = [
   {
-    id: 'government',
+    id: 'solve',
+    label: 'Get Help',
+    subcategories: [
+      {
+        id: 'property-building',
+        label: 'Property & Building',
+        pages: ['help', 'building', 'permits-forms', 'zoning']
+      },
+      {
+        id: 'taxes-assessment',
+        label: 'Taxes & Assessment',
+        pages: ['assessor', 'pay-taxes']
+      },
+      {
+        id: 'safety-emergency',
+        label: 'Safety & Emergency',
+        pages: ['fire', 'emergency-alerts']
+      },
+      {
+        id: 'nature-conservation',
+        label: 'Nature & Conservation',
+        pages: ['conservation', 'native-plants']
+      }
+    ]
+  },
+  {
+    id: 'govern',
     label: 'Government',
     subcategories: [
       {
-        id: 'board-leadership',
-        label: 'Board & Leadership',
-        pages: ['board', 'board-minutes', 'minutes-archive']
+        id: 'lincoln-township',
+        label: 'Lincoln Township',
+        pages: ['board', 'board-minutes', 'minutes-archive', 'budget', 'financial-reports']
       },
       {
-        id: 'meetings-calendar',
-        label: 'Meetings & Calendar',
-        pages: ['calendar', 'public-notices']
+        id: 'planning-zoning',
+        label: 'Planning & Zoning',
+        pages: ['planning-commission', 'zba', 'zba-plancomm-minutes', 'ordinances']
       },
       {
-        id: 'budget-finances',
-        label: 'Budget & Finances',
-        pages: ['budget', 'financial-reports']
+        id: 'clare-county',
+        label: 'Clare County',
+        pages: ['contacts', 'elections']
+      },
+      {
+        id: 'transparency',
+        label: 'Transparency',
+        pages: ['foia', 'public-notices', 'calendar']
       }
     ]
   },
   {
-    id: 'services',
-    label: 'Services',
+    id: 'inform',
+    label: 'News & Alerts',
     subcategories: [
       {
-        id: 'building-development',
-        label: 'Building & Development',
-        pages: ['building', 'permits-forms']
+        id: 'news',
+        label: 'News & Updates',
+        pages: ['news']
       },
       {
-        id: 'public-safety',
-        label: 'Public Safety',
-        pages: ['fire']
-      },
-      {
-        id: 'other-services',
-        label: 'Other Services',
-        pages: ['assessor', 'elections', 'compost']
+        id: 'events-calendar',
+        label: 'Events & Calendar',
+        pages: ['events']
       }
     ]
   },
   {
-    id: 'planning-zoning',
-    label: 'Planning & Zoning',
-    subcategories: [
-      {
-        id: 'commissions',
-        label: 'Commissions',
-        pages: ['planning-commission', 'zba', 'zba-plancomm-minutes']
-      },
-      {
-        id: 'regulations',
-        label: 'Regulations',
-        pages: ['zoning', 'ordinances', 'ordinances-zoning-ord-creation']
-      }
-    ]
-  },
-  {
-    id: 'community',
+    id: 'connect',
     label: 'Community',
     subcategories: [
       {
@@ -99,33 +109,12 @@ export const navigationStructure: NavigationCategory[] = [
       {
         id: 'resources',
         label: 'Resources',
-        pages: ['seniors', 'newsletters', 'cemeteries', 'parks']
-      },
-      {
-        id: 'lakes',
-        label: 'Lakes',
-        pages: ['lakes', 'lakes-lakegeorge', 'lakes-shingle', 'lakes-bertha', 'lakes-silver']
+        pages: ['seniors', 'parks', 'cemeteries', 'lakes', 'lakes-lakegeorge', 'lakes-shingle', 'lakes-bertha', 'lakes-silver']
       },
       {
         id: 'township-info',
         label: 'Township Info',
-        pages: ['faq', 'foia', 'links', 'subscribe', 'plat-maps']
-      }
-    ]
-  },
-  {
-    id: 'news-events',
-    label: 'News & Events',
-    subcategories: [
-      {
-        id: 'community-events',
-        label: 'Community Events',
-        pages: ['events']
-      },
-      {
-        id: 'news-updates',
-        label: 'News & Updates',
-        pages: ['news']
+        pages: ['faq', 'links', 'subscribe', 'plat-maps', 'compost', 'newsletters']
       }
     ]
   }
