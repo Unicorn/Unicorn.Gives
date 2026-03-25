@@ -33,12 +33,9 @@ For lake-related questions or concerns, contact the Lake Commissioner:
 
 ### Lake Management Resources
 
-- [10 Ways to Protect Your Lake](docs/lakes/10ways_protect_lake.pdf)
-- Michigan Lakes Info:
-  [Lake Lingo- Cutting Through the Jargon](docs/lakes/lake_lingo.pdf)
-- Michigan Lakes Info:
-  [Lake Water Quality](docs/lakes/lake_quality.pdf)
-- [Lake Water Quality: Are We Winning the War?](docs/lakes/lakes_winning_war.pdf)
-- National Lakes Assessment:
-  [Shoreland Overlay Zoning](docs/lakes/shoreland_overlay_zoning.pdf)
-- [Watershed Management](docs/lakes/watershed_management.pdf)
+- [10 Ways to Protect Your Lake](/docs/lakes/10ways_protect_lake.pdf)
+- [Lake Lingo: Cutting Through the Jargon (Michigan Lakes Info)](/docs/lakes/lake_lingo.pdf)
+- [Lake Water Quality (Michigan Lakes Info)](/docs/lakes/lake_quality.pdf)
+- [Lake Water Quality: Are We Winning the War?](/docs/lakes/lakes_winning_war.pdf)
+- [Shoreland Overlay Zoning (National Lakes Assessment)](/docs/lakes/shoreland_overlay_zoning.pdf)
+- [Watershed Management](/docs/lakes/watershed_management.pdf)

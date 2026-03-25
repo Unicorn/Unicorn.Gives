@@ -1,5 +1,5 @@
 ---
-title: "Zba"
+title: "Zoning Board of Appeals"
 description: "Zoning Board of Appeals information, meeting minutes, and variance applications"
 lastUpdated: "2025-01-19"
 category: "Planning & Zoning"
@@ -9,7 +9,7 @@ order: 120
 
 ## Zoning Board of Appeals
 
-[Zoning Board of Appeals Bylaws](docs/zba_bylaws.pdf)
+[Zoning Board of Appeals Bylaws](/docs/zba_bylaws.pdf)
 
 ### Key Documents
 
@@ -23,12 +23,12 @@ Both the Building Permit and the Zoning Permit are needed to begin a building pr
 - [Zoning Permit Application](/forms/zoning_permit.pdf)
 - [Zoning Permit Application for Recreational Vehicles and Temporary Storage Structures on a Vacant Lot](/forms/zoning_permit_rv.pdf)
 - [Building Permit Application Form and Fees](/forms/building_permit.pdf)
-- [ZBA Application for Variance Form](forms/zoning_variance_app.pdf)
-- [Ordinance Violation Report Form](forms/zoning_complaint.pdf) — [Violation Report Form Procedures](docs/zoning_complaint_procedure.pdf)
-- [Petition for Text Amendment to Ordinance](forms/petition_ordinance_change.pdf)
-- [Parcel Division Application](forms/parcel_division_app.pdf)
-- [Special Exemption Use Permit](forms/special_use_permit.pdf)
-- [Home Occupation Permit](forms/home_occupation_permit.pdf)
+- [ZBA Application for Variance Form](/forms/zoning_variance_app.pdf)
+- [Ordinance Violation Report Form](/forms/zoning_complaint.pdf) — [Violation Report Form Procedures](/docs/zoning_complaint_procedure.pdf)
+- [Petition for Text Amendment to Ordinance](/forms/petition_ordinance_change.pdf)
+- [Parcel Division Application](/forms/parcel_division_app.pdf)
+- [Special Exemption Use Permit](/forms/special_use_permit.pdf)
+- [Home Occupation Permit](/forms/home_occupation_permit.pdf)
 
 ### ZBA Meeting Minutes
 
@@ -36,9 +36,9 @@ ONLY Approved Minutes may be posted (approval does not happen until there is ano
 
 #### Zoning Ordinance Initiative Meeting Minutes: 2015
 
-- [Meeting Minutes 5/12/2015](docs/zoning_ord_creation/landplan_blueprint_meeting_minutes5-12-15.pdf) — posted 7/1/2015
-- [Meeting Minutes 4/27/2015](docs/zoning_ord_creation/landplan_blueprint_meeting_minutes4-27-15.pdf) — posted 7/1/2015
-- [Meeting Minutes 2/23/2015](docs/zoning_ord_creation/landplan_blueprint_meeting_minutes2-23-15.pdf) — posted 7/1/2015
+- [Meeting Minutes 5/12/2015](/docs/zoning_ord_creation/landplan_blueprint_meeting_minutes5-12-15.pdf) — posted 7/1/2015
+- [Meeting Minutes 4/27/2015](/docs/zoning_ord_creation/landplan_blueprint_meeting_minutes4-27-15.pdf) — posted 7/1/2015
+- [Meeting Minutes 2/23/2015](/docs/zoning_ord_creation/landplan_blueprint_meeting_minutes2-23-15.pdf) — posted 7/1/2015
 
 ---
 

@@ -1,6 +1,6 @@
 ---
-title: "Zba Plancomm Minutes"
-description: ""
+title: "ZBA & Planning Commission Minutes"
+description: "Meeting minutes for the Planning Commission and Zoning Board of Appeals"
 lastUpdated: "2026-01-14"
 category: "Planning & Zoning"
 subcategory: "Commissions"
@@ -45,10 +45,10 @@ Approval does not happen until there is another variance request.
 
 #### Planning Commission Minutes (Approved)
 
-- [12-21-10](archive/planning_minutes/plancomm_min12-21-10.pdf)
-- [10-19-10](archive/planning_minutes/plancomm_min10-19-10.pdf)
-- [9-21-10](archive/planning_minutes/plancomm_min9-21-10.pdf)
-- [8-17-10](archive/planning_minutes/plancomm_min8-17-10.pdf)
+- [12-21-10](/archive/planning_minutes/plancomm_min12-21-10.pdf)
+- [10-19-10](/archive/planning_minutes/plancomm_min10-19-10.pdf)
+- [9-21-10](/archive/planning_minutes/plancomm_min9-21-10.pdf)
+- [8-17-10](/archive/planning_minutes/plancomm_min8-17-10.pdf)
 - [7-20-10](/archive/planning_minutes/plancomm_min7-20-10.pdf)
 - [6-15-10](/archive/planning_minutes/plancomm_min6-15-10.pdf)
 - [5-18-10](/archive/planning_minutes/plancomm_min5-18-10.pdf)

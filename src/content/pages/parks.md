@@ -7,5 +7,51 @@ subcategory: "Facilities"
 order: 20
 ---
 
-## Parks
-| [Bertha Lake Park](#bertha) ~ [Shingle Lake Park](#shingle) ~ [Silver Lake Park](#silver)  On the shores of beautiful Shingle lake, Bertha lake, and Silver lake.  **[Township Park Pavilion Use Agreement](forms/twp_park_use_agreement.pdf)   Return application to: Carol Majewski, Clerk  P.O. Box 239, Lake George, MI 48633**  |  | | --- | | - BERTHA LAKE PARK         location:  781 Pine St   Bertha Lake  Lincoln Township Bertha Lake Park  Lincoln Township Bertha Lake Park | | - SHINGLE LAKE PARK         location:  483 Park St., Lake   George         *[Download the Park Pavilion Use Agreement](forms/twp_park_use_agreement.pdf)*   Shingle Lake Park    Lincoln Township Shingle Lake Park  Lincoln Township Shingle Lake Park  Lincoln Township Shingle Lake Park  Lincoln Township Shingle Lake Park | | - SILVER LAKE PARK         location:  110 Lincoln Rd.   Silver Lake | 
+Lincoln Township maintains public parks on the shores of Shingle Lake, Bertha Lake, and Silver Lake, offering recreation and natural beauty for residents and visitors.
+
+### Pavilion Rental
+
+The Shingle Lake Park pavilion is available for reservation. Download and return the application to reserve your date.
+
+- [Township Park Pavilion Use Agreement](/forms/twp_park_use_agreement.pdf)
+
+**Return application to:**
+Carol Majewski, Clerk — P.O. Box 239, Lake George, MI 48633
+
+---
+
+### Bertha Lake Park
+
+**Location:** 781 Pine St., Bertha Lake
+
+Bertha Lake Park provides lakefront access and green space for the community.
+
+[Learn more about Bertha Lake](/lakes-bertha)
+
+---
+
+### Shingle Lake Park
+
+**Location:** 483 Park St., Lake George
+
+Shingle Lake Park features a pavilion available for community events and private gatherings.
+
+- [Download the Park Pavilion Use Agreement](/forms/twp_park_use_agreement.pdf)
+
+[Learn more about Shingle Lake](/lakes-shingle)
+
+---
+
+### Silver Lake Park
+
+**Location:** 110 Lincoln Rd., Silver Lake
+
+Silver Lake Park offers lakefront access for residents and visitors.
+
+[Learn more about Silver Lake](/lakes-silver)
+
+---
+
+### Contact
+
+For park-related questions or pavilion reservations, contact the Township Clerk at (989) 588-9841 ext. 2.

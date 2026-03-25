@@ -7,5 +7,52 @@ subcategory: "Facilities"
 order: 12
 ---
 
-## Cemeteries
-| **|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | | **Lincoln Township has ownership and control of two separate cemeteries:  The Township Cemetery and the   [Kilbourn Cemetery](#kilbourn)  *[Click for the Lincoln Township Cemeteries Ordinance](ordinances/42.pdf).*  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | | |  |  | | --- | --- | | **Lincoln Township Cemetery** | | | **Lincoln Township Cemetery** | **The Lincoln Township Cemetery is located on Lake Street and contains over 1,300 spaces. This is NOT a Perpetual Care cemetery, but every effort is made to keep the premises in good and peaceful order. The links below gives you information on those interred in this cemetery both in location order and in alphabetical order.  |  |  |  | | --- | --- | --- | | **[List by Blocks](docs/cemetery/linctwp_cemetery_blocks.pdf)**  (Numerically) | **[List by Deed](docs/cemetery/linctwp_cemetery_deed_alphabetical.pdf) (Alphabetically)** | **[List by Interred Surname](docs/cemetery/linctwp_cemetery_interred_alphabetical.pdf) (Alphabetically)** | | *The Cemetery Files were last updated 6/9/2021* | | | | TO VIEW AVAILABLE HEADSTONE PHOTOS:  Use one of the document above to find a Headstone Photo Number  Then enter the number here:  NOTE: Not all Headstone Pictures are available at this time. | | |** | **Costs associated with plots and burials at the Lincoln Township Cemeteries are as follows:  Plot Costs: $100.00 each  |  |  |  |  | | --- | --- | --- | --- | |  | Foundation already in place: | 12"X 24" Foundation: | Larger Foundations: | | **Open and close burial -** | **Summer $315.00** | **$400** | $440 | | **Open and close burial -** | **Winter $503.00** | **$600** | $625 | | **Cremation / Infant burial -** | **$95.00** | $200 | $220 |  Saturday, Sunday, and Holidays: $75.00 additional cost.  For further information or help please contact the Cemetery Commissioner, Mike Tobin.**   Kilbourn Cemetery    |  |  | | --- | --- | | **The smaller of the two, Kilbourn Cemetery, was a private cemetery abandoned by the Reorganized Church of Jesus Christ of Latter-day Saints. Ownership was assumed by Lincoln Township and the cemetery is maintained out of respect for those who are interred there.  The Kilbourn cemetery is located on Jackson Ave. between Browns and Adams Rd. Its on the right (west) hand side--closer to Adams than Browns.  You will miss it if you arent looking. Youll see the two little headstones. Be careful, it usually has quite a bit of poison ivy. Wear your long pants!  Leave a penny on the Kilbourn headstone, its a long standing tradition.** | Click on photos for larger views of them. |  Contact Information:         Mike Tobin, Cemetery Commissioner           Office 989-588-9841 & Home 989-588-2311  |  |  |  | | --- | --- | --- | |  | ** Jeffrey Smith, Sexton  989-588-9294** |  | |  | ** Carol Majewski, Township Clerk  989-588-9069 / email [clm@lincolntwp.com](mailto:clm@lincolntwp.com)** |  |        Need to do some Cemetery Name or Grave searches?  Go to [www.findagrave.com](http://www.findagrave.com/) |** |** 
+Lincoln Township has ownership and control of two separate cemeteries: the Township Cemetery and the [Kilbourn Cemetery](#kilbourn-cemetery).
+
+[Lincoln Township Cemeteries Ordinance](/ordinances/42.pdf)
+
+---
+
+### Lincoln Township Cemetery
+
+The Lincoln Township Cemetery is located on Lake Street and contains over 1,300 spaces. This is NOT a Perpetual Care cemetery, but every effort is made to keep the premises in good and peaceful order.
+
+#### Cemetery Records
+
+- [List by Blocks — Numerically](/docs/cemetery/linctwp_cemetery_blocks.pdf)
+- [List by Deed — Alphabetically](/docs/cemetery/linctwp_cemetery_deed_alphabetical.pdf)
+- [List by Interred Surname — Alphabetically](/docs/cemetery/linctwp_cemetery_interred_alphabetical.pdf)
+
+*The Cemetery Files were last updated 6/9/2021.*
+
+#### Plot Costs & Burial Fees
+
+**Plot Cost:** $100.00 each
+
+|  | Foundation in place | 12" x 24" Foundation | Larger Foundations |
+| --- | --- | --- | --- |
+| **Open & close burial — Summer** | $315.00 | $400.00 | $440.00 |
+| **Open & close burial — Winter** | $503.00 | $600.00 | $625.00 |
+| **Cremation / Infant burial** | $95.00 | $200.00 | $220.00 |
+
+Saturday, Sunday, and Holidays: $75.00 additional cost.
+
+---
+
+### Kilbourn Cemetery
+
+The smaller of the two, Kilbourn Cemetery was a private cemetery abandoned by the Reorganized Church of Jesus Christ of Latter-day Saints. Ownership was assumed by Lincoln Township and the cemetery is maintained out of respect for those who are interred there.
+
+**Location:** Jackson Ave. between Browns and Adams Rd. (west side, closer to Adams than Browns). It's easy to miss — look for the two small headstones. Be careful, the area usually has quite a bit of poison ivy. Wear long pants!
+
+*Leave a penny on the Kilbourn headstone — it's a long-standing tradition.*
+
+---
+
+### Contact Information
+
+- **Mike Tobin**, Cemetery Commissioner — Office: (989) 588-9841, Home: (989) 588-2311
+- **Jeffrey Smith**, Sexton — (989) 588-9294
+- **Carol Majewski**, Township Clerk — (989) 588-9069, Email: [clm@lincolntwp.com](mailto:clm@lincolntwp.com)
+
+Need to do some cemetery name or grave searches? Visit [FindAGrave.com](http://www.findagrave.com/).

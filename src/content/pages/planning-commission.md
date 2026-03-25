@@ -1,5 +1,5 @@
 ---
-title: "Planning_Commission"
+title: "Planning Commission"
 description: "Planning Commission meeting minutes, agendas, and zoning information"
 lastUpdated: "2025-01-19"
 category: "Planning & Zoning"
@@ -27,18 +27,18 @@ The approval of the latest minutes will be voted on at the next meeting.
 
 #### Zoning Ordinance Initiative Meeting Minutes: 2015
 
-- [Meeting Minutes 5/12/2015](docs/zoning_ord_creation/landplan_blueprint_meeting_minutes5-12-15.pdf) — posted 7/1/2015
-- [Meeting Minutes 4/27/2015](docs/zoning_ord_creation/landplan_blueprint_meeting_minutes4-27-15.pdf) — posted 7/1/2015
-- [Meeting Minutes 2/23/2015](docs/zoning_ord_creation/landplan_blueprint_meeting_minutes2-23-15.pdf) — posted 7/1/2015
+- [Meeting Minutes 5/12/2015](/docs/zoning_ord_creation/landplan_blueprint_meeting_minutes5-12-15.pdf) — posted 7/1/2015
+- [Meeting Minutes 4/27/2015](/docs/zoning_ord_creation/landplan_blueprint_meeting_minutes4-27-15.pdf) — posted 7/1/2015
+- [Meeting Minutes 2/23/2015](/docs/zoning_ord_creation/landplan_blueprint_meeting_minutes2-23-15.pdf) — posted 7/1/2015
 
 ---
 
 ### Archive: 2008-2010 Planning Commission Minutes
 
-- [12-21-10](archive/planning_minutes/plancomm_min12-21-10.pdf)
-- [10-19-10](archive/planning_minutes/plancomm_min10-19-10.pdf)
-- [9-21-10](archive/planning_minutes/plancomm_min9-21-10.pdf)
-- [8-17-10](archive/planning_minutes/plancomm_min8-17-10.pdf)
+- [12-21-10](/archive/planning_minutes/plancomm_min12-21-10.pdf)
+- [10-19-10](/archive/planning_minutes/plancomm_min10-19-10.pdf)
+- [9-21-10](/archive/planning_minutes/plancomm_min9-21-10.pdf)
+- [8-17-10](/archive/planning_minutes/plancomm_min8-17-10.pdf)
 - [7-20-10](/archive/planning_minutes/plancomm_min7-20-10.pdf)
 - [6-15-10](/archive/planning_minutes/plancomm_min6-15-10.pdf)
 - [5-18-10](/archive/planning_minutes/plancomm_min5-18-10.pdf)

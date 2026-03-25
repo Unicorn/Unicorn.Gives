@@ -1,5 +1,5 @@
 ---
-title: "Faq"
+title: "Frequently Asked Questions"
 description: "Frequently asked questions about Lincoln Township services, permits, taxes, and more"
 lastUpdated: "2025-01-19"
 category: "Information"
@@ -120,10 +120,10 @@ Call (989) 539-2761.
 Call 989-539-2741. The individual who filed the permit application must schedule inspections with the Building Inspector.
 
 **What do I need permits for?**
-Call (989) 539-2761, follow prompts. Also, download information [HERE](docs/faq_when_permit.pdf).
+Call (989) 539-2761, follow prompts. Also, download information [HERE](/docs/faq_when_permit.pdf).
 
 **Where can I get a Building Permit?**
-At [lincolntwp.com/forms/building_permit_all-in-one.pdf](forms/building_permit_all-in-one.pdf).
+At [lincolntwp.com/forms/building_permit_all-in-one.pdf](/forms/building_permit_all-in-one.pdf).
 
 **Where do I get an electrical, mechanical or plumbing permit?**
 Contact [Clare County Community Services](https://clareco-buildingdev.net/) at 989-539-2761.
