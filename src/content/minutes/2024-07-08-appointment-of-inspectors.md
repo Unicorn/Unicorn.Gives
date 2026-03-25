@@ -3,6 +3,12 @@ title: "Appointment of Inspectors — July 8, 2024"
 date: "2024-07-08"
 meetingType: "Appointment of Inspectors"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Zimmerman"
+    - "Majewski"
+    - "Carey"
 ---
 
 Supervisor Zimmerman called the meeting to order at 6:55 PM.

@@ -3,6 +3,22 @@ title: "Board Meeting — November 10, 2025"
 date: "2025-11-10"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Simons"
+    - "Carey"
+    - "Tobin"
+  absent: []
+  alsoPresent:
+    - "Zoning Admin. Hassberger"
+    - "Lakes Dir. R. Carey"
+    - "Fire Chief D. Majewski"
+    - "Planning Member McCaslin"
+    - "Deputy Oster"
+    - "Undersheriff Williams"
 ---
 
 Supervisor Kibbey called the meeting to order at 4:00PM.

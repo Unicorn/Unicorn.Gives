@@ -3,6 +3,20 @@ title: "Board Meeting — July 14, 2025"
 date: "2025-07-14"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Carey"
+    - "Simons"
+    - "Tobin"
+  absent: []
+  alsoPresent:
+    - "Zoning Admin. Hassberger"
+    - "Chief D. Majewski"
+    - "Lakes Dir. R. Carey"
+    - "Deputy Oster"
 ---
 
 Supervisor Kibbey called the meeting to order at 7PM and the Pledge of Allegiance was recited.

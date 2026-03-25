@@ -3,6 +3,15 @@ title: "Elections — April 21, 2025"
 date: "2025-04-21"
 meetingType: "Elections"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Carey"
+    - "Majewski"
+  absent:
+    - "Simons"
+    - "Tobin"
 ---
 
 Supervisor Kibbey called the meeting to order at 11:45 AM.

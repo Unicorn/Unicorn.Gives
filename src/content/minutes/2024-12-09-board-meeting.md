@@ -3,6 +3,21 @@ title: "Board Meeting — December 9, 2024"
 date: "2024-12-09"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Carey"
+    - "Majewski"
+    - "Tobin"
+    - "Kibbey"
+    - "Simons"
+  alsoPresent:
+    - "Fire Chief D. Majewski"
+    - "Zoning Admin"
+    - "Asst. Fire Chief and Ord. Enf. Logan"
+    - "Planning Chair Blaisdell"
+    - "Planning Member Ostrowski"
+    - "Lakes Commissioner R. Carey"
 ---
 
 Supervisor Kibbey called the meeting to order at 7:00 PM.

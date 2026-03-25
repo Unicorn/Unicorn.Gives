@@ -3,6 +3,22 @@ title: "Board Meeting — January 8, 2024"
 date: "2024-01-08"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Zimmerman"
+    - "Majewski"
+    - "Carey"
+    - "Tobin"
+  absent:
+    - "Bridges"
+  alsoPresent:
+    - "Planning Chair Blaisdell"
+    - "Planning Member Ostrowski"
+    - "ZBA Member Simons"
+    - "Zoning Admin. Hassberger"
+    - "Lakes Director R. Carey"
+    - "Fire Chief/County Commissioner D. Majewski"
 ---
 
 The meeting was called to order by Supervisor Zimmerman at 7:00 p.m.

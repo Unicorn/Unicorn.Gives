@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import PageLayout from '../../layouts/PageLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
 
 const allMinutes = await getCollection('minutes');
 
@@ -15,65 +16,647 @@ for (const entry of allMinutes) {
   byYear[year].push(entry);
 }
 const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+
+// Collect unique meeting types for filter
+const meetingTypes = [...new Set(allMinutes.map(m => m.data.meetingType))].sort();
+
+// Build search index with full body text for client-side full-text search
+const searchIndex: Record<string, string> = {};
+for (const entry of allMinutes) {
+  // Strip markdown formatting to get plain text for searching
+  const plainBody = entry.body
+    .replace(/^---[\s\S]*?---/m, '')     // remove frontmatter if present
+    .replace(/[#*_~`>\[\]()!|]/g, ' ')   // strip markdown syntax
+    .replace(/\n+/g, ' ')                // collapse newlines
+    .replace(/\s+/g, ' ')               // collapse whitespace
+    .toLowerCase()
+    .trim();
+  searchIndex[entry.slug] = `${entry.data.title} ${entry.data.meetingType} ${entry.data.description || ''} ${entry.data.date} ${plainBody}`.toLowerCase();
+}
 ---
 
-<PageLayout title="Board Meeting Minutes" description="Complete archive of Lincoln Township Board of Trustees meeting minutes" slug="minutes">
-  <p>Regular board meetings are held on the second Monday of each month at 7:00 PM at Lincoln Township Hall, 175 Lake George Ave, Lake George, MI 48633.</p>
-  <p><em>The most recent minutes are pending approval at the next board meeting.</em></p>
-  <hr />
-  {years.map((year) => (
-    <section>
-      <h2>{year} Board Meeting Minutes</h2>
-      <ul class="minutes-list">
-        {byYear[year].map((entry) => {
-          const dateObj = new Date(entry.data.date + 'T12:00:00');
-          const formatted = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-          return (
-            <li>
-              <a href={`/minutes/${entry.slug}`}>{formatted} &mdash; {entry.data.meetingType}</a>
-              {entry.data.status === 'pending' && <span class="badge-pending">Pending</span>}
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  ))}
-  <hr />
-  <h2>2005&ndash;2013 Archive</h2>
-  <p>Historical meeting minutes from 2005 through 2013 are available in the <a href="/minutes-archive">Board Minutes Archive</a>.</p>
-</PageLayout>
+<BaseLayout
+  title="Meeting Minutes | Unicorn Gives"
+  description="Complete archive of Lincoln Township board, planning commission, and ZBA meeting minutes"
+>
+  <section class="minutes-hero">
+    <div class="minutes-hero-inner">
+      <h1>Meeting Minutes</h1>
+      <p>Board of Trustees, Planning Commission, and Zoning Board of Appeals</p>
+      <p class="minutes-count"><strong>{allMinutes.length}</strong> meetings archived from {years[years.length - 1]} to {years[0]}</p>
+    </div>
+  </section>
+
+  <Section padding="sm" background="gray">
+    <div class="controls" id="controls">
+      <div class="search-row">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+          <input type="search" id="search" placeholder="Search all minutes content (e.g. fencing, setbacks, budget)..." autocomplete="off" />
+        </div>
+        <div class="sort-control">
+          <label for="sort">Sort:</label>
+          <select id="sort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">Type:</span>
+          <div class="filter-chips" id="type-filters">
+            <button class="chip active" data-filter="all">All</button>
+            {meetingTypes.map(type => (
+              <button class="chip" data-filter={type}>{type}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">Year:</span>
+          <div class="filter-chips" id="year-filters">
+            <button class="chip active" data-year="all">All</button>
+            {years.map(year => (
+              <button class="chip" data-year={year}>{year}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div class="results-bar" id="results-bar">
+        <span id="results-count">Showing all {allMinutes.length} minutes</span>
+        <button id="clear-filters" class="clear-btn" style="display: none;">Clear all filters</button>
+      </div>
+    </div>
+  </Section>
+
+  <Section padding="md">
+    <div id="minutes-container">
+      {years.map((year) => (
+        <section class="year-section" data-year={year}>
+          <h2 class="year-heading" id={`year-${year}`}>{year}</h2>
+          <div class="minutes-grid">
+            {byYear[year].map((entry) => {
+              const dateObj = new Date(entry.data.date + 'T12:00:00');
+              const monthShort = dateObj.toLocaleDateString('en-US', { month: 'short' });
+              const day = dateObj.getDate();
+              const status = entry.data.status || 'approved';
+              return (
+                <a href={`/minutes/${entry.slug}/`}
+                   class="minute-card"
+                   data-slug={entry.slug}
+                   data-type={entry.data.meetingType}
+                   data-year={year}
+                   data-status={status}
+                   data-title={entry.data.title.toLowerCase()}
+                   data-body={entry.data.body || 'board'}
+                >
+                  <div class="minute-date">
+                    <span class="minute-month">{monthShort}</span>
+                    <span class="minute-day">{day}</span>
+                  </div>
+                  <div class="minute-body">
+                    <div class="minute-meta">
+                      <span class="minute-type">{entry.data.meetingType}</span>
+                      {status === 'pending' && <span class="minute-status status-pending">Pending</span>}
+                      {status === 'draft' && <span class="minute-status status-draft">Draft</span>}
+                    </div>
+                    <h3>{entry.data.title}</h3>
+                    {entry.data.description && <p class="minute-desc">{entry.data.description}</p>}
+                    <div class="minute-extras">
+                      {entry.data.source === 'pdf' && <span class="minute-badge">From PDF</span>}
+                      {entry.data.source === 'transcribed' && <span class="minute-badge">Transcribed</span>}
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <div id="no-results" class="no-results" style="display: none;">
+      <p>No minutes match your search criteria.</p>
+      <button id="no-results-clear" class="clear-btn">Clear all filters</button>
+    </div>
+
+    <div class="archive-note">
+      <p><em>The most recent minutes are pending approval at the next board meeting.</em></p>
+      <p><strong>Accessibility:</strong> Individuals with disabilities requiring auxiliary aids or services should contact Carol Majewski, Clerk at <a href="tel:989-588-9841">989-588-9841 ext. 2</a> or <a href="mailto:clm@lincolntwp.com">clm@lincolntwp.com</a>.</p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script is:inline define:vars={{ searchIndex }}>
+  window.__minutesSearchIndex = searchIndex;
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchIndex = (window as any).__minutesSearchIndex as Record<string, string>;
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const sortSelect = document.getElementById('sort') as HTMLSelectElement;
+    const typeFilters = document.getElementById('type-filters')!;
+    const yearFilters = document.getElementById('year-filters')!;
+    const resultsCount = document.getElementById('results-count')!;
+    const clearBtn = document.getElementById('clear-filters')!;
+    const noResults = document.getElementById('no-results')!;
+    const noResultsClear = document.getElementById('no-results-clear')!;
+    const container = document.getElementById('minutes-container')!;
+
+    let activeType = 'all';
+    let activeYear = 'all';
+    let searchTerm = '';
+    let sortOrder = 'newest';
+
+    function applyFilters() {
+      const cards = container.querySelectorAll('.minute-card') as NodeListOf<HTMLElement>;
+      const yearSections = container.querySelectorAll('.year-section') as NodeListOf<HTMLElement>;
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const matchesType = activeType === 'all' || card.dataset.type === activeType;
+        const matchesYear = activeYear === 'all' || card.dataset.year === activeYear;
+        const slug = card.dataset.slug || '';
+        const indexText = searchIndex[slug] || '';
+        const matchesSearch = !searchTerm || indexText.includes(searchTerm.toLowerCase());
+
+        if (matchesType && matchesYear && matchesSearch) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Hide empty year sections
+      yearSections.forEach(section => {
+        const visibleCards = section.querySelectorAll('.minute-card:not([style*="display: none"])');
+        section.style.display = visibleCards.length > 0 ? '' : 'none';
+      });
+
+      // Handle sort
+      if (sortOrder === 'oldest') {
+        const sections = Array.from(yearSections).sort((a, b) =>
+          Number(a.dataset.year) - Number(b.dataset.year)
+        );
+        sections.forEach(s => container.appendChild(s));
+
+        yearSections.forEach(section => {
+          const grid = section.querySelector('.minutes-grid')!;
+          const sortedCards = Array.from(grid.querySelectorAll('.minute-card')).sort((a, b) => {
+            const dateA = (a as HTMLElement).dataset.slug || '';
+            const dateB = (b as HTMLElement).dataset.slug || '';
+            return dateA.localeCompare(dateB);
+          });
+          sortedCards.forEach(c => grid.appendChild(c));
+        });
+      } else {
+        const sections = Array.from(yearSections).sort((a, b) =>
+          Number(b.dataset.year) - Number(a.dataset.year)
+        );
+        sections.forEach(s => container.appendChild(s));
+
+        yearSections.forEach(section => {
+          const grid = section.querySelector('.minutes-grid')!;
+          const sortedCards = Array.from(grid.querySelectorAll('.minute-card')).sort((a, b) => {
+            const dateA = (a as HTMLElement).dataset.slug || '';
+            const dateB = (b as HTMLElement).dataset.slug || '';
+            return dateB.localeCompare(dateA);
+          });
+          sortedCards.forEach(c => grid.appendChild(c));
+        });
+      }
+
+      // Update count
+      const total = cards.length;
+      if (activeType === 'all' && activeYear === 'all' && !searchTerm) {
+        resultsCount.textContent = `Showing all ${total} minutes`;
+        clearBtn.style.display = 'none';
+      } else {
+        resultsCount.textContent = `Showing ${visibleCount} of ${total} minutes`;
+        clearBtn.style.display = '';
+      }
+
+      noResults.style.display = visibleCount === 0 ? '' : 'none';
+      container.style.display = visibleCount === 0 ? 'none' : '';
+    }
+
+    // Search
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        searchTerm = searchInput.value.trim();
+        applyFilters();
+      }, 200);
+    });
+
+    // Sort
+    sortSelect.addEventListener('change', () => {
+      sortOrder = sortSelect.value;
+      applyFilters();
+    });
+
+    // Type filter chips
+    typeFilters.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('.chip') as HTMLElement;
+      if (!btn) return;
+      typeFilters.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      activeType = btn.dataset.filter || 'all';
+      applyFilters();
+    });
+
+    // Year filter chips
+    yearFilters.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('.chip') as HTMLElement;
+      if (!btn) return;
+      yearFilters.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      activeYear = btn.dataset.year || 'all';
+      applyFilters();
+    });
+
+    // Clear all
+    function clearAll() {
+      searchInput.value = '';
+      searchTerm = '';
+      activeType = 'all';
+      activeYear = 'all';
+      sortOrder = 'newest';
+      sortSelect.value = 'newest';
+      typeFilters.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      typeFilters.querySelector('[data-filter="all"]')?.classList.add('active');
+      yearFilters.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      yearFilters.querySelector('[data-year="all"]')?.classList.add('active');
+      applyFilters();
+    }
+
+    clearBtn.addEventListener('click', clearAll);
+    noResultsClear.addEventListener('click', clearAll);
+  });
+</script>
 
 <style>
-  .minutes-list {
-    list-style: none;
-    padding: 0;
+  .minutes-hero {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    padding: 3.5rem 2rem;
+    text-align: center;
+    color: white;
   }
-  .minutes-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border-light, #e8e0d6);
+
+  .minutes-hero-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .minutes-hero h1 {
+    font-family: var(--font-title);
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: white;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  .minutes-hero p {
+    font-size: var(--text-lg);
+    opacity: 0.92;
+  }
+
+  .minutes-count {
+    font-size: var(--text-sm) !important;
+    opacity: 0.8 !important;
+    margin-top: 0.5rem;
+  }
+
+  /* Controls */
+  .controls {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 0.75rem;
   }
-  .minutes-list li:last-child {
-    border-bottom: none;
+
+  .search-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
   }
-  .minutes-list a {
-    color: var(--primary, #6b2d14);
-    text-decoration: none;
+
+  .search-box {
+    flex: 1;
+    position: relative;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-on-surface-variant);
+    pointer-events: none;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 0.6rem 0.75rem 0.6rem 2.5rem;
+    border: 1px solid var(--color-outline-light);
+    border-radius: 8px;
+    font-size: var(--text-base);
+    font-family: var(--font-body);
+    background: white;
+    transition: border-color 0.2s;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45, 74, 74, 0.1);
+  }
+
+  .sort-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .sort-control label {
+    font-size: var(--text-sm);
+    color: var(--color-on-surface-variant);
     font-weight: 500;
   }
-  .minutes-list a:hover {
-    text-decoration: underline;
+
+  .sort-control select {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-outline-light);
+    border-radius: 8px;
+    font-size: var(--text-sm);
+    font-family: var(--font-body);
+    background: white;
+    cursor: pointer;
   }
-  .badge-pending {
-    font-size: 0.7rem;
+
+  .filter-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-size: var(--text-sm);
+    color: var(--color-on-surface-variant);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .chip {
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--color-outline-light);
+    border-radius: 20px;
+    background: white;
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+    color: var(--color-on-surface-variant);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .chip:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .chip.active {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  .results-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--text-sm);
+    color: var(--color-on-surface-variant);
+  }
+
+  .clear-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: var(--text-sm);
+    font-family: var(--font-body);
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+  }
+
+  .clear-btn:hover {
+    color: var(--color-primary-light);
+  }
+
+  /* Year sections */
+  .year-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .year-heading {
+    font-family: var(--font-title);
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-outline-light);
+  }
+
+  .minutes-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .minute-card {
+    display: flex;
+    gap: 1rem;
+    background: white;
+    border: 1px solid var(--color-outline-light);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    align-items: center;
+  }
+
+  .minute-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(45, 74, 74, 0.1);
+    text-decoration: none;
+  }
+
+  .minute-date {
+    flex-shrink: 0;
+    width: 48px;
+    text-align: center;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 8px;
+    padding: 0.35rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .minute-month {
+    font-size: 0.6rem;
+    text-transform: uppercase;
     font-weight: 600;
-    padding: 0.15rem 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  .minute-day {
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .minute-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .minute-meta {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.15rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .minute-type {
+    font-size: 0.7rem;
+    color: var(--color-on-surface-variant);
+    background: var(--color-surface-dim);
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .minute-status {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-pending {
     background: #fef3cd;
     color: #856404;
+  }
+
+  .status-draft {
+    background: #e2e3e5;
+    color: #383d41;
+  }
+
+  .minute-card h3 {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-primary);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .minute-desc {
+    font-size: var(--text-xs);
+    color: var(--color-on-surface-variant);
+    margin: 0.15rem 0 0;
+    line-height: 1.3;
+  }
+
+  .minute-extras {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
+  }
+
+  .minute-badge {
+    font-size: 0.6rem;
+    color: var(--color-on-surface-variant);
+    background: var(--color-surface-dim);
+    padding: 0.05rem 0.35rem;
     border-radius: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+    font-weight: 500;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-on-surface-variant);
+  }
+
+  .no-results p {
+    font-size: var(--text-lg);
+    margin-bottom: 1rem;
+  }
+
+  .archive-note {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--color-outline-light);
+    font-size: var(--text-sm);
+    color: var(--color-on-surface-variant);
+  }
+
+  .archive-note p {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .search-row {
+      flex-direction: column;
+    }
+
+    .sort-control {
+      align-self: flex-end;
+    }
+
+    .filter-row {
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .minute-card {
+      padding: 0.65rem 0.75rem;
+    }
+
+    .minute-date {
+      width: 42px;
+    }
+
+    .minute-day {
+      font-size: 1.1rem;
+    }
   }
 </style>

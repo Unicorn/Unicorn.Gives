@@ -3,6 +3,22 @@ title: "Board Meeting — February 12, 2024"
 date: "2024-02-12"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Zimmerman"
+    - "Majewski"
+    - "Carey"
+    - "Tobin"
+    - "Bridges"
+  alsoPresent:
+    - "Fire Chief/Commissioner D. Majewski"
+    - "Zoning Admin Hassberger"
+    - "Planning Chairperson Blaisdell"
+    - "ZBA alt. Simon"
+    - "Drain Commissioner Faber"
+    - "Deputy Oster"
+    - "Lakes Director R. Carey"
 ---
 
 Supervisor Zimmerman called the meeting to order at 7:00 PM.

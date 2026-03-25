@@ -3,6 +3,12 @@ title: "Election Minutes — October 14, 2024"
 date: "2024-10-14"
 meetingType: "Election Minutes"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Carey"
+    - "Majewski"
 ---
 
 Supervisor Kibbey called the meeting to order at 7:31 PM.

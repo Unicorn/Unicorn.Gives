@@ -3,6 +3,22 @@ title: "Board Meeting — July 8, 2024"
 date: "2024-07-08"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Zimmerman"
+    - "Majewski"
+    - "Carey"
+    - "Sherrod"
+    - "Tobin"
+  alsoPresent:
+    - "Zoning Admin. Hassberger"
+    - "Planning Member Szczpanski"
+    - "Planning Member McCaslin"
+    - "Planning Member Ostrowski"
+    - "Lakes Dir. R. Carey"
+    - "Fire Chief/County Comm. D. Majewski"
+    - "Deputy Oster"
 ---
 
 Supervisor Zimmerman called the meeting to order at 7:00 PM.

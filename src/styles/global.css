@@ -1,18 +1,19 @@
 :root {
-  /* Earth tone palette — hybridized from Stitch comp */
-  --color-primary: #5b1b00;
-  --color-primary-light: #802a00;
-  --color-primary-warm: #a83900;
-  --color-secondary: #446733;
-  --color-secondary-light: #c5efad;
-  --color-tertiary: #442a22;
-  --color-accent: #6361ad; /* original purple for Unicorn Gives brand pops */
+  /* The Horn palette — matched from flyer branding */
+  --color-primary: #2d4a4a;
+  --color-primary-light: #3d6060;
+  --color-primary-warm: #356565;
+  --color-secondary: #8a9a7c;
+  --color-secondary-light: #d4e4c4;
+  --color-tertiary: #1e3434;
+  --color-accent: #9b8ec4; /* lavender/purple from flyer accents */
+  --color-accent-gold: #d4b96e; /* gold from flyer membership tiers */
 
   /* Semantic colors */
-  --color-link: #802a00;
-  --color-link-hover: #5b1b00;
-  --color-selection: #c5efad;
-  --color-dark-bg: #442a22;
+  --color-link: #3d6060;
+  --color-link-hover: #2d4a4a;
+  --color-selection: #d4e4c4;
+  --color-dark-bg: #1e3434;
 
   /* Surfaces */
   --color-surface: #fcf9f4;

@@ -3,6 +3,18 @@ title: "Board Meeting — August 19, 2024"
 date: "2024-08-19"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Carey"
+    - "Majewski"
+    - "Tobin"
+    - "Sherrod"
+  alsoPresent:
+    - "Fire Chief D. Majewski"
+    - "Zoning Admin. Hassberger"
+    - "Asst. Fire Chief J. Cogswell"
+    - "Sexton J. Smith"
 ---
 
 Clerk Majewski called the meeting to order at 10:00 AM.

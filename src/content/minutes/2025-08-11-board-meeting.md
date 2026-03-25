@@ -3,6 +3,19 @@ title: "Board Meeting — August 11, 2025"
 date: "2025-08-11"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Carey"
+    - "Tobin"
+    - "Simons"
+  absent: []
+  alsoPresent:
+    - "Fire Chief D. Majewski"
+    - "Lakes Dir. R. Carey"
+    - "Planning Member McCaslin"
 ---
 
 Supervisor Kibbey called the meeting to order at 7PM. Pledge of Allegiance.

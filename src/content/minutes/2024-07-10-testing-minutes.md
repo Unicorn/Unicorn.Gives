@@ -3,6 +3,7 @@ title: "Testing Minutes — July 10, 2024"
 date: "2024-07-10"
 meetingType: "Testing Minutes"
 status: "approved"
+source: "transcribed"
 ---
 
 The meeting was called to order by Clerk Majewski at 10:00 AM.

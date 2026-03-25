@@ -3,6 +3,20 @@ title: "Board Meeting — June 9, 2025"
 date: "2025-06-09"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Carey"
+    - "Simons"
+    - "Tobin"
+  absent: []
+  alsoPresent:
+    - "Zoning Admin. Hassberger"
+    - "Chief D. Majewski"
+    - "Lakes Dir. R. Carey"
+    - "Deputy Oster"
 ---
 
 Supervisor Kibbey called the meeting to order at 7PM.

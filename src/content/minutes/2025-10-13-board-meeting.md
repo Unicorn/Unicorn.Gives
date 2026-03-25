@@ -3,6 +3,23 @@ title: "Board Meeting — October 13, 2025"
 date: "2025-10-13"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Carey"
+    - "Tobin"
+    - "Simons"
+  absent: []
+  alsoPresent:
+    - "Fire Chief D. Majewski"
+    - "Planning Chair Blaisdell"
+    - "Planning Member Ostrowski"
+    - "ZBA Member Lease"
+    - "Lakes Dir. R. Carey"
+    - "Zoning Admin. Hassberger"
+    - "Deputy Oster"
 ---
 
 Supervisor Kibbey called the meeting to order at 7:00PM.

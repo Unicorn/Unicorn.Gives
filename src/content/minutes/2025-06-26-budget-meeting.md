@@ -3,6 +3,17 @@ title: "Budget Meeting — June 26, 2025"
 date: "2025-06-26"
 meetingType: "Budget Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Carey"
+    - "Simons"
+    - "Tobin"
+  absent: []
+  alsoPresent:
+    - "Chief D. Majewski"
 ---
 
 Supervisor Kibbey called the meeting to order at 5:12PM.

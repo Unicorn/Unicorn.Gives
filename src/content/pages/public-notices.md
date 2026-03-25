@@ -1,40 +1,49 @@
 ---
 title: "Public Notices"
-description: "Lincoln Township public hearing notices, ordinance changes, and official announcements"
+description: "Official public notices, hearing schedules, and important deadlines for Lincoln Township and Clare County residents"
 lastUpdated: "2026-03-25"
-category: "News & Events"
-subcategory: "Public Notices"
-order: 50
+category: "Government"
+subcategory: "Transparency"
+order: 31
 ---
 
-## Public Notices & Announcements
+## Active Notices
 
-Official notices from Lincoln Township including public hearings, ordinance changes, and important announcements affecting residents.
+### Special Assessment District (SAD) Public Hearings
+**Date:** Friday, May 8, 2026 at 4:00 PM
+**Location:** Lincoln Township Hall, 175 Lake George Ave, Lake George, MI
 
-### Current Notices
+Three separate public hearings will be held for:
+- **Shingle Lake SAD** — Special assessment for lake management
+- **Bertha Lake SAD** — Special assessment for lake management
+- **Lake George SAD** — Special assessment for lake management
 
-*No current public notices at this time. Check back regularly for updates.*
+Affected property owners in these SAD districts are encouraged to attend. You may also submit written comments to the Township Clerk before the hearing date.
 
 ---
 
-### Types of Notices Posted Here
+## Regular Meeting Schedules
 
-- **Public Hearing Notices** — Required notifications before zoning changes, special use permits, and variance requests
-- **Ordinance Changes** — Proposed and adopted ordinance amendments
-- **Election Notices** — Voter registration deadlines, ballot proposals, and polling information
-- **Board Announcements** — Special meetings, emergency actions, and policy changes
-- **Community Alerts** — Road closures, utility work, and public safety information
+| Body | Schedule | Time | Location |
+|------|----------|------|----------|
+| **Township Board** | 2nd Monday monthly | 7:00 PM | Lincoln Township Hall |
+| **Planning Commission** | 1st Tuesday after 2nd Monday | 7:00 PM | Lincoln Township Hall |
+| **ZBA** | As needed (1st Wed after 2nd Monday) | 7:00 PM | Lincoln Township Hall |
+| **County Commissioners** | 3rd Wednesday monthly | 9:00 AM | Clare County Courthouse |
+| **Conservation District** | 3rd Tuesday monthly | 6:30 PM | Harrison District Library |
 
-### Stay Informed
+## How to Stay Informed
 
-- [Subscribe to updates](/subscribe) to receive notifications
-- [View the meeting calendar](/calendar) for upcoming board and commission meetings
-- [Read meeting minutes](/board-minutes) for decisions made at recent meetings
+- **Subscribe:** [Sign up for email updates](/subscribe) to get meeting reminders and public notices
+- **Emergency alerts:** Text "ClareCoAlerts" to 67283
+- **Meeting minutes:** [View board meeting minutes](/board-minutes)
+- **FOIA:** [Submit a public records request](/foia)
 
-### Submit a Notice
+## Legal Notices
 
-Township officials and recognized community organizations may submit public notices for posting. Contact the Township Clerk:
+Michigan legal notices are published through the state system at [Michigan Public Notices](https://www.michiganpublicnotices.com/).
 
-- **Carol Majewski, Township Clerk**
-- Phone: [989-588-9069](tel:989-588-9069)
-- Email: clm@lincolntwp.com
+## Contact
+
+Questions about public notices? Contact the Township Clerk:
+- **Carol Majewski** — [(989) 588-9841 ext. 2](tel:9895889841)

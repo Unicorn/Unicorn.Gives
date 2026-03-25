@@ -3,6 +3,7 @@ title: "Testing Minutes — October 10, 2024"
 date: "2024-10-10"
 meetingType: "Testing Minutes"
 status: "approved"
+source: "transcribed"
 ---
 
 The meeting was called to order by Supervisor Kibbey at 2:05 PM.

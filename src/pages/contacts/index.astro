@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import { getCollection } from 'astro:content';
+
+const allContacts = await getCollection('contacts');
+const sorted = allContacts.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+
+const jurisdictions = [
+  { id: 'township', label: 'Lincoln Township' },
+  { id: 'county', label: 'Clare County' },
+];
+
+const byJurisdiction = jurisdictions.map((j) => {
+  const contacts = sorted.filter((c) => c.data.jurisdiction === j.id);
+  const departments = [...new Set(contacts.map((c) => c.data.department))];
+  return {
+    ...j,
+    departments: departments.map((dept) => ({
+      name: dept,
+      contacts: contacts.filter((c) => c.data.department === dept),
+    })),
+  };
+});
+---
+
+<BaseLayout
+  title="Directory | Unicorn Gives"
+  description="Contact information for Lincoln Township and Clare County officials, departments, and services"
+>
+  <section class="directory-hero">
+    <div class="directory-hero-inner">
+      <h1>Contact Directory</h1>
+      <p>Every official, department, and service across Lincoln Township and Clare County — in one place.</p>
+    </div>
+  </section>
+
+  {byJurisdiction.map((jur) => (
+    <Section padding="lg" background={jur.id === 'county' ? 'gray' : 'white'}>
+      <h2 class="jurisdiction-heading">{jur.label}</h2>
+      {jur.departments.map((dept) => (
+        <div class="department-section">
+          <h3 class="department-heading">{dept.name}</h3>
+          <div class="contact-grid">
+            {dept.contacts.map((contact) => (
+              <div class="contact-card">
+                <strong class="contact-name">{contact.data.name}</strong>
+                <span class="contact-role">{contact.data.role}</span>
+                {contact.data.phone && (
+                  <a href={`tel:${contact.data.phone.replace(/[^\d+]/g, '')}`} class="contact-phone">
+                    {contact.data.phone}{contact.data.phoneExt ? ` ext. ${contact.data.phoneExt}` : ''}
+                  </a>
+                )}
+                {contact.data.email && (
+                  <a href={`mailto:${contact.data.email}`} class="contact-email">
+                    {contact.data.email}
+                  </a>
+                )}
+                {contact.data.hours && (
+                  <span class="contact-hours">{contact.data.hours}</span>
+                )}
+                {contact.data.website && (
+                  <a href={contact.data.website} class="contact-website" target="_blank" rel="noopener">
+                    Website &rarr;
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </Section>
+  ))}
+</BaseLayout>
+
+<style>
+  .directory-hero {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    padding: 3.5rem 2rem;
+    text-align: center;
+    color: white;
+  }
+
+  .directory-hero-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .directory-hero h1 {
+    font-family: var(--font-title);
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: white;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  .directory-hero p {
+    font-size: var(--text-lg);
+    opacity: 0.92;
+  }
+
+  .jurisdiction-heading {
+    font-family: var(--font-title);
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+  }
+
+  .department-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .department-heading {
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    color: var(--color-on-surface);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-outline-light);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .contact-card {
+    background: white;
+    border: 1px solid var(--color-outline-light);
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .contact-name {
+    color: var(--color-primary);
+    font-size: var(--text-base);
+  }
+
+  .contact-role {
+    font-size: var(--text-sm);
+    color: var(--color-on-surface-variant);
+    margin-bottom: 0.35rem;
+  }
+
+  .contact-phone,
+  .contact-email,
+  .contact-website {
+    font-size: var(--text-sm);
+    color: var(--color-link);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .contact-phone:hover,
+  .contact-email:hover,
+  .contact-website:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+  }
+
+  .contact-hours {
+    font-size: var(--text-xs);
+    color: var(--color-on-surface-variant);
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

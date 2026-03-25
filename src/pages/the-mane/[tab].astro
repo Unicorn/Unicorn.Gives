@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import MicrositeLayout from '../../layouts/MicrositeLayout.astro';
+import { navigationStructure } from '../../config/navigation';
+
+const maneSubcat = navigationStructure
+  .flatMap(c => c.subcategories)
+  .find(s => s.id === 'the-mane');
+
+const micrositeConfig = maneSubcat!.microsite!;
+
+export async function getStaticPaths() {
+  const maneSubcat = navigationStructure
+    .flatMap(c => c.subcategories)
+    .find(s => s.id === 'the-mane');
+
+  const tabs = maneSubcat!.microsite!.tabs;
+
+  return tabs.map(tab => ({
+    params: { tab: tab.tabSlug },
+    props: { activeTabSlug: tab.tabSlug },
+  }));
+}
+
+const { activeTabSlug } = Astro.props;
+const pages = await getCollection('pages');
+
+// Render all tab content at build time
+const allContent = await Promise.all(
+  micrositeConfig.tabs.map(async (tab) => {
+    const page = pages.find(p => p.slug === tab.slug);
+    if (!page) return null;
+    const { Content } = await page.render();
+    return { tabSlug: tab.tabSlug, Content };
+  })
+);
+
+const activeTabLabel = micrositeConfig.tabs.find(t => t.tabSlug === activeTabSlug)?.label || '';
+---
+
+<MicrositeLayout
+  title="The Mane"
+  description="The Mane — hair salon and beauty services in Lake George, Michigan"
+  basePath="/the-mane"
+  tabs={micrositeConfig.tabs}
+  activeTab={activeTabSlug}
+>
+  {allContent.filter(Boolean).map(({ tabSlug, Content }) => (
+    <div
+      class:list={['tab-panel', { active: tabSlug === activeTabSlug }]}
+      data-tab={tabSlug}
+      role="tabpanel"
+      id={`panel-${tabSlug}`}
+      aria-labelledby={`tab-${tabSlug}`}
+      hidden={tabSlug !== activeTabSlug ? true : undefined}
+    >
+      <Content />
+    </div>
+  ))}
+</MicrositeLayout>

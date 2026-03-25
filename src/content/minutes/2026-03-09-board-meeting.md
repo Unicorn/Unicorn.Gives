@@ -3,6 +3,22 @@ title: "Board Meeting — March 9, 2026"
 date: "2026-03-09"
 meetingType: "Board Meeting"
 status: "pending"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Carey"
+    - "Tobin"
+  absent:
+    - "Simons"
+  alsoPresent:
+    - "Fire Chief D. Majewski"
+    - "Zoning Admin. Hassberger"
+    - "Planning Chair Blaisdell"
+    - "Planning Member McCaslin"
+    - "Planning Member Ostrowski"
+    - "ZBA Member Lease"
 ---
 
 Supervisor Kibbey called the meeting to order at 7:00 PM.

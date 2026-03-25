@@ -3,6 +3,17 @@ title: "Special Meeting — January 20, 2025"
 date: "2025-01-20"
 meetingType: "Special Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Carey"
+    - "Majewski"
+    - "Kibbey"
+    - "Simons"
+    - "Tobin"
+  absent: []
+  alsoPresent:
+    - "Assessor Casey Guthrie"
 ---
 
 Supervisor Kibbey called the meeting to order at 4pm.

@@ -3,6 +3,21 @@ title: "Board Meeting — February 10, 2025"
 date: "2025-02-10"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Carey"
+    - "Majewski"
+    - "Simons"
+    - "Tobin"
+  absent: []
+  alsoPresent:
+    - "Chief D. Majewski"
+    - "Zoning Admin. Hassberger"
+    - "Planning Chair Blaisdell"
+    - "Lakes Dir. R. Carey"
+    - "Deputy Bret Holmes"
 ---
 
 Supervisor Kibbey called the meeting to order at 7:00pm.

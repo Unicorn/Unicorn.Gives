@@ -63,17 +63,28 @@ export function generateBreadcrumbs(slug: string, pageTitle: string): Breadcrumb
 
   // Add subcategory if found
   if (navPath.subcategory) {
+    const subcatHref = navPath.subcategory.microsite
+      ? navPath.subcategory.microsite.basePath
+      : `#${navPath.subcategory.id}`;
     breadcrumbs.push({
       label: navPath.subcategory.label,
-      href: `#${navPath.subcategory.id}` // Subcategories don't have their own pages
+      href: subcatHref
     });
   }
 
-  // Add current page (no link)
-  breadcrumbs.push({
-    label: pageTitle,
-    href: '' // Empty href for current page
-  });
+  // For microsites, the page title IS the subcategory (tabs handle sub-navigation)
+  // so we end the breadcrumb at the subcategory level
+  if (navPath.subcategory?.microsite) {
+    // Make the last breadcrumb (subcategory) the current page
+    const last = breadcrumbs[breadcrumbs.length - 1];
+    last.href = ''; // No link for current page
+  } else {
+    // Add current page (no link)
+    breadcrumbs.push({
+      label: pageTitle,
+      href: '' // Empty href for current page
+    });
+  }
 
   return breadcrumbs;
 }

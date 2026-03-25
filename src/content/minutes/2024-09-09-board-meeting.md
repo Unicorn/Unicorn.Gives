@@ -3,6 +3,30 @@ title: "Board Meeting — September 9, 2024"
 date: "2024-09-09"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Carey"
+    - "Tobin"
+    - "Sherrod"
+    - "Majewski"
+  alsoPresent:
+    - "Chief D. Majewski"
+    - "Zoning Admin. Hassberger"
+    - "Lakes Dir. R. Carey"
+    - "Planning Member Blaisdell"
+    - "Planning Member Ostrowski"
+    - "Planning Member Szczepanski"
+    - "Planning Member McCaslin"
+    - "Ord. Enf./Fire Lt. Logan"
+    - "Asst. Fire Chief Cogswell"
+    - "Fire Fighter F. Witchell"
+    - "Fire Fighter C. Witchell"
+    - "Sexton Smith"
+    - "ZBA Member Simons"
+    - "Sheriff Wilson"
+    - "Deputy Oster"
 ---
 
 Trustee Tobin spoke of the hard work and dedication of Dennis Zimmerman during his 24 plus years as Township Supervisor. Dennis passed away on August 16, 2024.

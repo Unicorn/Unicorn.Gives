@@ -3,6 +3,21 @@ title: "Board Meeting — October 14, 2024"
 date: "2024-10-14"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Carey"
+    - "Majewski"
+    - "Kibbey"
+    - "Tobin"
+    - "Sherrod"
+  alsoPresent:
+    - "Fire Chief D. Majewski"
+    - "Zoning Admin. Hassberger"
+    - "Planning Chair Blaisdell"
+    - "Ord. Enf. Logan"
+    - "Zoning Brd. Member Simons"
+    - "Deputy Oster"
 ---
 
 Supervisor Kibbey called the meeting to order at 7:00 PM.

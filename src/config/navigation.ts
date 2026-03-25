@@ -6,10 +6,20 @@ export interface NavigationPage {
   label?: string;
 }
 
+export interface MicrositeTab {
+  slug: string;      // content page slug, e.g. "about-the-horn"
+  tabSlug: string;   // URL segment, e.g. "about"
+  label: string;     // Display label, e.g. "About"
+}
+
 export interface NavigationSubcategory {
   id: string;
   label: string;
   pages: string[];
+  microsite?: {
+    basePath: string;
+    tabs: MicrositeTab[];
+  };
 }
 
 export interface NavigationCategory {
@@ -26,7 +36,7 @@ export const navigationStructure: NavigationCategory[] = [
       {
         id: 'property-building',
         label: 'Property & Building',
-        pages: ['help', 'building', 'permits-forms', 'zoning']
+        pages: ['help', 'building', 'permits-forms', 'forms-permits', 'zoning']
       },
       {
         id: 'taxes-assessment',
@@ -52,7 +62,7 @@ export const navigationStructure: NavigationCategory[] = [
       {
         id: 'lincoln-township',
         label: 'Lincoln Township',
-        pages: ['board', 'board-minutes', 'minutes-archive', 'budget', 'financial-reports']
+        pages: ['board', 'minutes', 'board-minutes', 'budget', 'financial-reports']
       },
       {
         id: 'planning-zoning',
@@ -62,7 +72,7 @@ export const navigationStructure: NavigationCategory[] = [
       {
         id: 'clare-county',
         label: 'Clare County',
-        pages: ['contacts', 'elections']
+        pages: ['contacts', 'election-center', 'elections']
       },
       {
         id: 'transparency',
@@ -99,12 +109,30 @@ export const navigationStructure: NavigationCategory[] = [
       {
         id: 'the-horn',
         label: 'The Horn',
-        pages: ['about-the-horn', 'events-horn', 'membership', 'hours-horn']
+        pages: ['about-the-horn', 'events-horn', 'membership', 'hours-horn'],
+        microsite: {
+          basePath: '/the-horn',
+          tabs: [
+            { slug: 'about-the-horn', tabSlug: 'about', label: 'About' },
+            { slug: 'events-horn', tabSlug: 'events', label: 'Events' },
+            { slug: 'membership', tabSlug: 'membership', label: 'Membership' },
+            { slug: 'hours-horn', tabSlug: 'hours', label: 'Hours & Contact' },
+          ],
+        },
       },
       {
         id: 'the-mane',
         label: 'The Mane',
-        pages: ['about-the-mane', 'services-mane', 'book-appointment', 'hours-mane']
+        pages: ['about-the-mane', 'services-mane', 'book-appointment', 'hours-mane'],
+        microsite: {
+          basePath: '/the-mane',
+          tabs: [
+            { slug: 'about-the-mane', tabSlug: 'about', label: 'About' },
+            { slug: 'services-mane', tabSlug: 'services', label: 'Services' },
+            { slug: 'book-appointment', tabSlug: 'book', label: 'Book Appointment' },
+            { slug: 'hours-mane', tabSlug: 'hours', label: 'Hours & Contact' },
+          ],
+        },
       },
       {
         id: 'resources',

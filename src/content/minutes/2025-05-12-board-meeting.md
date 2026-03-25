@@ -3,6 +3,20 @@ title: "Board Meeting — May 12, 2025"
 date: "2025-05-12"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Carey"
+    - "Simons"
+  absent:
+    - "Tobin"
+  alsoPresent:
+    - "Zoning Admin. Hassberger"
+    - "Chief D. Majewski"
+    - "Road Commission D. Bondie"
+    - "Road Commission D. Rogers"
 ---
 
 Supervisor Kibbey called the meeting to order at 7PM.

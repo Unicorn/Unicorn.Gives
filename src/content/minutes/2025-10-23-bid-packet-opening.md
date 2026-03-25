@@ -3,6 +3,17 @@ title: "Find Your Joy Bid Packet Opening — October 23, 2025"
 date: "2025-10-23"
 meetingType: "Bid Packet Opening"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Kibbey"
+    - "Majewski"
+    - "Simons"
+  absent:
+    - "Tobin"
+    - "Carey"
+  alsoPresent:
+    - "Engineer Connie Houk"
 ---
 
 Supervisor Kibbey called the meeting to order at 4:00PM.

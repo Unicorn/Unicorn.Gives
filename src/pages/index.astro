@@ -34,26 +34,26 @@ const categoryLabels: Record<string, string> = {
 };
 
 const categoryColors: Record<string, string> = {
-  'township': '#5b1b00',
-  'unicorn-gives': '#6361ad',
-  'the-horn': '#446733',
-  'the-mane': '#802a00',
-  'community': '#446733',
-  'ordinance-change': '#5b1b00',
-  'government-action': '#5b1b00',
+  'township': '#2d4a4a',
+  'unicorn-gives': '#9b8ec4',
+  'the-horn': '#8a9a7c',
+  'the-mane': '#3d6060',
+  'community': '#8a9a7c',
+  'ordinance-change': '#2d4a4a',
+  'government-action': '#2d4a4a',
   'public-safety': '#b91c1c',
   'public-notice': '#92400e',
-  'infrastructure': '#5b1b00',
-  'election': '#6361ad',
+  'infrastructure': '#2d4a4a',
+  'election': '#9b8ec4',
 };
 
 const eventCategoryColors: Record<string, string> = {
-  government: '#5b1b00',
-  community: '#446733',
+  government: '#2d4a4a',
+  community: '#8a9a7c',
   conservation: '#2d6a4f',
-  seniors: '#6361ad',
-  horn: '#446733',
-  'unicorn-gives': '#6361ad',
+  seniors: '#9b8ec4',
+  horn: '#8a9a7c',
+  'unicorn-gives': '#9b8ec4',
 };
 
 const eventCategoryLabels: Record<string, string> = {
@@ -147,7 +147,7 @@ const eventCategoryLabels: Record<string, string> = {
                   <span class="event-day-home">{day}</span>
                 </div>
                 <div class="event-body-home">
-                  <span class="event-tag-home" style={`background: ${eventCategoryColors[event.data.category] || '#5b1b00'}`}>
+                  <span class="event-tag-home" style={`background: ${eventCategoryColors[event.data.category] || '#2d4a4a'}`}>
                     {eventCategoryLabels[event.data.category] || event.data.category}
                   </span>
                   <h3>{event.data.title}</h3>
@@ -180,7 +180,7 @@ const eventCategoryLabels: Record<string, string> = {
                   <div class="news-featured-placeholder"></div>
                 )}
                 {featuredPost.data.category && (
-                  <span class="news-tag" style={`background: ${categoryColors[featuredPost.data.category] || '#5b1b00'}`}>
+                  <span class="news-tag" style={`background: ${categoryColors[featuredPost.data.category] || '#2d4a4a'}`}>
                     {categoryLabels[featuredPost.data.category] || featuredPost.data.category}
                   </span>
                 )}
@@ -207,7 +207,7 @@ const eventCategoryLabels: Record<string, string> = {
                 </div>
                 <div class="news-sidebar-body">
                   {post.data.category && (
-                    <span class="news-tag-sm" style={`background: ${categoryColors[post.data.category] || '#5b1b00'}`}>
+                    <span class="news-tag-sm" style={`background: ${categoryColors[post.data.category] || '#2d4a4a'}`}>
                       {categoryLabels[post.data.category] || post.data.category}
                     </span>
                   )}

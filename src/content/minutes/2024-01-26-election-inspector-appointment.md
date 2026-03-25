@@ -3,6 +3,12 @@ title: "Election Inspector Appointment — January 26, 2024"
 date: "2024-01-26"
 meetingType: "Election Inspector Appointment"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Zimmerman"
+    - "Majewski"
+    - "Carey"
 ---
 
 Supervisor Zimmerman called the meeting to order at 10:00 AM.

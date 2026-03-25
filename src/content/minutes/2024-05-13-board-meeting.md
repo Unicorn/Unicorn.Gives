@@ -3,6 +3,22 @@ title: "Board Meeting — May 13, 2024"
 date: "2024-05-13"
 meetingType: "Board Meeting"
 status: "approved"
+source: "transcribed"
+attendees:
+  present:
+    - "Zimmerman"
+    - "Majewski"
+    - "Tobin"
+    - "Carey"
+  absent:
+    - "Bridges"
+  alsoPresent:
+    - "Fire Chief/County Commissioner D. Majewski"
+    - "Zoning Admin. Hassberger"
+    - "Planning Member Blaisdell"
+    - "Planning Member McCaslin"
+    - "Planning Member Ostrowski"
+    - "Deputy Oster"
 ---
 
 Supervisor Zimmerman called the meeting to order at 7:00 PM.
