@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import { Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { LORE_ORDER, getLoreDoc } from '@/lib/lore';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { ContentContainer } from '@/components/layout/ContentContainer';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 export default function HistoryTab() {
   const { colors } = useTheme();
@@ -22,13 +23,13 @@ export default function HistoryTab() {
         if (!doc) return null;
         return (
           <Link key={slug} href={routes.history.detail(slug)} asChild>
-            <TouchableOpacity style={styles.card}>
+            <AnimatedPressable variant="card" style={styles.card}>
               <Text style={styles.eyebrow}>{doc.eyebrow}</Text>
               <Text style={styles.title}>{doc.title}</Text>
               <Text style={styles.blurb} numberOfLines={3}>
                 {doc.intro}
               </Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           </Link>
         );
       })}

@@ -4,9 +4,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Linking,
-  Pressable,
   Platform,
   Image,
   useWindowDimensions,
@@ -42,7 +40,8 @@ import {
   HOME_NEWSLETTER_CTA_EXTERNAL,
   HOME_HERO_IMPACT_LABEL,
 } from '@/constants/homeDiscoverHistory';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { toHref } from '@/lib/navigation/paths';
 import { BentoGrid, type BentoItem } from '@/components/widgets';
 
@@ -248,14 +247,14 @@ export default function HomeScreen() {
               </Text>
               <View style={[styles.heroCtaRow, isDesktop && styles.heroCtaRowDesktop]}>
                 <Link href={routes.community.index()} asChild>
-                  <TouchableOpacity style={styles.heroCtaPrimary}>
+                  <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.heroCtaPrimary, shadows.button])}>
                     <Text style={styles.heroCtaPrimaryText}>Problem Solver</Text>
-                  </TouchableOpacity>
+                  </AnimatedPressable>
                 </Link>
                 <Link href={routes.history.index()} asChild>
-                  <TouchableOpacity style={styles.heroCtaOutline}>
+                  <AnimatedPressable variant="button" style={styles.heroCtaOutline}>
                     <Text style={styles.heroCtaOutlineText}>Land &amp; lore</Text>
-                  </TouchableOpacity>
+                  </AnimatedPressable>
                 </Link>
               </View>
             </View>
@@ -293,14 +292,14 @@ export default function HomeScreen() {
           <Text style={styles.sectionTitle}>Explore</Text>
           <View style={styles.ctaRow}>
             <Link href={routes.community.index()} asChild>
-              <TouchableOpacity style={styles.ctaButton}>
+              <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.ctaButton, shadows.button])}>
                 <Text style={styles.ctaButtonText}>Problem Solver</Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             </Link>
             <Link href={routes.history.index()} asChild>
-              <TouchableOpacity style={styles.ctaButtonOutline}>
+              <AnimatedPressable variant="button" style={styles.ctaButtonOutline}>
                 <Text style={styles.ctaButtonOutlineText}>Land &amp; lore</Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             </Link>
           </View>
 
@@ -310,7 +309,8 @@ export default function HomeScreen() {
               <View style={styles.partnerFeatureRow}>
                 {partners.slice(0, 2).map((p) => (
                   <Link key={p.slug} href={routes.partners.index(p.slug)} asChild>
-                    <TouchableOpacity
+                    <AnimatedPressable
+                      variant="card"
                       style={StyleSheet.flatten([
                         styles.partnerFeatureCard,
                         (isTablet || isDesktop) && styles.partnerFeatureCardTablet,
@@ -330,7 +330,7 @@ export default function HomeScreen() {
                         ) : null}
                         <Text style={styles.partnerFeatureCta}>Visit partner</Text>
                       </View>
-                    </TouchableOpacity>
+                    </AnimatedPressable>
                   </Link>
                 ))}
               </View>
@@ -338,9 +338,9 @@ export default function HomeScreen() {
                 <View style={styles.partnerChips}>
                   {partners.slice(2).map((p) => (
                     <Link key={p.slug} href={routes.partners.index(p.slug)} asChild>
-                      <TouchableOpacity style={styles.partnerChip}>
+                      <AnimatedPressable variant="subtle" style={styles.partnerChip}>
                         <Text style={styles.partnerChipText}>{p.name}</Text>
-                      </TouchableOpacity>
+                      </AnimatedPressable>
                     </Link>
                   ))}
                 </View>
@@ -356,7 +356,8 @@ export default function HomeScreen() {
             ]}
           >
             <Link href={routes.community.index()} asChild>
-              <TouchableOpacity
+              <AnimatedPressable
+                variant="card"
                 style={StyleSheet.flatten([
                   styles.bentoTile,
                   !isDesktop && isTablet ? styles.bentoItemTwoThirds : null,
@@ -367,10 +368,11 @@ export default function HomeScreen() {
                 <Text style={styles.bentoTileHeading}>{HOME_BENTO_SOLVE_TITLE}</Text>
                 <Text style={styles.bentoTileDesc}>{HOME_BENTO_SOLVE_DESC}</Text>
                 <Text style={styles.bentoTileLink}>Open problem solver</Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             </Link>
             <Link href={govHref} asChild>
-              <TouchableOpacity
+              <AnimatedPressable
+                variant="card"
                 style={StyleSheet.flatten([
                   styles.bentoTile,
                   !isDesktop && isTablet ? styles.bentoItemOneThird : null,
@@ -381,7 +383,7 @@ export default function HomeScreen() {
                 <Text style={styles.bentoTileHeading}>{HOME_BENTO_GOV_TITLE}</Text>
                 <Text style={styles.bentoTileDesc}>{HOME_BENTO_GOV_DESC}</Text>
                 <Text style={styles.bentoTileLink}>Browse government</Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             </Link>
             <View
               style={[
@@ -412,9 +414,9 @@ export default function HomeScreen() {
                 <Text style={styles.bentoEventsEmpty}>{HOME_BENTO_EVENTS_EMPTY}</Text>
               )}
               <Link href={routes.community.events.index()} asChild>
-                <TouchableOpacity style={styles.bentoEventsCta}>
+                <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.bentoEventsCta, shadows.button])}>
                   <Text style={styles.bentoEventsCtaText}>See full calendar</Text>
-                </TouchableOpacity>
+                </AnimatedPressable>
               </Link>
             </View>
             <View
@@ -427,19 +429,19 @@ export default function HomeScreen() {
               <Text style={styles.bentoTileHeading}>{HOME_BENTO_NEWS_TITLE}</Text>
               {news[0] ? (
                 <Link href={routes.community.opinions.detail(news[0].slug)} asChild>
-                  <TouchableOpacity>
+                  <AnimatedPressable variant="subtle">
                     <Text style={styles.bentoNewsHeadline} numberOfLines={3}>
                       {news[0].title}
                     </Text>
-                  </TouchableOpacity>
+                  </AnimatedPressable>
                 </Link>
               ) : (
                 <Text style={styles.bentoTileDesc}>Check back for civic updates.</Text>
               )}
               <Link href={routes.community.opinions.index()} asChild>
-                <TouchableOpacity style={styles.bentoNewsFooter}>
+                <AnimatedPressable variant="subtle" style={styles.bentoNewsFooter}>
                   <Text style={styles.bentoTileLink}>Open news feed</Text>
-                </TouchableOpacity>
+                </AnimatedPressable>
               </Link>
             </View>
           </View>
@@ -458,17 +460,18 @@ export default function HomeScreen() {
             <Text style={styles.newsletterTitle}>{HOME_NEWSLETTER_TITLE}</Text>
             <Text style={styles.newsletterBody}>{HOME_NEWSLETTER_BODY}</Text>
             {newsletterUrl ? (
-              <TouchableOpacity
-                style={styles.newsletterButton}
+              <AnimatedPressable
+                variant="button"
+                style={StyleSheet.flatten([styles.newsletterButton, shadows.button])}
                 onPress={() => Linking.openURL(newsletterUrl)}
               >
                 <Text style={styles.newsletterButtonText}>{HOME_NEWSLETTER_CTA_EXTERNAL}</Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             ) : (
               <Link href={routes.community.opinions.index()} asChild>
-                <TouchableOpacity style={styles.newsletterButton}>
+                <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.newsletterButton, shadows.button])}>
                   <Text style={styles.newsletterButtonText}>{HOME_NEWSLETTER_CTA_PRIMARY}</Text>
-                </TouchableOpacity>
+                </AnimatedPressable>
               </Link>
             )}
           </View>

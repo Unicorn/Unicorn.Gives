@@ -72,6 +72,21 @@ export const shadows = {
       shadowRadius: 4,
     },
   }),
+  button: Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.12,
+      shadowRadius: 6,
+    },
+    android: { elevation: 3 },
+    default: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.12,
+      shadowRadius: 6,
+    },
+  }),
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -138,7 +153,7 @@ export const gold = {
 
 const lightColors = {
   // Primary (teal) — interactive elements only
-  primary:              teal[800],
+  primary:              teal[900],
   primaryContainer:     teal[50],
   onPrimary:            '#ffffff',
   onPrimaryContainer:   teal[900],
@@ -155,7 +170,7 @@ const lightColors = {
 
   // Neutral — text, headers, general UI
   neutral:              gray[800],
-  neutralVariant:       gray[500],
+  neutralVariant:       gray[600],
   onNeutral:            '#ffffff',
 
   // Surfaces

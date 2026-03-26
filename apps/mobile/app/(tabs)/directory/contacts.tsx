@@ -1,7 +1,8 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 interface Contact {
   id: string;
@@ -39,13 +40,13 @@ export default function ContactsDirectory() {
 
       {depts.length > 1 && (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chips}>
-          <TouchableOpacity style={[styles.chip, !deptFilter && styles.chipActive]} onPress={() => setDeptFilter(null)}>
+          <AnimatedPressable variant="subtle" style={[styles.chip, !deptFilter && styles.chipActive]} onPress={() => setDeptFilter(null)}>
             <Text style={[styles.chipText, !deptFilter && styles.chipTextActive]}>All</Text>
-          </TouchableOpacity>
+          </AnimatedPressable>
           {depts.map(d => (
-            <TouchableOpacity key={d} style={[styles.chip, deptFilter === d && styles.chipActive]} onPress={() => setDeptFilter(deptFilter === d ? null : d)}>
+            <AnimatedPressable key={d} variant="subtle" style={[styles.chip, deptFilter === d && styles.chipActive]} onPress={() => setDeptFilter(deptFilter === d ? null : d)}>
               <Text style={[styles.chipText, deptFilter === d && styles.chipTextActive]}>{d}</Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           ))}
         </ScrollView>
       )}
@@ -57,14 +58,14 @@ export default function ContactsDirectory() {
           <Text style={styles.role}>{c.role}</Text>
           <Text style={styles.dept}>{c.department}</Text>
           {c.phone && (
-            <TouchableOpacity onPress={() => Linking.openURL(`tel:${c.phone}`)}>
+            <AnimatedPressable variant="subtle" onPress={() => Linking.openURL(`tel:${c.phone}`)}>
               <Text style={styles.link}>{c.phone}</Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           )}
           {c.email && (
-            <TouchableOpacity onPress={() => Linking.openURL(`mailto:${c.email}`)}>
+            <AnimatedPressable variant="subtle" onPress={() => Linking.openURL(`mailto:${c.email}`)}>
               <Text style={styles.link}>{c.email}</Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           )}
           {c.hours && <Text style={styles.hours}>{c.hours}</Text>}
         </View>

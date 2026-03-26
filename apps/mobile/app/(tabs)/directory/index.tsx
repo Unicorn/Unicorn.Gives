@@ -1,10 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { ContentContainer } from '@/components/layout/ContentContainer';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 interface Partner {
   slug: string;
@@ -33,7 +34,7 @@ export default function PartnersDirectory() {
       <Text style={styles.subheading}>Organizations serving Clare County and northern Michigan.</Text>
       {partners.map(p => (
         <Link key={p.slug} href={routes.partners.index(p.slug)} asChild>
-          <TouchableOpacity style={styles.card}>
+          <AnimatedPressable variant="card" style={styles.card}>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>{p.name.charAt(0).toUpperCase()}</Text>
             </View>
@@ -41,7 +42,7 @@ export default function PartnersDirectory() {
               <Text style={styles.name}>{p.name}</Text>
               {p.description && <Text style={styles.desc} numberOfLines={2}>{p.description}</Text>}
             </View>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </Link>
       ))}
       {partners.length === 0 && <Text style={styles.empty}>Loading partners...</Text>}

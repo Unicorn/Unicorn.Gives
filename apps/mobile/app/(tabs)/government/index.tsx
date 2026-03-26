@@ -1,10 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { ContentContainer } from '@/components/layout/ContentContainer';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 const DEFAULT_COUNTY = 'clare-county';
 
@@ -57,10 +58,10 @@ export default function GovernmentIndex() {
       <Text style={styles.sectionTitle}>Municipalities</Text>
       {municipalities.map((m) => (
         <Link key={m.slug} href={routes.government.municipality(DEFAULT_COUNTY, m.slug)} asChild>
-          <TouchableOpacity style={styles.row}>
+          <AnimatedPressable variant="card" style={styles.row}>
             <Text style={styles.rowTitle}>{m.name}</Text>
             <Text style={styles.rowMeta}>{m.type}</Text>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </Link>
       ))}
       </ContentContainer>

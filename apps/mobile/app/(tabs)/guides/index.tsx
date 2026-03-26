@@ -1,10 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { toHref } from '@/lib/navigation';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { ContentContainer } from '@/components/layout/ContentContainer';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 interface Guide {
   id: string;
@@ -54,22 +55,24 @@ export default function GuidesIndex() {
       </Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chips}>
-        <TouchableOpacity
+        <AnimatedPressable
+          variant="subtle"
           style={[styles.chip, !filter && styles.chipActive]}
           onPress={() => setFilter(null)}
         >
           <Text style={[styles.chipText, !filter && styles.chipTextActive]}>All</Text>
-        </TouchableOpacity>
+        </AnimatedPressable>
         {categories.map(c => (
-          <TouchableOpacity
+          <AnimatedPressable
             key={c}
+            variant="subtle"
             style={[styles.chip, filter === c && styles.chipActive]}
             onPress={() => setFilter(filter === c ? null : c)}
           >
             <Text style={[styles.chipText, filter === c && styles.chipTextActive]}>
               {CATEGORY_LABELS[c] || c}
             </Text>
-          </TouchableOpacity>
+          </AnimatedPressable>
         ))}
       </ScrollView>
 
@@ -77,7 +80,7 @@ export default function GuidesIndex() {
 
       {filtered.map(g => (
         <Link key={g.id} href={toHref(`/guides/${g.slug}`)} asChild>
-          <TouchableOpacity style={styles.card}>
+          <AnimatedPressable variant="card" style={styles.card}>
             {g.icon && <Text style={styles.icon}>{g.icon}</Text>}
             <View style={styles.cardBody}>
               <Text style={styles.title}>{g.title}</Text>
@@ -86,7 +89,7 @@ export default function GuidesIndex() {
                 {CATEGORY_LABELS[g.category] || g.category} · {g.jurisdiction}
               </Text>
             </View>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </Link>
       ))}
 

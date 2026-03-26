@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { ContentContainer } from '@/components/layout/ContentContainer';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import {
   HORN_HERO,
   HORN_MISSION,
@@ -59,17 +60,17 @@ export default function CommunityTab() {
       <View style={styles.navSection}>
         <Text style={styles.navSectionTitle}>Explore Community</Text>
         <Link href={routes.community.events.index()} asChild>
-          <TouchableOpacity style={styles.navCard}>
+          <AnimatedPressable variant="card" style={styles.navCard}>
             <MaterialIcons name="event" size={24} color={colors.neutralVariant} />
             <View style={styles.navCardText}>
               <Text style={styles.navCardTitle}>Events</Text>
               <Text style={styles.navCardDesc}>Upcoming and past community events</Text>
             </View>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </Link>
 
         <Link href={routes.community.opinions.index()} asChild>
-          <TouchableOpacity style={styles.navCard}>
+          <AnimatedPressable variant="card" style={styles.navCard}>
             <MaterialIcons name="forum" size={24} color={colors.neutralVariant} />
             <View style={styles.navCardText}>
               <Text style={styles.navCardTitle}>Opinions</Text>
@@ -77,17 +78,17 @@ export default function CommunityTab() {
                 Community posts, discussions, and perspectives
               </Text>
             </View>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </Link>
 
         <Link href={routes.community.calendar()} asChild>
-          <TouchableOpacity style={styles.navCard}>
+          <AnimatedPressable variant="card" style={styles.navCard}>
             <MaterialIcons name="calendar-today" size={24} color={colors.neutralVariant} />
             <View style={styles.navCardText}>
               <Text style={styles.navCardTitle}>Calendar</Text>
               <Text style={styles.navCardDesc}>Calendar view of all community events</Text>
             </View>
-          </TouchableOpacity>
+          </AnimatedPressable>
         </Link>
       </View>
       </ContentContainer>

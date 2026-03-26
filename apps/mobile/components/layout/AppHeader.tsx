@@ -15,6 +15,7 @@ import { useAuth } from '@/lib/auth';
 import { toHref } from '@/lib/navigation';
 import { useTheme, fonts } from '@/constants/theme';
 import { useThemeToggle } from '@/lib/themeToggle';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 export interface BreadcrumbItem {
   label: string;
@@ -160,53 +161,53 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
           <Pressable style={styles.overlay} onPress={() => setMenuOpen(false)}>
             <View style={[styles.popover, { backgroundColor: colors.surface }]}>
               {/* Theme toggle — always visible */}
-              <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('theme')}>
+              <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('theme')}>
                 <View style={styles.popoverRow}>
                   <MaterialIcons name={isDark ? 'light-mode' : 'dark-mode'} size={18} color={colors.neutral} />
                   <Text style={[styles.popoverText, { color: colors.neutral }]}>
                     {isDark ? 'Light mode' : 'Dark mode'}
                   </Text>
                 </View>
-              </Pressable>
+              </AnimatedPressable>
 
               <View style={[styles.popoverDivider, { backgroundColor: colors.outlineVariant }]} />
 
               {user ? (
                 <>
-                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('profile')}>
+                  <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('profile')}>
                     <View style={styles.popoverRow}>
                       <MaterialIcons name="person" size={18} color={colors.neutral} />
                       <Text style={[styles.popoverText, { color: colors.neutral }]}>Profile</Text>
                     </View>
-                  </Pressable>
-                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('settings')}>
+                  </AnimatedPressable>
+                  <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('settings')}>
                     <View style={styles.popoverRow}>
                       <MaterialIcons name="settings" size={18} color={colors.neutral} />
                       <Text style={[styles.popoverText, { color: colors.neutral }]}>Settings</Text>
                     </View>
-                  </Pressable>
+                  </AnimatedPressable>
                   <View style={[styles.popoverDivider, { backgroundColor: colors.outlineVariant }]} />
-                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('logout')}>
+                  <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('logout')}>
                     <View style={styles.popoverRow}>
                       <MaterialIcons name="logout" size={18} color={colors.error} />
                       <Text style={[styles.popoverText, { color: colors.error }]}>Logout</Text>
                     </View>
-                  </Pressable>
+                  </AnimatedPressable>
                 </>
               ) : (
                 <>
-                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('login')}>
+                  <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('login')}>
                     <View style={styles.popoverRow}>
                       <MaterialIcons name="login" size={18} color={colors.neutral} />
                       <Text style={[styles.popoverText, { color: colors.neutral }]}>Log in</Text>
                     </View>
-                  </Pressable>
-                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('register')}>
+                  </AnimatedPressable>
+                  <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('register')}>
                     <View style={styles.popoverRow}>
                       <MaterialIcons name="person-add" size={18} color={colors.neutral} />
                       <Text style={[styles.popoverText, { color: colors.neutral }]}>Register</Text>
                     </View>
-                  </Pressable>
+                  </AnimatedPressable>
                 </>
               )}
             </View>
