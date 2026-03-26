@@ -55,13 +55,13 @@ Lincoln Township works with **Clare County** to provide permit services. Here's 
 ### Building Permit Forms
 
 **County-Level Permits** (Submit to Clare County)
-- [Building Permit Application](forms/building_permit_all-in-one.pdf) - 989-539-2761
-- [Plumbing Permit Application](forms/plumbing_permit.pdf) - Nate Caulkins: 989-539-2741
-- [Electrical Permit Application](forms/electrical_permit.pdf)
-- [Mechanical Permit Application](forms/mechanical_permit.pdf) - Nate Caulkins: 989-539-2741
+- Building Permit Application - 989-539-2761
+- Plumbing Permit Application - Nate Caulkins: 989-539-2741
+- Electrical Permit Application
+- Mechanical Permit Application - Nate Caulkins: 989-539-2741
 
 **Township-Level Permits** (Submit to Lincoln Township)
-- [Zoning Permit Application](forms/zoning_permit.pdf) - Dick Hassberger: (989) 588-9841 ext. 5
+- Zoning Permit Application - Dick Hassberger: (989) 588-9841 ext. 5
 
 ### Additional Construction Permits
 
@@ -82,7 +82,7 @@ For septic system installation or repair:
 ### Park Pavilion Rental
 
 Reserve a pavilion at Bertha Lake, Shingle Lake, or Silver Lake parks:
-- [Park Pavilion Use Agreement](forms/twp_park_use_agreement.pdf)
+- Park Pavilion Use Agreement
 - Contact: Township Supervisor at 989-588-9841
 
 [View parks information →](/parks)

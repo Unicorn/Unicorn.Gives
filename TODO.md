@@ -38,13 +38,13 @@ The following PDF files are referenced by CMS markdown but are currently not pre
 - `ordinances/46.pdf`
 
 ### Link cleanup status (done for now)
-For now, broken markdown links were removed (replaced with plain text) from:
-- `content/pages/building.md`
-- `content/pages/elections.md`
+Broken markdown links were removed (replaced with plain text) from:
 - `content/pages/ordinances.md`
 - `content/pages/permits-forms.md`
 - `content/pages/seniors.md`
 - `content/pages/zoning.md`
+
+`building` and `elections` CMS pages are no longer kept as markdown under `content/pages/`; updates for those slugs live in `supabase/migrations/003_update_pages_building_elections.sql`.
 
 ### Next step
 Restore the missing PDFs under `apps/site/public/{docs|forms|ordinances}/...`, then re-add the markdown links.

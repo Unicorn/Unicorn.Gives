@@ -12,7 +12,7 @@ order: 21
 *[Get Answers to Frequently Asked Questions about Zoning.](/faq#zoning)*
 
 Lincoln Township is in the process of creating a wholly new Zoning Ordinance.
-Click [HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) to follow this process.
+Click HERE to follow this process.
 
 ### Planning Commission
 
@@ -34,7 +34,7 @@ Click [HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) to 
 
 ### Key Documents
 
-- [Lincoln Township Master Plan](docs/master_plan.pdf)
+- Lincoln Township Master Plan
 - Zoning Ordinance — available at Township Hall or by request. Contact Dick Hassberger at (989) 588-9841 ext. 5.
 - [Zoning Map](/zoning.map.pdf)
 
@@ -45,14 +45,14 @@ Click [HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) to 
 
 ### Zoning Forms
 
-- [ZBA Application for Variance Form](forms/zoning_variance_app.pdf)
-- [Zoning Complaint Form](forms/zoning_complaint.pdf)
-- [Zoning Permit Application](forms/zoning_permit.pdf)
-- [Parcel Division Application](forms/parcel_division_app.pdf)
-- [Conditional Rezoning Application](forms/conditional_rezoning_app.pdf) — [Conditional Rezoning Procedure Information](docs/conditional_rezoning_info.pdf)
-- [Special Exemption Use Permit](forms/special_use_permit.pdf)
-- [Home Occupation Permit](forms/home_occupation_permit.pdf)
-- [Building Permit Application Form and Fees](forms/building_permit.pdf)
+- ZBA Application for Variance Form
+- Zoning Complaint Form
+- Zoning Permit Application
+- Parcel Division Application
+- Conditional Rezoning Application — Conditional Rezoning Procedure Information
+- Special Exemption Use Permit
+- Home Occupation Permit
+- Building Permit Application Form and Fees
 
 **Both the Building Permit and the Zoning Permit are needed to begin a building project.**
 

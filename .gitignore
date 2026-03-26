@@ -32,6 +32,9 @@ venv/
 __pycache__/
 *.py[cod]
 
+# design / reference exports (not part of the app)
+stitch-reference/
+
 # scraper logs
 *.log
 asset-download.log

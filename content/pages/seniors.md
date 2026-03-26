@@ -62,7 +62,7 @@ Call Deb at 988-9841 ext. 1 for information.
 
 **Disabled Veterans Property Tax Exemption**
 - [Information and FAQs](http://www.michigan.gov/documents/taxes/Disabled_Veterans_Exemption_FAQ_082614_466519_7.pdf)
-- [Download Exemption Form](docs/vet_exemption_form.pdf)
+- Download Exemption Form
 
 **Veterans Services**
 - Clare County Veterans Services: 989-539-7108
@@ -71,8 +71,8 @@ Call Deb at 988-9841 ext. 1 for information.
 #### Legal & Financial Resources
 
 - [Legal Resources for Seniors](https://www.justgreatlawyers.com/legal-resources-considerations-seniors-special-needs)
-- [Services for Seniors: Laws and Programs](docs/services_for_seniors.pdf)
-- [Protect Yourself from Abuse & Fraud](docs/guide_for_seniors_abuse-fraud.pdf)
+- Services for Seniors: Laws and Programs
+- Protect Yourself from Abuse & Fraud
 
 #### Health & Wellness
 
@@ -85,11 +85,11 @@ Call Deb at 988-9841 ext. 1 for information.
 
 - [Home Accommodations for Seniors](http://www.homeadvisor.com/r/budget-friendly-smart-home-accommodations-for-seniors-and-individuals-with-special-needs/)
 - [Tips to Declutter and Organize Your Home](https://www.yourstoragefinder.com/declutter-and-organize-your-home-seniors-special-needs)
-- [Disaster Preparedness for Seniors](docs/disaster_preparedness_for_seniors.pdf)
+- Disaster Preparedness for Seniors
 
 #### Family Resources
 
-- [GrandFacts: Fact Sheets for Grandparents](docs/grandfacts-michigan.pdf)
+- GrandFacts: Fact Sheets for Grandparents
 - [Senior Preferences: Guide to Community Resources](http://www.seniorpreferences.com/)
 
 ### Active Aging

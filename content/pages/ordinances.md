@@ -9,18 +9,18 @@ order: 17
 
 ## Township Ordinances
 
-- [Ordinance 30](ordinances/30.pdf) — Control of Dogs Ordinance
-- [Ordinance 32](ordinances/32.pdf) — Parks & Public Grounds Ordinance
-- [Ordinance 33](ordinances/33.pdf) — Nuisance & Blight Ordinance
-- [Ordinance 34](ordinances/34.pdf) — Emergency Services
-- [Ordinance 35](ordinances/35.pdf) — Parental Responsibility Ordinance
-- [Ordinance 38](ordinances/38.pdf) — Lot Splitting Ordinance
-- [Ordinance 39](ordinances/39.pdf) — Lake, Dock & Boat Ordinance
-- [Ordinance 40](ordinances/40.pdf) — Flood Plain Management
-- [Ordinance 41](ordinances/41.pdf) — Michigan Planning Enabling Act
-- [Ordinance 42](ordinances/42.pdf) — Fireworks Control
-- [Ordinance 46](ordinances/46.pdf) — Cemeteries Ordinance
-- [Ordinance 46](ordinances/46.pdf) — Prohibition of Rec. Marijuana Establishments
+- Ordinance 30 — Control of Dogs Ordinance
+- Ordinance 32 — Parks & Public Grounds Ordinance
+- Ordinance 33 — Nuisance & Blight Ordinance
+- Ordinance 34 — Emergency Services
+- Ordinance 35 — Parental Responsibility Ordinance
+- Ordinance 38 — Lot Splitting Ordinance
+- Ordinance 39 — Lake, Dock & Boat Ordinance
+- Ordinance 40 — Flood Plain Management
+- Ordinance 41 — Michigan Planning Enabling Act
+- Ordinance 42 — Fireworks Control
+- Ordinance 46 — Cemeteries Ordinance
+- Ordinance 46 — Prohibition of Rec. Marijuana Establishments
 - [Ordinance 44 — Zoning Ordinance](/zoning) — available at Township Hall or by request
 
 ### Ordinance Enforcement
@@ -30,4 +30,4 @@ order: 17
 
 ### Additional Resources
 
-- [Lincoln Township Master Plan](docs/master_plan.pdf)
+- Lincoln Township Master Plan
