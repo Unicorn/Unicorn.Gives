@@ -10,6 +10,7 @@ import {
   Modal,
 } from 'react-native';
 import { Link, useRouter, usePathname } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { toHref } from '@/lib/navigation';
 import { useTheme, fonts } from '@/constants/theme';
@@ -45,26 +46,26 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
   const toggleTheme = useThemeToggle();
 
   function handleAvatarPress() {
-    if (!user) {
-      router.push(toHref('/sign-in'));
-    } else {
-      setMenuOpen(true);
-    }
+    setMenuOpen(true);
   }
 
   function handleMenuAction(action: string) {
     setMenuOpen(false);
-    if (action === 'logout') {
-      signOut();
+    switch (action) {
+      case 'logout':
+        signOut();
+        break;
+      case 'login':
+        router.push(toHref('/sign-in'));
+        break;
+      case 'register':
+        router.push(toHref('/sign-up'));
+        break;
+      case 'theme':
+        toggleTheme();
+        break;
     }
-    // Profile, Settings, Notifications are stubs for now
   }
-
-  const initials = profile?.display_name
-    ? profile.display_name.charAt(0).toUpperCase()
-    : user?.email
-      ? user.email.charAt(0).toUpperCase()
-      : '?';
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
@@ -72,17 +73,17 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
         {/* Left: Logo or Back */}
         {showBack ? (
           <Pressable style={styles.leftZone} onPress={() => router.back()}>
-            <Text style={[styles.backArrow, { color: colors.neutral }]}>←</Text>
+            <MaterialIcons name="arrow-back" size={24} color={colors.neutral} />
           </Pressable>
         ) : (
-          <Pressable style={styles.leftZone} onPress={toggleTheme}>
+          <View style={styles.leftZone}>
             <Image
               source={require('../../assets/images/logo.png')}
               style={[styles.logo, isDark && { opacity: 0.8 }]}
               resizeMode="contain"
-              accessibilityLabel="Toggle light/dark mode"
+              accessibilityLabel="unicorn.gives logo"
             />
-          </Pressable>
+          </View>
         )}
 
         {/* Center: Desktop nav links OR breadcrumb OR empty */}
@@ -143,48 +144,71 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
           )}
         </View>
 
-        {/* Right: Avatar */}
+        {/* Right: User icon */}
         <Pressable style={styles.rightZone} onPress={handleAvatarPress}>
-          {profile?.avatar_url ? (
-            <Image
-              source={{ uri: profile.avatar_url }}
-              style={styles.avatar}
-            />
-          ) : (
-            <View
-              style={[
-                styles.avatar,
-                styles.avatarFallback,
-                { backgroundColor: `${colors.neutral}26` },
-                user && { backgroundColor: colors.primary },
-              ]}
-            >
-              <Text style={[styles.avatarText, { color: colors.neutral }]}>
-                {user ? initials : '👤'}
-              </Text>
-            </View>
-          )}
+          <MaterialIcons
+            name={user ? 'account-circle' : 'person-outline'}
+            size={28}
+            color={colors.neutralVariant}
+          />
         </Pressable>
       </View>
 
-      {/* Avatar popover */}
+      {/* Popover menu */}
       {menuOpen && (
         <Modal transparent animationType="fade" onRequestClose={() => setMenuOpen(false)}>
           <Pressable style={styles.overlay} onPress={() => setMenuOpen(false)}>
             <View style={[styles.popover, { backgroundColor: colors.surface }]}>
-              <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('profile')}>
-                <Text style={[styles.popoverText, { color: colors.neutral }]}>Profile</Text>
+              {/* Theme toggle — always visible */}
+              <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('theme')}>
+                <View style={styles.popoverRow}>
+                  <MaterialIcons name={isDark ? 'light-mode' : 'dark-mode'} size={18} color={colors.neutral} />
+                  <Text style={[styles.popoverText, { color: colors.neutral }]}>
+                    {isDark ? 'Light mode' : 'Dark mode'}
+                  </Text>
+                </View>
               </Pressable>
-              <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('settings')}>
-                <Text style={[styles.popoverText, { color: colors.neutral }]}>Settings</Text>
-              </Pressable>
-              <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('notifications')}>
-                <Text style={[styles.popoverText, { color: colors.neutral }]}>Notifications</Text>
-              </Pressable>
+
               <View style={[styles.popoverDivider, { backgroundColor: colors.outlineVariant }]} />
-              <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('logout')}>
-                <Text style={[styles.popoverText, { color: colors.error }]}>Logout</Text>
-              </Pressable>
+
+              {user ? (
+                <>
+                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('profile')}>
+                    <View style={styles.popoverRow}>
+                      <MaterialIcons name="person" size={18} color={colors.neutral} />
+                      <Text style={[styles.popoverText, { color: colors.neutral }]}>Profile</Text>
+                    </View>
+                  </Pressable>
+                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('settings')}>
+                    <View style={styles.popoverRow}>
+                      <MaterialIcons name="settings" size={18} color={colors.neutral} />
+                      <Text style={[styles.popoverText, { color: colors.neutral }]}>Settings</Text>
+                    </View>
+                  </Pressable>
+                  <View style={[styles.popoverDivider, { backgroundColor: colors.outlineVariant }]} />
+                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('logout')}>
+                    <View style={styles.popoverRow}>
+                      <MaterialIcons name="logout" size={18} color={colors.error} />
+                      <Text style={[styles.popoverText, { color: colors.error }]}>Logout</Text>
+                    </View>
+                  </Pressable>
+                </>
+              ) : (
+                <>
+                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('login')}>
+                    <View style={styles.popoverRow}>
+                      <MaterialIcons name="login" size={18} color={colors.neutral} />
+                      <Text style={[styles.popoverText, { color: colors.neutral }]}>Log in</Text>
+                    </View>
+                  </Pressable>
+                  <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('register')}>
+                    <View style={styles.popoverRow}>
+                      <MaterialIcons name="person-add" size={18} color={colors.neutral} />
+                      <Text style={[styles.popoverText, { color: colors.neutral }]}>Register</Text>
+                    </View>
+                  </Pressable>
+                </>
+              )}
             </View>
           </Pressable>
         </Modal>
@@ -222,10 +246,6 @@ const styles = StyleSheet.create({
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  backArrow: {
-    fontSize: 22,
-    fontWeight: '700',
   },
   logo: {
     width: 32,
@@ -282,19 +302,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-  },
-  avatarFallback: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarText: {
-    fontSize: 14,
-    fontWeight: '700',
-  },
 
   /* Popover */
   overlay: {
@@ -317,6 +324,11 @@ const styles = StyleSheet.create({
   popoverItem: {
     paddingHorizontal: 16,
     paddingVertical: 12,
+  },
+  popoverRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   popoverText: {
     fontSize: 15,
