@@ -428,7 +428,7 @@ export default function HomeScreen() {
             >
               <Text style={styles.bentoTileHeading}>{HOME_BENTO_NEWS_TITLE}</Text>
               {news[0] ? (
-                <Link href={routes.community.opinions.detail(news[0].slug)} asChild>
+                <Link href={routes.community.news.index()} asChild>
                   <AnimatedPressable variant="subtle">
                     <Text style={styles.bentoNewsHeadline} numberOfLines={3}>
                       {news[0].title}
@@ -438,7 +438,7 @@ export default function HomeScreen() {
               ) : (
                 <Text style={styles.bentoTileDesc}>Check back for civic updates.</Text>
               )}
-              <Link href={routes.community.opinions.index()} asChild>
+              <Link href={routes.community.news.index()} asChild>
                 <AnimatedPressable variant="subtle" style={styles.bentoNewsFooter}>
                   <Text style={styles.bentoTileLink}>Open news feed</Text>
                 </AnimatedPressable>
@@ -468,7 +468,7 @@ export default function HomeScreen() {
                 <Text style={styles.newsletterButtonText}>{HOME_NEWSLETTER_CTA_EXTERNAL}</Text>
               </AnimatedPressable>
             ) : (
-              <Link href={routes.community.opinions.index()} asChild>
+              <Link href={routes.community.news.index()} asChild>
                 <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.newsletterButton, shadows.button])}>
                   <Text style={styles.newsletterButtonText}>{HOME_NEWSLETTER_CTA_PRIMARY}</Text>
                 </AnimatedPressable>

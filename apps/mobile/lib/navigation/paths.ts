@@ -21,10 +21,10 @@ export const paths = {
   },
   history: { index: '/history' },
   community: {
-    index: '/community',
-    events: '/community/events',
-    opinions: '/community/opinions',
-    calendar: '/community/calendar',
+    index: '/home/community',
+    events: '/home/events',
+    eventsDetail: '/community/events',
+    news: '/home/news',
   },
   government: { base: '/government' },
   partners: { base: '/partners' },
@@ -74,13 +74,11 @@ export const routes = {
     index: () => toHref(paths.community.index),
     events: {
       index: () => toHref(paths.community.events),
-      detail: (slug: string) => toHref(paths.community.events + '/' + enc(slug)),
+      detail: (slug: string) => toHref(paths.community.eventsDetail + '/' + enc(slug)),
     },
-    opinions: {
-      index: () => toHref(paths.community.opinions),
-      detail: (slug: string) => toHref(paths.community.opinions + '/' + enc(slug)),
+    news: {
+      index: () => toHref(paths.community.news),
     },
-    calendar: () => toHref(paths.community.calendar),
   },
   partners: {
     index: (partnerSlug: string) =>

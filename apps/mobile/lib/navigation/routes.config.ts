@@ -62,6 +62,12 @@ export const navigationTree: {
           getHref: routes.community.events.index,
         },
         {
+          id: 'news',
+          label: 'News',
+          pillar: 'COMMUNITY',
+          getHref: routes.community.news.index,
+        },
+        {
           id: 'history',
           label: 'History',
           pillar: 'COMMUNITY',

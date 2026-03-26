@@ -69,24 +69,14 @@ export default function CommunityTab() {
           </AnimatedPressable>
         </Link>
 
-        <Link href={routes.community.opinions.index()} asChild>
+        <Link href={routes.community.news.index()} asChild>
           <AnimatedPressable variant="card" style={styles.navCard}>
-            <MaterialIcons name="forum" size={24} color={colors.neutralVariant} />
+            <MaterialIcons name="article" size={24} color={colors.neutralVariant} />
             <View style={styles.navCardText}>
-              <Text style={styles.navCardTitle}>Opinions</Text>
+              <Text style={styles.navCardTitle}>News</Text>
               <Text style={styles.navCardDesc}>
-                Community posts, discussions, and perspectives
+                Civic updates, stories, and community perspectives
               </Text>
-            </View>
-          </AnimatedPressable>
-        </Link>
-
-        <Link href={routes.community.calendar()} asChild>
-          <AnimatedPressable variant="card" style={styles.navCard}>
-            <MaterialIcons name="calendar-today" size={24} color={colors.neutralVariant} />
-            <View style={styles.navCardText}>
-              <Text style={styles.navCardTitle}>Calendar</Text>
-              <Text style={styles.navCardDesc}>Calendar view of all community events</Text>
             </View>
           </AnimatedPressable>
         </Link>
