@@ -839,7 +839,16 @@ INSERT INTO public.regions (slug, name, type, description, display_order) VALUES
 INSERT INTO public.regions (slug, name, type, parent_id, description, display_order) VALUES
   ('lincoln-township', 'Lincoln Township', 'township',
     (SELECT id FROM public.regions WHERE slug = 'clare-county'),
-    'Lincoln Township, Clare County, Michigan', 1);
+    'Lincoln Township, Clare County, Michigan', 1),
+  ('city-of-clare', 'City of Clare', 'city',
+    (SELECT id FROM public.regions WHERE slug = 'clare-county'),
+    'City of Clare, Clare County, Michigan — Gateway to the North', 2),
+  ('city-of-harrison', 'City of Harrison', 'city',
+    (SELECT id FROM public.regions WHERE slug = 'clare-county'),
+    'City of Harrison, Clare County seat — Twenty Lakes in Twenty Minutes', 3),
+  ('village-of-farwell', 'Village of Farwell', 'village',
+    (SELECT id FROM public.regions WHERE slug = 'clare-county'),
+    'Village of Farwell, Clare County, Michigan — Rich logging heritage', 4);
 
 INSERT INTO public.partners (slug, name, description, region_id, tabs) VALUES
   ('the-horn', 'The Horn', 'Community center serving Lincoln Township and surrounding areas',

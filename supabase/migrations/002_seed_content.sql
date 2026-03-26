@@ -1,61 +1,84 @@
 -- =============================================================================
 -- Unicorn.Gives Content Seed Migration (auto-generated)
--- Generated: 2026-03-26T03:00:42.896Z
+-- Generated: 2026-03-26T05:31:04.117Z
 -- =============================================================================
 
 DO $$
 DECLARE
   lincoln_id UUID;
+  clare_county_id UUID;
   horn_id UUID;
   mane_id UUID;
 BEGIN
   SELECT id INTO lincoln_id FROM public.regions WHERE slug = 'lincoln-township';
+  SELECT id INTO clare_county_id FROM public.regions WHERE slug = 'clare-county';
   SELECT id INTO horn_id FROM public.partners WHERE slug = 'the-horn';
   SELECT id INTO mane_id FROM public.partners WHERE slug = 'the-mane';
 
   IF lincoln_id IS NULL THEN
     RAISE EXCEPTION 'Lincoln Township region not found!';
   END IF;
+  IF clare_county_id IS NULL THEN
+    RAISE EXCEPTION 'Clare County region not found!';
+  END IF;
 
 -- =============================================================================
--- Contacts (33)
+-- Contacts (51)
 -- =============================================================================
 
 INSERT INTO public.contacts (region_id, slug, name, role, department, phone, phone_ext, email, address, hours, website, display_order, status, created_at, updated_at)
 VALUES
-(lincoln_id, 'andrew-santini', 'Andrew Santini', 'Prosecuting Attorney', 'Clare County Prosecutor', '(989) 539-9831', NULL, NULL, NULL, 'Mon-Fri 8am-4:30pm (closed noon-1pm)', NULL, 23, 'published', now(), now()),
-(lincoln_id, 'bob-dodson', 'Bob Dodson', 'Director', 'Clare County Animal Shelter', '(989) 539-3221', NULL, NULL, NULL, 'Mon-Fri 10am-4pm', NULL, 28, 'published', now(), now()),
+(clare_county_id, 'allisha-gary', 'Allisha Gary', 'Veterans Service Officer', 'Clare County Veterans Services', '(989) 539-3273', NULL, NULL, '225 W Main St Harrison MI 48625', 'Mon-Fri 8am-4:30pm', NULL, 36, 'published', now(), now()),
+(clare_county_id, 'andrew-santini', 'Andrew Santini', 'Prosecuting Attorney', 'Clare County Prosecutor', '(989) 539-9831', NULL, NULL, NULL, 'Mon-Fri 8am-4:30pm (closed noon-1pm)', NULL, 23, 'published', now(), now()),
+(clare_county_id, 'bob-dodson', 'Bob Dodson', 'Director', 'Clare County Animal Shelter', '(989) 539-3221', NULL, NULL, NULL, 'Mon-Fri 10am-4pm', NULL, 28, 'published', now(), now()),
 (lincoln_id, 'carol-majewski', 'Carol Majewski', 'Clerk', 'Lincoln Township Board', '(989) 588-9841', '2', NULL, NULL, NULL, NULL, 2, 'published', now(), now()),
 (lincoln_id, 'casey-guthrie', 'Casey Guthrie', 'Assessor', 'Lincoln Township Assessment', '(231) 350-9123', NULL, NULL, NULL, NULL, NULL, 13, 'published', now(), now()),
-(lincoln_id, 'christiane-rathke', 'Christiane Rathke', 'District Administrator & Soil Erosion Agent', 'Clare Conservation District', '(989) 539-6401', NULL, NULL, NULL, NULL, 'https://clarecd.org', 30, 'published', now(), now()),
-(lincoln_id, 'dale-majewski-commissioner', 'Dale Majewski', 'Commissioner District 2', 'Clare County Board of Commissioners', '(989) 429-8887', NULL, 'majewskid@clareco.net', NULL, NULL, NULL, 41, 'published', now(), now()),
+(clare_county_id, 'christiane-rathke', 'Christiane Rathke', 'District Administrator & Soil Erosion Agent', 'Clare Conservation District', '(989) 539-6401', NULL, NULL, NULL, NULL, 'https://clarecd.org', 30, 'published', now(), now()),
+(clare_county_id, 'colleen-ritchie', 'Colleen Ritchie', 'Deputy Drain Commissioner', 'Clare County Drain Commission', '(989) 539-7320', NULL, NULL, '225 W Main St Harrison MI 48625', NULL, NULL, 28, 'published', now(), now()),
+(clare_county_id, 'dale-majewski-commissioner', 'Dale Majewski', 'Commissioner District 2', 'Clare County Board of Commissioners', '(989) 429-8887', NULL, 'majewskid@clareco.net', NULL, NULL, NULL, 41, 'published', now(), now()),
 (lincoln_id, 'dale-majewski-fire', 'Dale Majewski', 'Fire Chief', 'Lincoln Township Fire Department', '(989) 429-8887', NULL, NULL, NULL, NULL, NULL, 12, 'published', now(), now()),
-(lincoln_id, 'david-hoefling', 'David Hoefling', 'Commissioner District 5', 'Clare County Board of Commissioners', '(989) 424-1997', NULL, 'hoeflingd@clareco.net', NULL, NULL, NULL, 44, 'published', now(), now()),
+(clare_county_id, 'david-hoefling', 'David Hoefling', 'Commissioner District 5', 'Clare County Board of Commissioners', '(989) 424-1997', NULL, 'hoeflingd@clareco.net', NULL, NULL, NULL, 44, 'published', now(), now()),
 (lincoln_id, 'dick-hassberger', 'Dick Hassberger', 'Zoning Administrator', 'Lincoln Township Zoning', '(989) 588-9841', '5', NULL, NULL, NULL, NULL, 10, 'published', now(), now()),
-(lincoln_id, 'gabe-ambrozaitis', 'Gabe Ambrozaitis', 'Commissioner District 7', 'Clare County Board of Commissioners', '(989) 329-0865', NULL, 'ambrozaitisg@clareco.net', NULL, NULL, NULL, 46, 'published', now(), now()),
-(lincoln_id, 'george-gilmore', 'George Gilmore', 'Commissioner District 8', 'Clare County Board of Commissioners', '(989) 329-5776', NULL, 'gilmoreg@clareco.net', NULL, NULL, NULL, 47, 'published', now(), now()),
-(lincoln_id, 'jack-kleinhardt', 'Jack Kleinhardt', 'Commissioner District 6', 'Clare County Board of Commissioners', '(989) 339-7257', NULL, 'jackkleinhardt@gmail.com', NULL, NULL, NULL, 45, 'published', now(), now()),
-(lincoln_id, 'jacob-gross', 'Jacob Gross', 'Commissioner District 3', 'Clare County Board of Commissioners', '(989) 506-2163', NULL, 'grossj@clareco.net', NULL, NULL, NULL, 42, 'published', now(), now()),
+(clare_county_id, 'emerson-corder', 'Emerson Corder', 'Airport Manager', 'Clare County Airport', '(989) 329-3981', NULL, NULL, NULL, NULL, NULL, 30, 'published', now(), now()),
+(clare_county_id, 'gabe-ambrozaitis', 'Gabe Ambrozaitis', 'Commissioner District 7', 'Clare County Board of Commissioners', '(989) 329-0865', NULL, 'ambrozaitisg@clareco.net', NULL, NULL, NULL, 46, 'published', now(), now()),
+(clare_county_id, 'george-gilmore', 'George Gilmore', 'Commissioner District 8', 'Clare County Board of Commissioners', '(989) 329-5776', NULL, 'gilmoreg@clareco.net', NULL, NULL, NULL, 47, 'published', now(), now()),
+(clare_county_id, 'jack-kleinhardt', 'Jack Kleinhardt', 'Commissioner District 6', 'Clare County Board of Commissioners', '(989) 339-7257', NULL, 'jackkleinhardt@gmail.com', NULL, NULL, NULL, 45, 'published', now(), now()),
+(clare_county_id, 'jacob-gross', 'Jacob Gross', 'Commissioner District 3', 'Clare County Board of Commissioners', '(989) 506-2163', NULL, 'grossj@clareco.net', NULL, NULL, NULL, 42, 'published', now(), now()),
+(clare_county_id, 'jason-pernick', 'Jason Pernick', 'Assistant Prosecuting Attorney', 'Clare County Prosecutor', '(989) 539-9831', NULL, NULL, NULL, 'Mon-Fri 8am-4:30pm (closed noon-1pm)', NULL, 24, 'published', now(), now()),
 (lincoln_id, 'jeff-simons', 'Jeff Simons', 'Trustee', 'Lincoln Township Board', '(989) 433-6069', NULL, NULL, NULL, NULL, NULL, 4, 'published', now(), now()),
-(lincoln_id, 'jeffery-haskell', 'Jeffery Haskell', 'Commissioner District 4', 'Clare County Board of Commissioners', '(989) 429-1201', NULL, 'haskellj@clareco.net', NULL, NULL, NULL, 43, 'published', now(), now()),
-(lincoln_id, 'jenny-beemer-fritzinger', 'Jenny Beemer-Fritzinger', 'County Treasurer', 'Clare County Treasury', '(989) 539-7801', NULL, NULL, NULL, NULL, NULL, 22, 'published', now(), now()),
-(lincoln_id, 'jerry-becker', 'Jerry Becker', 'Emergency Management Director', 'Clare County Emergency Services', '(989) 539-6161', NULL, NULL, NULL, NULL, NULL, 26, 'published', now(), now()),
-(lincoln_id, 'john-wilson', 'John Wilson', 'Sheriff', 'Clare County Sheriff', '(989) 539-7166', NULL, NULL, '255 W Main St, Harrison, MI 48625', NULL, NULL, 24, 'published', now(), now()),
-(lincoln_id, 'joshua-farrell', 'Joshua Farrell', 'Judge', '80th District Court', '(989) 539-7173', NULL, NULL, '225 W Main St, Harrison, MI 48625', NULL, NULL, 50, 'published', now(), now()),
-(lincoln_id, 'karl-hauser', 'Karl Hauser', 'Director', 'Clare County Veterans Services', '(989) 539-3273', NULL, NULL, NULL, NULL, NULL, 29, 'published', now(), now()),
+(clare_county_id, 'jeffery-haskell', 'Jeffery Haskell', 'Commissioner District 4', 'Clare County Board of Commissioners', '(989) 429-1201', NULL, 'haskellj@clareco.net', NULL, NULL, NULL, 43, 'published', now(), now()),
+(clare_county_id, 'jenny-beemer-fritzinger', 'Jenny Beemer-Fritzinger', 'County Treasurer', 'Clare County Treasury', '(989) 539-7801', NULL, NULL, NULL, NULL, NULL, 22, 'published', now(), now()),
+(clare_county_id, 'jerry-becker', 'Jerry Becker', 'Emergency Management Director', 'Clare County Emergency Services', '(989) 539-6161', NULL, NULL, NULL, NULL, NULL, 26, 'published', now(), now()),
+(clare_county_id, 'jody-pieprzyk', 'Jody Pieprzyk', 'Human Resources Director', 'Clare County Administration', '(989) 539-2510', NULL, NULL, '225 W Main St Harrison MI 48625', 'Mon-Fri 8am-4:30pm', NULL, 21, 'published', now(), now()),
+(clare_county_id, 'joe-nash', 'Joe Nash', 'District Forester', 'Clare Conservation District', '(989) 539-6401', NULL, NULL, NULL, NULL, 'https://clarecd.org', 33, 'published', now(), now()),
+(clare_county_id, 'john-wilson', 'John Wilson', 'Sheriff', 'Clare County Sheriff', '(989) 539-7166', NULL, NULL, '255 W Main St, Harrison, MI 48625', NULL, NULL, 24, 'published', now(), now()),
+(clare_county_id, 'josh-chapman', 'Josh Chapman', 'IT Director', 'Clare County Information Technology', '(989) 539-6402', '5032', NULL, '225 W Main St Harrison MI 48625', NULL, NULL, 32, 'published', now(), now()),
+(clare_county_id, 'joshua-farrell', 'Joshua Farrell', 'Judge', '80th District Court', '(989) 539-7173', NULL, NULL, '225 W Main St, Harrison, MI 48625', NULL, NULL, 50, 'published', now(), now()),
+(clare_county_id, 'joy-bringold', 'Joy Bringold', 'Finance Director', 'Clare County Administration', '(989) 539-2510', NULL, NULL, '225 W Main St Harrison MI 48625', 'Mon-Fri 8am-4:30pm', NULL, 22, 'published', now(), now()),
+(clare_county_id, 'karl-hauser', 'Karl Hauser', 'Director', 'Clare County Veterans Services', '(989) 539-3273', NULL, NULL, NULL, NULL, NULL, 29, 'published', now(), now()),
+(clare_county_id, 'karyn-tomczyk', 'Karyn Tomczyk', 'Assistant Prosecuting Attorney', 'Clare County Prosecutor', '(989) 539-9831', NULL, NULL, NULL, 'Mon-Fri 8am-4:30pm (closed noon-1pm)', NULL, 24, 'published', now(), now()),
 (lincoln_id, 'ken-logan', 'Ken Logan', 'Ordinance Enforcement Officer', 'Lincoln Township Zoning', '(989) 588-9841', '8', NULL, NULL, NULL, NULL, 11, 'published', now(), now()),
-(lincoln_id, 'lori-mott', 'Lori Mott', 'Clerk & Register of Deeds', 'Clare County Clerk', '(989) 539-7131', NULL, NULL, NULL, NULL, 'https://clareclerkrod.com', 21, 'published', now(), now()),
-(lincoln_id, 'lori-phelps', 'Lori Phelps', 'County Administrator', 'Clare County Administration', '(989) 539-2510', NULL, NULL, '225 W Main St, Harrison, MI 48625', 'Mon-Fri 8am-4:30pm', NULL, 20, 'published', now(), now()),
+(clare_county_id, 'kim-keeley', 'Kim Keeley', 'Victim/Witness Advocate', 'Clare County Prosecutor', '(989) 539-9831', NULL, NULL, NULL, 'Mon-Fri 8am-4:30pm (closed noon-1pm)', NULL, 24, 'published', now(), now()),
+(clare_county_id, 'lori-mott', 'Lori Mott', 'Clerk & Register of Deeds', 'Clare County Clerk', '(989) 539-7131', NULL, NULL, NULL, NULL, 'https://clareclerkrod.com', 21, 'published', now(), now()),
+(clare_county_id, 'lori-phelps', 'Lori Phelps', 'County Administrator', 'Clare County Administration', '(989) 539-2510', NULL, NULL, '225 W Main St, Harrison, MI 48625', 'Mon-Fri 8am-4:30pm', NULL, 20, 'published', now(), now()),
 (lincoln_id, 'maggie-carey', 'Maggie Carey', 'Treasurer', 'Lincoln Township Board', '(989) 588-9841', '3', NULL, NULL, NULL, NULL, 3, 'published', now(), now()),
-(lincoln_id, 'marcy-klaus', 'Marcy Klaus', 'Judge', 'Probate/Family Court', '(989) 539-7109', NULL, NULL, NULL, NULL, NULL, 52, 'published', now(), now()),
-(lincoln_id, 'marlene-housler', 'Marlene Housler', 'Commissioner District 1', 'Clare County Board of Commissioners', '(989) 802-3978', NULL, 'houslerm@clareco.net', NULL, NULL, NULL, 40, 'published', now(), now()),
-(lincoln_id, 'mike-dittenber', 'Mike Dittenber', 'District Forester', 'Clare Conservation District', '(989) 539-6401', NULL, NULL, NULL, NULL, NULL, 31, 'published', now(), now()),
+(clare_county_id, 'marcy-klaus', 'Marcy Klaus', 'Judge', 'Probate/Family Court', '(989) 539-7109', NULL, NULL, NULL, NULL, NULL, 52, 'published', now(), now()),
+(clare_county_id, 'marlana-terrian', 'Marlana Terrian', 'Central Dispatch Director', 'Clare County Central Dispatch 911', '(989) 539-7166', '4226', NULL, '225 W Main St Harrison MI 48625', NULL, NULL, 31, 'published', now(), now()),
+(clare_county_id, 'marlene-housler', 'Marlene Housler', 'Commissioner District 1', 'Clare County Board of Commissioners', '(989) 802-3978', NULL, 'houslerm@clareco.net', NULL, NULL, NULL, 40, 'published', now(), now()),
+(clare_county_id, 'michelle-ambrozaitis', 'Hon. Michelle J. Ambrozaitis', 'Circuit Court Judge', 'Clare County 55th Circuit Court', '(989) 539-7131', NULL, NULL, '225 W Main St Harrison MI 48625', NULL, NULL, 52, 'published', now(), now()),
+(clare_county_id, 'mike-dittenber', 'Mike Dittenber', 'District Forester', 'Clare Conservation District', '(989) 539-6401', NULL, NULL, NULL, NULL, NULL, 31, 'published', now(), now()),
 (lincoln_id, 'mike-tobin', 'Mike Tobin', 'Trustee', 'Lincoln Township Board', '(989) 588-9841', '6', NULL, NULL, NULL, NULL, 5, 'published', now(), now()),
-(lincoln_id, 'pete-preston', 'Pete Preston', 'Director', 'Clare County Equalization', '(989) 539-7894', NULL, NULL, NULL, NULL, NULL, 27, 'published', now(), now()),
-(lincoln_id, 'rickie-fancon', 'Rickie Fancon', 'Commissioner District 9', 'Clare County Board of Commissioners', '(989) 240-0142', NULL, 'rickieglenn2014@gmail.com', NULL, NULL, NULL, 48, 'published', now(), now()),
-(lincoln_id, 'tara-hovey', 'Tara Hovey', 'Judge', '55th Circuit Court', '(989) 539-7131', NULL, NULL, NULL, NULL, NULL, 51, 'published', now(), now()),
+(clare_county_id, 'pete-preston', 'Pete Preston', 'Director', 'Clare County Equalization', '(989) 539-7894', NULL, NULL, NULL, NULL, NULL, 27, 'published', now(), now()),
+(clare_county_id, 'rickie-fancon', 'Rickie Fancon', 'Commissioner District 9', 'Clare County Board of Commissioners', '(989) 240-0142', NULL, 'rickieglenn2014@gmail.com', NULL, NULL, NULL, 48, 'published', now(), now()),
+(clare_county_id, 'sara-schneider', 'Sara Schneider', 'Equalization Clerk', 'Clare County Equalization', '(989) 539-7894', NULL, NULL, '225 W Main St Harrison MI 48625', 'Mon-Fri 8am-4:30pm', NULL, 29, 'published', now(), now()),
+(clare_county_id, 'scott-moore', 'Scott Moore', 'Friend of the Court Director', 'Clare County Friend of the Court', '(989) 539-0800', NULL, NULL, '225 W Main St Harrison MI 48625', 'Mon-Fri 8am-4:30pm', NULL, 53, 'published', now(), now()),
+(clare_county_id, 'stacy-pechacek', 'Stacy Pechacek', 'Chief Deputy Clerk', 'Clare County Clerk & Register of Deeds', '(989) 539-7131', NULL, NULL, NULL, NULL, 'https://clareclerkrod.com', 25, 'published', now(), now()),
+(clare_county_id, 'steven-worpell', 'Steven Worpell', 'Court Administrator', 'Clare County 80th District Court', '(989) 539-7173', NULL, NULL, '225 W Main St Harrison MI 48625', NULL, NULL, 51, 'published', now(), now()),
+(clare_county_id, 'tara-hovey', 'Tara Hovey', 'Judge', '55th Circuit Court', '(989) 539-7131', NULL, NULL, NULL, NULL, NULL, 51, 'published', now(), now()),
+(clare_county_id, 'toni-maize', 'Toni Maize', 'Administrative Assistant', 'Clare Conservation District', '(989) 539-6401', NULL, NULL, NULL, NULL, 'https://clarecd.org', 34, 'published', now(), now()),
+(clare_county_id, 'tracy-brubaker', 'Tracy Brubaker', 'Deputy Director', 'Clare County Equalization', '(989) 539-7894', NULL, NULL, '225 W Main St Harrison MI 48625', 'Mon-Fri 8am-4:30pm', NULL, 29, 'published', now(), now()),
 (lincoln_id, 'troy-kibbey', 'Troy Kibbey', 'Supervisor', 'Lincoln Township Board', '(989) 588-9841', '4', NULL, '175 Lake George Ave, PO Box 239, Lake George, MI 48633', NULL, NULL, 1, 'published', now(), now()),
-(lincoln_id, 'william-faber', 'William Faber', 'Drain Commissioner', 'Clare County Drain Commission', '(989) 539-7320', NULL, NULL, NULL, NULL, NULL, 25, 'published', now(), now())
+(clare_county_id, 'william-faber', 'William Faber', 'Drain Commissioner', 'Clare County Drain Commission', '(989) 539-7320', NULL, NULL, NULL, NULL, NULL, 25, 'published', now(), now())
 ON CONFLICT (region_id, slug) DO UPDATE SET name = EXCLUDED.name, role = EXCLUDED.role, department = EXCLUDED.department, phone = EXCLUDED.phone;
 
 -- =============================================================================
@@ -6391,11 +6414,14 @@ VALUES
 ON CONFLICT (region_id, slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;
 
 -- =============================================================================
--- News (4)
+-- News (7)
 -- =============================================================================
 
 INSERT INTO public.news (slug, title, description, body, date, author_name, category, source, source_url, featured, impact, image_url, visibility, status, created_at, published_at)
 VALUES
+('board-meeting-schedule-2026', '2026 Board of Commissioners Meeting Schedule', 'Regular meeting dates for the Clare County Board of Commissioners in 2026', 'The Clare County Board of Commissioners meets on the 3rd Wednesday of each month at 9:00 AM at 225 W Main St, Harrison. 2026 dates: April 15, May 20, June 17, July 15, August 19, September 16, September 30, October 21, November 12, December 16. Meetings are open to the public. Virtual attendance is available via Zoom. Contact (989) 539-2510 for more information.', '2026-01-01', 'Clare County Administration', 'public-notice', 'Clare County', 'https://www.clareco.net', true, NULL, NULL, 'global', 'published', now(), now()),
+('county-budget-fy2026', 'Clare County FY2026 Budget Approved', 'The Board of Commissioners approved the fiscal year 2026 county budget', 'The Clare County Board of Commissioners approved the fiscal year 2026 budget at their December meeting. The budget covers county operations including all departments, courts, and services. County offices are located at 225 W Main St, Harrison, MI 48625. The full budget document is available through the County Administrator''s office at (989) 539-2510.', '2025-12-16', 'Clare County Administration', 'government-action', 'Clare County', 'https://www.clareco.net', false, NULL, NULL, 'global', 'published', now(), now()),
+('county-services-directory', 'Clare County Services Directory', 'A guide to county government services and how to access them', 'Clare County government offices are open Monday through Friday, 8am to 4:30pm at 225 W Main St, Harrison, MI 48625 (PO Box 438). Main phone: (989) 539-2510. Key services include property tax payments (Treasurer, 989-539-7801), dog licensing (Treasurer), vital records (Clerk, 989-539-7131), building permits (clareco-buildingdev.net), FOIA requests (FOIA@clareco.net), GIS/property maps (app.fetchgis.com/clare), and election information (clareclerkrod.com/election/).', '2026-03-01', 'Clare County Administration', 'public-notice', 'Clare County', 'https://www.clareco.net', false, NULL, NULL, 'global', 'published', now(), now()),
 ('gardening-club-launches', 'Lincoln Township Gardening Club: Dig In This Spring!', 'Join our new weekly gardening club with Saturday meetups and monthly classes', 'Spring is here, and so is the Lincoln Township Gardening Club. Whether you have been gardening for decades or have never touched a trowel, this new weekly club is your invitation to get your hands dirty alongside your neighbors.
 
 ## What to Expect
@@ -6530,28 +6556,42 @@ We are just getting started. Watch this space for more news, events, and communi
 ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;
 
 -- =============================================================================
--- Events (9)
+-- Events (22)
 -- =============================================================================
 
 INSERT INTO public.events (slug, title, description, body, date, end_date, time, location, category, recurring, recurrence_rule, registration_url, cost, visibility, status, created_at, published_at)
 VALUES
+('board-of-commissioners-meeting', 'Clare County Board of Commissioners Meeting', 'Regular monthly meeting of the Clare County Board of Commissioners', 'Regular meeting of the Clare County Board of Commissioners. Open to the public. 2026 meeting dates: April 15, May 20, June 17, July 15, August 19, September 16, September 30, October 21, November 12, December 16. Virtual attendance via Zoom available.', '2026-04-15', NULL, '9:00 AM', '225 W Main St, Harrison, MI 48625', 'government', true, '3rd Wednesday monthly', NULL, 'Free', 'global', 'published', now(), now()),
+('clare-county-fair', 'Clare County Fair', 'One of Michigan''s longest-running county fairs, since 1883', 'Running since 1883, the Clare County Fair is a week-long tradition featuring livestock shows, carnival rides, demolition derby, live entertainment, and 4-H exhibits at the fairgrounds in Harrison.', '2026-07-18', '2026-07-25', 'Gates open at 8am daily', 'Clare County Fairgrounds, Harrison, MI', 'community', true, 'Annually in July', NULL, 'Varies', 'global', 'published', now(), now()),
 ('conservation-board-april-2026', 'Conservation District Board Meeting', 'Regular monthly meeting of the Clare Conservation District Board of Directors', 'The Clare Conservation District Board meets monthly to discuss conservation programs, projects, and district business. Meetings are open to the public.', '2026-04-21', NULL, '6:30 PM', 'Harrison District Library, Harrison, MI', 'conservation', true, '3rd Tuesday monthly', NULL, NULL, 'global', 'published', now(), now()),
 ('county-commissioners-april-2026', 'Clare County Board of Commissioners Meeting', 'Regular monthly meeting of the Clare County Board of Commissioners', 'The Clare County Board of Commissioners meets monthly to conduct county business. Meetings are open to the public.', '2026-04-15', NULL, '9:00 AM', 'Clare County Courthouse, 225 W Main St, Harrison, MI', 'government', true, '3rd Wednesday monthly', NULL, NULL, 'global', 'published', now(), now()),
+('drain-board-meeting', 'Clare County Drain Board Meeting', 'Regular meeting of the Clare County Drainage Board', 'Meetings of the Clare County Drainage Board address drainage district matters, drain maintenance, and improvement projects. Meeting dates are posted on the county calendar. Contact the Drain Commissioner at (989) 539-7320.', '2026-04-15', NULL, 'TBD', '225 W Main St, Harrison, MI 48625', 'government', true, 'As scheduled', NULL, 'Free', 'global', 'published', now(), now()),
+('farwell-farmers-market', 'Farwell Farmers Market', 'Fresh local produce, baked goods, and crafts every Saturday morning', 'The Farwell Farmers Market features local growers and makers every Saturday morning from May through October, 9am to 1pm. Find fresh produce, baked goods, honey, preserves, and handmade crafts.', '2026-05-02', '2026-10-31', '9am-1pm', 'Downtown Farwell, MI', 'community', true, 'Saturdays, May through October', NULL, 'Free admission', 'global', 'published', now(), now()),
+('frostbite-festival', 'Frostbite Festival', 'Harrison''s winter celebration with ice fishing, snowmobile events, and more', 'Harrison''s Frostbite Festival celebrates winter on Budd Lake and throughout downtown. Events include ice fishing contests, snowmobile racing, winter games, and warming stations with hot cocoa.', '2026-01-24', '2026-01-25', NULL, 'Harrison, MI — Budd Lake and downtown', 'community', true, 'Annually in January', NULL, 'Free', 'global', 'published', now(), now()),
+('holiday-lights-festival', 'Farwell Holiday Lights Festival', 'Holiday celebration with light displays and community festivities', 'Farwell welcomes the holiday season with festive light displays, visits with Santa, carolers, hot chocolate, and community spirit throughout the village.', '2026-12-05', NULL, '5pm-9pm', 'Village of Farwell, MI', 'community', true, 'Annually in early December', NULL, 'Free', 'global', 'published', now(), now()),
+('irish-festival', 'Clare Irish Festival', 'Annual celebration of Clare''s Irish heritage with music, food, and family fun', 'Clare''s signature celebration of its Irish heritage. Live Irish music, traditional food, green beer, parade, and family activities throughout downtown. Clare was named after County Clare, Ireland in 1843.', '2026-03-14', NULL, 'All Day', 'Downtown Clare, McEwan Street', 'community', true, 'Annually in March', NULL, 'Free', 'global', 'published', now(), now()),
+('lake-daze', 'Lake Daze Festival', 'Summer community celebration in Lake, Michigan', 'The community of Lake celebrates summer with the annual Lake Daze festival, featuring food, games, fireworks, and small-town fun.', '2026-07-04', NULL, NULL, 'Lake, MI', 'community', true, 'Annually around July 4th', NULL, 'Free', 'global', 'published', now(), now()),
+('lake-improvement-board-meeting', 'Lake Improvement Board Meeting', 'Meetings for Clare County lake improvement boards', 'Clare County lake improvement boards meet to address lake management, weed control, water quality, and special assessments. Multiple boards serve different lakes. Meeting schedules are posted on the county calendar.', '2026-04-15', NULL, 'TBD', '225 W Main St, Harrison, MI 48625', 'government', true, 'As scheduled', NULL, 'Free', 'global', 'published', now(), now()),
+('lumberjack-festival', 'Farwell Lumberjack Festival', 'Celebrating Farwell''s logging heritage with competitions and family fun', 'Farwell honors its logging heritage with lumberjack competitions, live music, craft vendors, food, and family activities. The village was a hub for Michigan''s lumber industry in the 1800s.', '2026-08-15', '2026-08-16', NULL, 'Village of Farwell, MI', 'community', true, 'Annually in August', NULL, 'Free', 'global', 'published', now(), now()),
 ('native-plant-pickup-flowers', 'Native Plant Sale Pickup (Wildflowers & Garden Kits)', 'Pick up your pre-ordered wildflowers and garden kits from the Clare Conservation District spring plant sale', 'Pick up your pre-ordered wildflowers and garden kits from the Clare Conservation District''s annual spring plant sale. Pickup runs May 21-23. Bring your order confirmation and a vehicle suitable for transporting your plants.', '2026-05-21', NULL, '9:00 AM - 4:00 PM', 'Harrison City Hall Maintenance Shop, 2105 Sullivan Dr, Harrison, MI', 'conservation', false, NULL, NULL, NULL, 'global', 'published', now(), now()),
 ('native-plant-pickup-trees', 'Native Plant Sale Pickup (Trees & Shrubs)', 'Pick up your pre-ordered native trees and shrubs from the Clare Conservation District spring plant sale', 'Pick up your pre-ordered native trees and shrubs from the Clare Conservation District''s annual spring plant sale. Pickup runs May 7-9. Bring your order confirmation and a vehicle suitable for transporting your plants.', '2026-05-07', NULL, '9:00 AM - 4:00 PM', 'Harrison City Hall Maintenance Shop, 2105 Sullivan Dr, Harrison, MI', 'conservation', false, NULL, NULL, NULL, 'global', 'published', now(), now()),
 ('planning-commission-april-2026', 'Planning Commission Meeting', 'Regular monthly meeting of the Lincoln Township Planning Commission', 'The Planning Commission meets monthly to review site plans, zoning requests, and land use matters. Meetings are open to the public.', '2026-04-14', NULL, '7:00 PM', 'Lincoln Township Hall, 175 Lake George Ave, Lake George, MI', 'government', true, '1st Tuesday after 2nd Monday monthly', NULL, NULL, 'global', 'published', now(), now()),
 ('sad-hearings-may-2026', 'Special Assessment District Public Hearings (Shingle, Bertha & Lake George)', 'Public hearings for Special Assessment Districts on Shingle Lake, Lake Bertha, and Lake George', 'Lincoln Township will hold public hearings for the Special Assessment Districts on Shingle Lake, Lake Bertha, and Lake George. Property owners within these SAD boundaries are encouraged to attend and provide input on the proposed assessments for lake maintenance and improvement projects.', '2026-05-08', NULL, '4:00 PM', 'Lincoln Township Hall, 175 Lake George Ave, Lake George, MI', 'government', false, NULL, NULL, NULL, 'global', 'published', now(), now()),
+('summer-concert-series', 'Summer Concert Series', 'Free Thursday evening concerts in Shamrock Park', 'Bring a lawn chair and enjoy free live music at Shamrock Park in Clare every Thursday evening from June through July, 6-8pm.', '2026-06-04', '2026-07-30', '6pm-8pm', 'Shamrock Park, Clare, MI', 'community', true, 'Thursdays, June through July', NULL, 'Free', 'global', 'published', now(), now()),
+('summerfest', 'Clare Summerfest', 'Summer celebration in downtown Clare with music, vendors, and activities', 'Downtown Clare comes alive for Summerfest weekend with live music, food vendors, craft booths, and family activities along McEwan Street.', '2026-06-20', '2026-06-21', '10am-10pm', 'Downtown Clare, McEwan Street', 'community', true, 'Annually in June', NULL, 'Free', 'global', 'published', now(), now()),
 ('twp-board-april-2026', 'Lincoln Township Board Meeting', 'Regular monthly meeting of the Lincoln Township Board of Trustees', 'The Lincoln Township Board meets on the second Monday of each month to conduct regular township business. Meetings are open to the public and include time for public comment.', '2026-04-13', NULL, '7:00 PM', 'Lincoln Township Hall, 175 Lake George Ave, Lake George, MI', 'government', true, '2nd Monday monthly', NULL, NULL, 'global', 'published', now(), now()),
 ('twp-board-may-2026', 'Lincoln Township Board Meeting', 'Regular monthly meeting of the Lincoln Township Board of Trustees', 'The Lincoln Township Board meets on the second Monday of each month to conduct regular township business. Meetings are open to the public and include time for public comment.', '2026-05-11', NULL, '7:00 PM', 'Lincoln Township Hall, 175 Lake George Ave, Lake George, MI', 'government', true, '2nd Monday monthly', NULL, NULL, 'global', 'published', now(), now()),
-('vernal-pool-monitoring', 'Vernal Pool Monitoring Event', 'Learn how to identify and monitor vernal pools, critical seasonal wetland habitats for amphibians and invertebrates', 'Join the Clare Conservation District for a hands-on vernal pool monitoring event. Learn how to identify vernal pools, the unique seasonal wetlands that provide critical breeding habitat for salamanders, frogs, and aquatic invertebrates. No experience necessary.', '2026-05-29', NULL, 'TBD', 'Clare Conservation District Habitat Education Property, Clare County, MI', 'conservation', false, NULL, NULL, NULL, 'global', 'published', now(), now())
+('vernal-pool-monitoring', 'Vernal Pool Monitoring Event', 'Learn how to identify and monitor vernal pools, critical seasonal wetland habitats for amphibians and invertebrates', 'Join the Clare Conservation District for a hands-on vernal pool monitoring event. Learn how to identify vernal pools, the unique seasonal wetlands that provide critical breeding habitat for salamanders, frogs, and aquatic invertebrates. No experience necessary.', '2026-05-29', NULL, 'TBD', 'Clare Conservation District Habitat Education Property, Clare County, MI', 'conservation', false, NULL, NULL, NULL, 'global', 'published', now(), now()),
+('yoders-auction', 'Yoder''s Quilt Auction & Flea Market', 'Amish quilt auction and flea market near Clare', 'The local Amish community hosts quilt auctions and flea markets at Yoder''s on Leaton Road. Handcrafted quilts, furniture, baked goods, and produce. Contact (989) 386-2872 for schedule. Note: closed Thursdays.', '2026-05-01', NULL, 'Fridays and Saturdays, seasonal', '10885 N Leaton Rd, Clare, MI', 'community', true, 'Fridays and Saturdays, seasonal', NULL, 'Free admission', 'global', 'published', now(), now())
 ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;
 
 -- =============================================================================
--- Guides (20)
+-- Guides (25)
 -- =============================================================================
 
 INSERT INTO public.guides (slug, title, description, body, category, scenario, icon, jurisdiction, last_verified, status, created_at, published_at)
 VALUES
+('animal-shelter-adoption', 'Adopting from the Clare County Animal Shelter', 'How to adopt a pet from the county animal shelter', 'The Clare County Animal Shelter is open for adoptions 10am to 4pm, Monday through Friday. Located in Harrison. Walk-ins welcome to view available animals. Adoption fees vary. The shelter also handles stray animal reports and animal control services. After-hours animal emergencies: (989) 539-1336 (Central Dispatch).', 'services', 'I want to adopt a dog or cat — how does the county shelter work?', '🐾', 'county', '2026-03-26', 'published', now(), now()),
 ('appeal-assessment', 'Appealing Your Property Assessment', 'How to challenge your property tax assessment in Grant Township, Clare County, Michigan. Board of Review process and Michigan Tax Tribunal options.', 'Every year, the township assessor determines the assessed value of your property. If you believe your assessment is too high — meaning it does not reflect what your property would actually sell for — you have the right to appeal.
 
 ## Steps to Appeal
@@ -6689,6 +6729,8 @@ You probably do **not** need one for minor repairs, painting, or small sheds und
 The fire department siren test runs on the **first Thursday of every month at 3:00 PM**. If you hear the siren at any other time, it signals an actual emergency.
 
 For fire emergencies, call **911**. For non-emergency fire questions, contact Fire Chief Dale Majewski at (989) 429-8887.', 'safety', 'How do I get a burn permit?', '🔥', 'state', '2026-03-25', 'published', now(), now()),
+('county-gis-maps', 'Using Clare County GIS Maps', 'How to look up property information, parcels, and zoning using the county GIS system', 'Step-by-step guide to using the Fetch GIS portal at app.fetchgis.com/clare. Search by address or parcel number. View property boundaries, ownership, assessed values, and zoning. The BS&A Online portal (bsaonline.com) provides additional property tax and assessment data. For questions about assessments, contact the Equalization Department.', 'property', 'I want to look up property boundaries, ownership, or zoning information — how do I use the county maps?', '🗺️', 'county', '2026-03-26', 'published', now(), now()),
+('county-road-issues', 'Reporting Road Problems', 'How to report potholes, road damage, or maintenance needs on county roads', 'The Clare County Road Commission is a separate entity from county government and maintains county roads, bridges, and rights-of-way. Report potholes, road damage, fallen trees, flooding, or other road hazards by calling (989) 539-2151 during business hours. For after-hours emergencies affecting road safety, call Central Dispatch at (989) 539-1336. Note: city streets in Clare and Harrison are maintained by their respective city governments, not the Road Commission.', 'services', 'There''s a pothole or road damage on my road — how do I report it?', '🚧', 'county', '2026-03-26', 'published', now(), now()),
 ('dog-license', 'Licensing Your Dog', 'How to license your dog in Clare County, Michigan, including costs, where to apply, rabies vaccination requirements, and late fees.', 'Michigan law requires all dogs over four months old to be licensed. It is not optional — it is the law, and it helps reunite lost dogs with their owners. Licenses are handled through the Clare County Treasurer''s Office.
 
 ## How to Get a Dog License
@@ -6722,6 +6764,7 @@ Licenses run from January 1 through December 31 each year. You can renew startin
 If your dog goes missing or you find a stray, contact Animal Control Officer Bob Dodson at **(989) 539-3221**. The dog license tag is the fastest way for animal control to identify a dog and contact its owner.
 
 The Clare County Animal Shelter holds strays and works to reunite pets with owners. Check with them if your dog is lost — and make sure that license tag is on the collar.', 'services', 'How do I license my dog?', '🐕', 'county', '2026-03-25', 'published', now(), now()),
+('drain-commissioner', 'Reporting Drainage Issues', 'How to report flooding, drainage problems, or ditch maintenance needs', 'The Clare County Drain Commissioner manages county drains, drainage districts, and stormwater infrastructure. Report drainage issues, blocked culverts, or flooding to the Drain Commissioner''s office at (989) 539-7320. The office is at 225 W Main St, Harrison. Drainage Board meetings are held as needed to address district-wide matters. For emergency flooding or road washouts, contact Central Dispatch at (989) 539-1336.', 'property', 'My property has drainage problems or flooding — who do I contact?', '🌊', 'county', '2026-03-26', 'published', now(), now()),
 ('emergency-alerts', 'Signing Up for Emergency Alerts', 'How to sign up for emergency alerts in Clare County, Michigan, including text alerts, Smart911, text-to-911, and NOAA weather radio information.', 'Clare County has several ways to keep you informed during emergencies — severe weather, road closures, missing persons, and other critical events. Signing up takes a few minutes and could make a real difference when it matters.
 
 ## Text Alerts (Fastest Way)
@@ -7119,6 +7162,7 @@ The Central Michigan Cooperative Invasive Species Management Area (CM-CISMA) cov
 - **Do not move firewood.** Spongy moth egg masses hitchhike on firewood. Buy it where you burn it.
 - **Do not wait.** Small populations are easier to manage. Scraping 20 egg masses now prevents thousands of caterpillars later.
 - **Do not use broad-spectrum insecticides.** They kill beneficial insects along with the moths. Bt-based products like Foray 48B are targeted and effective.', 'nature', 'I have spongy moths or invasive species on my property', '🦋', 'county', '2026-03-25', 'published', now(), now()),
+('veterans-services', 'Clare County Veterans Services', 'Benefits assistance, claims support, and resources for veterans', 'The Clare County Veterans Services office assists veterans and their families with VA benefits claims, healthcare enrollment, pension applications, and connecting to state and federal resources. Located at 225 W Main St, Harrison. Open Monday through Friday, 8am to 4:30pm. Both Karl Hauser (Director) and Allisha Gary (VSO) can help with claims filing and benefits questions. No appointment needed but recommended for complex claims.', 'services', 'I''m a veteran — what services and benefits help are available in Clare County?', '🎖️', 'county', '2026-03-26', 'published', now(), now()),
 ('zoning-variance', 'Applying for a Zoning Variance', 'How to apply for a zoning variance through the Grant Township Zoning Board of Appeals in Clare County, Michigan.', 'A zoning variance lets you do something that the zoning ordinance normally would not allow — like building closer to a property line than the setback requires, or putting a structure on a lot that does not quite meet size requirements. Variances are granted by the Zoning Board of Appeals (ZBA), not the Zoning Administrator.
 
 ## When You Need a Variance
@@ -7152,6 +7196,12 @@ A variance is **not** a way around the rules — you must show that strict appli
 - **Not attending the hearing.** If you do not show up, the ZBA will likely deny your application.', 'property', 'I need a zoning variance — how does that work?', '⚖️', 'township', '2026-03-25', 'published', now(), now())
 ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body, scenario = EXCLUDED.scenario;
 
+
+-- Guide contacts for: animal-shelter-adoption
+DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'animal-shelter-adoption');
+INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_order)
+VALUES
+((SELECT id FROM public.guides WHERE slug = 'animal-shelter-adoption'), 'Bob Dodson', 'Animal Shelter Director', '(989) 539-3221', NULL, 0);
 
 -- Guide contacts for: appeal-assessment
 DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'appeal-assessment');
@@ -7201,12 +7251,37 @@ INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_o
 VALUES
 ((SELECT id FROM public.guides WHERE slug = 'burn-permit'), 'Dale Majewski', 'Fire Chief', '(989) 429-8887', NULL, 0);
 
+-- Guide contacts for: county-gis-maps
+DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'county-gis-maps');
+INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_order)
+VALUES
+((SELECT id FROM public.guides WHERE slug = 'county-gis-maps'), 'Pete Preston', 'Equalization Director', '(989) 539-7894', NULL, 0);
+
+-- Guide forms for: county-gis-maps
+DELETE FROM public.guide_forms WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'county-gis-maps');
+INSERT INTO public.guide_forms (guide_id, name, url, format, display_order)
+VALUES
+((SELECT id FROM public.guides WHERE slug = 'county-gis-maps'), 'Clare County GIS Portal', 'https://app.fetchgis.com/clare', 'Web', 0);
+
+-- Guide contacts for: county-road-issues
+DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'county-road-issues');
+INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_order)
+VALUES
+((SELECT id FROM public.guides WHERE slug = 'county-road-issues'), 'Clare County Road Commission', 'Road Maintenance', '(989) 539-2151', NULL, 0);
+
 -- Guide contacts for: dog-license
 DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'dog-license');
 INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_order)
 VALUES
 ((SELECT id FROM public.guides WHERE slug = 'dog-license'), 'Jenny Beemer-Fritzinger', 'County Treasurer', '(989) 539-7801', NULL, 0),
 ((SELECT id FROM public.guides WHERE slug = 'dog-license'), 'Bob Dodson', 'Animal Control Officer', '(989) 539-3221', NULL, 1);
+
+-- Guide contacts for: drain-commissioner
+DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'drain-commissioner');
+INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_order)
+VALUES
+((SELECT id FROM public.guides WHERE slug = 'drain-commissioner'), 'William Faber', 'Drain Commissioner', '(989) 539-7320', NULL, 0),
+((SELECT id FROM public.guides WHERE slug = 'drain-commissioner'), 'Colleen Ritchie', 'Deputy Drain Commissioner', '(989) 539-7320', NULL, 1);
 
 -- Guide contacts for: emergency-alerts
 DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'emergency-alerts');
@@ -7326,6 +7401,13 @@ INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_o
 VALUES
 ((SELECT id FROM public.guides WHERE slug = 'spongy-moth'), 'Toni Maize', 'Spongy Moth Coordinator', '(989) 539-6401', NULL, 0);
 
+-- Guide contacts for: veterans-services
+DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'veterans-services');
+INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_order)
+VALUES
+((SELECT id FROM public.guides WHERE slug = 'veterans-services'), 'Karl Hauser', 'Veterans Services Director', '(989) 539-3273', NULL, 0),
+((SELECT id FROM public.guides WHERE slug = 'veterans-services'), 'Allisha Gary', 'Veterans Service Officer', '(989) 539-3273', NULL, 1);
+
 -- Guide contacts for: zoning-variance
 DELETE FROM public.guide_contacts WHERE guide_id = (SELECT id FROM public.guides WHERE slug = 'zoning-variance');
 INSERT INTO public.guide_contacts (guide_id, name, role, phone, email, display_order)
@@ -7341,7 +7423,7 @@ VALUES
 
 
 -- =============================================================================
--- Pages (46)
+-- Pages (71)
 -- =============================================================================
 
 INSERT INTO public.pages (slug, title, description, body, category, subcategory, nav_title, hide_from_nav, display_order, status, last_updated, created_at, published_at)
@@ -7452,6 +7534,46 @@ There are many ways to be part of what we''re building:
 Reach out to learn more about Unicorn Gives and how you can get involved.
 
 *Contact information coming soon.*', 'Community', 'Unicorn Gives', NULL, false, 20, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('amish-community', 'Clare County Amish Community', 'A Swiss-descended Amish community with unique traditions', '## A Living Heritage
+
+Clare County is home to a Swiss-descended Amish community whose presence adds a distinctive thread to the cultural fabric of the region. Centered around the Leaton Road area north of Clare, this settlement has maintained its traditions of faith, craftsmanship, and agrarian life for generations. The community is modest in size but rich in the skills and customs that its members carry forward from one generation to the next.
+
+## Yoder''s Market & Auctions
+
+The most visible gathering point for visitors and locals alike is Yoder''s, located at 10885 N Leaton Rd, Clare. Yoder''s hosts a popular Quilt Auction & Flea Market along with a Horse Auction, held on Fridays and Saturdays during the seasonal months. The quilt auctions attract buyers from well beyond the county, as the handcrafted quilts produced by community members are known for their meticulous stitching, vivid patterns, and durability. The flea market offers a mix of produce, baked goods, handmade furniture, tools, and household items.
+
+**Contact:** (989) 386-2872
+
+## What to Expect
+
+Visitors to the Amish community can find a variety of handcrafted goods, including quilts, wooden furniture, fresh-baked pies and breads, jams, and seasonal produce. Many items are sold directly from home-based shops along rural roads, often marked by simple hand-lettered signs.
+
+**Please note:** Most Amish businesses close on Thursdays, which is traditionally observed as a day of rest and community activity. Plan your visit accordingly to avoid arriving on a day when shops and markets are shuttered.
+
+## Visiting with Respect
+
+The Amish way of life values simplicity, humility, and privacy. Visitors are welcome, but a few courtesies go a long way. Please ask before taking photographs of individuals, homes, or property. Avoid using drones or recording devices near residences. Keep vehicle speeds low on the rural roads where horse-drawn buggies share the pavement, especially at dawn and dusk when visibility is limited. A respectful visit benefits everyone and helps ensure that the community remains open and welcoming to future guests.', 'History', 'Cultural Heritage', NULL, false, 22, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('arts-entertainment', 'Arts & Entertainment', 'Theaters, galleries, outdoor fun, and live music', 'Clare County offers a variety of arts, entertainment, and family-friendly attractions that keep visitors and residents entertained year-round.
+
+## Movie Theater
+
+The Ideal Theatre (607 N McEwan St, Clare, 989-386-9968) is a classic small-town cinema in the heart of downtown Clare, showing current releases at affordable prices. It has been a fixture of the McEwan Street scene for decades.
+
+## Family Fun
+
+Snowbird Lanes (3185 N Clare Ave, Harrison, 989-539-7242) offers bowling for all ages in a casual, family-friendly setting. 4X Adventureland (501 Fairlane St, Harrison, 989-539-3604) features mini golf, an arcade, and go-karts, making it a popular stop for families visiting the Harrison area during the summer.
+
+## Gaming & Casino
+
+Soaring Eagle Casino and Resort, operated by the Saginaw Chippewa Indian Tribe, is located just south of Clare County and offers gaming, live entertainment, dining, and hotel accommodations.
+
+## Public Art
+
+The Clare Art Alley and the Destination Clare Art Sculpture Walk bring visual art into the public spaces of downtown Clare. Rotating sculptures and murals add color and interest to a stroll through the business district.
+
+## Live Music
+
+The Summer Concert Series at Shamrock Park in Clare runs on Thursdays from June through July, 6 to 8 PM. The free outdoor concerts feature a variety of musical acts and draw families and neighbors to the park each week. Bring a lawn chair or blanket and enjoy an evening of live music under the trees.', 'Directory', NULL, NULL, false, 55, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('assessor', 'Assessor', 'Lincoln Township property assessment information and contact details', '## Township Assessor
 
 The Assessor establishes the taxable value of all property in Lincoln Township.
@@ -7552,6 +7674,20 @@ If you disagree with the Board of Review decision, you may appeal to the Michiga
 - [Frequently Asked Questions](/faq)
 - [Clare County Website](https://clareco.net/)
 - [Community Resources](/links)', 'Services', 'Other Services', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('atv-orv-trails', 'ATV & ORV Trails', '55+ miles of off-road trails through state forest land', 'Clare County is a popular destination for off-road riding, with extensive trail systems winding through state forest land in the northern half of the county.
+
+The Leota ORV Trailhead serves as the main access point for over 55 miles of designated trails open to larger ORVs, along with hundreds of additional miles of routes available for ATVs and quads. The trails pass through a mix of pine forests, hardwoods, and sandy terrain typical of northern Lower Michigan.
+
+The Fur Farm Snowmobile Trail runs north of Harrison through state forest and is groomed during the winter season for snowmobile use.
+
+For trail information, permits, and conditions, contact the DNR Harrison Field Office at (989) 539-6411. Downloadable maps are available for the following trail systems:
+
+- Forest Roads
+- Leota Trail
+- Denton Creek West
+- Snowmobile Trail systems
+
+Riders should check current trail conditions and carry a valid ORV permit before heading out. Some trails have seasonal closures during spring thaw to prevent damage.', 'Recreation', NULL, NULL, false, 41, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('board-minutes', 'Board Meeting Minutes', 'Lincoln Township Board of Trustees meeting minutes and archives', 'Regular board meetings are held on the second Monday of each month at 7:00 PM at Lincoln Township Hall, 175 Lake George Ave, Lake George, MI 48633. Special meetings are posted no less than 18 hours in advance on the front door of the township hall.
 
 **Accessibility:** Individuals with disabilities requiring auxiliary aids or services should contact Carol Majewski, Clerk at [989-588-9841 ext. 2](tel:989-588-9841) or [clm@lincolntwp.com](mailto:clm@lincolntwp.com). PO Box 239, Lake George, MI 48633. Please provide as much notice as possible so proper arrangements can be made.
@@ -7575,6 +7711,18 @@ The archive includes Board of Trustees, Planning Commission, and ZBA minutes wit
 Planning Commission meeting minutes will be posted as they become available. The Planning Commission meets on the first Tuesday after the second Monday of each month at 7:00 PM at Lincoln Township Hall.
 
 For historical Planning Commission minutes (2008–2015), see the [Planning Commission page](/planning-commission).', 'Government', 'Board & Leadership', NULL, false, 9, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('boating-canoeing', 'Boating & Canoeing', '18 lakes with public launches and 330 miles of paddling rivers', 'Clare County is home to 18 lakes with public boat launches, making it easy to get out on the water whether you prefer powerboating, pontoon cruising, or paddling. Lakes with public access include Arnold, Budd, Cranberry, Crooked, Eight Point, Five Lakes, Lake George, Lily, Shamrock, Windover, and several others spread across the county.
+
+Over 330 miles of rivers and streams flow through Clare County, providing outstanding opportunities for canoeing and kayaking. The Muskegon River is the most popular paddling waterway, offering a gentle current through wooded corridors and scenic stretches. The Tobacco River and Cedar River provide additional options for river paddlers looking for quieter water and a more secluded experience.
+
+## Canoe & Kayak Rentals
+
+Duggan''s Canoe Livery offers canoe and kayak rentals on the Muskegon River with trips of varying lengths to suit beginners and experienced paddlers alike.
+
+- **Address:** 3240 N Temple Dr, Harrison
+- **Phone:** (989) 539-7149
+
+Whether you are launching a boat on Budd Lake for a day of fishing or paddling a canoe down the Muskegon, Clare County''s waterways are among its greatest natural assets.', 'Recreation', NULL, NULL, false, 42, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('book-appointment', 'Book an Appointment', 'Schedule an appointment at The Mane boutique salon in Lincoln Township', '## Book an Appointment
 
 Schedule your visit to The Mane in Lake George, MI.
@@ -7671,6 +7819,19 @@ For current meeting schedules and dates, contact the Township Clerk:
 - **Carol Majewski**
 - Phone: 989-588-9069
 - Email: clm@lincolntwp.com', 'Government', 'Meetings & Calendar', NULL, false, 205, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('camping-campgrounds', 'Camping & Campgrounds', 'State parks, recreation areas, and family campgrounds', 'Clare County has campgrounds to suit every style, from full-service state park facilities on the lakeshore to quiet family campgrounds tucked into the countryside.
+
+Wilson State Park sits on the western shore of Budd Lake in Harrison and is one of the most popular campgrounds in the region. The park offers modern campsites with electric hookups, a swimming beach, boat launch, picnic areas, and direct access to the Pere Marquette Rail Trail. Reservations are recommended during summer months.
+
+Herrick Recreation Area, located east of Clare, provides a more rustic camping experience along with hiking trails, fishing access, and a peaceful wooded setting away from town.
+
+| Campground | Address | Phone |
+|------------|---------|-------|
+| Wilson State Park | 910 First St, Harrison | (989) 539-3021 |
+| Herrick Recreation Area | 6320 E Herrick Rd, Clare | (989) 386-2010 |
+| Hidden Hill Family Campground | 300 N Clare Ave, Harrison | (989) 539-9372 |
+| Countryside Campground | 805 Byfield, Harrison | (989) 539-5468 |
+| Pettit Park | N McEwan St, Clare | (989) 386-7541 |', 'Recreation', NULL, NULL, false, 44, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('cemeteries', 'Lincoln Township Cemeteries', 'Information about Lincoln Township Cemetery and Kilbourn Cemetery including plots, fees, and burial services', 'Lincoln Township has ownership and control of two separate cemeteries: the Township Cemetery and the [Kilbourn Cemetery](#kilbourn-cemetery).
 
 [Lincoln Township Cemeteries Ordinance](/ordinances/42.pdf)
@@ -7720,6 +7881,42 @@ The smaller of the two, Kilbourn Cemetery was a private cemetery abandoned by th
 - **Carol Majewski**, Township Clerk — (989) 588-9069, Email: [clm@lincolntwp.com](mailto:clm@lincolntwp.com)
 
 Need to do some cemetery name or grave searches? Visit [FindAGrave.com](http://www.findagrave.com/).', 'Community', 'Facilities', NULL, false, 12, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('clare-community', 'City of Clare', 'Gateway to the North — festivals, downtown dining, and rail trails', '## Gateway to the North
+
+Clare sits at the crossroads of US-10 and US-127, earning its long-held title as the Gateway to the North. For generations, travelers heading up through Michigan''s mitten have paused here to stretch their legs, grab a bite, and soak in the character of a small city that punches well above its weight. With a population of roughly 3,200, Clare balances the friendliness of a tight-knit community with an energy that draws visitors year-round.
+
+## Downtown Clare
+
+The heart of the city runs along McEwan Street, where a walkable downtown district mixes independent shops, restaurants, and genuine curiosities. Chief among them is Cops & Doughnuts, a bakery that gained national fame after a group of local police officers banded together to save the century-old Clare City Bakery from closing. The shop has since been featured on network television and attracts fans from across the country. A few doors down, Four Leaf Brewing offers craft beer in a relaxed taproom setting, while other storefronts along the block showcase antiques, gifts, and local art.
+
+Anchoring the downtown skyline is the Doherty Hotel, a landmark built in 1924 that once hosted governors, gangsters, and traveling salesmen alike. The hotel remains a working property and a tangible link to the era when Clare was booming with lumber money and rail traffic.
+
+## Pere Marquette Rail Trail
+
+One of Clare''s greatest assets stretches well beyond city limits. The Pere Marquette Rail Trail follows a former railroad corridor for roughly 30 paved miles between Clare and Midland, passing through farmland, forests, and small communities along the way. The trail is open to cyclists, walkers, joggers, and inline skaters, making it one of the most popular multi-use paths in central Michigan. Trailheads in Clare provide convenient parking and access.
+
+## Annual Events
+
+Clare keeps a full calendar of community celebrations. The Irish Festival honors the county''s namesake roots with music, dancing, and plenty of green. Summerfest fills the downtown streets with vendors, live entertainment, and family activities. Throughout the warmer months, the Summer Concert Series at Shamrock Park brings free live music to the community on weekend evenings. These events, along with seasonal parades and holiday gatherings, reinforce the strong civic pride that defines life in Clare.', 'Community', 'Community Profiles', NULL, false, 10, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('clare-county-history', 'Clare County History', 'From Kaykakee to Clare — two centuries of Michigan history', '## From Kaykakee to Clare
+
+Clare County''s recorded history stretches back to 1840, when the Michigan legislature organized the territory and named it Kaykakee, honoring a Sauk chief whose people had long inhabited the region. The name lasted only three years. In 1843, an Irish surveyor working in the area successfully petitioned to rename the county after County Clare in Ireland, planting a cultural seed that still blooms in the community''s Irish festivals and green-themed celebrations today.
+
+## The Logging Era
+
+The story of Clare County in the latter half of the 1800s is inseparable from the story of Michigan timber. Vast stands of white pine blanketed the region, and as demand for lumber surged across a rapidly industrializing nation, logging camps sprang up throughout the county. Railroads pushed into the forest to haul out the cut, and boomtowns appeared almost overnight along the tracks. Sawmills ran day and night, and the population swelled with lumberjacks, teamsters, cooks, and the merchants who served them. By the early 1900s, however, the great pines had been largely exhausted, and the county faced the difficult transition that followed the end of every timber boom.
+
+## Prohibition and the Purple Gang
+
+Clare County''s history took a darker turn during the Prohibition era, when the remote forests and quiet backroads made the region attractive to organized crime. The Purple Gang, a notorious Detroit-based criminal organization, maintained connections in the area. In 1938, Isaiah Leebove, an attorney linked to the gang, was murdered in a case that drew statewide attention and underscored the reach of Prohibition-connected violence into rural Michigan. The episode remains one of the more dramatic chapters in the county''s past.
+
+## WPA Legacy
+
+The Great Depression hit Clare County hard, but it also left behind an enduring artistic legacy. During the 1930s, the Works Progress Administration funded a series of murals that were installed in public buildings across the county. Today, WPA-era murals can still be found at Clare Middle School, the US Post Office in Clare, and the Doherty Hotel. These works depict scenes of local life, industry, and landscape, and they stand as both historical artifacts and genuine works of art.
+
+## From Lumber to Land
+
+As the timber industry faded, Clare County reinvented itself. Farmland replaced cutover forest, and agriculture became a mainstay of the local economy. The county''s abundant lakes and rivers, once used to float logs downstream, gradually attracted a new kind of visitor — vacationers, anglers, hunters, and families looking for a quiet retreat in the north woods. Tourism and recreation grew steadily through the twentieth century and remain vital to the county''s identity and livelihood today.', 'History', 'County History', NULL, false, 20, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('compost', 'Lincoln Township Compost Yard', 'Lincoln Township compost facility hours, location, and accepted materials', '## Lincoln Township Compost Field
 
 **Open** Wednesday, Friday, and Sunday, 9:00 AM to Noon, April 1st through November 30th (unless there is snow, then it could close for the season earlier).
@@ -7740,6 +7937,200 @@ The compost field is located on Arthur Road just east of, and across the road fr
 Free compost when available.
 
 Thank you all in advance for your cooperation.', 'Services', 'Other Services', NULL, false, 13, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('county-courts', 'Clare County Courts', 'District, circuit, and probate court information', '## Court System Overview
+
+Clare County''s judicial system comprises three courts, all located at the county government complex at **225 W Main St, Harrison, MI 48625**. Together, these courts handle criminal cases, civil disputes, family matters, probate proceedings, and small claims for residents of Clare County and, in some cases, neighboring Gladwin County.
+
+---
+
+## 80th District Court
+
+- **Judge:** Hon. Joshua M. Farrell
+- **Phone:** (989) 539-7173
+
+The 80th District Court handles misdemeanor criminal cases, civil cases involving claims up to $25,000, landlord-tenant disputes, traffic violations, and small claims. The court also conducts arraignments and preliminary examinations for felony cases before they are bound over to Circuit Court.
+
+---
+
+## 55th Circuit Court
+
+- **Judges:** Hon. Tara S. Hovey and Hon. Michelle J. Ambrozaitis
+- **Phone:** (989) 539-7131
+- **Jurisdiction:** Serves both Clare and Gladwin counties
+
+The 55th Circuit Court is the trial court of general jurisdiction, handling felony criminal cases, civil cases with claims exceeding $25,000, domestic relations matters including divorce and custody, and appeals from District Court. The court serves both Clare County and Gladwin County.
+
+---
+
+## Probate & Family Court
+
+- **Judge:** Hon. Marcy A. Klaus
+- **Phone:** (989) 539-7109
+- **Jurisdiction:** Serves both Clare and Gladwin counties
+
+The Probate and Family Court oversees estate administration, guardianships, conservatorships, mental health commitments, juvenile matters, and adoptions. As with the Circuit Court, this court serves residents of both Clare and Gladwin counties.
+
+---
+
+## Contact & Directions
+
+All three courts are located at:
+
+**225 W Main St, Harrison, MI 48625**
+
+Court hours generally follow the county office schedule of Monday through Friday, 8:00 AM to 4:30 PM. For specific hearing schedules, filing requirements, or other questions, contact the appropriate court directly using the phone numbers listed above.', 'Government', 'Courts', NULL, false, 31, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('county-departments', 'Clare County Departments', 'Directory of county government departments, offices, and services', '## County Government Directory
+
+Clare County government operates from its main offices at **225 W Main St, Harrison, MI 48625**. General office hours are **Monday through Friday, 8:00 AM to 4:30 PM**, unless otherwise noted for a specific department.
+
+For FOIA (Freedom of Information Act) requests, contact: **FOIA@clareco.net** | Fax: **(989) 539-2588**
+
+---
+
+### Administration
+- **Phone:** (989) 539-2510
+- **Address:** 225 W Main St, Harrison, MI 48625
+
+### Airport
+- **Phone:** (989) 329-3981
+
+### Animal Shelter
+- **Phone:** (989) 539-3221
+- **Hours:** 10:00 AM – 4:00 PM
+- **After-hours emergencies:** (989) 539-1336
+
+### Board of Commissioners
+- **Meetings:** 3rd Wednesday of each month at 9:00 AM
+- **Location:** County Building, 225 W Main St, Harrison
+
+### Building & Community Development
+- **Website:** [clareco-buildingdev.net](http://clareco-buildingdev.net)
+
+### Central Dispatch (911)
+- **Emergency:** 911
+- **Administration:** (989) 539-7166
+- **Non-emergency dispatch:** (989) 539-1336
+
+### Conservation District
+- **Phone:** (989) 539-6401
+- **Website:** [clarecd.org](http://clarecd.org)
+
+### Clerk & Register of Deeds
+- **Phone:** (989) 539-7131
+- **Website:** [clareclerkrod.com](http://clareclerkrod.com)
+
+### Drain Commissioner
+- **Phone:** (989) 539-7320
+
+### Elections
+- **Website:** [clareclerkrod.com/election/](http://clareclerkrod.com/election/)
+
+### Emergency Services
+- **Phone:** (989) 539-6161
+
+### Equalization
+- **Phone:** (989) 539-7894
+
+### Friend of the Court
+- **Phone:** (989) 539-0800
+
+### Information Technology
+- **Phone:** (989) 539-6402
+
+### Prosecutor
+- **Phone:** (989) 539-9831
+
+### Sheriff
+- **Phone:** (989) 539-7166
+
+### Treasurer
+- **Phone:** (989) 539-7801
+
+### Veterans Services
+- **Phone:** (989) 539-3273
+
+---
+
+For general inquiries about Clare County government services, contact the Administration office at **(989) 539-2510** during regular business hours.', 'Government', 'County Services', NULL, false, 30, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('county-elections', 'Clare County Elections', 'Voter registration, election dates, and absentee voting', '## Elections in Clare County
+
+Elections in Clare County are administered by the Clare County Clerk''s office, which oversees voter registration, ballot preparation, absentee voting, and the certification of results for all federal, state, and local elections held within the county.
+
+## Online Election Portal
+
+The Clare County Clerk maintains an online election portal where residents can access essential election services:
+
+**[clareclerkrod.com/election/](http://clareclerkrod.com/election/)**
+
+Through the portal, you can:
+
+- **Register to vote** or update your existing registration
+- **Check your voter registration status** to confirm your information is current and correct
+- **Request an absentee ballot** for upcoming elections
+- **View sample ballots** to review candidates and proposals before Election Day
+- **Find your polling location** based on your registered address
+
+## Voter Registration
+
+Michigan residents who are United States citizens and at least 18 years of age by Election Day are eligible to register to vote. Registration can be completed online, by mail, or in person at the County Clerk''s office. Michigan allows same-day voter registration at your local clerk''s office, though registering in advance helps ensure a smooth experience on Election Day.
+
+## Absentee Voting
+
+Michigan voters may request an absentee ballot for any reason. Ballots can be requested through the online portal or by contacting the Clerk''s office directly. Completed absentee ballots must be received by your local clerk by 8:00 PM on Election Day to be counted.
+
+## Contact
+
+For questions about voter registration, absentee ballots, election dates, or any other election-related matter:
+
+- **Phone:** (989) 539-7131
+- **Office:** Clare County Clerk, 225 W Main St, Harrison, MI 48625
+- **Website:** [clareclerkrod.com/election/](http://clareclerkrod.com/election/)', 'Government', 'Elections', NULL, false, 32, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('dining-clare', 'Dining in Clare', 'Restaurants, cafes, and eateries in the City of Clare', 'The City of Clare offers a wide selection of dining options along McEwan Street and throughout town, from locally famous doughnut shops and craft breweries to family restaurants and international cuisine.
+
+| Restaurant | Address | Phone |
+|-----------|---------|-------|
+| 505 Cafe'' | 505 N McEwan St | (989) 424-6602 |
+| Bucilli''s Pizza of Clare | 1541 N McEwan St | (989) 386-7231 |
+| Cops & Doughnuts | 521 N McEwan St | (989) 386-2241 |
+| Dairy Phil | 1131 N McEwan St | (989) 386-2647 |
+| Doherty Hotel Restaurant | 604 N McEwan St | (989) 386-3441 |
+| Four Leaf Brewing | 412 McEwan St | (989) 424-6114 |
+| Mancino''s of Clare | 10348 S Clare Ave | (989) 386-6000 |
+| McEwan Street Fudge & Ice Cream | 511 N McEwan St | (989) 424-6156 |
+| Mulberry Cafe | 120 E Fifth St | (989) 386-6120 |
+| Ruckle''s Pier | 405 N McEwan St | (989) 386-9531 |
+| Ruk Thai Kitchen | 1446 N McEwan St | (989) 418-5008 |
+| The Evening Post Bar & Grill | 114 W Fourth St | (989) 386-5990 |
+| The Trap Door | 501 N McEwan St | (989) 418-6024 |
+| Timeout Tavern | 601 N McEwan St | (989) 424-6077 |
+| Whitehouse Restaurant | 613 N McEwan St | (989) 386-9551 |', 'Directory', NULL, NULL, false, 50, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('dining-farwell-area', 'Dining in Farwell & Surrounding Area', 'Restaurants in Farwell, Lake, and Lake George', 'Farwell and the surrounding communities of Lake and Lake George offer a variety of dining spots, from classic diners and pizza shops to lakeside bars and neighborhood gathering places.
+
+| Restaurant | Address | Phone |
+|-----------|---------|-------|
+| Big R''s Hogs & Dogs | 1876 W Ludington Dr, Farwell | (989) 544-4066 |
+| Birchwood Restaurant | 2497 W Cadillac Dr, Farwell | (989) 588-2061 |
+| Bond''s DJ Lounge | 210 W Main St, Farwell | (989) 588-6704 |
+| Bucilli''s Pizza of Farwell | 203 E Main St, Farwell | (989) 588-9919 |
+| Buckhorn Saloon | 10092 Cadillac Dr, Lake | (231) 734-5599 |
+| Conlay''s Cafe | 2105 W Ludington Dr, Farwell | (989) 588-7220 |
+| Lake Restaurant | 8200 W Ludington Dr, Farwell | (989) 544-2721 |
+| Lakeside Bar & Grill | 7807 Mystic Lake Dr, Farwell | (989) 544-3502 |
+| Swiss Inn Bar & Grill | 105 Park Ave, Lake George | (989) 588-4211 |
+| The Nest | 310 W Main St, Farwell | (989) 544-4555 |', 'Directory', NULL, NULL, false, 51, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('dining-harrison', 'Dining in Harrison', 'Restaurants and eateries in Harrison and Leota', 'Harrison and the nearby community of Leota offer a range of dining options, from family restaurants and pizzerias to casual pubs serving the lake and trail crowd.
+
+| Restaurant | Address | Phone |
+|-----------|---------|-------|
+| Hang''s Chinese | 711 N 1st St, Harrison | (989) 539-1210 |
+| Jackie''s Airport Restaurant | 4557 N Clare Ave, Harrison | (989) 368-1105 |
+| Jackpine Restaurant | 231 E Main St, Harrison | (989) 539-6162 |
+| Mama Cillie''s Pizzeria | 642 N 1st St, Harrison | (989) 539-5600 |
+| Monte''s Family Restaurant | 3897 N Clare Ave, Harrison | (989) 539-2262 |
+| Mr. Vetoes Pizza | 6948 E Townline Lake Rd, Harrison | (989) 539-3500 |
+| Sheri''s Family Diner | 316 Park St, Harrison | (989) 539-2531 |
+| Trails End Pub - Leota | 10141 N Finley Lake Ave, Harrison | (989) 539-9644 |
+| Trails End Restaurant | 963 N 1st St, Harrison | (989) 630-0124 |', 'Directory', NULL, NULL, false, 52, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('donate', 'Donate', 'Support Unicorn Gives and community programs in Lincoln Township', '## Support Our Community
 
 Unicorn Gives is a non-profit supporting the Lincoln Township community. Your donations go directly toward the programs, events, and spaces that bring our community together.
@@ -8009,6 +8400,21 @@ If it is a Township appraiser he is only doing his job. In the past we had black
 
 **What kind of Senior Transportation is available?**
 Clare County Transit provides Public Transportation to all citizens in Clare County. For more information go to the [Clare County Transit Website](http://www.clarecountytransit.org/).', 'Information', 'Resources', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('farwell-community', 'Village of Farwell', 'Rich logging heritage with a vibrant community spirit', '## Roots in the Timber
+
+Farwell is a village of approximately 850 residents whose identity is deeply intertwined with Michigan''s logging era. In the late 1800s, the surrounding forests fueled a booming timber industry, and Farwell grew up as a hub for the workers, mills, and railroads that made it all possible. Though the great pines are long since harvested, the community has never forgotten where it came from.
+
+## Preserving the Past
+
+The Farwell Historical Museum stands as the village''s dedicated keeper of that heritage. Inside, visitors find artifacts, photographs, and exhibits that tell the story of logging camps, sawmills, and the families who built their lives around the timber trade. The museum is a labor of love maintained by local volunteers and serves as both an educational resource and a gathering point for residents who want to stay connected to the community''s roots.
+
+## Markets, Festivals & Gatherings
+
+Farwell keeps its calendar lively with events that draw neighbors together. The Farmers Market runs on Saturdays from 9 AM to 1 PM, May through October, offering locally grown produce, baked goods, and handmade crafts. The annual Lumberjack Festival pays tribute to the village''s timber origins with contests, demonstrations, and family entertainment. The Labor Day Celebration marks the unofficial end of summer with parades, food vendors, and live music. As the year winds down, the Holiday Lights Festival brightens the village with seasonal decorations, caroling, and community cheer.
+
+## Recreation
+
+Golfers in the area benefit from Eagle Glen Golf Course, located nearby and known for its well-maintained fairways and welcoming atmosphere. The surrounding countryside also provides ample opportunity for hunting, fishing, and trail riding, making Farwell a solid base for anyone looking to explore Clare County''s outdoor offerings.', 'Community', 'Community Profiles', NULL, false, 12, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('financial-reports', 'Financial Reports', 'Lincoln Township audit reports, financial disclosures, and fiscal accountability documents', '## Financial Reports & Disclosures
 
 Lincoln Township maintains financial records in accordance with Michigan state requirements. Audit reports and financial disclosures are posted here for public review.
@@ -8074,6 +8480,13 @@ Address: 310 Bringold Ave, Lake, MI 48632
 ## Volunteer
 
 The Lincoln Township Fire Department is always looking for dedicated volunteers. If you''re interested in serving your community, contact Fire Chief Dale Majewski or attend a board meeting to learn more.', 'Services', 'Public Safety', NULL, false, 15, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('fishing-guide', 'Fishing in Clare County', 'Lakes, rivers, and public access points for anglers', 'Clare County''s motto of "Twenty Lakes in Twenty Minutes" speaks to just how accessible the fishing is here. With dozens of lakes, hundreds of miles of rivers, and public access sites scattered across the county, anglers of all experience levels will find productive water close at hand.
+
+Budd Lake in Harrison is the county''s largest and most popular fishing lake at 175 acres. It offers panfish, bass, pike, and walleye, with a public boat launch and shore fishing available through Wilson State Park. Crooked Lake, Eight Point Lake, Perch Lake, and Shamrock Lake also have public access points and support a variety of warm-water species.
+
+The Muskegon River is the county''s premier river fishery, drawing fly anglers and conventional fishers alike for trout, steelhead, and smallmouth bass. Its clean, cold water and steady flow make it one of the best trout streams in the Lower Peninsula. The Tobacco River and Cedar River provide additional river fishing opportunities, with quieter stretches that are well suited for wading and bank fishing.
+
+Wilson State Park on Budd Lake offers a paved boat launch, fish cleaning station, and shore fishing areas, making it one of the most convenient access points in the county. A valid Michigan fishing license is required for anglers 17 and older.', 'Recreation', NULL, NULL, false, 46, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('foia', 'Freedom of Information Act (FOIA)', 'Freedom of Information Act (FOIA) request procedures and forms for Lincoln Township', 'Michigan''s Freedom of Information Act (FOIA) provides the public with the right to access government records. Lincoln Township is committed to transparency and provides the following documents to help you understand and exercise your rights under FOIA.
 
 ### FOIA Documents
@@ -8149,6 +8562,72 @@ To submit a FOIA request, download the [FOIA Forms Packet](/docs/foia/foia_forms
 **Need a form not listed here?** Contact the Township Office at [(989) 588-9841](tel:9895889841) or check the [Clare County website](https://clareco.net).
 
 **Note:** Some forms may require in-person submission. Call ahead to confirm what you need to bring.', 'Services', 'Building & Development', NULL, true, 5, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('golf-courses', 'Golf Courses', 'Five courses from championship links to casual nine-hole play', 'Clare County offers five golf courses ranging from full championship layouts to a relaxed nine-hole course where you can walk up and play without a tee time. Whether you are a serious golfer or just looking for a casual round, you will find a course that fits.
+
+| Course | Location | Phone | Details |
+|--------|----------|-------|---------|
+| Eagle Glen | 1251 Clubhouse Dr, Farwell | (989) 588-4424 | Par 72, 6,602 yards |
+| Snow Snake Ski & Golf | 3407 E Mannsiding Rd, Harrison | (989) 539-6583 | Par 71, 6,025 yards |
+| Firefly Golf Links | 7795 S Clare Ave, Clare | (989) 386-3510 | Par 72, est. 1930s |
+| Tamaracks | 8900 N Clare Ave, Harrison | (989) 539-5441 | Par 70, 5,760 yards |
+| Devil''s Knob | 3897 N Rodgers Ave, Harrison | — | 9-hole, no tee times needed |', 'Recreation', NULL, NULL, false, 43, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('harrison-community', 'City of Harrison', 'Clare County seat — lakes, trails, and small-town charm', '## The County Seat
+
+Harrison serves as the seat of Clare County government and carries the well-earned nickname "Twenty Lakes in Twenty Minutes." The city of roughly 2,100 residents is surrounded by an extraordinary concentration of inland lakes, making it one of central Michigan''s most appealing destinations for fishing, boating, swimming, and simply watching the sunset over still water.
+
+## Budd Lake & Wilson State Park
+
+The crown jewel is Budd Lake, a 175-acre lake that sits right within the city limits. Its clear water and sandy bottom draw swimmers in summer and ice anglers in winter. Wilson State Park occupies a prime stretch of Budd Lake''s shoreline, offering modern campsites, a public beach, picnic areas, and a boat launch. The park is one of the most visited state parks in the region, and reservations fill quickly during peak season.
+
+## Traditions Old and New
+
+Community traditions run deep in Harrison. The Clare County Fair has been a fixture since 1883, making it one of the longest continuously operating county fairs in Michigan. Livestock shows, carnival rides, demolition derbies, and pie contests bring the county together every summer. When temperatures drop, the Frostbite Festival transforms downtown Harrison into a winter celebration with ice sculptures, chili cook-offs, snowmobile events, and family activities that prove the fun does not stop when the snow flies.
+
+## Education & Community
+
+Mid Michigan College maintains a campus in Harrison, providing accessible higher education and workforce training to residents across the region. The college anchors a broader network of community resources, including the Pere Marquette District Library and local parks, that contribute to Harrison''s reputation as a welcoming place to live, work, and raise a family.', 'Community', 'Community Profiles', NULL, false, 11, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('hiking-biking-trails', 'Hiking & Biking Trails', 'Paved rail trails, woodland pathways, and cross-state bike routes', 'Clare County offers a variety of trails for hikers, bikers, and outdoor enthusiasts of all skill levels, from paved rail trails ideal for family outings to rugged woodland pathways winding through lakes and wetlands.
+
+## Pere Marquette Rail Trail
+
+The Pere Marquette Rail Trail stretches 30 miles along a paved surface from Clare to Midland, following a former railroad corridor as part of the national rails-to-trails movement. The flat, paved path is perfect for biking, walking, jogging, and rollerblading. Trailheads with parking are available in Clare, Coleman, Sanford, and Midland. The trail connects to the larger Mid-Michigan trail network and is open year-round for non-motorized use.
+
+## Green Pine Lake Pathway
+
+Located in eastern Clare County, the Green Pine Lake Pathway covers 13 miles of trail through a scenic landscape of lakes, woodlands, and wetlands. The pathway includes loops of varying length for different ability levels, including a 1-mile interpretive loop that highlights the area''s natural features and ecology. The trail system is managed by the Michigan DNR and is popular for hiking in warmer months and cross-country skiing in winter.
+
+## Mid Michigan College Trails
+
+Mid Michigan College in Harrison maintains a network of campus trails that are open to the public year-round. The trails wind through wooded areas surrounding the campus and provide a convenient option for a quick walk or jog without venturing far from town.
+
+## US Bike Route 20
+
+US Bike Route 20 is a 175-mile designated cycling route that runs from Marine City on the Lake Huron shore to Ludington on Lake Michigan. The route passes directly through Clare County, giving long-distance cyclists a chance to experience the area''s rolling farmland, small towns, and forested stretches. Signage along the route helps riders navigate county roads and connects to local services in Clare and Harrison.', 'Recreation', NULL, NULL, false, 40, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('historic-landmark-tour', 'Historic Landmark Tour', 'WPA murals, historic hotels, and architectural treasures', '## Self-Guided Historic Tour
+
+Clare County preserves a collection of historic landmarks that reward a leisurely afternoon of exploration. Whether you are a history enthusiast, an architecture buff, or simply curious about the stories behind the buildings you pass every day, this self-guided tour connects the dots between the county''s most significant sites.
+
+## WPA-Era Murals
+
+Among the county''s most treasured cultural assets are the murals created during the 1930s under the Works Progress Administration. The WPA employed artists across the country to bring art into public spaces during the Great Depression, and Clare County was fortunate to receive several installations that survive to this day.
+
+- **Clare Middle School** — Murals here depict scenes of community life and the natural landscape, offering a window into how residents saw themselves and their surroundings during a difficult era.
+- **US Post Office (Clare)** — The post office mural follows the WPA tradition of illustrating local industry and daily life, rendered in the bold, confident style characteristic of the period.
+- **Doherty Hotel** — The hotel''s interior features additional WPA artwork that complements its grand early-twentieth-century architecture.
+
+Mural tours are available by appointment through the Clare County Convention & Visitors Bureau at **(989) 386-9979**.
+
+## The Doherty Hotel
+
+Built in 1924, the Doherty Hotel is one of Michigan''s grand small-town hotels. With 157 rooms, the property was ambitious for a community of Clare''s size, and it quickly became a social and commercial hub. The hotel hosted politicians, entertainers, and business travelers during its heyday, and its ballroom and dining room saw countless community celebrations. The building''s brick facade and period details remain largely intact, making it a landmark worth visiting whether or not you are staying the night.
+
+## Farwell Historical Museum
+
+Located in the Village of Farwell, the historical museum preserves artifacts and stories from the county''s logging era. Photographs, tools, documents, and personal items bring to life the people who worked the timber camps and built the communities that survive today. The museum operates on a seasonal schedule with hours maintained by dedicated local volunteers.
+
+## Planning Your Visit
+
+The landmarks described here are spread across Clare County and can be visited in any order. Most are accessible during regular business hours, though the mural tours and museum may require advance arrangements. Contact the Clare County Convention & Visitors Bureau for current schedules, maps, and additional recommendations.', 'History', 'Landmarks', NULL, false, 21, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('hours-horn', 'The Horn — Hours & Contact', 'Hours, location, and contact information for The Horn community center and membership club', '## Hours & Access
 
 ### Public Hours
@@ -8276,6 +8755,34 @@ Unicorn Gives brings together everything happening in Lincoln Township, Clare Co
 - [Freedom of Information Act (FOIA)](/foia)
 - [Helpful Links](/links)
 - [Plat Maps](/plat-maps)', NULL, NULL, NULL, false, 1, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('lake-george-leota-community', 'Lake George & Leota', 'Logging railroad heritage along the Muskegon River', '## Along the Muskegon
+
+Lake George and Leota occupy a stretch of eastern Clare County where the Muskegon River winds through forests, wetlands, and open fields. These small communities grew up alongside the logging railroads that once hauled timber out of the surrounding backcountry. The railroads are gone, but the landscape they helped shape remains remarkably wild, and the area attracts those who value solitude, natural beauty, and a slower pace of life.
+
+## Green Pine Lake Pathway
+
+The Green Pine Lake Pathway is one of the area''s finest outdoor resources. The trail system covers roughly 13 miles of well-marked routes that loop through a varied terrain of lakes, mature woodlands, and wetland areas. Hikers, cross-country skiers, and nature enthusiasts find a trail network that feels genuinely remote, despite being accessible by county road. The pathway passes several small lakes and offers frequent encounters with wildlife, making it a favorite among birders and photographers alike.
+
+## Kirtland''s Warbler Habitat
+
+This corner of Clare County holds special ecological significance as habitat for the Kirtland''s Warbler, one of the rarest songbirds in North America. The warbler nests almost exclusively in young jack pine forests, and careful land management in the region has helped the species recover from dangerously low numbers. Guided birding tours are sometimes available during the nesting season, offering a rare chance to see and hear this remarkable bird in its natural environment.
+
+## A Baseball Connection
+
+Local history carries a surprising tie to professional baseball. Hamlin Field bears the name of Luke Hamlin, a Clare County native who pitched for the Brooklyn Dodgers during the 1930s and 1940s. Known to fans as "Hot Potato" Hamlin, he compiled a respectable major league career and remained a source of hometown pride long after his playing days ended. The field named in his honor keeps that connection alive for a new generation.', 'Community', 'Community Profiles', NULL, false, 14, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
+('lake-lake-station-community', 'Lake & Lake Station', 'Quiet lakeside communities with Pere Marquette Railway heritage', '## Railway Roots
+
+The communities of Lake and Lake Station owe their beginnings to the Pere Marquette Railway, which once ran a whistle stop through this stretch of Clare County. When trains paused here to take on water and passengers, a small settlement took shape around the tracks. The railway may no longer stop, but its legacy is etched into the landscape. A 1930s concrete coal dock still stands as a local landmark, a quiet monument to the era when rail was king and small depots dotted the Michigan countryside.
+
+## Life on the Water
+
+True to their name, Lake and Lake Station are surrounded by water. Perch Lake, Crooked Lake, and Eight Point Lake all lie within easy reach, providing residents and visitors with dependable fishing, kayaking, and swimming throughout the warmer months. In winter, ice fishing shanties appear on the lakes almost overnight, and snowmobile trails connect the area to a broader network that stretches across the county. The pace of life here is unhurried, shaped by the seasons and the rhythms of the water.
+
+## Community Gathering
+
+The Lake Daze festival is the highlight of the summer social calendar, bringing the community together for a weekend of food, games, music, and neighborly camaraderie. It is the kind of event where everyone knows someone, and newcomers are welcomed without hesitation.
+
+The Fraternal Order of Eagles maintains a headquarters in the area, serving as both a social club and a charitable organization that supports local causes. The Eagles hall hosts dinners, fundraisers, and community events throughout the year, providing an important gathering space for residents of these close-knit lakeside communities.', 'Community', 'Community Profiles', NULL, false, 13, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('lakes-bertha', 'Bertha Lake', 'Bertha Lake information, parks, and resources', '## Bertha Lake
 
 Bertha Lake is one of Lincoln Township''s beautiful natural resources, providing recreation and enjoyment for residents and visitors.
@@ -8567,6 +9074,15 @@ For lake-related questions or concerns, contact the Lincoln Township Office at (
 - [Fire Department](/fire)
 - [Frequently Asked Questions](/faq)
 - [Freedom of Information Requests](/foia)', 'Information', 'Resources', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('lodging', 'Lodging & Accommodations', 'Hotels, motels, and cottages in Clare County', 'Clare County offers more than 325 rooms across hotels, motels, and cottage properties in Clare and Harrison. Whether you are visiting for a weekend on the lake, a round of golf, or a snowmobile trip, you will find comfortable accommodations close to the action.
+
+| Property | Address | Phone | Type |
+|----------|---------|-------|------|
+| Best Western | 10100 S Clare Ave, Clare | (989) 229-3000 | Hotel |
+| Doherty Hotel | 604 N McEwan St, Clare | (989) 386-3441 | Historic Hotel (1924) |
+| Quality Inn | 10318 S Clare Ave, Clare | (989) 386-1111 | Hotel |
+| Lone Pine Motel | 1508 N McEwan St, Clare | (989) 386-7787 | Motel |
+| Lakeside Motel & Cottages | 515 E Park St, Harrison | (989) 539-0706 | Waterfront |', 'Directory', NULL, NULL, false, 53, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('membership', 'Join The Horn', 'Become a member of The Horn — Lake George''s community club with 24/7 access, events, a cigar lounge, game nights, and more', '## Your Place. Anytime.
 
 The Horn is a nonprofit community space designed to bring people together — a place rooted in belonging. Members get 24/7 access to a space where you can work during the day, unwind at night, and connect with like-minded people any time in between.
@@ -8739,6 +9255,31 @@ Landplan Incorporated, Rural Community Planning & Zoning Services has been hired
 ### Additional Resources
 
 - Lincoln Township Master Plan', 'Planning & Zoning', 'Regulations', NULL, false, 17, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('parks-recreation', 'Parks & Recreation Areas', 'City parks, state parks, and public recreation areas across Clare County', 'Clare County''s parks and recreation areas provide green space, waterfront access, and places to gather throughout the year. From state-managed facilities to neighborhood parks, there is something for every age and interest.
+
+## Wilson State Park
+
+Located in Harrison on the shore of Budd Lake, Wilson State Park is the county''s premier outdoor destination. The park features modern campsites, a sandy swimming beach, a boat launch, picnic shelters, and a playground. It connects directly to the Pere Marquette Rail Trail, making it a convenient base for both water and trail activities.
+
+## Shamrock Park
+
+Shamrock Park in Clare is a community gathering spot known for its summer concert series. The park offers open green space, a pavilion, and a welcoming atmosphere for families and events throughout the warmer months.
+
+## Pettit Park
+
+Situated along the river on N McEwan Street in Clare, Pettit Park provides camping facilities and riverside access. It is a convenient stop for travelers and a popular spot for picnics and short stays.
+
+## Herrick Recreation Area
+
+East of Clare off Herrick Road, this recreation area offers hiking trails, rustic camping, and a quiet natural setting. It is well suited for those looking to explore the woods and enjoy a slower pace.
+
+## Pere Marquette Linear Park
+
+Running alongside the Pere Marquette Rail Trail, this linear park provides rest areas, benches, and trailside amenities for walkers and cyclists making their way between Clare and points east.
+
+## Harrison Parks
+
+Jay''s Park in Harrison offers playground equipment, open fields, and space for community activities. Additional parks in the Harrison area include Addington Park, Lily Lake Park, Stevens Park, and Townline Lake Park, each providing neighborhood-level recreation, picnic areas, and lake or green space access for residents and visitors.', 'Recreation', NULL, NULL, false, 45, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('parks', 'Parks', 'Lincoln Township parks at Bertha Lake, Shingle Lake, and Silver Lake with amenities and pavilion rental', 'Lincoln Township maintains public parks on the shores of Shingle Lake, Bertha Lake, and Silver Lake, offering recreation and natural beauty for residents and visitors.
 
 ### Pavilion Rental
@@ -9344,6 +9885,15 @@ Ready to schedule? Visit our [appointment page](/book-appointment) or call (989)
 ### Contact
 
 For questions about our services, visit our [hours & contact page](/hours-mane).', 'Community', 'The Mane', NULL, false, 29, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('shopping', 'Shopping', 'Sporting goods, Amish crafts, and local markets', 'Clare County has a mix of specialty retailers, downtown shops, and local markets that reflect the area''s outdoor character and rural heritage.
+
+Jay''s Sporting Goods (8800 S Clare Ave, Clare) is a regional destination for outdoor gear, drawing customers from across mid-Michigan. The store carries a full range of hunting, fishing, camping, and sporting equipment along with clothing and footwear for every season.
+
+Downtown Clare''s McEwan Street is the heart of the local shopping scene, with a walkable stretch of shops, boutiques, gift stores, and specialty retailers. The downtown district has seen steady revitalization and is a pleasant place to browse on a weekend afternoon.
+
+Amish-made goods are available in the area around Leaton Road, where visitors can find handcrafted quilts, solid wood furniture, baked goods, and other handmade items. Several small roadside shops and home-based businesses serve the community, though hours and availability can vary.
+
+The Farwell Farmers Market runs on Saturdays from 9 AM to 1 PM, May through October, offering locally grown produce, baked goods, honey, and seasonal items from area farms and artisans.', 'Directory', NULL, NULL, false, 54, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('subscribe', 'Subscribe', 'Stay updated with Lincoln Township news and announcements', '## Stay Updated
 
 Receive notifications about Lincoln Township meetings, news, and important announcements.
@@ -9400,6 +9950,23 @@ Ready to volunteer? Here is how to get involved:
 - [About Unicorn Gives](/about-unicorn-gives)
 - [Current Programs](/programs)
 - [Upcoming Events](/events)', 'Community', 'Unicorn Gives', NULL, false, 22, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('winter-sports', 'Winter Sports', 'Skiing, snowmobiling, and winter recreation', 'When snow covers Clare County, the outdoor recreation does not stop. Downhill skiing, snowmobiling, cross-country skiing, and ice fishing keep residents and visitors active all winter long.
+
+## Downhill Skiing & Snowboarding
+
+Snow Snake Ski & Golf (3407 E Mannsiding Rd, Harrison, 989-539-6583) is the county''s winter sports hub, offering downhill skiing, snowboarding, and snow tubing. The facility has runs for beginners through intermediate skiers, a lodge, and rental equipment. It is a popular destination for families and school groups throughout the season.
+
+## Snowmobiling
+
+The Fur Farm Snowmobile Trail runs north of Harrison through state forest land, connecting to a broader network of groomed trails across northern Lower Michigan. The trail system provides miles of riding through pine and hardwood forests. Riders should carry a valid snowmobile registration and check grooming reports before heading out.
+
+## Cross-Country Skiing
+
+The Green Pine Lake Pathway in eastern Clare County offers 13 miles of ungroomed trails through lakes, woodlands, and wetlands that are well suited for cross-country skiing when snow conditions allow. The varied terrain and quiet setting make it a favorite for Nordic skiers looking for a peaceful outing.
+
+## Ice Fishing
+
+With dozens of lakes across the county, ice fishing is one of the most popular winter pastimes. Budd Lake, Shamrock Lake, Crooked Lake, and many smaller lakes draw anglers for panfish, pike, and walleye once safe ice forms, typically from late December through early March.', 'Recreation', NULL, NULL, false, 47, 'published', '2026-03-26T00:00:00.000Z'::timestamptz, now(), now()),
 ('zba-plancomm-minutes', 'ZBA & Planning Commission Minutes', 'Meeting minutes for the Planning Commission and Zoning Board of Appeals', '## Planning Commission and Zoning Board of Appeals Meeting Minutes
 
 The Planning Committee meets the 1st Tuesday (after the 2nd Monday) each month, 7:00 PM.
@@ -9700,7 +10267,7 @@ The best way to stay up to date on hours, events, and what''s happening at The H
 
 - [About The Horn](/about-the-horn)
 - [Events at The Horn](/events-horn)
-- [Become a Member](/membership)', 'hours-horn', 27, 'published', now(), now()),
+- [Become a Member](/membership)', 'hours', 27, 'published', now(), now()),
 (horn_id, 'membership', 'Join The Horn', '## Your Place. Anytime.
 
 The Horn is a nonprofit community space designed to bring people together — a place rooted in belonging. Members get 24/7 access to a space where you can work during the day, unwind at night, and connect with like-minded people any time in between.

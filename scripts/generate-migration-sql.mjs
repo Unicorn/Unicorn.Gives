@@ -158,9 +158,10 @@ function readCollection(name) {
 // ---------------------------------------------------------------------------
 
 function genContacts(items) {
-  const lines = items.map(item =>
-    `(lincoln_id, ${esc(item.slug)}, ${esc(item.name)}, ${esc(item.role)}, ${esc(item.department)}, ${esc(item.phone || null)}, ${esc(item.phoneExt || null)}, ${esc(item.email || null)}, ${esc(item.address || null)}, ${esc(item.hours || null)}, ${esc(item.website || null)}, ${item.order || 0}, 'published', now(), now())`
-  );
+  const lines = items.map(item => {
+    const regionVar = item.jurisdiction === 'county' ? 'clare_county_id' : 'lincoln_id';
+    return `(${regionVar}, ${esc(item.slug)}, ${esc(item.name)}, ${esc(item.role)}, ${esc(item.department)}, ${esc(item.phone || null)}, ${esc(item.phoneExt || null)}, ${esc(item.email || null)}, ${esc(item.address || null)}, ${esc(item.hours || null)}, ${esc(item.website || null)}, ${item.order || 0}, 'published', now(), now())`;
+  });
   return `INSERT INTO public.contacts (region_id, slug, name, role, department, phone, phone_ext, email, address, hours, website, display_order, status, created_at, updated_at)
 VALUES
 ${lines.join(',\n')}
@@ -363,15 +364,20 @@ const sql = `-- ================================================================
 DO $$
 DECLARE
   lincoln_id UUID;
+  clare_county_id UUID;
   horn_id UUID;
   mane_id UUID;
 BEGIN
   SELECT id INTO lincoln_id FROM public.regions WHERE slug = 'lincoln-township';
+  SELECT id INTO clare_county_id FROM public.regions WHERE slug = 'clare-county';
   SELECT id INTO horn_id FROM public.partners WHERE slug = 'the-horn';
   SELECT id INTO mane_id FROM public.partners WHERE slug = 'the-mane';
 
   IF lincoln_id IS NULL THEN
     RAISE EXCEPTION 'Lincoln Township region not found!';
+  END IF;
+  IF clare_county_id IS NULL THEN
+    RAISE EXCEPTION 'Clare County region not found!';
   END IF;
 
 -- =============================================================================
