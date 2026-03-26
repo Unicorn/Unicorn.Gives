@@ -5,9 +5,9 @@ import { routes } from './paths';
  * High-level navigation groupings for drawers, tabs, and IA.
  * Pair with `routes` / `paths` from `./paths` for actual URLs.
  */
-export type NavPillar = 'SOLVE' | 'GOVERN' | 'INFORM' | 'CONNECT';
+export type NavPillar = 'GOVERN' | 'COMMUNITY' | 'CONNECT';
 
-export type NavLayer = 'root' | 'app-drawer' | 'region-tabs' | 'partner-tabs';
+export type NavLayer = 'root' | 'app-drawer' | 'partner-tabs';
 
 export interface NavNodeMeta {
   id: string;
@@ -35,17 +35,6 @@ export const navigationTree: {
     getHref: routes.home,
   },
   pillars: {
-    SOLVE: {
-      label: 'SOLVE',
-      items: [
-        {
-          id: 'solve',
-          label: 'Problem Solver',
-          pillar: 'SOLVE',
-          getHref: routes.solve.index,
-        },
-      ],
-    },
     GOVERN: {
       label: 'GOVERN',
       items: [
@@ -57,32 +46,26 @@ export const navigationTree: {
         },
       ],
     },
-    INFORM: {
-      label: 'INFORM',
+    COMMUNITY: {
+      label: 'COMMUNITY',
       items: [
         {
-          id: 'news',
-          label: 'News & Alerts',
-          pillar: 'INFORM',
-          getHref: routes.news.index,
+          id: 'community',
+          label: 'Community',
+          pillar: 'COMMUNITY',
+          getHref: routes.community.index,
         },
         {
           id: 'events',
-          label: 'Events Calendar',
-          pillar: 'INFORM',
-          getHref: routes.events.index,
+          label: 'Events',
+          pillar: 'COMMUNITY',
+          getHref: routes.community.events.index,
         },
         {
-          id: 'elections',
-          label: 'Election Center',
-          pillar: 'INFORM',
-          getHref: routes.cms.elections,
-        },
-        {
-          id: 'board',
-          label: 'Board of Trustees',
-          pillar: 'INFORM',
-          getHref: routes.cms.board,
+          id: 'history',
+          label: 'History',
+          pillar: 'COMMUNITY',
+          getHref: routes.history.index,
         },
       ],
     },

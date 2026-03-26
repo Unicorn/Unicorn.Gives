@@ -18,7 +18,7 @@ export default function SignInScreen() {
     if (loading) return;
     if (!user) return;
     if (role === 'super_admin') router.replace('/admin');
-    else router.replace('/');
+    else router.replace('/' as any);
   }, [loading, role, user, router]);
 
   async function onSignIn() {

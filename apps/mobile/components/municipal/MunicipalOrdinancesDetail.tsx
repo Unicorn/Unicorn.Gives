@@ -4,7 +4,6 @@ import { useLocalSearchParams } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import type { MunicipalSegment } from '@/lib/navigation';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 
 interface Ordinance {
@@ -18,10 +17,10 @@ interface Ordinance {
   pdf_url: string | null;
 }
 
-export function MunicipalOrdinancesDetail({ segment }: { segment: MunicipalSegment }) {
+export function MunicipalOrdinancesDetail() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
-  const { municipalSlug } = useMunicipalRoute(segment);
-  const { region } = useRegion(municipalSlug);
+  const { municipalitySlug } = useMunicipalRoute();
+  const { region } = useRegion(municipalitySlug);
   const [item, setItem] = useState<Ordinance | null>(null);
 
   useEffect(() => {

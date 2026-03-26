@@ -4,7 +4,6 @@ import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
-import type { MunicipalSegment } from '@/lib/navigation';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 
 interface Ordinance {
@@ -22,9 +21,9 @@ const CATEGORY_LABELS: Record<string, string> = {
   property: 'Property', infrastructure: 'Infrastructure', general: 'General',
 };
 
-export function MunicipalOrdinancesIndex({ segment }: { segment: MunicipalSegment }) {
-  const { municipalSlug, basePath } = useMunicipalRoute(segment);
-  const { region } = useRegion(municipalSlug);
+export function MunicipalOrdinancesIndex() {
+  const { municipalitySlug, basePath } = useMunicipalRoute();
+  const { region } = useRegion(municipalitySlug);
   const [items, setItems] = useState<Ordinance[]>([]);
   const [filter, setFilter] = useState<string | null>(null);
   const [search, setSearch] = useState('');

@@ -19,20 +19,16 @@ export const paths = {
     signUp: '/sign-up',
     admin: '/admin',
   },
-  solve: { index: '/solve' },
-  lore: { index: '/lore' },
-  news: { index: '/news' },
-  events: { index: '/events' },
-  county: { base: '/county' },
-  partners: { base: '/partners' },
-  cms: {
-    board: '/board',
-    elections: '/elections',
-    contacts: '/contacts',
+  history: { index: '/history' },
+  community: {
+    index: '/community',
+    events: '/community/events',
+    opinions: '/community/opinions',
+    calendar: '/community/calendar',
   },
+  government: { base: '/government' },
+  partners: { base: '/partners' },
 } as const;
-
-export type MunicipalSegment = 'townships' | 'cities' | 'villages';
 
 export const municipalSubsegments = {
   minutes: 'minutes',
@@ -45,29 +41,21 @@ export type MunicipalSubsegment =
   (typeof municipalSubsegments)[keyof typeof municipalSubsegments];
 
 const MUNICIPAL_DETAIL_RE = new RegExp(
-  '/county/[^/]+/(?:townships|cities|villages)/[^/]+/(?:' +
+  '/government/[^/]+/[^/]+/(?:' +
     Object.values(municipalSubsegments).join('|') +
     ')/[^/]+$'
 );
 
-export function isMunicipalStackDetailPath(pathname: string): boolean {
+export function isMunicipalDetailPath(pathname: string): boolean {
   return MUNICIPAL_DETAIL_RE.test(pathname);
-}
-
-export function isRegionStackDetailPath(pathname: string): boolean {
-  return isMunicipalStackDetailPath(pathname);
 }
 
 function enc(s: string): string {
   return encodeURIComponent(s);
 }
 
-function municipalEntityBase(
-  countySlug: string,
-  segment: MunicipalSegment,
-  municipalSlug: string
-) {
-  return paths.county.base + '/' + enc(countySlug) + '/' + segment + '/' + enc(municipalSlug);
+function municipalityBase(countySlug: string, municipalitySlug: string) {
+  return paths.government.base + '/' + enc(countySlug) + '/' + enc(municipalitySlug);
 }
 
 export const routes = {
@@ -77,28 +65,21 @@ export const routes = {
     signUp: () => toHref(paths.auth.signUp),
     adminDashboard: () => toHref(paths.auth.admin),
   },
-  cms: {
-    board: () => toHref(paths.cms.board),
-    elections: () => toHref(paths.cms.elections),
-    contacts: () => toHref(paths.cms.contacts),
+  history: {
+    index: () => toHref(paths.history.index),
+    detail: (slug: string) => toHref(paths.history.index + '/' + enc(slug)),
   },
-  solve: {
-    index: () => toHref(paths.solve.index),
-    flow: (flowSlug: string) => toHref(paths.solve.index + '/' + enc(flowSlug)),
-    withCategory: (category: string) =>
-      toHref(paths.solve.index + '?category=' + enc(category)),
-  },
-  lore: {
-    index: () => toHref(paths.lore.index),
-    detail: (slug: string) => toHref(paths.lore.index + '/' + enc(slug)),
-  },
-  news: {
-    index: () => toHref(paths.news.index),
-    detail: (slug: string) => toHref(paths.news.index + '/' + enc(slug)),
-  },
-  events: {
-    index: () => toHref(paths.events.index),
-    detail: (slug: string) => toHref(paths.events.index + '/' + enc(slug)),
+  community: {
+    index: () => toHref(paths.community.index),
+    events: {
+      index: () => toHref(paths.community.events),
+      detail: (slug: string) => toHref(paths.community.events + '/' + enc(slug)),
+    },
+    opinions: {
+      index: () => toHref(paths.community.opinions),
+      detail: (slug: string) => toHref(paths.community.opinions + '/' + enc(slug)),
+    },
+    calendar: () => toHref(paths.community.calendar),
   },
   partners: {
     index: (partnerSlug: string) =>
@@ -119,156 +100,68 @@ export const routes = {
       }));
     },
   },
-  county: {
-    root: (countySlug: string) => toHref(paths.county.base + '/' + enc(countySlug)),
-    news: (countySlug: string) =>
-      toHref(paths.county.base + '/' + enc(countySlug) + '/news'),
-    events: (countySlug: string) =>
-      toHref(paths.county.base + '/' + enc(countySlug) + '/events'),
-    department: (countySlug: string, deptSlug: string) =>
-      toHref(paths.county.base + '/' + enc(countySlug) + '/departments/' + enc(deptSlug)),
-    townships: {
-      index: (countySlug: string) =>
-        toHref(paths.county.base + '/' + enc(countySlug) + '/townships'),
-      municipalRoot: (countySlug: string, townshipSlug: string) =>
-        toHref(municipalEntityBase(countySlug, 'townships', townshipSlug)),
+  government: {
+    county: (countySlug: string) =>
+      toHref(paths.government.base + '/' + enc(countySlug)),
+    municipality: (countySlug: string, municipalitySlug: string) =>
+      toHref(municipalityBase(countySlug, municipalitySlug)),
+    minutes: {
+      index: (countySlug: string, municipalitySlug: string) =>
+        toHref(municipalityBase(countySlug, municipalitySlug) + '/minutes'),
+      detail: (countySlug: string, municipalitySlug: string, minuteSlug: string) =>
+        toHref(
+          municipalityBase(countySlug, municipalitySlug) + '/minutes/' + enc(minuteSlug)
+        ),
     },
-    cities: {
-      index: (countySlug: string) =>
-        toHref(paths.county.base + '/' + enc(countySlug) + '/cities'),
-      municipalRoot: (countySlug: string, citySlug: string) =>
-        toHref(municipalEntityBase(countySlug, 'cities', citySlug)),
-    },
-    villages: {
-      index: (countySlug: string) =>
-        toHref(paths.county.base + '/' + enc(countySlug) + '/villages'),
-      municipalRoot: (countySlug: string, villageSlug: string) =>
-        toHref(municipalEntityBase(countySlug, 'villages', villageSlug)),
-    },
-    municipal: {
-      base: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-        toHref(municipalEntityBase(countySlug, segment, municipalSlug)),
-      minutes: {
-        index: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-          toHref(
-            municipalEntityBase(countySlug, segment, municipalSlug) +
-              '/' +
-              municipalSubsegments.minutes
-          ),
-        detail: (
-          countySlug: string,
-          segment: MunicipalSegment,
-          municipalSlug: string,
-          minuteSlug: string
-        ) =>
-          toHref(
-            municipalEntityBase(countySlug, segment, municipalSlug) +
-              '/' +
-              municipalSubsegments.minutes +
-              '/' +
-              enc(minuteSlug)
-          ),
-      },
-      ordinances: {
-        index: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-          toHref(
-            municipalEntityBase(countySlug, segment, municipalSlug) +
-              '/' +
-              municipalSubsegments.ordinances
-          ),
-        detail: (
-          countySlug: string,
-          segment: MunicipalSegment,
-          municipalSlug: string,
-          ordinanceSlug: string
-        ) =>
-          toHref(
-            municipalEntityBase(countySlug, segment, municipalSlug) +
-              '/' +
-              municipalSubsegments.ordinances +
-              '/' +
-              enc(ordinanceSlug)
-          ),
-      },
-      contacts: {
-        index: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-          toHref(
-            municipalEntityBase(countySlug, segment, municipalSlug) +
-              '/' +
-              municipalSubsegments.contacts
-          ),
-        detail: (
-          countySlug: string,
-          segment: MunicipalSegment,
-          municipalSlug: string,
-          contactSlug: string
-        ) =>
-          toHref(
-            municipalEntityBase(countySlug, segment, municipalSlug) +
-              '/' +
-              municipalSubsegments.contacts +
-              '/' +
-              enc(contactSlug)
-          ),
-      },
-      elections: {
-        index: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-          toHref(
-            municipalEntityBase(countySlug, segment, municipalSlug) +
-              '/' +
-              municipalSubsegments.elections
-          ),
-        detail: (
-          countySlug: string,
-          segment: MunicipalSegment,
-          municipalSlug: string,
-          electionSlug: string
-        ) =>
-          toHref(
-            municipalEntityBase(countySlug, segment, municipalSlug) +
-              '/' +
-              municipalSubsegments.elections +
-              '/' +
-              enc(electionSlug)
-          ),
-      },
-      permits: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/permits'),
-      zoning: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/zoning'),
-      assessor: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/assessor'),
-      fire: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/fire'),
-      sad: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
-        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/sad'),
-      community: (
+    ordinances: {
+      index: (countySlug: string, municipalitySlug: string) =>
+        toHref(municipalityBase(countySlug, municipalitySlug) + '/ordinances'),
+      detail: (
         countySlug: string,
-        segment: MunicipalSegment,
-        municipalSlug: string,
-        communitySlug: string
+        municipalitySlug: string,
+        ordinanceSlug: string
       ) =>
         toHref(
-          municipalEntityBase(countySlug, segment, municipalSlug) +
-            '/communities/' +
-            enc(communitySlug)
+          municipalityBase(countySlug, municipalitySlug) +
+            '/ordinances/' +
+            enc(ordinanceSlug)
         ),
-      subNavTabs: (
-        countySlug: string,
-        segment: MunicipalSegment,
-        municipalSlug: string
-      ): { label: string; href: Href }[] => {
-        const base = municipalEntityBase(countySlug, segment, municipalSlug);
-        return [
-          { label: 'Overview', href: toHref(base) },
-          { label: 'Minutes', href: toHref(base + '/' + municipalSubsegments.minutes) },
-          { label: 'Ordinances', href: toHref(base + '/' + municipalSubsegments.ordinances) },
-          { label: 'Contacts', href: toHref(base + '/' + municipalSubsegments.contacts) },
-          { label: 'Elections', href: toHref(base + '/' + municipalSubsegments.elections) },
-          { label: 'Permits', href: toHref(base + '/permits') },
-          { label: 'Zoning', href: toHref(base + '/zoning') },
-        ];
-      },
+    },
+    contacts: {
+      index: (countySlug: string, municipalitySlug: string) =>
+        toHref(municipalityBase(countySlug, municipalitySlug) + '/contacts'),
+      detail: (countySlug: string, municipalitySlug: string, contactSlug: string) =>
+        toHref(
+          municipalityBase(countySlug, municipalitySlug) +
+            '/contacts/' +
+            enc(contactSlug)
+        ),
+    },
+    elections: {
+      index: (countySlug: string, municipalitySlug: string) =>
+        toHref(municipalityBase(countySlug, municipalitySlug) + '/elections'),
+      detail: (countySlug: string, municipalitySlug: string, electionSlug: string) =>
+        toHref(
+          municipalityBase(countySlug, municipalitySlug) +
+            '/elections/' +
+            enc(electionSlug)
+        ),
+    },
+    zoning: (countySlug: string, municipalitySlug: string) =>
+      toHref(municipalityBase(countySlug, municipalitySlug) + '/zoning'),
+    municipalSubNavTabs: (
+      countySlug: string,
+      municipalitySlug: string
+    ): { label: string; href: Href }[] => {
+      const base = municipalityBase(countySlug, municipalitySlug);
+      return [
+        { label: 'Overview', href: toHref(base) },
+        { label: 'Minutes', href: toHref(base + '/minutes') },
+        { label: 'Ordinances', href: toHref(base + '/ordinances') },
+        { label: 'Contacts', href: toHref(base + '/contacts') },
+        { label: 'Elections', href: toHref(base + '/elections') },
+        { label: 'Zoning', href: toHref(base + '/zoning') },
+      ];
     },
   },
 } as const;
@@ -280,6 +173,3 @@ export function isPathActive(pathname: string, href: Href): boolean {
   }
   return pathname === target || pathname.startsWith(target + '/');
 }
-
-export const regionSubsegments = municipalSubsegments;
-export type RegionSubsegment = MunicipalSubsegment;

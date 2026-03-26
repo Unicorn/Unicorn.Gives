@@ -7,6 +7,7 @@ import {
   isPathActive,
   paths,
   routes,
+  toHref,
 } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { governmentHref } from '@/lib/governmentHref';
@@ -73,28 +74,28 @@ export function DrawerMenu() {
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
-        {/* Home */}
         <NavItem
           label="Home"
-          active={pathname === paths.home}
+          active={pathname === '/' || pathname.startsWith('/home')}
           onPress={() => navigate(routes.home())}
         />
         <NavItem
-          label="Land & Lore"
-          active={isActiveHref(routes.lore.index())}
-          onPress={() => navigate(routes.lore.index())}
+          label="Guides"
+          active={pathname.startsWith('/guides')}
+          onPress={() => navigate(toHref('/guides'))}
         />
-
-        {/* SOLVE */}
-        <SectionHeader label="SOLVE" />
         <NavItem
-          label="Problem Solver"
-          active={isActiveHref(routes.solve.index())}
-          onPress={() => navigate(routes.solve.index())}
+          label="Government"
+          active={pathname.startsWith('/government')}
+          onPress={() => navigate(toHref('/government'))}
+        />
+        <NavItem
+          label="Directory"
+          active={pathname.startsWith('/directory')}
+          onPress={() => navigate(toHref('/directory'))}
         />
 
-        {/* GOVERN */}
-        <SectionHeader label="GOVERN" />
+        <SectionHeader label="QUICK ACCESS" />
         {regions.map((r) => (
           <NavItem
             key={r.slug}
@@ -104,22 +105,6 @@ export function DrawerMenu() {
             onPress={() => navigate(governmentHref(r))}
           />
         ))}
-
-        {/* INFORM */}
-        <SectionHeader label="INFORM" />
-        <NavItem
-          label="News & Alerts"
-          active={isActiveHref(routes.news.index())}
-          onPress={() => navigate(routes.news.index())}
-        />
-        <NavItem
-          label="Events Calendar"
-          active={isActiveHref(routes.events.index())}
-          onPress={() => navigate(routes.events.index())}
-        />
-
-        {/* CONNECT */}
-        <SectionHeader label="CONNECT" />
         {partners.map((p) => (
           <NavItem
             key={p.slug}

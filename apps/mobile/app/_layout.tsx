@@ -73,13 +73,12 @@ function RootLayoutNav() {
             },
           }}
         >
-          <Drawer.Screen name="(tabs)" options={{ title: 'Land of the Unicorns' }} />
-          <Drawer.Screen name="lore" options={{ title: 'Land & Lore', headerShown: false }} />
-          <Drawer.Screen name="solve" options={{ title: 'Problem Solver', headerShown: false }} />
-          <Drawer.Screen name="county" options={{ title: 'Government', headerShown: false }} />
-          <Drawer.Screen name="news" options={{ title: 'News', headerShown: false }} />
-          <Drawer.Screen name="events" options={{ title: 'Events', headerShown: false }} />
-          <Drawer.Screen name="partners" options={{ title: 'Partners', headerShown: false }} />
+          <Drawer.Screen name="(tabs)" options={{ title: 'Land of the Unicorns', headerShown: false }} />
+          {/* Deep-link routes — hidden from drawer, pushed onto tab stacks */}
+          <Drawer.Screen name="history" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
+          <Drawer.Screen name="community" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
+          <Drawer.Screen name="government" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
+          <Drawer.Screen name="partners" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
           <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
           <Drawer.Screen name="admin" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
           <Drawer.Screen name="+not-found" options={{ drawerItemStyle: { display: 'none' } }} />

@@ -38,7 +38,7 @@ export function RequireAdmin({ children }: { children: ReactNode }) {
       return;
     }
     if (role !== 'super_admin') {
-      router.replace('/'); // safe fallback; admin-only in this phase
+      router.replace('/' as any); // safe fallback; admin-only in this phase
     }
   }, [loading, role, user, router]);
 

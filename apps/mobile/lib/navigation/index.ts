@@ -3,14 +3,12 @@ export {
   hrefToPathString,
   paths,
   routes,
-  regionSubsegments,
   municipalSubsegments,
-  isRegionStackDetailPath,
-  isMunicipalStackDetailPath,
+  isMunicipalDetailPath,
   isPathActive,
 } from './paths';
 
-export type { RegionSubsegment, MunicipalSubsegment, MunicipalSegment } from './paths';
+export type { MunicipalSubsegment } from './paths';
 
 export {
   navigationTree,

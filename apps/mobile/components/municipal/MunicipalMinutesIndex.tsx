@@ -4,7 +4,6 @@ import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
-import type { MunicipalSegment } from '@/lib/navigation';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 
 interface MinutesSummary {
@@ -17,9 +16,9 @@ interface MinutesSummary {
   body: string;
 }
 
-export function MunicipalMinutesIndex({ segment }: { segment: MunicipalSegment }) {
-  const { municipalSlug, basePath } = useMunicipalRoute(segment);
-  const { region } = useRegion(municipalSlug);
+export function MunicipalMinutesIndex() {
+  const { municipalitySlug, basePath } = useMunicipalRoute();
+  const { region } = useRegion(municipalitySlug);
   const [minutes, setMinutes] = useState<MinutesSummary[]>([]);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<string | null>(null);

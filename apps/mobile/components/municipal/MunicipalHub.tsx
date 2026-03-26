@@ -3,12 +3,11 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
-import type { MunicipalSegment } from '@/lib/navigation';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 
-export function MunicipalHub({ segment }: { segment: MunicipalSegment }) {
-  const { municipalSlug, basePath } = useMunicipalRoute(segment);
-  const { region, isLoading } = useRegion(municipalSlug);
+export function MunicipalHub() {
+  const { municipalitySlug, basePath } = useMunicipalRoute();
+  const { region, isLoading } = useRegion(municipalitySlug);
   const [stats, setStats] = useState({ minutes: 0, ordinances: 0, contacts: 0 });
 
   useEffect(() => {
@@ -30,7 +29,6 @@ export function MunicipalHub({ segment }: { segment: MunicipalSegment }) {
     { label: 'Ordinances', count: stats.ordinances, href: `${basePath}/ordinances`, icon: '📜' },
     { label: 'Contact Directory', count: stats.contacts, href: `${basePath}/contacts`, icon: '📞' },
     { label: 'Elections', count: 0, href: `${basePath}/elections`, icon: '🗳️' },
-    { label: 'Permits', count: 0, href: `${basePath}/permits`, icon: '📋' },
     { label: 'Zoning', count: 0, href: `${basePath}/zoning`, icon: '🗺️' },
   ];
 
@@ -52,16 +50,6 @@ export function MunicipalHub({ segment }: { segment: MunicipalSegment }) {
           </Link>
         ))}
       </View>
-      <Link href={`${basePath}/communities/lake-george` as any} asChild>
-        <TouchableOpacity style={styles.pilot}>
-          <Text style={styles.pilotText}>Pilot community page (Lake George) — stub</Text>
-        </TouchableOpacity>
-      </Link>
-      <Link href={`${basePath}/sad` as any} asChild>
-        <TouchableOpacity style={styles.pilot}>
-          <Text style={styles.pilotText}>Special assessment districts — stub</Text>
-        </TouchableOpacity>
-      </Link>
     </ScrollView>
   );
 }
@@ -79,6 +67,4 @@ const styles = StyleSheet.create({
   cardIcon: { fontSize: 28, marginBottom: 8 },
   cardLabel: { fontSize: 16, fontWeight: '700', color: '#2d4a4a', marginBottom: 4 },
   cardCount: { fontSize: 13, color: '#73796d' },
-  pilot: { marginHorizontal: 16, marginTop: 8, padding: 14, backgroundColor: '#e8f0e0', borderRadius: 8 },
-  pilotText: { fontSize: 14, color: '#2d4a4a', fontWeight: '600' },
 });

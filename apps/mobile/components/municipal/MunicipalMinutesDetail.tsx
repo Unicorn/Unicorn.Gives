@@ -4,7 +4,6 @@ import { useLocalSearchParams } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import type { MunicipalSegment } from '@/lib/navigation';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 
 interface Minutes {
@@ -20,10 +19,10 @@ interface Minutes {
   attendees_also_present: string[];
 }
 
-export function MunicipalMinutesDetail({ segment }: { segment: MunicipalSegment }) {
+export function MunicipalMinutesDetail() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
-  const { municipalSlug } = useMunicipalRoute(segment);
-  const { region } = useRegion(municipalSlug);
+  const { municipalitySlug } = useMunicipalRoute();
+  const { region } = useRegion(municipalitySlug);
   const [item, setItem] = useState<Minutes | null>(null);
 
   useEffect(() => {
