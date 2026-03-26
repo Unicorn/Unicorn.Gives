@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import { useTheme, fonts, radii } from '@/constants/theme';
 
 export interface BentoItem {
   key: string;
@@ -26,44 +26,45 @@ interface BentoGridProps {
   items: BentoItem[];
 }
 
-const SCHEME_STYLES: Record<
-  NonNullable<BentoItem['colorScheme']>,
-  { bg: string; text: string; desc: string; icon: string }
-> = {
-  primary: {
-    bg: homeColors.primaryContainer,
-    text: homeColors.onPrimary,
-    desc: 'rgba(255,255,255,0.8)',
-    icon: homeColors.onPrimary,
-  },
-  secondary: {
-    bg: homeColors.secondaryContainer,
-    text: homeColors.onSecondaryContainer,
-    desc: 'rgba(255,251,255,0.8)',
-    icon: homeColors.onSecondaryContainer,
-  },
-  tertiary: {
-    bg: '#c3ab2e',
-    text: '#211b00',
-    desc: '#4a3f00',
-    icon: '#211b00',
-  },
-  surface: {
-    bg: homeColors.surfaceContainerHigh,
-    text: homeColors.onSurface,
-    desc: homeColors.onSurfaceVariant,
-    icon: homeColors.primary,
-  },
-  muted: {
-    bg: homeColors.surfaceContainer,
-    text: homeColors.onSurface,
-    desc: homeColors.onSurfaceVariant,
-    icon: homeColors.secondary,
-  },
-};
+function useSchemStyles() {
+  const { colors } = useTheme();
+  return {
+    primary: {
+      bg: colors.primaryContainer,
+      text: colors.onPrimary,
+      desc: 'rgba(255,255,255,0.8)',
+      icon: colors.onPrimary,
+    },
+    secondary: {
+      bg: colors.purpleContainer,
+      text: colors.neutral,
+      desc: 'rgba(255,251,255,0.8)',
+      icon: colors.neutral,
+    },
+    tertiary: {
+      bg: colors.gold,
+      text: colors.goldContainer,
+      desc: colors.goldContainer,
+      icon: colors.goldContainer,
+    },
+    surface: {
+      bg: colors.surfaceContainerHigh,
+      text: colors.neutral,
+      desc: colors.neutralVariant,
+      icon: colors.primary,
+    },
+    muted: {
+      bg: colors.surfaceContainer,
+      text: colors.neutral,
+      desc: colors.neutralVariant,
+      icon: colors.purple,
+    },
+  } as const;
+}
 
 function BentoCard({ item, isTablet }: { item: BentoItem; isTablet: boolean }) {
-  const scheme = SCHEME_STYLES[item.colorScheme || 'surface'];
+  const schemes = useSchemStyles();
+  const scheme = schemes[item.colorScheme || 'surface'];
   const isFullWidth = item.span === 'full';
 
   const card = (
@@ -105,14 +106,15 @@ function BentoCard({ item, isTablet }: { item: BentoItem; isTablet: boolean }) {
 
 export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
   const { width } = useWindowDimensions();
+  const { colors } = useTheme();
   const isTablet = width >= 768;
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {eyebrow && <Text style={styles.eyebrow}>{eyebrow}</Text>}
-        <Text style={styles.title}>{title}</Text>
-        {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+        {eyebrow && <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>{eyebrow}</Text>}
+        <Text style={[styles.title, { color: colors.neutral }]}>{title}</Text>
+        {subtitle && <Text style={[styles.subtitle, { color: colors.neutralVariant }]}>{subtitle}</Text>}
       </View>
       <View style={[styles.grid, isTablet && styles.gridTablet]}>
         {items.map((item) => (
@@ -131,21 +133,18 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   eyebrow: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 11,
-    color: homeColors.secondary,
     letterSpacing: 1.5,
     textTransform: 'uppercase',
   },
   title: {
-    fontFamily: homeFonts.serifItalic,
+    fontFamily: fonts.serifItalic,
     fontSize: 28,
-    color: homeColors.primary,
   },
   subtitle: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 15,
-    color: homeColors.onSurfaceVariant,
     lineHeight: 22,
   },
   grid: {
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
   },
   card: {
     padding: 20,
-    borderRadius: homeRadii.md,
+    borderRadius: radii.md,
     gap: 6,
   },
   icon: {
@@ -166,11 +165,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   cardTitle: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 17,
   },
   cardDesc: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 13,
     lineHeight: 19,
   },

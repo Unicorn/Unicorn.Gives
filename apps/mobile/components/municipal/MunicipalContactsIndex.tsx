@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface Contact {
   id: string;
@@ -16,6 +17,7 @@ interface Contact {
 }
 
 export function MunicipalContactsIndex() {
+  const { colors } = useTheme();
   const { municipalitySlug } = useMunicipalRoute();
   const { region } = useRegion(municipalitySlug);
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -36,54 +38,37 @@ export function MunicipalContactsIndex() {
   const filtered = deptFilter ? contacts.filter(c => c.department === deptFilter) : contacts;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: spacing.lg, paddingBottom: 40 }}>
       {depts.length > 1 && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filters}>
-          <TouchableOpacity style={[styles.chip, !deptFilter && styles.chipActive]} onPress={() => setDeptFilter(null)}>
-            <Text style={[styles.chipText, !deptFilter && styles.chipTextActive]}>All</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: spacing.md }}>
+          <TouchableOpacity style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: !deptFilter ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: !deptFilter ? colors.heroBar : colors.surface }} onPress={() => setDeptFilter(null)}>
+            <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: !deptFilter ? colors.onHeroBar : colors.neutral }}>{`All`}</Text>
           </TouchableOpacity>
           {depts.map(d => (
-            <TouchableOpacity key={d} style={[styles.chip, deptFilter === d && styles.chipActive]} onPress={() => setDeptFilter(deptFilter === d ? null : d)}>
-              <Text style={[styles.chipText, deptFilter === d && styles.chipTextActive]}>{d}</Text>
+            <TouchableOpacity key={d} style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: deptFilter === d ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: deptFilter === d ? colors.heroBar : colors.surface }} onPress={() => setDeptFilter(deptFilter === d ? null : d)}>
+              <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: deptFilter === d ? colors.onHeroBar : colors.neutral }}>{d}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
       )}
       {filtered.map(c => (
-        <View key={c.id} style={styles.card}>
-          <Text style={styles.name}>{c.name}</Text>
-          <Text style={styles.role}>{c.role}</Text>
-          <Text style={styles.dept}>{c.department}</Text>
+        <View key={c.id} style={{ backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.outline }}>
+          <Text style={{ fontSize: 16, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: 2 }}>{c.name}</Text>
+          <Text style={{ fontSize: 14, fontFamily: fonts.sans, color: colors.neutral, marginBottom: 2 }}>{c.role}</Text>
+          <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: 6 }}>{c.department}</Text>
           {c.phone && (
             <TouchableOpacity onPress={() => Linking.openURL(`tel:${c.phone}`)}>
-              <Text style={styles.phone}>{c.phone}{c.phone_ext ? ` ext. ${c.phone_ext}` : ''}</Text>
+              <Text style={{ fontSize: 14, fontFamily: fonts.sansMedium, color: colors.primary, marginBottom: 2 }}>{c.phone}{c.phone_ext ? ` ext. ${c.phone_ext}` : ''}</Text>
             </TouchableOpacity>
           )}
           {c.email && (
             <TouchableOpacity onPress={() => Linking.openURL(`mailto:${c.email}`)}>
-              <Text style={styles.email}>{c.email}</Text>
+              <Text style={{ fontSize: 14, fontFamily: fonts.sans, color: colors.primary, marginBottom: 2 }}>{c.email}</Text>
             </TouchableOpacity>
           )}
-          {c.hours && <Text style={styles.hours}>{c.hours}</Text>}
+          {c.hours && <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant, marginTop: spacing.xs }}>{c.hours}</Text>}
         </View>
       ))}
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
-  content: { padding: 16, paddingBottom: 40 },
-  filters: { marginBottom: 12 },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: '#c3c8bb', marginRight: 8, backgroundColor: '#fff' },
-  chipActive: { backgroundColor: '#2d4a4a', borderColor: '#2d4a4a' },
-  chipText: { fontSize: 13, color: '#43493e', fontWeight: '500' },
-  chipTextActive: { color: '#fcf9f4' },
-  card: { backgroundColor: '#fff', borderRadius: 8, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: '#c3c8bb' },
-  name: { fontSize: 16, fontWeight: '700', color: '#2d4a4a', marginBottom: 2 },
-  role: { fontSize: 14, color: '#43493e', marginBottom: 2 },
-  dept: { fontSize: 12, color: '#8a9a7c', marginBottom: 6 },
-  phone: { fontSize: 14, color: '#3d6060', fontWeight: '600', marginBottom: 2 },
-  email: { fontSize: 14, color: '#3d6060', marginBottom: 2 },
-  hours: { fontSize: 12, color: '#73796d', marginTop: 4 },
-});

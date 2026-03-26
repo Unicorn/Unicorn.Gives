@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { toHref } from '@/lib/navigation';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface Guide {
   id: string;
@@ -25,6 +26,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export default function GuidesIndex() {
+  const { colors } = useTheme();
   const [guides, setGuides] = useState<Guide[]>([]);
   const [filter, setFilter] = useState<string | null>(null);
 
@@ -39,6 +41,8 @@ export default function GuidesIndex() {
 
   const categories = [...new Set(guides.map(g => g.category))];
   const filtered = filter ? guides.filter(g => g.category === filter) : guides;
+
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -91,22 +95,22 @@ export default function GuidesIndex() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 16, paddingBottom: 40 },
-  heading: { fontSize: 22, fontWeight: '800', color: '#2d4a4a', marginBottom: 4 },
-  subheading: { fontSize: 15, color: '#73796d', lineHeight: 22, marginBottom: 16 },
+  heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
+  subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },
   chips: { marginBottom: 12 },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: '#c3c8bb', marginRight: 8, backgroundColor: '#fff' },
-  chipActive: { backgroundColor: '#2d4a4a', borderColor: '#2d4a4a' },
-  chipText: { fontSize: 13, color: '#43493e', fontWeight: '500' },
-  chipTextActive: { color: '#fcf9f4' },
-  count: { fontSize: 13, color: '#73796d', marginBottom: 12 },
-  card: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 10, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: '#c3c8bb', gap: 12, alignItems: 'flex-start' },
+  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: colors.outline, marginRight: 8, backgroundColor: colors.surface },
+  chipActive: { backgroundColor: colors.neutral, borderColor: colors.neutral },
+  chipText: { fontSize: 13, color: colors.neutral, fontWeight: '500' },
+  chipTextActive: { color: colors.background },
+  count: { fontSize: 13, color: colors.neutralVariant, marginBottom: 12 },
+  card: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radii.md, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: colors.outline, gap: 12, alignItems: 'flex-start' },
   icon: { fontSize: 28 },
   cardBody: { flex: 1 },
-  title: { fontSize: 16, fontWeight: '700', color: '#2d4a4a', marginBottom: 4 },
-  desc: { fontSize: 14, color: '#43493e', lineHeight: 20, marginBottom: 6 },
-  meta: { fontSize: 12, color: '#8a9a7c' },
-  empty: { textAlign: 'center', color: '#73796d', marginTop: 40 },
+  title: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },
+  desc: { fontSize: 14, color: colors.neutral, lineHeight: 20, marginBottom: 6 },
+  meta: { fontSize: 12, color: colors.neutralVariant },
+  empty: { textAlign: 'center', color: colors.neutralVariant, marginTop: 40 },
 });

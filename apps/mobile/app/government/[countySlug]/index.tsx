@@ -5,6 +5,7 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface ChildRegion {
   id: string;
@@ -14,6 +15,7 @@ interface ChildRegion {
 }
 
 export default function CountyOverview() {
+  const { colors } = useTheme();
   const { countySlug } = useLocalSearchParams<{ countySlug: string }>();
   const { region, isLoading } = useRegion(countySlug);
   const [children, setChildren] = useState<ChildRegion[]>([]);
@@ -31,17 +33,17 @@ export default function CountyOverview() {
 
   if (isLoading) {
     return (
-      <View style={styles.page}>
+      <View style={[styles.page, { backgroundColor: colors.background }]}>
         <AppHeader />
-        <Text style={styles.loading}>Loading...</Text>
+        <Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text>
       </View>
     );
   }
   if (!region) {
     return (
-      <View style={styles.page}>
+      <View style={[styles.page, { backgroundColor: colors.background }]}>
         <AppHeader />
-        <Text style={styles.loading}>County not found</Text>
+        <Text style={[styles.loading, { color: colors.neutralVariant }]}>County not found</Text>
       </View>
     );
   }
@@ -49,18 +51,18 @@ export default function CountyOverview() {
   return (
     <View style={{ flex: 1 }}>
       <AppHeader />
-      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <View style={styles.header}>
-          <Text style={styles.type}>{region.type.toUpperCase()}</Text>
-          {region.description && <Text style={styles.description}>{region.description}</Text>}
+      <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
+        <View style={[styles.header, { backgroundColor: colors.neutral }]}>
+          <Text style={[styles.type, { color: colors.gold }]}>{region.type.toUpperCase()}</Text>
+          {region.description && <Text style={[styles.description, { color: colors.outline }]}>{region.description}</Text>}
         </View>
 
-        <Text style={styles.sectionTitle}>Municipalities</Text>
+        <Text style={[styles.sectionTitle, { color: colors.neutralVariant }]}>Municipalities</Text>
         {children.map((c) => (
           <Link key={c.slug} href={routes.government.municipality(countySlug, c.slug)} asChild>
-            <TouchableOpacity style={styles.row}>
-              <Text style={styles.rowTitle}>{c.name}</Text>
-              <Text style={styles.rowMeta}>{c.type}</Text>
+            <TouchableOpacity style={StyleSheet.flatten([styles.row, { backgroundColor: colors.surface, borderColor: colors.outline }])}>
+              <Text style={[styles.rowTitle, { color: colors.neutral }]}>{c.name}</Text>
+              <Text style={[styles.rowMeta, { color: colors.neutralVariant }]}>{c.type}</Text>
             </TouchableOpacity>
           </Link>
         ))}
@@ -70,15 +72,15 @@ export default function CountyOverview() {
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: '#fcf9f4' },
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
+  page: { flex: 1 },
+  container: { flex: 1 },
   content: { paddingBottom: 40 },
-  loading: { padding: 24, color: '#73796d', textAlign: 'center' },
-  header: { padding: 20, backgroundColor: '#2d4a4a' },
-  type: { fontSize: 11, fontWeight: '700', color: '#d4b96e', letterSpacing: 1, marginBottom: 6 },
-  description: { fontSize: 15, color: '#c3c8bb', lineHeight: 22 },
-  sectionTitle: { fontSize: 13, fontWeight: '800', color: '#8a9a7c', letterSpacing: 1, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 },
-  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, backgroundColor: '#fff', borderRadius: 10, borderWidth: 1, borderColor: '#c3c8bb' },
-  rowTitle: { fontSize: 16, fontWeight: '700', color: '#2d4a4a' },
-  rowMeta: { fontSize: 13, color: '#73796d', marginTop: 4, textTransform: 'capitalize' },
+  loading: { padding: spacing.xxl, textAlign: 'center' },
+  header: { padding: spacing.xl },
+  type: { fontSize: 11, fontWeight: '700', letterSpacing: 1, marginBottom: 6 },
+  description: { fontSize: 15, lineHeight: 22 },
+  sectionTitle: { fontSize: 13, fontWeight: '800', letterSpacing: 1, paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.sm },
+  row: { marginHorizontal: spacing.lg, marginBottom: spacing.sm, padding: spacing.lg, borderRadius: radii.sm, borderWidth: 1 },
+  rowTitle: { fontSize: 16, fontWeight: '700' },
+  rowMeta: { fontSize: 13, marginTop: spacing.xs, textTransform: 'capitalize' },
 });

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 export function MunicipalHub() {
+  const { colors } = useTheme();
   const { municipalitySlug, basePath } = useMunicipalRoute();
   const { region, isLoading } = useRegion(municipalitySlug);
   const [stats, setStats] = useState({ minutes: 0, ordinances: 0, contacts: 0, events: 0 });
@@ -22,8 +24,8 @@ export function MunicipalHub() {
     });
   }, [region]);
 
-  if (isLoading) return <View style={styles.container}><Text style={styles.loading}>Loading...</Text></View>;
-  if (!region) return <View style={styles.container}><Text style={styles.loading}>Municipality not found</Text></View>;
+  if (isLoading) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Loading...</Text></View>;
+  if (!region) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Municipality not found</Text></View>;
 
   const sections = [
     { label: 'Meeting Minutes', count: stats.minutes, href: `${basePath}/minutes`, icon: '📋' },
@@ -35,19 +37,19 @@ export function MunicipalHub() {
   ];
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <Text style={styles.type}>{region.type.toUpperCase()}</Text>
-        <Text style={styles.name}>{region.name}</Text>
-        {region.description && <Text style={styles.description}>{region.description}</Text>}
+    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ paddingBottom: 40 }}>
+      <View style={{ backgroundColor: colors.heroBar, padding: spacing.xxl, paddingTop: spacing.lg }}>
+        <Text style={{ fontSize: 11, fontFamily: fonts.sansBold, color: colors.gold, letterSpacing: 1, marginBottom: spacing.xs }}>{region.type.toUpperCase()}</Text>
+        <Text style={{ fontSize: 28, fontFamily: fonts.sansBold, color: colors.background, marginBottom: spacing.sm }}>{region.name}</Text>
+        {region.description && <Text style={{ fontSize: 15, fontFamily: fonts.sans, color: colors.outline, lineHeight: 22 }}>{region.description}</Text>}
       </View>
-      <View style={styles.grid}>
+      <View style={{ padding: spacing.lg, gap: spacing.md }}>
         {sections.map((s) => (
           <Link key={s.label} href={s.href as any} asChild>
-            <TouchableOpacity style={styles.card}>
-              <Text style={styles.cardIcon}>{s.icon}</Text>
-              <Text style={styles.cardLabel}>{s.label}</Text>
-              {s.count > 0 && <Text style={styles.cardCount}>{s.count} records</Text>}
+            <TouchableOpacity style={{ backgroundColor: colors.surface, borderRadius: radii.md, padding: spacing.xl, borderWidth: 1, borderColor: colors.outline }}>
+              <Text style={{ fontSize: 28, marginBottom: spacing.sm }}>{s.icon}</Text>
+              <Text style={{ fontSize: 16, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: spacing.xs }}>{s.label}</Text>
+              {s.count > 0 && <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant }}>{s.count} records</Text>}
             </TouchableOpacity>
           </Link>
         ))}
@@ -55,18 +57,3 @@ export function MunicipalHub() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
-  content: { paddingBottom: 40 },
-  loading: { padding: 24, color: '#73796d', textAlign: 'center' },
-  header: { backgroundColor: '#2d4a4a', padding: 24, paddingTop: 16 },
-  type: { fontSize: 11, fontWeight: '700', color: '#d4b96e', letterSpacing: 1, marginBottom: 4 },
-  name: { fontSize: 28, fontWeight: '800', color: '#fcf9f4', marginBottom: 8 },
-  description: { fontSize: 15, color: '#c3c8bb', lineHeight: 22 },
-  grid: { padding: 16, gap: 12 },
-  card: { backgroundColor: '#fff', borderRadius: 12, padding: 20, borderWidth: 1, borderColor: '#c3c8bb' },
-  cardIcon: { fontSize: 28, marginBottom: 8 },
-  cardLabel: { fontSize: 16, fontWeight: '700', color: '#2d4a4a', marginBottom: 4 },
-  cardCount: { fontSize: 13, color: '#73796d' },
-});

@@ -1,5 +1,5 @@
 import { ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import { useTheme, fonts, radii } from '@/constants/theme';
 
 interface Category {
   key: string;
@@ -19,6 +19,8 @@ export function CategoryChips({
   onSelect,
   allLabel = 'All',
 }: CategoryChipsProps) {
+  const { colors } = useTheme();
+
   return (
     <ScrollView
       horizontal
@@ -27,20 +29,40 @@ export function CategoryChips({
       contentContainerStyle={styles.content}
     >
       <TouchableOpacity
-        style={[styles.chip, !selected && styles.chipActive]}
+        style={[
+          styles.chip,
+          { borderColor: colors.outline, backgroundColor: colors.surface },
+          !selected && { backgroundColor: colors.heroBar, borderColor: colors.heroBar },
+        ]}
         onPress={() => onSelect(null)}
       >
-        <Text style={[styles.chipText, !selected && styles.chipTextActive]}>
+        <Text
+          style={[
+            styles.chipText,
+            { color: colors.neutralVariant },
+            !selected && { fontFamily: fonts.sansBold, color: colors.onHeroBar },
+          ]}
+        >
           {allLabel}
         </Text>
       </TouchableOpacity>
       {categories.map((cat) => (
         <TouchableOpacity
           key={cat.key}
-          style={[styles.chip, selected === cat.key && styles.chipActive]}
+          style={[
+            styles.chip,
+            { borderColor: colors.outline, backgroundColor: colors.surface },
+            selected === cat.key && { backgroundColor: colors.heroBar, borderColor: colors.heroBar },
+          ]}
           onPress={() => onSelect(selected === cat.key ? null : cat.key)}
         >
-          <Text style={[styles.chipText, selected === cat.key && styles.chipTextActive]}>
+          <Text
+            style={[
+              styles.chipText,
+              { color: colors.neutralVariant },
+              selected === cat.key && { fontFamily: fonts.sansBold, color: colors.onHeroBar },
+            ]}
+          >
             {cat.label}
           </Text>
         </TouchableOpacity>
@@ -60,22 +82,11 @@ const styles = StyleSheet.create({
   chip: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: homeRadii.pill,
+    borderRadius: radii.pill,
     borderWidth: 1,
-    borderColor: homeColors.outline,
-    backgroundColor: homeColors.surface,
-  },
-  chipActive: {
-    backgroundColor: homeColors.heroBar,
-    borderColor: homeColors.heroBar,
   },
   chipText: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 13,
-    color: homeColors.onSurfaceVariant,
-  },
-  chipTextActive: {
-    fontFamily: homeFonts.sansBold,
-    color: homeColors.onPrimary,
   },
 });

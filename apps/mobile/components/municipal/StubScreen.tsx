@@ -1,5 +1,11 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+import { useTheme, fonts, spacing } from '@/constants/theme';
+
 export default function StubScreen({ title }: { title: string }) {
-  return <View style={s.c}><Text style={s.t}>{title}</Text></View>;
+  const { colors } = useTheme();
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center', padding: spacing.xxl }}>
+      <Text style={{ color: colors.neutralVariant, fontFamily: fonts.sans, fontSize: 16, textAlign: 'center' }}>{title}</Text>
+    </View>
+  );
 }
-const s = StyleSheet.create({ c: { flex: 1, backgroundColor: '#fcf9f4', justifyContent: 'center', alignItems: 'center', padding: 24 }, t: { color: '#73796d', fontSize: 16, textAlign: 'center' } });

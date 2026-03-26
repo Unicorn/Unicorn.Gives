@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import { useTheme, fonts, radii } from '@/constants/theme';
 
 interface HeroFeatureProps {
   title: string;
@@ -31,28 +31,29 @@ export function HeroFeature({
   imageSource,
 }: HeroFeatureProps) {
   const { width } = useWindowDimensions();
+  const { colors } = useTheme();
   const isTablet = width >= 768;
 
   return (
-    <View style={[styles.container, isTablet && styles.containerTablet]}>
-      <View style={[styles.textBlock, isTablet && imageSource && styles.textBlockTablet]}>
+    <View style={[styles.container, { backgroundColor: colors.primaryContainer }, isTablet && styles.containerTablet]}>
+      <View style={[styles.textBlock, (isTablet && imageSource) ? styles.textBlockTablet : undefined]}>
         {eyebrow && (
           <View style={styles.eyebrowPill}>
-            <Text style={styles.eyebrowText}>{eyebrow}</Text>
+            <Text style={[styles.eyebrowText, { color: colors.onPrimary }]}>{eyebrow}</Text>
           </View>
         )}
-        <Text style={[styles.title, isTablet && styles.titleTablet]}>{title}</Text>
+        <Text style={[styles.title, { color: colors.onPrimary }, isTablet && styles.titleTablet]}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
         <View style={styles.ctaRow}>
           <Link href={ctaHref} asChild>
-            <TouchableOpacity style={styles.ctaPrimary}>
-              <Text style={styles.ctaPrimaryText}>{ctaLabel}</Text>
+            <TouchableOpacity style={StyleSheet.flatten([styles.ctaPrimary, { backgroundColor: colors.onPrimary }])}>
+              <Text style={[styles.ctaPrimaryText, { color: colors.primary }]}>{ctaLabel}</Text>
             </TouchableOpacity>
           </Link>
           {secondaryCta && (
             <Link href={secondaryCta.href} asChild>
               <TouchableOpacity style={styles.ctaOutline}>
-                <Text style={styles.ctaOutlineText}>{secondaryCta.label}</Text>
+                <Text style={[styles.ctaOutlineText, { color: colors.onPrimary }]}>{secondaryCta.label}</Text>
               </TouchableOpacity>
             </Link>
           )}
@@ -74,8 +75,7 @@ export function HeroFeature({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: homeColors.primaryContainer,
-    borderRadius: homeRadii.lg,
+    borderRadius: radii.lg,
     overflow: 'hidden',
     padding: 24,
     gap: 20,
@@ -98,19 +98,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: homeRadii.pill,
+    borderRadius: radii.pill,
   },
   eyebrowText: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 11,
-    color: homeColors.onPrimary,
     letterSpacing: 1.5,
     textTransform: 'uppercase',
   },
   title: {
-    fontFamily: homeFonts.serifItalic,
+    fontFamily: fonts.serifItalic,
     fontSize: 32,
-    color: homeColors.onPrimary,
     lineHeight: 38,
   },
   titleTablet: {
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
     lineHeight: 48,
   },
   description: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 15,
     color: 'rgba(255,255,255,0.85)',
     lineHeight: 23,
@@ -130,30 +128,27 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   ctaPrimary: {
-    backgroundColor: homeColors.onPrimary,
     paddingHorizontal: 24,
     paddingVertical: 12,
-    borderRadius: homeRadii.pill,
+    borderRadius: radii.pill,
   },
   ctaPrimaryText: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 14,
-    color: homeColors.primary,
   },
   ctaOutline: {
     borderWidth: 1.5,
     borderColor: 'rgba(255,255,255,0.5)',
     paddingHorizontal: 24,
     paddingVertical: 12,
-    borderRadius: homeRadii.pill,
+    borderRadius: radii.pill,
   },
   ctaOutlineText: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 14,
-    color: homeColors.onPrimary,
   },
   imageBlock: {
-    borderRadius: homeRadii.md,
+    borderRadius: radii.md,
     overflow: 'hidden',
     height: 200,
   },

@@ -12,13 +12,15 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Drawer } from 'expo-router/drawer';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthProvider } from '@/lib/auth';
 import { DrawerMenu } from '@/components/layout/DrawerMenu';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { ThemeOverrideContext } from '@/constants/theme';
+import { ThemeToggleContext } from '@/lib/themeToggle';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -58,10 +60,21 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const [themeOverride, setThemeOverride] = useState<'light' | 'dark' | null>(null);
+  const effectiveScheme = themeOverride ?? colorScheme;
+
+  const toggleTheme = useCallback(() => {
+    setThemeOverride((prev) => {
+      if (prev === null) return colorScheme === 'dark' ? 'light' : 'dark';
+      return prev === 'dark' ? 'light' : 'dark';
+    });
+  }, [colorScheme]);
 
   return (
     <AuthProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeOverrideContext.Provider value={themeOverride}>
+      <ThemeToggleContext.Provider value={toggleTheme}>
+      <ThemeProvider value={effectiveScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Drawer
           drawerContent={() => <DrawerMenu />}
           screenOptions={{
@@ -79,9 +92,12 @@ function RootLayoutNav() {
           <Drawer.Screen name="partners" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
           <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
           <Drawer.Screen name="admin" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
+          <Drawer.Screen name="styleguide" options={{ title: 'Styleguide', drawerItemStyle: { display: 'none' } }} />
           <Drawer.Screen name="+not-found" options={{ drawerItemStyle: { display: 'none' } }} />
         </Drawer>
       </ThemeProvider>
+      </ThemeToggleContext.Provider>
+      </ThemeOverrideContext.Provider>
     </AuthProvider>
   );
 }

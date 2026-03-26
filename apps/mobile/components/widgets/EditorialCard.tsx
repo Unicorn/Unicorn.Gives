@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import { useTheme, fonts, radii } from '@/constants/theme';
 
 interface Badge {
   label: string;
@@ -26,9 +26,11 @@ export function EditorialCard({
   meta,
   dateBox,
 }: EditorialCardProps) {
+  const { colors } = useTheme();
+
   return (
     <Link href={href} asChild>
-      <Pressable style={styles.card}>
+      <Pressable style={StyleSheet.flatten([styles.card, { backgroundColor: colors.surface, borderColor: colors.outline }])}>
         <View style={styles.body}>
           <View style={styles.topRow}>
             {badge && (
@@ -37,21 +39,21 @@ export function EditorialCard({
               </View>
             )}
             {dateBox && (
-              <View style={styles.dateBox}>
-                <Text style={styles.dateMonth}>{dateBox.month}</Text>
-                <Text style={styles.dateDay}>{dateBox.day}</Text>
+              <View style={[styles.dateBox, { borderColor: colors.neutral }]}>
+                <Text style={[styles.dateMonth, { color: colors.neutralVariant }]}>{dateBox.month}</Text>
+                <Text style={[styles.dateDay, { color: colors.neutral }]}>{dateBox.day}</Text>
               </View>
             )}
           </View>
-          <Text style={styles.title} numberOfLines={2}>
+          <Text style={[styles.title, { color: colors.neutral }]} numberOfLines={2}>
             {title}
           </Text>
           {description && (
-            <Text style={styles.description} numberOfLines={2}>
+            <Text style={[styles.description, { color: colors.neutralVariant }]} numberOfLines={2}>
               {description}
             </Text>
           )}
-          {meta && <Text style={styles.meta}>{meta}</Text>}
+          {meta && <Text style={[styles.meta, { color: colors.neutralVariant }]}>{meta}</Text>}
         </View>
       </Pressable>
     </Link>
@@ -60,11 +62,14 @@ export function EditorialCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: homeColors.surface,
-    borderRadius: homeRadii.md,
+    borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: homeColors.outline,
     overflow: 'hidden',
+    shadowColor: '#1a1b25',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 3,
   },
   body: {
     padding: 16,
@@ -78,50 +83,45 @@ const styles = StyleSheet.create({
   badge: {
     paddingHorizontal: 10,
     paddingVertical: 3,
-    borderRadius: homeRadii.pill,
+    borderRadius: radii.pill,
   },
   badgeText: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 10,
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
   dateBox: {
-    backgroundColor: homeColors.heroBar,
     borderRadius: 6,
+    borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 4,
     alignItems: 'center',
     minWidth: 44,
   },
   dateMonth: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 9,
-    color: homeColors.accent,
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
   dateDay: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 18,
-    color: homeColors.onPrimary,
   },
   title: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 16,
-    color: homeColors.onSurface,
     lineHeight: 22,
   },
   description: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 13,
-    color: homeColors.onSurfaceVariant,
     lineHeight: 19,
   },
   meta: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 12,
-    color: homeColors.muted,
     marginTop: 2,
   },
 });

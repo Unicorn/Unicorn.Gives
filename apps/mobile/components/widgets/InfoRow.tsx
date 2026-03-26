@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import { useTheme, fonts, radii } from '@/constants/theme';
 
 interface InfoRowProps {
   icon: string;
@@ -10,13 +10,15 @@ interface InfoRowProps {
 }
 
 export function InfoRow({ icon, label, value, secondaryValue, href }: InfoRowProps) {
+  const { colors } = useTheme();
+
   const content = (
     <View style={styles.row}>
       <Text style={styles.icon}>{icon}</Text>
       <View style={styles.textBlock}>
-        <Text style={styles.label}>{label}</Text>
-        <Text style={styles.value}>{value}</Text>
-        {secondaryValue && <Text style={styles.secondaryValue}>{secondaryValue}</Text>}
+        <Text style={[styles.label, { color: colors.neutral }]}>{label}</Text>
+        <Text style={[styles.value, { color: colors.neutralVariant }]}>{value}</Text>
+        {secondaryValue && <Text style={[styles.secondaryValue, { color: colors.neutralVariant }]}>{secondaryValue}</Text>}
       </View>
     </View>
   );
@@ -38,9 +40,11 @@ interface InfoRowGroupProps {
 }
 
 export function InfoRowGroup({ title, rows }: InfoRowGroupProps) {
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.group}>
-      {title && <Text style={styles.groupTitle}>{title}</Text>}
+    <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.outline }]}>
+      {title && <Text style={[styles.groupTitle, { color: colors.primary }]}>{title}</Text>}
       <View style={styles.groupRows}>
         {rows.map((row, i) => (
           <InfoRow key={i} {...row} />
@@ -67,34 +71,28 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   label: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 14,
-    color: homeColors.onSurface,
   },
   value: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 14,
-    color: homeColors.onSurfaceVariant,
     lineHeight: 20,
   },
   secondaryValue: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 13,
-    color: homeColors.muted,
     lineHeight: 19,
   },
   group: {
-    backgroundColor: homeColors.surface,
-    borderRadius: homeRadii.md,
+    borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: homeColors.outline,
     padding: 20,
     gap: 4,
   },
   groupTitle: {
-    fontFamily: homeFonts.serifItalic,
+    fontFamily: fonts.serifItalic,
     fontSize: 24,
-    color: homeColors.primary,
     marginBottom: 8,
   },
   groupRows: {

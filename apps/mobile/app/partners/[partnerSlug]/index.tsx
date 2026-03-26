@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { SubTabs } from '@/components/layout/SubTabs';
+import { useTheme, spacing } from '@/constants/theme';
 
 type PartnerTab = { label: string; slug: string; order: number };
 
@@ -145,6 +146,7 @@ export function generateStaticParams() {
 }
 
 export default function PartnerLanding() {
+  const { colors } = useTheme();
   const { partnerSlug } = useLocalSearchParams<{ partnerSlug: string }>();
   const [partner, setPartner] = useState<Partner | null>(null);
   const [defaultTabs, setDefaultTabs] = useState<PartnerTab[]>([]);
@@ -192,20 +194,20 @@ export default function PartnerLanding() {
     };
   }, [partnerSlug]);
 
-  if (!partner) return <View style={styles.container}><AppHeader title="Partner" /><Text style={styles.loading}>Loading...</Text></View>;
+  if (!partner) return <View style={[styles.container, { backgroundColor: colors.background }]}><AppHeader title="Partner" /><Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text></View>;
 
   const effectiveTabs = partner.tabs && partner.tabs.length > 0 ? partner.tabs : defaultTabs;
   const tabs = routes.partners.tabItems(partnerSlug, effectiveTabs);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <AppHeader title={partner.name} />
       {tabs.length > 0 && <SubTabs tabs={tabs} />}
       <ScrollView contentContainerStyle={styles.content}>
         {firstPage ? (
           <MarkdownRenderer content={firstPage.body} />
         ) : partner.description ? (
-          <Text style={styles.desc}>{partner.description}</Text>
+          <Text style={[styles.desc, { color: colors.neutral }]}>{partner.description}</Text>
         ) : null}
       </ScrollView>
     </View>
@@ -213,8 +215,8 @@ export default function PartnerLanding() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
-  loading: { padding: 24, color: '#73796d', textAlign: 'center' },
-  content: { padding: 20, paddingBottom: 40 },
-  desc: { fontSize: 15, color: '#43493e', lineHeight: 24 },
+  container: { flex: 1 },
+  loading: { padding: spacing.xxl, textAlign: 'center' },
+  content: { padding: spacing.xl, paddingBottom: 40 },
+  desc: { fontSize: 15, lineHeight: 24 },
 });

@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { useTheme, spacing } from '@/constants/theme';
 
 export default function OpinionsIndex() {
+  const { colors } = useTheme();
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Community Opinions</Text>
-      <Text style={styles.placeholder}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.heading, { color: colors.neutral }]}>Community Opinions</Text>
+      <Text style={[styles.placeholder, { color: colors.neutralVariant }]}>
         Community posts, discussions, and perspectives will appear here.
       </Text>
     </View>
@@ -12,7 +14,7 @@ export default function OpinionsIndex() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4', padding: 20 },
-  heading: { fontSize: 24, fontWeight: '800', color: '#2d4a4a', marginBottom: 12 },
-  placeholder: { fontSize: 15, color: '#73796d', lineHeight: 22 },
+  container: { flex: 1, padding: spacing.xl },
+  heading: { fontSize: 24, fontWeight: '800', marginBottom: spacing.md },
+  placeholder: { fontSize: 15, lineHeight: 22 },
 });

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface Ordinance {
   id: string;
@@ -22,6 +23,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export function MunicipalOrdinancesIndex() {
+  const { colors } = useTheme();
   const { municipalitySlug, basePath } = useMunicipalRoute();
   const { region } = useRegion(municipalitySlug);
   const [items, setItems] = useState<Ordinance[]>([]);
@@ -48,52 +50,36 @@ export function MunicipalOrdinancesIndex() {
   });
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: spacing.lg, paddingBottom: 40 }}>
       <TextInput
-        style={styles.search}
+        style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: 15, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
         placeholder="Search ordinances..."
         value={search}
         onChangeText={setSearch}
-        placeholderTextColor="#73796d"
+        placeholderTextColor={colors.neutralVariant}
       />
       {categories.length > 1 && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filters}>
-          <TouchableOpacity style={[styles.chip, !filter && styles.chipActive]} onPress={() => setFilter(null)}>
-            <Text style={[styles.chipText, !filter && styles.chipTextActive]}>All</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: spacing.md }}>
+          <TouchableOpacity style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: !filter ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: !filter ? colors.heroBar : colors.surface }} onPress={() => setFilter(null)}>
+            <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: !filter ? colors.onHeroBar : colors.neutral }}>{`All`}</Text>
           </TouchableOpacity>
           {categories.map(c => (
-            <TouchableOpacity key={c} style={[styles.chip, filter === c && styles.chipActive]} onPress={() => setFilter(filter === c ? null : c)}>
-              <Text style={[styles.chipText, filter === c && styles.chipTextActive]}>{CATEGORY_LABELS[c] || c}</Text>
+            <TouchableOpacity key={c} style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: filter === c ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: filter === c ? colors.heroBar : colors.surface }} onPress={() => setFilter(filter === c ? null : c)}>
+              <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: filter === c ? colors.onHeroBar : colors.neutral }}>{CATEGORY_LABELS[c] || c}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
       )}
       {filtered.map(o => (
         <Link key={o.id} href={`${basePath}/ordinances/${o.slug}` as any} asChild>
-          <TouchableOpacity style={styles.item}>
-            {o.number && <Text style={styles.number}>Ord. {o.number}</Text>}
-            <Text style={styles.title}>{o.title}</Text>
-            {o.description && <Text style={styles.desc}>{o.description}</Text>}
-            <Text style={styles.category}>{CATEGORY_LABELS[o.category] || o.category}</Text>
+          <TouchableOpacity style={{ backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.outline }}>
+            {o.number && <Text style={{ fontSize: 12, fontFamily: fonts.sansBold, color: colors.neutralVariant, marginBottom: 2 }}>Ord. {o.number}</Text>}
+            <Text style={{ fontSize: 16, fontFamily: fonts.sansMedium, color: colors.neutral, marginBottom: spacing.xs }}>{o.title}</Text>
+            {o.description && <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutral, lineHeight: 20, marginBottom: spacing.xs }}>{o.description}</Text>}
+            <Text style={{ fontSize: 11, fontFamily: fonts.sans, color: colors.neutralVariant, textTransform: 'uppercase', letterSpacing: 0.5 }}>{CATEGORY_LABELS[o.category] || o.category}</Text>
           </TouchableOpacity>
         </Link>
       ))}
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
-  content: { padding: 16, paddingBottom: 40 },
-  search: { borderWidth: 1, borderColor: '#c3c8bb', borderRadius: 8, padding: 12, fontSize: 15, backgroundColor: '#fff', marginBottom: 12, color: '#43493e' },
-  filters: { marginBottom: 12 },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: '#c3c8bb', marginRight: 8, backgroundColor: '#fff' },
-  chipActive: { backgroundColor: '#2d4a4a', borderColor: '#2d4a4a' },
-  chipText: { fontSize: 13, color: '#43493e', fontWeight: '500' },
-  chipTextActive: { color: '#fcf9f4' },
-  item: { backgroundColor: '#fff', borderRadius: 8, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: '#c3c8bb' },
-  number: { fontSize: 12, fontWeight: '700', color: '#8a9a7c', marginBottom: 2 },
-  title: { fontSize: 16, fontWeight: '600', color: '#2d4a4a', marginBottom: 4 },
-  desc: { fontSize: 13, color: '#43493e', lineHeight: 20, marginBottom: 4 },
-  category: { fontSize: 11, color: '#73796d', textTransform: 'uppercase', letterSpacing: 0.5 },
-});

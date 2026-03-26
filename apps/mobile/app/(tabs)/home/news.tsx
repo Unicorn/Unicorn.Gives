@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { supabase } from '@/lib/supabase';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface NewsItem {
   id: string;
@@ -12,6 +13,7 @@ interface NewsItem {
 }
 
 export default function NewsTab() {
+  const { colors } = useTheme();
   const [items, setItems] = useState<NewsItem[]>([]);
 
   useEffect(() => {
@@ -24,6 +26,8 @@ export default function NewsTab() {
       .limit(50)
       .then(({ data }) => { if (data) setItems(data); });
   }, []);
+
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -45,14 +49,14 @@ export default function NewsTab() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 16, paddingBottom: 40 },
-  heading: { fontSize: 22, fontWeight: '800', color: '#2d4a4a', marginBottom: 16 },
-  card: { backgroundColor: '#fff', borderRadius: 8, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: '#c3c8bb' },
-  category: { fontSize: 11, fontWeight: '700', color: '#8a9a7c', letterSpacing: 0.5, marginBottom: 4 },
-  title: { fontSize: 16, fontWeight: '700', color: '#2d4a4a', marginBottom: 4 },
-  desc: { fontSize: 14, color: '#43493e', lineHeight: 20, marginBottom: 4 },
-  date: { fontSize: 12, color: '#73796d' },
-  empty: { textAlign: 'center', color: '#73796d', marginTop: 40 },
+  heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 16 },
+  card: { backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
+  category: { fontSize: 11, fontWeight: '700', color: colors.neutralVariant, letterSpacing: 0.5, marginBottom: 4 },
+  title: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },
+  desc: { fontSize: 14, color: colors.neutral, lineHeight: 20, marginBottom: 4 },
+  date: { fontSize: 12, color: colors.neutralVariant },
+  empty: { textAlign: 'center', color: colors.neutralVariant, marginTop: 40 },
 });

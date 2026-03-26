@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface Guide {
   title: string;
@@ -30,6 +31,7 @@ interface GuideForm {
 }
 
 export default function GuideDetail() {
+  const { colors } = useTheme();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [guide, setGuide] = useState<Guide | null>(null);
   const [contacts, setContacts] = useState<GuideContact[]>([]);
@@ -48,6 +50,8 @@ export default function GuideDetail() {
         }
       });
   }, [slug]);
+
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   if (!guide) return <View style={styles.container}><Text style={styles.loading}>Loading...</Text></View>;
 
@@ -102,23 +106,23 @@ export default function GuideDetail() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 20, paddingBottom: 60 },
-  loading: { padding: 24, color: '#73796d', textAlign: 'center' },
+  loading: { padding: 24, color: colors.neutralVariant, textAlign: 'center' },
   header: { marginBottom: 24 },
   icon: { fontSize: 36, marginBottom: 8 },
-  title: { fontSize: 24, fontWeight: '800', color: '#2d4a4a', marginBottom: 8 },
-  desc: { fontSize: 16, color: '#43493e', lineHeight: 24, marginBottom: 8 },
-  meta: { fontSize: 13, color: '#8a9a7c', textTransform: 'capitalize' },
-  verified: { fontSize: 12, color: '#73796d', marginTop: 4 },
+  title: { fontSize: 24, fontWeight: '800', color: colors.neutral, marginBottom: 8 },
+  desc: { fontSize: 16, color: colors.neutral, lineHeight: 24, marginBottom: 8 },
+  meta: { fontSize: 13, color: colors.neutralVariant, textTransform: 'capitalize' },
+  verified: { fontSize: 12, color: colors.neutralVariant, marginTop: 4 },
   section: { marginTop: 24 },
-  sectionTitle: { fontSize: 18, fontWeight: '700', color: '#2d4a4a', marginBottom: 12 },
-  contactCard: { backgroundColor: '#fff', borderRadius: 8, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: '#c3c8bb' },
-  contactName: { fontSize: 16, fontWeight: '700', color: '#2d4a4a', marginBottom: 2 },
-  contactRole: { fontSize: 14, color: '#43493e', marginBottom: 6 },
-  contactLink: { fontSize: 14, color: '#3d6060', fontWeight: '600', marginBottom: 2 },
-  formCard: { backgroundColor: '#2d4a4a', borderRadius: 8, padding: 14, marginBottom: 8 },
-  formName: { fontSize: 15, fontWeight: '600', color: '#fcf9f4', marginBottom: 2 },
-  formDesc: { fontSize: 13, color: '#c3c8bb' },
+  sectionTitle: { fontSize: 18, fontWeight: '700', color: colors.neutral, marginBottom: 12 },
+  contactCard: { backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
+  contactName: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 2 },
+  contactRole: { fontSize: 14, color: colors.neutral, marginBottom: 6 },
+  contactLink: { fontSize: 14, color: colors.primary, fontWeight: '600', marginBottom: 2 },
+  formCard: { backgroundColor: colors.neutral, borderRadius: radii.sm, padding: 14, marginBottom: 8 },
+  formName: { fontSize: 15, fontWeight: '600', color: colors.background, marginBottom: 2 },
+  formDesc: { fontSize: 13, color: colors.outline },
 });

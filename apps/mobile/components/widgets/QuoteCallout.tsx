@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { homeColors, homeFonts } from '@/constants/homeTheme';
+import { useTheme, fonts } from '@/constants/theme';
 
 interface QuoteCalloutProps {
   quote: string;
@@ -12,24 +12,26 @@ export function QuoteCallout({
   attribution,
   variant = 'centered',
 }: QuoteCalloutProps) {
+  const { colors } = useTheme();
   const isCentered = variant === 'centered';
 
   return (
     <View style={[styles.container, isCentered && styles.centered]}>
       <View
-        style={[styles.bar, isCentered && styles.barCentered]}
+        style={[styles.bar, { backgroundColor: colors.gold }, isCentered && styles.barCentered]}
       />
       <Text
         style={[
           styles.quote,
+          { color: colors.neutral },
           isCentered && styles.quoteCentered,
-          !isCentered && styles.quoteAside,
+          !isCentered && [styles.quoteAside, { borderLeftColor: colors.gold }],
         ]}
       >
         {quote}
       </Text>
       {attribution && (
-        <Text style={[styles.attribution, isCentered && styles.attributionCentered]}>
+        <Text style={[styles.attribution, { color: colors.neutralVariant }, isCentered && styles.attributionCentered]}>
           {attribution}
         </Text>
       )}
@@ -48,15 +50,13 @@ const styles = StyleSheet.create({
   bar: {
     width: 48,
     height: 3,
-    backgroundColor: homeColors.accent,
     borderRadius: 2,
   },
   barCentered: {
     alignSelf: 'center',
   },
   quote: {
-    fontFamily: homeFonts.serifItalic,
-    color: homeColors.onSurface,
+    fontFamily: fonts.serifItalic,
     lineHeight: 32,
   },
   quoteCentered: {
@@ -67,13 +67,11 @@ const styles = StyleSheet.create({
   quoteAside: {
     fontSize: 20,
     borderLeftWidth: 3,
-    borderLeftColor: homeColors.accent,
     paddingLeft: 16,
   },
   attribution: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 11,
-    color: homeColors.muted,
     letterSpacing: 1.5,
     textTransform: 'uppercase',
   },

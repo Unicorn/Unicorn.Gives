@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { supabase } from '@/lib/supabase';
 import { EventCard, type EventItem } from './EventCard';
-import { homeColors, homeFonts } from '@/constants/homeTheme';
+import { useTheme, fonts } from '@/constants/theme';
 import { COMMUNITY_SPIRIT_QUOTE } from '@/constants/hornContent';
 import {
   CategoryChips,
@@ -28,17 +28,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   'the-mane': 'The Mane',
 };
 
-const CATEGORY_BADGE_COLORS: Record<string, { bg: string; text: string }> = {
-  government: { bg: '#d4dce8', text: '#3b5a8a' },
-  community: { bg: '#d4e4c4', text: '#3b6b3b' },
-  conservation: { bg: '#c8e6d8', text: '#2f6b4a' },
-  seniors: { bg: '#e8dcd0', text: '#6b5a3b' },
-  horn: { bg: '#f5e6c8', text: '#8a6d3b' },
-  'unicorn-gives': { bg: '#e5d8f0', text: '#6b4a8a' },
-  'the-mane': { bg: '#f0e0f0', text: '#7a4a7a' },
-};
-
-const DEFAULT_BADGE = { bg: '#f0ede8', text: '#43493e' };
+// All category badges use neutral styling per design system rules
 
 type EventWithDesc = EventItem & { description?: string | null };
 
@@ -50,6 +40,7 @@ export function EventsList({ regionId }: Props) {
   const [events, setEvents] = useState<EventWithDesc[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const { width } = useWindowDimensions();
+  const { colors } = useTheme();
   const isTablet = width >= 768;
 
   useEffect(() => {
@@ -81,8 +72,10 @@ export function EventsList({ regionId }: Props) {
 
   const [featured, ...rest] = filtered;
 
+  const DEFAULT_BADGE = { bg: colors.surfaceContainer, text: colors.neutral };
+
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
       {/* Featured event hero */}
       {featured && !categoryFilter && (
         <FeaturedEventCard event={featured} />
@@ -90,7 +83,7 @@ export function EventsList({ regionId }: Props) {
 
       {/* Filters */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Community Calendar</Text>
+        <Text style={[styles.sectionTitle, { color: colors.neutral }]}>Community Calendar</Text>
         {chipCategories.length > 1 && (
           <CategoryChips
             categories={chipCategories}
@@ -99,7 +92,7 @@ export function EventsList({ regionId }: Props) {
             allLabel="All Events"
           />
         )}
-        <Text style={styles.count}>
+        <Text style={[styles.count, { color: colors.neutralVariant }]}>
           {categoryFilter ? filtered.length : rest.length} events
         </Text>
       </View>
@@ -108,7 +101,7 @@ export function EventsList({ regionId }: Props) {
       <View style={[styles.grid, isTablet && styles.gridTablet]}>
         {(categoryFilter ? filtered : rest).map((e) => {
           const d = new Date(e.date + 'T00:00:00');
-          const badge = CATEGORY_BADGE_COLORS[e.category] || DEFAULT_BADGE;
+          const badge = DEFAULT_BADGE;
           return (
             <View
               key={e.id}
@@ -135,7 +128,7 @@ export function EventsList({ regionId }: Props) {
       </View>
 
       {filtered.length === 0 && (
-        <Text style={styles.empty}>No upcoming events.</Text>
+        <Text style={[styles.empty, { color: colors.neutralVariant }]}>No upcoming events.</Text>
       )}
 
       {/* Community quote */}
@@ -150,18 +143,16 @@ export function EventsList({ regionId }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: homeColors.background },
+  container: { flex: 1 },
   content: { padding: 16, paddingBottom: 40, gap: 20 },
   section: { gap: 8, zIndex: 1, position: 'relative' },
   sectionTitle: {
-    fontFamily: homeFonts.serifItalic,
+    fontFamily: fonts.serifItalic,
     fontSize: 26,
-    color: homeColors.onSurface,
   },
   count: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 13,
-    color: homeColors.muted,
   },
   grid: {
     gap: 12,
@@ -176,9 +167,8 @@ const styles = StyleSheet.create({
     width: '48.5%',
   },
   empty: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     textAlign: 'center',
-    color: homeColors.muted,
     marginTop: 40,
   },
 });

@@ -4,12 +4,14 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import { useAuth } from './auth';
+import { useTheme, fonts } from '@/constants/theme';
 
 function LoadingView() {
+  const { colors } = useTheme();
   return (
-    <View style={styles.center}>
-      <ActivityIndicator />
-      <Text style={styles.loadingText}>Loading…</Text>
+    <View style={[styles.center, { backgroundColor: colors.background }]}>
+      <ActivityIndicator color={colors.primary} />
+      <Text style={[styles.loadingText, { color: colors.neutralVariant }]}>Loading…</Text>
     </View>
   );
 }
@@ -30,6 +32,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
 export function RequireAdmin({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { user, role, loading } = useAuth();
+  const { colors } = useTheme();
 
   useEffect(() => {
     if (loading) return;
@@ -47,9 +50,9 @@ export function RequireAdmin({ children }: { children: ReactNode }) {
   if (!user) return null;
   if (role !== 'super_admin') {
     return (
-      <View style={styles.center}>
-        <Text style={styles.deniedTitle}>Access denied</Text>
-        <Text style={styles.deniedBody}>You do not have permission to view this page.</Text>
+      <View style={[styles.center, { backgroundColor: colors.background }]}>
+        <Text style={[styles.deniedTitle, { color: colors.neutral }]}>Access denied</Text>
+        <Text style={[styles.deniedBody, { color: colors.neutralVariant }]}>You do not have permission to view this page.</Text>
       </View>
     );
   }
@@ -59,8 +62,7 @@ export function RequireAdmin({ children }: { children: ReactNode }) {
 
 const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, gap: 12 },
-  loadingText: { color: '#73796d' },
-  deniedTitle: { fontSize: 20, fontWeight: '900', color: '#2d4a4a' },
-  deniedBody: { fontSize: 14, color: '#73796d', textAlign: 'center', lineHeight: 20 },
+  loadingText: { fontFamily: fonts.sans, fontSize: 14 },
+  deniedTitle: { fontFamily: fonts.sansBold, fontSize: 20 },
+  deniedBody: { fontFamily: fonts.sans, fontSize: 14, textAlign: 'center', lineHeight: 20 },
 });
-

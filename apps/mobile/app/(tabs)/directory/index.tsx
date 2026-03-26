@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface Partner {
   slug: string;
@@ -11,6 +12,7 @@ interface Partner {
 }
 
 export default function PartnersDirectory() {
+  const { colors } = useTheme();
   const [partners, setPartners] = useState<Partner[]>([]);
 
   useEffect(() => {
@@ -20,6 +22,8 @@ export default function PartnersDirectory() {
       .eq('is_active', true)
       .then(({ data }) => { if (data) setPartners(data); });
   }, []);
+
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -43,16 +47,16 @@ export default function PartnersDirectory() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 16, paddingBottom: 40 },
-  heading: { fontSize: 22, fontWeight: '800', color: '#2d4a4a', marginBottom: 4 },
-  subheading: { fontSize: 15, color: '#73796d', lineHeight: 22, marginBottom: 16 },
-  card: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 10, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: '#c3c8bb', gap: 14, alignItems: 'center' },
-  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#2d4a4a', justifyContent: 'center', alignItems: 'center' },
-  avatarText: { fontSize: 20, fontWeight: '700', color: '#fcf9f4' },
+  heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
+  subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },
+  card: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radii.md, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: colors.outline, gap: 14, alignItems: 'center' },
+  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: colors.neutral, justifyContent: 'center', alignItems: 'center' },
+  avatarText: { fontSize: 20, fontWeight: '700', color: colors.background },
   body: { flex: 1 },
-  name: { fontSize: 16, fontWeight: '700', color: '#2d4a4a', marginBottom: 4 },
-  desc: { fontSize: 14, color: '#43493e', lineHeight: 20 },
-  empty: { textAlign: 'center', color: '#73796d', marginTop: 40 },
+  name: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },
+  desc: { fontSize: 14, color: colors.neutral, lineHeight: 20 },
+  empty: { textAlign: 'center', color: colors.neutralVariant, marginTop: 40 },
 });

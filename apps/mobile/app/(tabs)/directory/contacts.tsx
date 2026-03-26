@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { supabase } from '@/lib/supabase';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface Contact {
   id: string;
@@ -13,6 +14,7 @@ interface Contact {
 }
 
 export default function ContactsDirectory() {
+  const { colors } = useTheme();
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [deptFilter, setDeptFilter] = useState<string | null>(null);
 
@@ -27,6 +29,8 @@ export default function ContactsDirectory() {
 
   const depts = [...new Set(contacts.map(c => c.department))];
   const filtered = deptFilter ? contacts.filter(c => c.department === deptFilter) : contacts;
+
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -69,21 +73,21 @@ export default function ContactsDirectory() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 16, paddingBottom: 40 },
-  heading: { fontSize: 22, fontWeight: '800', color: '#2d4a4a', marginBottom: 4 },
-  subheading: { fontSize: 15, color: '#73796d', lineHeight: 22, marginBottom: 16 },
+  heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
+  subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },
   chips: { marginBottom: 12 },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: '#c3c8bb', marginRight: 8, backgroundColor: '#fff' },
-  chipActive: { backgroundColor: '#2d4a4a', borderColor: '#2d4a4a' },
-  chipText: { fontSize: 13, color: '#43493e', fontWeight: '500' },
-  chipTextActive: { color: '#fcf9f4' },
-  count: { fontSize: 13, color: '#73796d', marginBottom: 12 },
-  card: { backgroundColor: '#fff', borderRadius: 8, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: '#c3c8bb' },
-  name: { fontSize: 16, fontWeight: '700', color: '#2d4a4a', marginBottom: 2 },
-  role: { fontSize: 14, color: '#43493e', marginBottom: 2 },
-  dept: { fontSize: 12, color: '#8a9a7c', marginBottom: 6 },
-  link: { fontSize: 14, color: '#3d6060', fontWeight: '600', marginBottom: 2 },
-  hours: { fontSize: 12, color: '#73796d', marginTop: 4 },
+  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: colors.outline, marginRight: 8, backgroundColor: colors.surface },
+  chipActive: { backgroundColor: colors.neutral, borderColor: colors.neutral },
+  chipText: { fontSize: 13, color: colors.neutral, fontWeight: '500' },
+  chipTextActive: { color: colors.background },
+  count: { fontSize: 13, color: colors.neutralVariant, marginBottom: 12 },
+  card: { backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
+  name: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 2 },
+  role: { fontSize: 14, color: colors.neutral, marginBottom: 2 },
+  dept: { fontSize: 12, color: colors.neutralVariant, marginBottom: 6 },
+  link: { fontSize: 14, color: colors.primary, fontWeight: '600', marginBottom: 2 },
+  hours: { fontSize: 12, color: colors.neutralVariant, marginTop: 4 },
 });

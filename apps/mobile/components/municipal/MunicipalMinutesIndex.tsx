@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 interface MinutesSummary {
   id: string;
@@ -17,6 +18,7 @@ interface MinutesSummary {
 }
 
 export function MunicipalMinutesIndex() {
+  const { colors } = useTheme();
   const { municipalitySlug, basePath } = useMunicipalRoute();
   const { region } = useRegion(municipalitySlug);
   const [minutes, setMinutes] = useState<MinutesSummary[]>([]);
@@ -41,39 +43,39 @@ export function MunicipalMinutesIndex() {
   });
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: spacing.lg, paddingBottom: 40 }}>
       <TextInput
-        style={styles.search}
+        style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: 15, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
         placeholder="Search minutes..."
         value={search}
         onChangeText={setSearch}
-        placeholderTextColor="#73796d"
+        placeholderTextColor={colors.neutralVariant}
       />
       {types.length > 1 && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filters}>
-          <TouchableOpacity style={[styles.chip, !typeFilter && styles.chipActive]} onPress={() => setTypeFilter(null)}>
-            <Text style={[styles.chipText, !typeFilter && styles.chipTextActive]}>All</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: spacing.md }}>
+          <TouchableOpacity style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: !typeFilter ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: !typeFilter ? colors.heroBar : colors.surface }} onPress={() => setTypeFilter(null)}>
+            <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: !typeFilter ? colors.onHeroBar : colors.neutral }}>{`All`}</Text>
           </TouchableOpacity>
           {types.map(t => (
-            <TouchableOpacity key={t} style={[styles.chip, typeFilter === t && styles.chipActive]} onPress={() => setTypeFilter(typeFilter === t ? null : t)}>
-              <Text style={[styles.chipText, typeFilter === t && styles.chipTextActive]}>{t}</Text>
+            <TouchableOpacity key={t} style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: typeFilter === t ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: typeFilter === t ? colors.heroBar : colors.surface }} onPress={() => setTypeFilter(typeFilter === t ? null : t)}>
+              <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: typeFilter === t ? colors.onHeroBar : colors.neutral }}>{t}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
       )}
-      <Text style={styles.count}>{filtered.length} minutes</Text>
+      <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: spacing.md }}>{filtered.length} minutes</Text>
       {filtered.map(m => (
         <Link key={m.id} href={`${basePath}/minutes/${m.slug}` as any} asChild>
-          <TouchableOpacity style={styles.item}>
-            <View style={styles.itemLeft}>
-              <Text style={styles.itemDate}>
+          <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.outline }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: 2 }}>
                 {new Date(m.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </Text>
-              <Text style={styles.itemTitle}>{m.title}</Text>
-              <Text style={styles.itemType}>{m.meeting_type}</Text>
+              <Text style={{ fontSize: 15, fontFamily: fonts.sansMedium, color: colors.neutral, marginBottom: 2 }}>{m.title}</Text>
+              <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant }}>{m.meeting_type}</Text>
             </View>
-            <View style={[styles.badge, m.status === 'approved' ? styles.badgeApproved : styles.badgePending]}>
-              <Text style={styles.badgeText}>{m.status}</Text>
+            <View style={{ paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, backgroundColor: m.status === 'approved' ? colors.surfaceContainer : colors.goldContainer }}>
+              <Text style={{ fontSize: 11, fontFamily: fonts.sansMedium, color: colors.neutral, textTransform: 'capitalize' }}>{m.status}</Text>
             </View>
           </TouchableOpacity>
         </Link>
@@ -81,24 +83,3 @@ export function MunicipalMinutesIndex() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
-  content: { padding: 16, paddingBottom: 40 },
-  search: { borderWidth: 1, borderColor: '#c3c8bb', borderRadius: 8, padding: 12, fontSize: 15, backgroundColor: '#fff', marginBottom: 12, color: '#43493e' },
-  filters: { marginBottom: 12 },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: '#c3c8bb', marginRight: 8, backgroundColor: '#fff' },
-  chipActive: { backgroundColor: '#2d4a4a', borderColor: '#2d4a4a' },
-  chipText: { fontSize: 13, color: '#43493e', fontWeight: '500' },
-  chipTextActive: { color: '#fcf9f4' },
-  count: { fontSize: 13, color: '#73796d', marginBottom: 12 },
-  item: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff', borderRadius: 8, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: '#c3c8bb' },
-  itemLeft: { flex: 1 },
-  itemDate: { fontSize: 12, color: '#73796d', marginBottom: 2 },
-  itemTitle: { fontSize: 15, fontWeight: '600', color: '#2d4a4a', marginBottom: 2 },
-  itemType: { fontSize: 12, color: '#8a9a7c' },
-  badge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4 },
-  badgeApproved: { backgroundColor: '#d4e4c4' },
-  badgePending: { backgroundColor: '#f5e6c8' },
-  badgeText: { fontSize: 11, fontWeight: '600', color: '#43493e', textTransform: 'capitalize' },
-});

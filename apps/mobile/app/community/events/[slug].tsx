@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
+import { useTheme, spacing, radii } from '@/constants/theme';
 
 export default function EventDetail() {
+  const { colors } = useTheme();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [item, setItem] = useState<any>(null);
 
@@ -14,18 +16,18 @@ export default function EventDetail() {
       .then(({ data }) => { if (data) setItem(data); });
   }, [slug]);
 
-  if (!item) return <View style={styles.container}><Text style={styles.loading}>Loading...</Text></View>;
+  if (!item) return <View style={[styles.container, { backgroundColor: colors.background }]}><Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text></View>;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>{item.title}</Text>
-      <View style={styles.metaBox}>
-        <Text style={styles.metaLabel}>Date</Text>
-        <Text style={styles.metaValue}>{new Date(item.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</Text>
-        {item.time && <><Text style={styles.metaLabel}>Time</Text><Text style={styles.metaValue}>{item.time}</Text></>}
-        {item.location && <><Text style={styles.metaLabel}>Location</Text><Text style={styles.metaValue}>{item.location}</Text></>}
-        {item.cost && <><Text style={styles.metaLabel}>Cost</Text><Text style={styles.metaValue}>{item.cost}</Text></>}
-        {item.recurring && <><Text style={styles.metaLabel}>Recurrence</Text><Text style={styles.metaValue}>{item.recurrence_rule || 'Recurring'}</Text></>}
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
+      <Text style={[styles.title, { color: colors.neutral }]}>{item.title}</Text>
+      <View style={[styles.metaBox, { backgroundColor: colors.surfaceContainer }]}>
+        <Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Date</Text>
+        <Text style={[styles.metaValue, { color: colors.neutral }]}>{new Date(item.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</Text>
+        {item.time && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Time</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.time}</Text></>}
+        {item.location && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Location</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.location}</Text></>}
+        {item.cost && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Cost</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.cost}</Text></>}
+        {item.recurring && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Recurrence</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.recurrence_rule || 'Recurring'}</Text></>}
       </View>
       <MarkdownRenderer content={item.body} />
     </ScrollView>
@@ -33,11 +35,11 @@ export default function EventDetail() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
-  content: { padding: 20, paddingBottom: 60 },
-  loading: { padding: 24, color: '#73796d', textAlign: 'center' },
-  title: { fontSize: 24, fontWeight: '800', color: '#2d4a4a', marginBottom: 16 },
-  metaBox: { backgroundColor: '#f0ede8', borderRadius: 8, padding: 14, marginBottom: 20, gap: 4 },
-  metaLabel: { fontSize: 11, fontWeight: '700', color: '#73796d', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 6 },
-  metaValue: { fontSize: 15, color: '#2d4a4a', fontWeight: '500' },
+  container: { flex: 1 },
+  content: { padding: spacing.xl, paddingBottom: 60 },
+  loading: { padding: spacing.xxl, textAlign: 'center' },
+  title: { fontSize: 24, fontWeight: '800', marginBottom: spacing.lg },
+  metaBox: { borderRadius: radii.sm, padding: 14, marginBottom: spacing.xl, gap: spacing.xs },
+  metaLabel: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 6 },
+  metaValue: { fontSize: 15, fontWeight: '500' },
 });

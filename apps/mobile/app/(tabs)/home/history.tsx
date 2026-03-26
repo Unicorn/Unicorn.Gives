@@ -1,9 +1,14 @@
+import { useMemo } from 'react';
 import { Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { LORE_ORDER, getLoreDoc } from '@/lib/lore';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 export default function HistoryTab() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.intro}>
@@ -29,27 +34,27 @@ export default function HistoryTab() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#1a1a2e' },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.neutral },
   content: { padding: 20, paddingBottom: 40 },
   intro: {
     fontSize: 15,
-    color: '#c3c8bb',
+    color: colors.outline,
     lineHeight: 24,
     marginBottom: 24,
   },
   card: {
-    backgroundColor: '#1b4332',
-    borderRadius: 12,
+    backgroundColor: colors.primary,
+    borderRadius: radii.md,
     padding: 18,
     marginBottom: 14,
     borderLeftWidth: 4,
-    borderLeftColor: '#b45309',
+    borderLeftColor: colors.gold,
   },
   eyebrow: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#74c69d',
+    color: colors.primary,
     letterSpacing: 1,
     textTransform: 'uppercase',
     marginBottom: 6,
@@ -57,9 +62,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#fcf9f4',
+    color: colors.background,
     marginBottom: 10,
-    fontFamily: 'Georgia',
+    fontFamily: fonts.serif,
   },
-  blurb: { fontSize: 14, color: '#d8f3dc', lineHeight: 21 },
+  blurb: { fontSize: 14, color: colors.primaryContainer, lineHeight: 21 },
 });

@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 export default function SignInScreen() {
   const router = useRouter();
   const { user, role, loading } = useAuth();
+  const { colors } = useTheme();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,6 +41,8 @@ export default function SignInScreen() {
     }
   }
 
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.page}>
       <Text style={styles.title}>Sign in</Text>
@@ -63,7 +67,7 @@ export default function SignInScreen() {
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <TouchableOpacity style={styles.button} onPress={onSignIn} disabled={submitting}>
-        <Text style={styles.buttonText}>{submitting ? 'Signing in…' : 'Sign in'}</Text>
+        <Text style={styles.buttonText}>{submitting ? 'Signing in\u2026' : 'Sign in'}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -77,14 +81,13 @@ export default function SignInScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: '#fcf9f4', padding: 20, gap: 12, justifyContent: 'center' },
-  title: { fontSize: 30, fontWeight: '900', color: '#2d4a4a', marginBottom: 10 },
-  input: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#c3c8bb', borderRadius: 12, padding: 12, fontSize: 16 },
-  error: { color: '#b42318', backgroundColor: '#fff', borderRadius: 12, padding: 10, borderWidth: 1, borderColor: '#f5c2c7' },
-  button: { backgroundColor: '#2d4a4a', borderRadius: 12, paddingVertical: 12, alignItems: 'center' },
-  buttonText: { color: '#fcf9f4', fontWeight: '900' },
-  secondaryButton: { borderRadius: 12, paddingVertical: 12, alignItems: 'center', borderWidth: 1, borderColor: '#2d4a4a' },
-  secondaryButtonText: { color: '#2d4a4a', fontWeight: '900' },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  page: { flex: 1, backgroundColor: colors.background, padding: 20, gap: 12, justifyContent: 'center' },
+  title: { fontSize: 30, fontWeight: '900', color: colors.neutral, marginBottom: 10 },
+  input: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.outline, borderRadius: radii.md, padding: 12, fontSize: 16 },
+  error: { color: colors.error, backgroundColor: colors.surface, borderRadius: radii.md, padding: 10, borderWidth: 1, borderColor: colors.errorContainer },
+  button: { backgroundColor: colors.primary, borderRadius: radii.md, paddingVertical: 12, alignItems: 'center' },
+  buttonText: { color: colors.onPrimary, fontWeight: '900' },
+  secondaryButton: { borderRadius: radii.md, paddingVertical: 12, alignItems: 'center', borderWidth: 1, borderColor: colors.primary },
+  secondaryButtonText: { color: colors.primary, fontWeight: '900' },
 });
-

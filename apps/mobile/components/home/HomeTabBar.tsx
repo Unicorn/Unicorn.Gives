@@ -1,6 +1,5 @@
 import { ScrollView, Pressable, Text, StyleSheet, View } from 'react-native';
-
-import { homeColors, homeFonts } from '@/constants/homeTheme';
+import { useTheme, fonts } from '@/constants/theme';
 
 export type HomeTabId = 'discover' | 'stay' | 'history' | 'events' | 'news';
 
@@ -18,8 +17,10 @@ type Props = {
 };
 
 export function HomeTabBar({ active, onChange }: Props) {
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.wrap}>
+    <View style={[styles.wrap, { backgroundColor: colors.heroBar }]}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -34,9 +35,16 @@ export function HomeTabBar({ active, onChange }: Props) {
               accessibilityRole="tab"
               accessibilityState={{ selected }}
               onPress={() => onChange(t.id)}
-              style={[styles.tab, selected && styles.tabSelected]}
+              style={[styles.tab, selected && { backgroundColor: colors.heroBar }]}
             >
-              <Text style={[styles.tabText, selected && styles.tabTextSelected]}>{t.label}</Text>
+              <Text
+                style={[
+                  styles.tabText,
+                  selected && { color: colors.onHeroBar },
+                ]}
+              >
+                {t.label}
+              </Text>
             </Pressable>
           );
         })}
@@ -49,7 +57,6 @@ const styles = StyleSheet.create({
   wrap: {
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.12)',
-    backgroundColor: homeColors.heroBar,
   },
   scrollContent: {
     flexDirection: 'row',
@@ -66,15 +73,9 @@ const styles = StyleSheet.create({
     minHeight: 44,
     justifyContent: 'center',
   },
-  tabSelected: {
-    backgroundColor: homeColors.accent,
-  },
   tabText: {
     fontSize: 14,
-    fontFamily: homeFonts.sansMedium,
+    fontFamily: fonts.sansMedium,
     color: 'rgba(255,255,255,0.75)',
-  },
-  tabTextSelected: {
-    color: homeColors.onSurface,
   },
 });

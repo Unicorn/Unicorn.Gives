@@ -11,6 +11,7 @@ import {
 } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { governmentHref } from '@/lib/governmentHref';
+import { useTheme, type ThemeColors } from '@/constants/theme';
 
 interface Region {
   slug: string;
@@ -30,6 +31,7 @@ export function DrawerMenu() {
   const { user, profile, signOut, isEditor } = useAuth();
   const [regions, setRegions] = useState<Region[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
+  const { colors } = useTheme();
 
   useEffect(() => {
     supabase
@@ -56,19 +58,21 @@ export function DrawerMenu() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* User section */}
-      <View style={styles.userSection}>
+      <View style={[styles.userSection, { backgroundColor: colors.heroBar }]}>
         {user && profile ? (
           <View>
-            <Text style={styles.userName}>
+            <Text style={[styles.userName, { color: colors.onHeroBar }]}>
               {profile.display_name || profile.email}
             </Text>
-            <Text style={styles.userRole}>{profile.role.replace(/_/g, ' ')}</Text>
+            <Text style={[styles.userRole, { color: colors.neutralVariant }]}>
+              {profile.role.replace(/_/g, ' ')}
+            </Text>
           </View>
         ) : (
           <Pressable onPress={() => navigate(routes.auth.signIn())}>
-            <Text style={styles.signInText}>Sign In</Text>
+            <Text style={[styles.signInText, { color: colors.primary }]}>Sign In</Text>
           </Pressable>
         )}
       </View>
@@ -78,24 +82,28 @@ export function DrawerMenu() {
           label="Home"
           active={pathname === '/' || pathname.startsWith('/home')}
           onPress={() => navigate(routes.home())}
+          colors={colors}
         />
         <NavItem
           label="Guides"
           active={pathname.startsWith('/guides')}
           onPress={() => navigate(toHref('/guides'))}
+          colors={colors}
         />
         <NavItem
           label="Government"
           active={pathname.startsWith('/government')}
           onPress={() => navigate(toHref('/government'))}
+          colors={colors}
         />
         <NavItem
           label="Directory"
           active={pathname.startsWith('/directory')}
           onPress={() => navigate(toHref('/directory'))}
+          colors={colors}
         />
 
-        <SectionHeader label="QUICK ACCESS" />
+        <SectionHeader label="QUICK ACCESS" colors={colors} />
         {regions.map((r) => (
           <NavItem
             key={r.slug}
@@ -103,6 +111,7 @@ export function DrawerMenu() {
             sublabel={r.type}
             active={isActiveHref(governmentHref(r))}
             onPress={() => navigate(governmentHref(r))}
+            colors={colors}
           />
         ))}
         {partners.map((p) => (
@@ -111,12 +120,13 @@ export function DrawerMenu() {
             label={p.name}
             active={isActiveHref(routes.partners.index(p.slug))}
             onPress={() => navigate(routes.partners.index(p.slug))}
+            colors={colors}
           />
         ))}
       </ScrollView>
 
       {/* Bottom auth section */}
-      <View style={styles.bottomSection}>
+      <View style={[styles.bottomSection, { borderTopColor: colors.outline }]}>
         {user ? (
           <>
             {isEditor && (
@@ -125,10 +135,11 @@ export function DrawerMenu() {
                 active={isActiveHref(routes.auth.adminDashboard())}
                 onPress={() => navigate(routes.auth.adminDashboard())}
                 accent
+                colors={colors}
               />
             )}
             <Pressable style={styles.signOutButton} onPress={() => { signOut(); navigation.dispatch(DrawerActions.closeDrawer()); }}>
-              <Text style={styles.signOutText}>Sign Out</Text>
+              <Text style={[styles.signOutText, { color: colors.neutralVariant }]}>Sign Out</Text>
             </Pressable>
           </>
         ) : (
@@ -136,6 +147,7 @@ export function DrawerMenu() {
             label="Sign In"
             onPress={() => navigate(routes.auth.signIn())}
             accent
+            colors={colors}
           />
         )}
       </View>
@@ -143,10 +155,10 @@ export function DrawerMenu() {
   );
 }
 
-function SectionHeader({ label }: { label: string }) {
+function SectionHeader({ label, colors }: { label: string; colors: ThemeColors }) {
   return (
     <View style={styles.sectionHeader}>
-      <Text style={styles.sectionHeaderText}>{label}</Text>
+      <Text style={[styles.sectionHeaderText, { color: colors.neutralVariant }]}>{label}</Text>
     </View>
   );
 }
@@ -157,32 +169,35 @@ function NavItem({
   active,
   onPress,
   accent,
+  colors,
 }: {
   label: string;
   sublabel?: string;
   active?: boolean;
   onPress: () => void;
   accent?: boolean;
+  colors: ThemeColors;
 }) {
   return (
     <Pressable
       style={StyleSheet.flatten([
         styles.navItem,
-        active && styles.navItemActive,
+        active && [styles.navItemActive, { backgroundColor: colors.surfaceContainer, borderLeftColor: colors.neutral }],
       ])}
       onPress={onPress}
     >
       <Text
         style={StyleSheet.flatten([
           styles.navItemText,
-          active && styles.navItemTextActive,
-          accent && styles.navItemTextAccent,
+          { color: colors.neutral },
+          active && { fontWeight: '700' },
+          accent && { color: colors.purple, fontWeight: '600' },
         ])}
       >
         {label}
       </Text>
       {sublabel && (
-        <Text style={styles.navItemSublabel}>
+        <Text style={[styles.navItemSublabel, { color: colors.neutralVariant }]}>
           {sublabel}
         </Text>
       )}
@@ -193,28 +208,23 @@ function NavItem({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fcf9f4',
   },
   userSection: {
-    backgroundColor: '#2d4a4a',
     padding: 20,
     paddingTop: 48,
   },
   userName: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#fcf9f4',
   },
   userRole: {
     fontSize: 12,
-    color: '#d4b96e',
     textTransform: 'capitalize',
     marginTop: 2,
   },
   signInText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#d4b96e',
   },
   scroll: {
     flex: 1,
@@ -230,7 +240,6 @@ const styles = StyleSheet.create({
   sectionHeaderText: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#8a9a7c',
     letterSpacing: 1.5,
   },
   navItem: {
@@ -239,32 +248,18 @@ const styles = StyleSheet.create({
     borderLeftWidth: 3,
     borderLeftColor: 'transparent',
   },
-  navItemActive: {
-    backgroundColor: '#f0ede8',
-    borderLeftColor: '#2d4a4a',
-  },
+  navItemActive: {},
   navItemText: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#43493e',
-  },
-  navItemTextActive: {
-    fontWeight: '700',
-    color: '#2d4a4a',
-  },
-  navItemTextAccent: {
-    color: '#9b8ec4',
-    fontWeight: '600',
   },
   navItemSublabel: {
     fontSize: 11,
-    color: '#73796d',
     textTransform: 'capitalize',
     marginTop: 1,
   },
   bottomSection: {
     borderTopWidth: 1,
-    borderTopColor: '#c3c8bb',
     paddingVertical: 8,
   },
   signOutButton: {
@@ -273,7 +268,6 @@ const styles = StyleSheet.create({
   },
   signOutText: {
     fontSize: 15,
-    color: '#73796d',
     fontWeight: '500',
   },
 });

@@ -12,6 +12,8 @@ import {
 import { Link, useRouter, usePathname } from 'expo-router';
 import { useAuth } from '@/lib/auth';
 import { toHref } from '@/lib/navigation';
+import { useTheme, fonts } from '@/constants/theme';
+import { useThemeToggle } from '@/lib/themeToggle';
 
 export interface BreadcrumbItem {
   label: string;
@@ -39,6 +41,8 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const [menuOpen, setMenuOpen] = useState(false);
+  const { colors, isDark } = useTheme();
+  const toggleTheme = useThemeToggle();
 
   function handleAvatarPress() {
     if (!user) {
@@ -63,20 +67,20 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
       : '?';
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.heroBar }]}>
       <View style={[styles.header, isDesktop && styles.headerDesktop]}>
         {/* Left: Logo or Back */}
         {showBack ? (
           <Pressable style={styles.leftZone} onPress={() => router.back()}>
-            <Text style={styles.backArrow}>←</Text>
+            <Text style={[styles.backArrow, { color: colors.onHeroBar }]}>←</Text>
           </Pressable>
         ) : (
-          <Pressable style={styles.leftZone} onPress={() => router.push(toHref('/home'))}>
+          <Pressable style={styles.leftZone} onPress={toggleTheme}>
             <Image
               source={require('../../assets/images/logo.png')}
-              style={styles.logo}
+              style={[styles.logo, isDark && { opacity: 0.8 }]}
               resizeMode="contain"
-              accessibilityLabel="Unicorn Gives home"
+              accessibilityLabel="Toggle light/dark mode"
             />
           </Pressable>
         )}
@@ -95,7 +99,8 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
                       <Text
                         style={[
                           styles.navLink,
-                          active && styles.navLinkActive,
+                          { color: `${colors.onHeroBar}B3` },
+                          active && { color: colors.onHeroBar, fontFamily: fonts.serifBold },
                         ]}
                       >
                         {link.label}
@@ -113,17 +118,21 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
                 const isLast = i === breadcrumb.length - 1;
                 return (
                   <View key={crumb.label} style={styles.breadcrumbItem}>
-                    {i > 0 && <Text style={styles.breadcrumbSep}>{'>'}</Text>}
+                    {i > 0 && (
+                      <Text style={[styles.breadcrumbSep, { color: `${colors.onHeroBar}66` }]}>
+                        {'>'}
+                      </Text>
+                    )}
                     {!isLast && crumb.href ? (
                       <Link href={toHref(crumb.href)} asChild>
                         <Pressable>
-                          <Text style={styles.breadcrumbLink}>
+                          <Text style={[styles.breadcrumbLink, { color: colors.primary }]}>
                             {crumb.label}
                           </Text>
                         </Pressable>
                       </Link>
                     ) : (
-                      <Text style={styles.breadcrumbCurrent}>
+                      <Text style={[styles.breadcrumbCurrent, { color: colors.onHeroBar }]}>
                         {crumb.label}
                       </Text>
                     )}
@@ -146,10 +155,13 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
               style={[
                 styles.avatar,
                 styles.avatarFallback,
-                user && styles.avatarAuth,
+                { backgroundColor: `${colors.onHeroBar}26` },
+                user && { backgroundColor: colors.primary },
               ]}
             >
-              <Text style={styles.avatarText}>{user ? initials : '👤'}</Text>
+              <Text style={[styles.avatarText, { color: colors.onHeroBar }]}>
+                {user ? initials : '👤'}
+              </Text>
             </View>
           )}
         </Pressable>
@@ -159,19 +171,19 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
       {menuOpen && (
         <Modal transparent animationType="fade" onRequestClose={() => setMenuOpen(false)}>
           <Pressable style={styles.overlay} onPress={() => setMenuOpen(false)}>
-            <View style={styles.popover}>
+            <View style={[styles.popover, { backgroundColor: colors.surface }]}>
               <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('profile')}>
-                <Text style={styles.popoverText}>Profile</Text>
+                <Text style={[styles.popoverText, { color: colors.neutral }]}>Profile</Text>
               </Pressable>
               <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('settings')}>
-                <Text style={styles.popoverText}>Settings</Text>
+                <Text style={[styles.popoverText, { color: colors.neutral }]}>Settings</Text>
               </Pressable>
               <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('notifications')}>
-                <Text style={styles.popoverText}>Notifications</Text>
+                <Text style={[styles.popoverText, { color: colors.neutral }]}>Notifications</Text>
               </Pressable>
-              <View style={styles.popoverDivider} />
+              <View style={[styles.popoverDivider, { backgroundColor: colors.outlineVariant }]} />
               <Pressable style={styles.popoverItem} onPress={() => handleMenuAction('logout')}>
-                <Text style={[styles.popoverText, styles.popoverDanger]}>Logout</Text>
+                <Text style={[styles.popoverText, { color: colors.error }]}>Logout</Text>
               </Pressable>
             </View>
           </Pressable>
@@ -183,7 +195,6 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#2d4a4a',
     paddingTop: Platform.OS === 'web' ? 0 : 44,
   },
   header: {
@@ -208,7 +219,6 @@ const styles = StyleSheet.create({
   },
   backArrow: {
     fontSize: 22,
-    color: '#fcf9f4',
     fontWeight: '700',
   },
   logo: {
@@ -233,12 +243,7 @@ const styles = StyleSheet.create({
   },
   navLink: {
     fontSize: 16,
-    color: 'rgba(252, 249, 244, 0.7)',
-    fontFamily: 'Newsreader_400Regular',
-  },
-  navLinkActive: {
-    color: '#fcf9f4',
-    fontFamily: 'Newsreader_700Bold',
+    fontFamily: fonts.serif,
   },
 
   /* Breadcrumb */
@@ -254,16 +259,13 @@ const styles = StyleSheet.create({
   },
   breadcrumbSep: {
     fontSize: 12,
-    color: 'rgba(252, 249, 244, 0.4)',
   },
   breadcrumbLink: {
     fontSize: 13,
-    color: '#d4b96e',
     fontWeight: '600',
   },
   breadcrumbCurrent: {
     fontSize: 13,
-    color: '#fcf9f4',
     fontWeight: '700',
   },
 
@@ -280,16 +282,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   avatarFallback: {
-    backgroundColor: 'rgba(252, 249, 244, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatarAuth: {
-    backgroundColor: '#d4b96e',
-  },
   avatarText: {
     fontSize: 14,
-    color: '#fcf9f4',
     fontWeight: '700',
   },
 
@@ -302,7 +299,6 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   popover: {
-    backgroundColor: '#fff',
     borderRadius: 12,
     paddingVertical: 4,
     minWidth: 180,
@@ -318,15 +314,10 @@ const styles = StyleSheet.create({
   },
   popoverText: {
     fontSize: 15,
-    color: '#2d4a4a',
     fontWeight: '500',
-  },
-  popoverDanger: {
-    color: '#b91c1c',
   },
   popoverDivider: {
     height: 1,
-    backgroundColor: '#e5e7eb',
     marginHorizontal: 12,
   },
 });

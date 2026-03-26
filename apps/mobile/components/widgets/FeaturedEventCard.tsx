@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
-import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 import type { EventItem } from '@/components/events/EventCard';
 
 interface FeaturedEventCardProps {
@@ -16,6 +16,7 @@ interface FeaturedEventCardProps {
 
 export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
   const { width } = useWindowDimensions();
+  const { colors, chips } = useTheme();
   const isTablet = width >= 768;
 
   const d = new Date(event.date + 'T00:00:00');
@@ -24,22 +25,23 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
 
   const cardStyle = StyleSheet.flatten([
     styles.card,
+    { backgroundColor: colors.surface, borderColor: colors.outline },
     isTablet ? styles.cardTablet : undefined,
   ]) as ViewStyle;
 
   return (
-    <Link href={routes.community.events.detail(event.slug)} style={cardStyle}>
+    <Link href={routes.community.events.detail(event.slug)} style={cardStyle as any}>
         {/* Color accent side / top */}
-        <View style={StyleSheet.flatten([styles.accentBlock, isTablet ? styles.accentBlockTablet : undefined])}>
-          <View style={styles.featuredBadge}>
-            <Text style={styles.featuredBadgeText}>Featured</Text>
+        <View style={StyleSheet.flatten([styles.accentBlock, { backgroundColor: colors.primaryContainer }, isTablet ? styles.accentBlockTablet : undefined])}>
+          <View style={[styles.featuredBadge, { backgroundColor: chips.gold.backgroundColor, borderColor: chips.gold.borderColor }]}>
+            <Text style={[styles.featuredBadgeText, { color: chips.gold.color }]}>Featured</Text>
           </View>
           <View style={styles.dateDisplay}>
-            <Text style={styles.dateDisplayMonth}>{monthDay}</Text>
-            <Text style={styles.dateDisplayYear}>{year}</Text>
+            <Text style={[styles.dateDisplayMonth, { color: colors.neutral }]}>{monthDay}</Text>
+            <Text style={[styles.dateDisplayYear, { color: colors.neutralVariant }]}>{year}</Text>
           </View>
           {event.location && (
-            <Text style={styles.locationText} numberOfLines={1}>
+            <Text style={[styles.locationText, { color: colors.neutralVariant }]} numberOfLines={1}>
               {event.location}
             </Text>
           )}
@@ -47,18 +49,18 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
 
         {/* Content side */}
         <View style={StyleSheet.flatten([styles.content, isTablet ? styles.contentTablet : undefined])}>
-          <Text style={StyleSheet.flatten([styles.title, isTablet ? styles.titleTablet : undefined])}>
+          <Text style={StyleSheet.flatten([styles.title, { color: colors.neutral }, isTablet ? styles.titleTablet : undefined])}>
             {event.title}
           </Text>
           {event.description && (
-            <Text style={styles.description} numberOfLines={3}>
+            <Text style={[styles.description, { color: colors.neutralVariant }]} numberOfLines={3}>
               {event.description}
             </Text>
           )}
-          {event.time && <Text style={styles.time}>{event.time}</Text>}
+          {event.time && <Text style={[styles.time, { color: colors.neutralVariant }]}>{event.time}</Text>}
           <View style={styles.ctaRow}>
-            <View style={styles.ctaButton}>
-              <Text style={styles.ctaText}>View Details</Text>
+            <View style={[styles.ctaButton, { backgroundColor: colors.primary }]}>
+              <Text style={[styles.ctaText, { color: colors.onPrimary }]}>View Details</Text>
             </View>
           </View>
         </View>
@@ -68,19 +70,21 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: homeColors.surface,
-    borderRadius: homeRadii.lg,
+    borderRadius: radii.lg,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: homeColors.outline,
+    shadowColor: '#1a1b25',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 24,
+    elevation: 4,
   },
   cardTablet: {
     flexDirection: 'row',
   },
   accentBlock: {
-    backgroundColor: homeColors.primaryContainer,
-    padding: 24,
-    gap: 8,
+    padding: spacing.xxl,
+    gap: spacing.sm,
   },
   accentBlockTablet: {
     width: '40%',
@@ -88,39 +92,35 @@ const styles = StyleSheet.create({
   },
   featuredBadge: {
     alignSelf: 'flex-start',
-    backgroundColor: homeColors.accent,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: homeRadii.pill,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: radii.pill,
+    borderWidth: 1,
   },
   featuredBadgeText: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 10,
-    color: '#211b00',
     letterSpacing: 1.2,
     textTransform: 'uppercase',
   },
   dateDisplay: {
-    marginTop: 8,
+    marginTop: spacing.sm,
   },
   dateDisplayMonth: {
-    fontFamily: homeFonts.serifBold,
+    fontFamily: fonts.serifBold,
     fontSize: 22,
-    color: homeColors.onPrimary,
   },
   dateDisplayYear: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 14,
-    color: 'rgba(255,255,255,0.7)',
   },
   locationText: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 13,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: 4,
+    marginTop: spacing.xs,
   },
   content: {
-    padding: 24,
+    padding: spacing.xxl,
     gap: 10,
     flex: 1,
   },
@@ -128,9 +128,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontFamily: homeFonts.serifItalic,
+    fontFamily: fonts.serifItalic,
     fontSize: 26,
-    color: homeColors.onSurface,
     lineHeight: 32,
   },
   titleTablet: {
@@ -138,29 +137,25 @@ const styles = StyleSheet.create({
     lineHeight: 36,
   },
   description: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 14,
-    color: homeColors.onSurfaceVariant,
     lineHeight: 21,
   },
   time: {
-    fontFamily: homeFonts.sansMedium,
+    fontFamily: fonts.sansMedium,
     fontSize: 13,
-    color: homeColors.muted,
   },
   ctaRow: {
     flexDirection: 'row',
-    marginTop: 4,
+    marginTop: spacing.xs,
   },
   ctaButton: {
-    backgroundColor: homeColors.primary,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.xl,
     paddingVertical: 10,
-    borderRadius: homeRadii.pill,
+    borderRadius: radii.pill,
   },
   ctaText: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 13,
-    color: homeColors.onPrimary,
   },
 });

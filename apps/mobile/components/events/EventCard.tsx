@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 export interface EventItem {
   id: string;
@@ -14,65 +15,38 @@ export interface EventItem {
   tags: string[] | null;
 }
 
-const TAG_COLORS: Record<string, { bg: string; text: string }> = {
-  festival: { bg: '#f5e6c8', text: '#8a6d3b' },
-  meeting: { bg: '#d4e4c4', text: '#3b6b3b' },
-  music: { bg: '#e5d8f0', text: '#6b4a8a' },
-  food: { bg: '#f8d8c4', text: '#8a5a3b' },
-  concert: { bg: '#e5d8f0', text: '#6b4a8a' },
-  conservation: { bg: '#c8e6d8', text: '#2f6b4a' },
-  outdoor: { bg: '#c8e6d8', text: '#2f6b4a' },
-  government: { bg: '#d4dce8', text: '#3b5a8a' },
-  market: { bg: '#f8d8c4', text: '#8a5a3b' },
-  winter: { bg: '#d4e8f0', text: '#3b6b8a' },
-  summer: { bg: '#f5ecc8', text: '#8a7d3b' },
-  free: { bg: '#d4e4c4', text: '#3b6b3b' },
-  'family-friendly': { bg: '#f0e0f0', text: '#7a4a7a' },
-  history: { bg: '#e8dcd0', text: '#6b5a3b' },
-  arts: { bg: '#e5d8f0', text: '#6b4a8a' },
-  auction: { bg: '#f5e6c8', text: '#8a6d3b' },
-  sports: { bg: '#d4dce8', text: '#3b5a8a' },
-  spring: { bg: '#d4e4c4', text: '#3b6b3b' },
-  fall: { bg: '#f5e6c8', text: '#8a6d3b' },
-  seniors: { bg: '#e8dcd0', text: '#6b5a3b' },
-};
-
-const DEFAULT_TAG_COLOR = { bg: '#f0ede8', text: '#43493e' };
-
 function tagLabel(tag: string): string {
   return tag.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
 
 export function EventCard({ event }: { event: EventItem }) {
+  const { colors } = useTheme();
   const d = new Date(event.date + 'T00:00:00');
   const tags = event.tags?.length ? event.tags : [];
 
   return (
     <Link href={routes.community.events.detail(event.slug)} asChild>
-      <Pressable style={styles.item}>
-        <View style={styles.dateBox}>
-          <Text style={styles.dateMonth}>
+      <Pressable style={StyleSheet.flatten([styles.item, { backgroundColor: colors.surface, borderColor: colors.outline }])}>
+        <View style={[styles.dateBox, { borderColor: colors.neutral }]}>
+          <Text style={[styles.dateMonth, { color: colors.neutralVariant }]}>
             {d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
           </Text>
-          <Text style={styles.dateDay}>{d.getDate()}</Text>
+          <Text style={[styles.dateDay, { color: colors.neutral }]}>{d.getDate()}</Text>
         </View>
         <View style={styles.info}>
-          <Text style={styles.title}>{event.title}</Text>
-          {event.time && <Text style={styles.meta}>{event.time}</Text>}
-          {event.location && <Text style={styles.meta}>{event.location}</Text>}
+          <Text style={[styles.title, { color: colors.neutral }]}>{event.title}</Text>
+          {event.time && <Text style={[styles.meta, { color: colors.neutralVariant }]}>{event.time}</Text>}
+          {event.location && <Text style={[styles.meta, { color: colors.neutralVariant }]}>{event.location}</Text>}
           {tags.length > 0 && (
             <View style={styles.tags}>
-              {tags.map(tag => {
-                const color = TAG_COLORS[tag] || DEFAULT_TAG_COLOR;
-                return (
-                  <View key={tag} style={[styles.tag, { backgroundColor: color.bg }]}>
-                    <Text style={[styles.tagText, { color: color.text }]}>{tagLabel(tag)}</Text>
-                  </View>
-                );
-              })}
+              {tags.map(tag => (
+                <View key={tag} style={[styles.tag, { backgroundColor: colors.surfaceContainer }]}>
+                  <Text style={[styles.tagText, { color: colors.neutral }]}>{tagLabel(tag)}</Text>
+                </View>
+              ))}
             </View>
           )}
-          {event.recurring && <Text style={styles.recurring}>Recurring</Text>}
+          {event.recurring && <Text style={[styles.recurring, { color: colors.purple }]}>Recurring</Text>}
         </View>
       </Pressable>
     </Link>
@@ -82,29 +56,32 @@ export function EventCard({ event }: { event: EventItem }) {
 const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8,
+    borderRadius: radii.sm,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
     borderWidth: 1,
-    borderColor: '#c3c8bb',
     gap: 14,
     alignItems: 'flex-start',
+    shadowColor: '#1a1b25',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 3,
   },
   dateBox: {
     width: 50,
     alignItems: 'center',
-    backgroundColor: '#2d4a4a',
     borderRadius: 6,
     paddingVertical: 6,
+    borderWidth: 1.5,
   },
-  dateMonth: { fontSize: 10, fontWeight: '700', color: '#d4b96e', letterSpacing: 1 },
-  dateDay: { fontSize: 22, fontWeight: '800', color: '#fcf9f4' },
+  dateMonth: { fontFamily: fonts.sansBold, fontSize: 10, letterSpacing: 1 },
+  dateDay: { fontFamily: fonts.sansBold, fontSize: 22, fontWeight: '800' },
   info: { flex: 1 },
-  title: { fontSize: 15, fontWeight: '700', color: '#2d4a4a', marginBottom: 2 },
-  meta: { fontSize: 13, color: '#73796d' },
-  tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 6 },
-  tag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10 },
-  tagText: { fontSize: 11, fontWeight: '600' },
-  recurring: { fontSize: 11, color: '#9b8ec4', fontWeight: '600', marginTop: 4 },
+  title: { fontFamily: fonts.sansBold, fontSize: 15, marginBottom: 2 },
+  meta: { fontFamily: fonts.sans, fontSize: 13 },
+  tags: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginTop: 6 },
+  tag: { paddingHorizontal: spacing.sm, paddingVertical: 2, borderRadius: radii.pill },
+  tagText: { fontFamily: fonts.sansMedium, fontSize: 11 },
+  recurring: { fontFamily: fonts.sansMedium, fontSize: 11, marginTop: spacing.xs },
 });

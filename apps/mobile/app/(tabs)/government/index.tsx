@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 
 const DEFAULT_COUNTY = 'clare-county';
 
@@ -15,6 +16,7 @@ interface Region {
 }
 
 export default function GovernmentIndex() {
+  const { colors } = useTheme();
   const [county, setCounty] = useState<Region | null>(null);
   const [municipalities, setMunicipalities] = useState<Region[]>([]);
 
@@ -37,6 +39,8 @@ export default function GovernmentIndex() {
         }
       });
   }, []);
+
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   if (!county) return <View style={styles.page}><Text style={styles.loading}>Loading...</Text></View>;
 
@@ -61,17 +65,17 @@ export default function GovernmentIndex() {
   );
 }
 
-const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: '#fcf9f4' },
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  page: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1, backgroundColor: colors.background },
   content: { paddingBottom: 40 },
-  loading: { padding: 24, color: '#73796d', textAlign: 'center' },
-  header: { padding: 20, backgroundColor: '#2d4a4a' },
-  type: { fontSize: 11, fontWeight: '700', color: '#d4b96e', letterSpacing: 1, marginBottom: 6 },
-  name: { fontSize: 24, fontWeight: '800', color: '#fcf9f4', marginBottom: 6 },
-  description: { fontSize: 15, color: '#c3c8bb', lineHeight: 22 },
-  sectionTitle: { fontSize: 13, fontWeight: '800', color: '#8a9a7c', letterSpacing: 1, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 },
-  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, backgroundColor: '#fff', borderRadius: 10, borderWidth: 1, borderColor: '#c3c8bb' },
-  rowTitle: { fontSize: 16, fontWeight: '700', color: '#2d4a4a' },
-  rowMeta: { fontSize: 13, color: '#73796d', marginTop: 4, textTransform: 'capitalize' },
+  loading: { padding: 24, color: colors.neutralVariant, textAlign: 'center' },
+  header: { padding: 20, backgroundColor: colors.neutral },
+  type: { fontSize: 11, fontWeight: '700', color: colors.gold, letterSpacing: 1, marginBottom: 6 },
+  name: { fontSize: 24, fontWeight: '800', color: colors.background, marginBottom: 6 },
+  description: { fontSize: 15, color: colors.outline, lineHeight: 22 },
+  sectionTitle: { fontSize: 13, fontWeight: '800', color: colors.neutralVariant, letterSpacing: 1, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 },
+  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, backgroundColor: colors.surface, borderRadius: radii.md, borderWidth: 1, borderColor: colors.outline },
+  rowTitle: { fontSize: 16, fontWeight: '700', color: colors.neutral },
+  rowMeta: { fontSize: 13, color: colors.neutralVariant, marginTop: 4, textTransform: 'capitalize' },
 });

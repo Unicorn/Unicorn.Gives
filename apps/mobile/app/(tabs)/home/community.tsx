@@ -1,7 +1,8 @@
+import { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
-import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 import {
   HORN_HERO,
   HORN_MISSION,
@@ -12,6 +13,9 @@ import {
 import { HeroFeature, BentoGrid, QuoteCallout, InfoRowGroup } from '@/components/widgets';
 
 export default function CommunityTab() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Hero: The Horn */}
@@ -87,37 +91,37 @@ export default function CommunityTab() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: homeColors.background },
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 16, paddingBottom: 40, gap: 24 },
   navSection: { gap: 10 },
   navSectionTitle: {
-    fontFamily: homeFonts.serifItalic,
+    fontFamily: fonts.serifItalic,
     fontSize: 24,
-    color: homeColors.primary,
+    color: colors.primary,
     marginBottom: 4,
   },
   navCard: {
     flexDirection: 'row',
-    backgroundColor: homeColors.surface,
-    borderRadius: homeRadii.md,
+    backgroundColor: colors.surface,
+    borderRadius: radii.md,
     padding: 16,
     borderWidth: 1,
-    borderColor: homeColors.outline,
+    borderColor: colors.outline,
     gap: 14,
     alignItems: 'center',
   },
   navCardIcon: { fontSize: 24, width: 36, textAlign: 'center' },
   navCardText: { flex: 1, gap: 2 },
   navCardTitle: {
-    fontFamily: homeFonts.sansBold,
+    fontFamily: fonts.sansBold,
     fontSize: 16,
-    color: homeColors.onSurface,
+    color: colors.neutral,
   },
   navCardDesc: {
-    fontFamily: homeFonts.sans,
+    fontFamily: fonts.sans,
     fontSize: 13,
-    color: homeColors.onSurfaceVariant,
+    color: colors.neutralVariant,
     lineHeight: 19,
   },
 });

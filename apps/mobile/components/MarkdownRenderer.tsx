@@ -1,4 +1,5 @@
-import { Text, StyleSheet, View, Linking } from 'react-native';
+import { Text, View, Linking } from 'react-native';
+import { useTheme, fonts, spacing } from '@/constants/theme';
 
 /**
  * Lightweight markdown-to-RN renderer. Handles headings, paragraphs,
@@ -6,41 +7,42 @@ import { Text, StyleSheet, View, Linking } from 'react-native';
  * our content bodies; we can swap in a full library later.
  */
 export function MarkdownRenderer({ content }: { content: string }) {
+  const { colors } = useTheme();
   if (!content) return null;
   const blocks = content.split('\n\n');
 
   return (
-    <View style={styles.container}>
+    <View style={{ gap: spacing.md }}>
       {blocks.map((block) => (
-        <Block key={stableKey(block)} text={block.trim()} />
+        <Block key={stableKey(block)} text={block.trim()} colors={colors} />
       ))}
     </View>
   );
 }
 
-function Block({ text }: { text: string }) {
+function Block({ text, colors }: { text: string; colors: ReturnType<typeof useTheme>['colors'] }) {
   if (!text) return null;
 
   // Headings
   const h3 = text.match(/^###\s+(.+)/);
-  if (h3) return <Text style={styles.h3}>{renderInline(h3[1])}</Text>;
+  if (h3) return <Text style={{ fontSize: 18, fontFamily: fonts.sansBold, color: colors.primary, marginTop: spacing.xs }}>{renderInline(h3[1], colors)}</Text>;
   const h2 = text.match(/^##\s+(.+)/);
-  if (h2) return <Text style={styles.h2}>{renderInline(h2[1])}</Text>;
+  if (h2) return <Text style={{ fontSize: 22, fontFamily: fonts.sansBold, color: colors.neutral, marginTop: spacing.sm }}>{renderInline(h2[1], colors)}</Text>;
   const h1 = text.match(/^#\s+(.+)/);
-  if (h1) return <Text style={styles.h1}>{renderInline(h1[1])}</Text>;
+  if (h1) return <Text style={{ fontSize: 28, fontFamily: fonts.sansBold, color: colors.neutral, marginTop: spacing.sm }}>{renderInline(h1[1], colors)}</Text>;
 
   // Horizontal rule
-  if (/^---+$/.test(text)) return <View style={styles.hr} />;
+  if (/^---+$/.test(text)) return <View style={{ height: 1, backgroundColor: colors.outline, marginVertical: spacing.sm }} />;
 
   // List (unordered)
   if (text.match(/^[-*]\s/m)) {
     const items = text.split('\n').filter(l => l.match(/^[-*]\s/));
     return (
-      <View style={styles.list}>
+      <View style={{ gap: spacing.xs, paddingLeft: spacing.xs }}>
         {items.map((item) => (
-          <View key={stableKey(item)} style={styles.listItem}>
-            <Text style={styles.bullet}>•</Text>
-            <Text style={styles.listText}>{renderInline(item.replace(/^[-*]\s+/, ''))}</Text>
+          <View key={stableKey(item)} style={{ flexDirection: 'row', gap: spacing.sm, alignItems: 'flex-start' }}>
+            <Text style={{ fontSize: 15, fontFamily: fonts.sans, color: colors.neutralVariant, width: 16 }}>•</Text>
+            <Text style={{ flex: 1, fontSize: 15, fontFamily: fonts.sans, lineHeight: 24, color: colors.neutral }}>{renderInline(item.replace(/^[-*]\s+/, ''), colors)}</Text>
           </View>
         ))}
       </View>
@@ -51,11 +53,11 @@ function Block({ text }: { text: string }) {
   if (text.match(/^\d+\.\s/m)) {
     const items = text.split('\n').filter(l => l.match(/^\d+\.\s/));
     return (
-      <View style={styles.list}>
+      <View style={{ gap: spacing.xs, paddingLeft: spacing.xs }}>
         {items.map((item, i) => (
-          <View key={stableKey(item)} style={styles.listItem}>
-            <Text style={styles.bullet}>{i + 1}.</Text>
-            <Text style={styles.listText}>{renderInline(item.replace(/^\d+\.\s+/, ''))}</Text>
+          <View key={stableKey(item)} style={{ flexDirection: 'row', gap: spacing.sm, alignItems: 'flex-start' }}>
+            <Text style={{ fontSize: 15, fontFamily: fonts.sans, color: colors.neutralVariant, width: 16 }}>{i + 1}.</Text>
+            <Text style={{ flex: 1, fontSize: 15, fontFamily: fonts.sans, lineHeight: 24, color: colors.neutral }}>{renderInline(item.replace(/^\d+\.\s+/, ''), colors)}</Text>
           </View>
         ))}
       </View>
@@ -65,11 +67,11 @@ function Block({ text }: { text: string }) {
   // Paragraph (may contain multiple lines)
   const lines = text.split('\n');
   return (
-    <Text style={styles.paragraph}>
+    <Text style={{ fontSize: 15, fontFamily: fonts.sans, lineHeight: 24, color: colors.neutral }}>
       {lines.map((line) => (
         <Text key={stableKey(line)}>
           {line ? null : null}
-          {renderInline(line)}
+          {renderInline(line, colors)}
         </Text>
       ))}
     </Text>
@@ -85,7 +87,7 @@ function stableKey(input: string): string {
   return `${t.slice(0, 24)}-${hash}`;
 }
 
-function renderInline(text: string): React.ReactNode[] {
+function renderInline(text: string, colors: ReturnType<typeof useTheme>['colors']): React.ReactNode[] {
   const parts: React.ReactNode[] = [];
   let remaining = text;
   let key = 0;
@@ -97,7 +99,7 @@ function renderInline(text: string): React.ReactNode[] {
       if (boldMatch.index > 0) {
         parts.push(<Text key={key++}>{remaining.slice(0, boldMatch.index)}</Text>);
       }
-      parts.push(<Text key={key++} style={styles.bold}>{boldMatch[1]}</Text>);
+      parts.push(<Text key={key++} style={{ fontFamily: fonts.sansBold }}>{boldMatch[1]}</Text>);
       remaining = remaining.slice(boldMatch.index + boldMatch[0].length);
       continue;
     }
@@ -108,7 +110,7 @@ function renderInline(text: string): React.ReactNode[] {
       if (italicMatch.index > 0) {
         parts.push(<Text key={key++}>{remaining.slice(0, italicMatch.index)}</Text>);
       }
-      parts.push(<Text key={key++} style={styles.italic}>{italicMatch[1]}</Text>);
+      parts.push(<Text key={key++} style={{ fontStyle: 'italic' }}>{italicMatch[1]}</Text>);
       remaining = remaining.slice(italicMatch.index + italicMatch[0].length);
       continue;
     }
@@ -124,7 +126,7 @@ function renderInline(text: string): React.ReactNode[] {
       parts.push(
         <Text
           key={key++}
-          style={styles.link}
+          style={{ color: colors.primary, textDecorationLine: 'underline' }}
           onPress={() => Linking.openURL(url)}
         >
           {linkMatch[1]}
@@ -160,19 +162,3 @@ function normalizeMarkdownUrl(rawUrl: string): string {
   if (rawUrl.startsWith('/')) return rawUrl;
   return '/' + rawUrl;
 }
-
-const styles = StyleSheet.create({
-  container: { gap: 12 },
-  h1: { fontSize: 28, fontWeight: '800', color: '#2d4a4a', marginTop: 8 },
-  h2: { fontSize: 22, fontWeight: '700', color: '#2d4a4a', marginTop: 8 },
-  h3: { fontSize: 18, fontWeight: '700', color: '#356565', marginTop: 4 },
-  paragraph: { fontSize: 15, lineHeight: 24, color: '#43493e' },
-  bold: { fontWeight: '700' },
-  italic: { fontStyle: 'italic' },
-  link: { color: '#3d6060', textDecorationLine: 'underline' },
-  hr: { height: 1, backgroundColor: '#c3c8bb', marginVertical: 8 },
-  list: { gap: 4, paddingLeft: 4 },
-  listItem: { flexDirection: 'row', gap: 8, alignItems: 'flex-start' },
-  bullet: { fontSize: 15, color: '#73796d', width: 16 },
-  listText: { flex: 1, fontSize: 15, lineHeight: 24, color: '#43493e' },
-});
