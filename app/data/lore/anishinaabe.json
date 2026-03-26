@@ -1,0 +1,21 @@
+{
+  "title": "Anishinaabe roots on this land",
+  "eyebrow": "Land and treaties",
+  "intro": "Anishinaabeg — including Ojibwe, Odawa, and Potawatomi nations — have deep histories in the Great Lakes region. Clare County sits within ceded territory addressed by treaties between the United States and Indigenous nations. A civic app should tell that truth clearly and point residents toward learning more.",
+  "sections": [
+    {
+      "heading": "Council of Three Fires",
+      "body": "The Three Fires Confederacy links Ojibwe, Odawa, and Potawatomi peoples in a long political and kinship tradition. Each community has its own governance and history; umbrella terms are useful for orientation but should not erase specific nations, bands, and treaties.",
+      "lore_callout": "Use nation-specific names when you can; defer to tribal sources for teaching and policy."
+    },
+    {
+      "heading": "1836 and after",
+      "body": "The Treaty of Washington (1836) is among the agreements through which the United States claimed large areas of Michigan's lower peninsula. Later agreements and federal policy reshaped reserved lands, removal, and recognition. The legal landscape is complex; summaries here are introductions, not legal advice."
+    },
+    {
+      "heading": "Why this belongs in civic tech",
+      "body": "Land acknowledgment on a county platform is not decoration. It frames who has standing, whose treaties still govern resource and co-management questions, and why 'Up North' was never empty wilderness. unicorn.gives aims to be plainspoken, warm, and accurate — the opposite of erasure."
+    }
+  ],
+  "seo_description": "Anishinaabe history, treaties, and land acknowledgment context for Clare County and unicorn.gives."
+}
