@@ -12,6 +12,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { Link } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { routes } from '@/lib/navigation';
 import { governmentHref } from '@/lib/governmentHref';
@@ -47,7 +48,7 @@ import { BentoGrid, type BentoItem } from '@/components/widgets';
 const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
   {
     key: 'gov',
-    icon: '⚖️',
+    icon: 'account-balance',
     title: 'Government & Civic Affairs',
     description: 'Commissioner minutes, public hearings, voter registration, and county records.',
     span: 'full',
@@ -56,7 +57,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
   },
   {
     key: 'permits',
-    icon: '📋',
+    icon: 'description',
     title: 'Permits & Licenses',
     description: 'Building, zoning, and business operation applications.',
     span: 'half',
@@ -65,7 +66,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
   },
   {
     key: 'property',
-    icon: '🏠',
+    icon: 'home',
     title: 'Property & Building',
     description: 'Building permits, pole barns, property splits, and zoning variances.',
     span: 'half',
@@ -74,7 +75,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
   },
   {
     key: 'nature',
-    icon: '🌿',
+    icon: 'eco',
     title: 'Nature & Conservation',
     description: 'Native plants, burn permits, soil erosion, and forestry advice.',
     span: 'half',
@@ -83,7 +84,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
   },
   {
     key: 'safety',
-    icon: '🚨',
+    icon: 'shield',
     title: 'Safety & Emergency',
     description: 'Emergency alerts, non-emergency reporting, and community safety.',
     span: 'half',
@@ -127,12 +128,12 @@ interface Partner {
 }
 
 const CATEGORIES = [
-  { slug: 'property', label: 'Property & Building', icon: '🏠' },
-  { slug: 'taxes', label: 'Taxes & Assessment', icon: '💰' },
-  { slug: 'safety', label: 'Safety & Emergency', icon: '🚨' },
-  { slug: 'nature', label: 'Nature & Conservation', icon: '🌿' },
-  { slug: 'government', label: 'Government & Records', icon: '🏛️' },
-  { slug: 'services', label: 'Community Services', icon: '🤝' },
+  { slug: 'property', label: 'Property & Building', icon: 'home' },
+  { slug: 'taxes', label: 'Taxes & Assessment', icon: 'attach-money' },
+  { slug: 'safety', label: 'Safety & Emergency', icon: 'shield' },
+  { slug: 'nature', label: 'Nature & Conservation', icon: 'eco' },
+  { slug: 'government', label: 'Government & Records', icon: 'account-balance' },
+  { slug: 'services', label: 'Community Services', icon: 'people' },
 ];
 
 function formatEventDay(dateStr: string) {
@@ -269,17 +270,6 @@ export default function HomeScreen() {
                   resizeMode="cover"
                   accessibilityLabel="Northern Michigan landscape"
                 />
-                <View
-                  style={[
-                    styles.heroQuoteCard,
-                    (isTablet || isDesktop) && styles.heroQuoteCardOverlay,
-                  ]}
-                >
-                  <Text style={styles.heroQuoteLabel}>{HOME_HERO_IMPACT_LABEL}</Text>
-                  <Text style={styles.heroQuoteBody} numberOfLines={5}>
-                    {DISCOVER_MISSION_LEDE}
-                  </Text>
-                </View>
               </View>
             </View>
           </View>
@@ -371,7 +361,7 @@ export default function HomeScreen() {
                   isDesktop ? styles.bentoItemHalf : null,
                 ])}
               >
-                <Text style={styles.bentoTileIcon}>◎</Text>
+                <MaterialIcons name="explore" size={24} style={styles.bentoTileIcon} />
                 <Text style={styles.bentoTileHeading}>{HOME_BENTO_SOLVE_TITLE}</Text>
                 <Text style={styles.bentoTileDesc}>{HOME_BENTO_SOLVE_DESC}</Text>
                 <Text style={styles.bentoTileLink}>Open problem solver</Text>
@@ -385,7 +375,7 @@ export default function HomeScreen() {
                   isDesktop ? styles.bentoItemHalf : null,
                 ])}
               >
-                <Text style={styles.bentoTileIcon}>⚖</Text>
+                <MaterialIcons name="account-balance" size={24} style={styles.bentoTileIcon} />
                 <Text style={styles.bentoTileHeading}>{HOME_BENTO_GOV_TITLE}</Text>
                 <Text style={styles.bentoTileDesc}>{HOME_BENTO_GOV_DESC}</Text>
                 <Text style={styles.bentoTileLink}>Browse government</Text>
@@ -398,7 +388,7 @@ export default function HomeScreen() {
                 isDesktop ? styles.bentoItemHalf : null,
               ]}
             >
-              <Text style={styles.bentoEventsIcon}>📅</Text>
+              <MaterialIcons name="event" size={24} style={styles.bentoEventsIcon} />
               <Text style={[styles.bentoTileHeading, styles.bentoEventsHeading]}>
                 {HOME_BENTO_EVENTS_TITLE}
               </Text>
@@ -735,8 +725,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     flexBasis: '45%',
     borderRadius: radii.md,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: colors.outline,
+    backgroundColor: colors.surface,
+    ...shadowCard,
   },
   partnerFeatureCardTablet: {
     width: '48%',
@@ -932,8 +922,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     width: '48%',
     borderRadius: radii.md,
     padding: 16,
-    borderWidth: 1,
-    borderColor: colors.outline,
+    backgroundColor: colors.surface,
+    ...shadowCard,
   },
   cardIcon: { fontSize: 24, marginBottom: 6 },
   cardTitle: {
@@ -945,8 +935,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.md,
     padding: 14,
     marginBottom: 8,
-    borderWidth: 1,
-    borderColor: colors.outline,
+    backgroundColor: colors.surface,
+    ...shadowCard,
   },
   regionType: {
     fontSize: 10,
@@ -964,8 +954,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.sm,
     padding: 12,
     marginBottom: 6,
-    borderWidth: 1,
-    borderColor: colors.outline,
+    backgroundColor: colors.surface,
+    ...shadowCard,
   },
   newsCategory: {
     fontSize: 10,
@@ -986,8 +976,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.sm,
     padding: 10,
     marginBottom: 6,
-    borderWidth: 1,
-    borderColor: colors.outline,
+    backgroundColor: colors.surface,
+    ...shadowCard,
     gap: 12,
     alignItems: 'center',
   },
@@ -1102,6 +1092,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.md,
     padding: 14,
     marginBottom: 10,
+    backgroundColor: colors.surface,
+    ...shadowCard,
   },
   loreTeaserKind: {
     fontSize: 10,

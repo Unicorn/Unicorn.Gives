@@ -28,7 +28,7 @@ export const HORN_QUOTE = {
 export const HORN_PERKS = [
   {
     key: 'access',
-    icon: '🔑',
+    icon: 'vpn-key',
     title: '24/7 Access',
     description: 'Members get key access around the clock, 365 days a year. Your schedule, your space.',
     span: 'full' as const,
@@ -36,7 +36,7 @@ export const HORN_PERKS = [
   },
   {
     key: 'lounge',
-    icon: '🪵',
+    icon: 'weekend',
     title: 'Members-Only Cigar Lounge',
     description: 'An adults-only space for members who want to BYOB and smoke indoors.',
     span: 'half' as const,
@@ -44,7 +44,7 @@ export const HORN_PERKS = [
   },
   {
     key: 'wifi',
-    icon: '📶',
+    icon: 'wifi',
     title: 'Free Wi-Fi & Work Space',
     description: 'Reliable Wi-Fi and a comfortable setup for remote work and projects.',
     span: 'half' as const,
@@ -52,7 +52,7 @@ export const HORN_PERKS = [
   },
   {
     key: 'games',
-    icon: '🎲',
+    icon: 'casino',
     title: 'Game Nights',
     description: 'Board games, video games, and regular game nights for friendly competition.',
     span: 'half' as const,
@@ -60,7 +60,7 @@ export const HORN_PERKS = [
   },
   {
     key: 'latenight',
-    icon: '🌙',
+    icon: 'nightlight-round',
     title: 'Late-Night Safe Hangout',
     description:
       'A safe, welcoming place to be after 2 AM. No bar scene, no pressure — just good company.',
@@ -73,24 +73,24 @@ export const HORN_INFO = {
   title: 'Visit The Horn',
   rows: [
     {
-      icon: '📍',
+      icon: 'place',
       label: 'Location',
       value: 'Historic former Lake George Grocery, Lake George, MI',
     },
     {
-      icon: '🕐',
+      icon: 'schedule',
       label: 'Hours',
       value: 'Public Welcome: 10 AM – 2 PM Daily',
       secondaryValue: 'Member Access: 24/7',
     },
     {
-      icon: '💰',
+      icon: 'card-membership',
       label: 'Membership',
       value: 'Starting at $40/month individual',
       secondaryValue: 'Couple $60/mo · Family $100/mo · VIP add-on $20/mo',
     },
     {
-      icon: '🔗',
+      icon: 'link',
       label: 'Sign Up',
       value: 'horn.love',
       href: 'https://horn.love',

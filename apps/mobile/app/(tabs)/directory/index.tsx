@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 interface Partner {
   slug: string;
@@ -52,7 +52,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   content: { padding: 16, paddingBottom: 40 },
   heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
   subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },
-  card: { flexDirection: 'row', borderRadius: radii.md, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: colors.outline, gap: 14, alignItems: 'center' },
+  card: { flexDirection: 'row', borderRadius: radii.md, padding: 16, marginBottom: 10, backgroundColor: colors.surface, ...shadows.card, gap: 14, alignItems: 'center' },
   avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: colors.neutral, justifyContent: 'center', alignItems: 'center' },
   avatarText: { fontSize: 20, fontWeight: '700', color: colors.background },
   body: { flex: 1 },

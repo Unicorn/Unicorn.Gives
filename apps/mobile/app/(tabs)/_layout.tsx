@@ -1,18 +1,22 @@
 import { Tabs } from 'expo-router';
 import { Text, StyleSheet, useWindowDimensions } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@/constants/theme';
 
-function TabIcon({ label, focused }: { label: string; focused: boolean }) {
-  const icons: Record<string, string> = {
-    Home: '🏠',
-    Guides: '📋',
-    Government: '🏛️',
-    Directory: '📇',
-  };
+const TAB_ICONS: Record<string, keyof typeof MaterialIcons.glyphMap> = {
+  Home: 'home',
+  Guides: 'menu-book',
+  Government: 'account-balance',
+  Directory: 'contacts',
+};
+
+function TabIcon({ label, focused, color }: { label: string; focused: boolean; color: string }) {
   return (
-    <Text style={[styles.icon, focused && styles.iconFocused]}>
-      {icons[label] ?? '•'}
-    </Text>
+    <MaterialIcons
+      name={TAB_ICONS[label] ?? 'circle'}
+      size={24}
+      color={color}
+    />
   );
 }
 
@@ -29,8 +33,12 @@ export default function TabLayout() {
         tabBarInactiveTintColor: colors.neutralVariant,
         tabBarStyle: {
           backgroundColor: colors.surface,
-          borderTopWidth: 1,
-          borderTopColor: colors.outline,
+          borderTopWidth: 0,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.06,
+          shadowRadius: 6,
+          elevation: 8,
           ...(isDesktop ? { display: 'none' as const } : {}),
         },
         tabBarLabelStyle: {
@@ -47,35 +55,32 @@ export default function TabLayout() {
         name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ focused }) => <TabIcon label="Home" focused={focused} />,
+          tabBarIcon: ({ focused, color }) => <TabIcon label="Home" focused={focused} color={color} />,
         }}
       />
       <Tabs.Screen
         name="guides"
         options={{
           title: 'Guides',
-          tabBarIcon: ({ focused }) => <TabIcon label="Guides" focused={focused} />,
+          tabBarIcon: ({ focused, color }) => <TabIcon label="Guides" focused={focused} color={color} />,
         }}
       />
       <Tabs.Screen
         name="government"
         options={{
           title: 'Government',
-          tabBarIcon: ({ focused }) => <TabIcon label="Government" focused={focused} />,
+          tabBarIcon: ({ focused, color }) => <TabIcon label="Government" focused={focused} color={color} />,
         }}
       />
       <Tabs.Screen
         name="directory"
         options={{
           title: 'Directory',
-          tabBarIcon: ({ focused }) => <TabIcon label="Directory" focused={focused} />,
+          tabBarIcon: ({ focused, color }) => <TabIcon label="Directory" focused={focused} color={color} />,
         }}
       />
     </Tabs>
   );
 }
 
-const styles = StyleSheet.create({
-  icon: { fontSize: 22 },
-  iconFocused: { opacity: 1 },
-});
+const styles = StyleSheet.create({});

@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 interface Contact {
   id: string;
@@ -84,7 +84,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   chipText: { fontSize: 13, color: colors.neutral, fontWeight: '500' },
   chipTextActive: { color: colors.background },
   count: { fontSize: 13, color: colors.neutralVariant, marginBottom: 12 },
-  card: { backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
+  card: { backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: 8, ...shadows.card },
   name: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 2 },
   role: { fontSize: 14, color: colors.neutral, marginBottom: 2 },
   dept: { fontSize: 12, color: colors.neutralVariant, marginBottom: 6 },

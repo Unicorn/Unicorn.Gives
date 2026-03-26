@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import {
   HORN_HERO,
   HORN_MISSION,
@@ -57,7 +58,7 @@ export default function CommunityTab() {
         <Text style={styles.navSectionTitle}>Explore Community</Text>
         <Link href={routes.community.events.index()} asChild>
           <TouchableOpacity style={styles.navCard}>
-            <Text style={styles.navCardIcon}>📅</Text>
+            <MaterialIcons name="event" size={24} color={colors.neutralVariant} />
             <View style={styles.navCardText}>
               <Text style={styles.navCardTitle}>Events</Text>
               <Text style={styles.navCardDesc}>Upcoming and past community events</Text>
@@ -67,7 +68,7 @@ export default function CommunityTab() {
 
         <Link href={routes.community.opinions.index()} asChild>
           <TouchableOpacity style={styles.navCard}>
-            <Text style={styles.navCardIcon}>💬</Text>
+            <MaterialIcons name="forum" size={24} color={colors.neutralVariant} />
             <View style={styles.navCardText}>
               <Text style={styles.navCardTitle}>Opinions</Text>
               <Text style={styles.navCardDesc}>
@@ -79,7 +80,7 @@ export default function CommunityTab() {
 
         <Link href={routes.community.calendar()} asChild>
           <TouchableOpacity style={styles.navCard}>
-            <Text style={styles.navCardIcon}>🗓️</Text>
+            <MaterialIcons name="calendar-today" size={24} color={colors.neutralVariant} />
             <View style={styles.navCardText}>
               <Text style={styles.navCardTitle}>Calendar</Text>
               <Text style={styles.navCardDesc}>Calendar view of all community events</Text>
@@ -105,8 +106,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     flexDirection: 'row',
     borderRadius: radii.md,
     padding: 16,
-    borderWidth: 1,
-    borderColor: colors.outline,
+    backgroundColor: colors.surface,
+    ...shadows.card,
     gap: 14,
     alignItems: 'center',
   },

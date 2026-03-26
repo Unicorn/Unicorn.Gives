@@ -3,7 +3,7 @@ import { Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { LORE_ORDER, getLoreDoc } from '@/lib/lore';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 export default function HistoryTab() {
   const { colors } = useTheme();
@@ -48,8 +48,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.md,
     padding: 18,
     marginBottom: 14,
-    borderWidth: 1,
-    borderColor: colors.outline,
+    ...shadows.card,
     borderLeftWidth: 4,
     borderLeftColor: colors.primary,
   },

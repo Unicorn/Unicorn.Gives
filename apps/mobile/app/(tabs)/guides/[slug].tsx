@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'r
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 interface Guide {
   title: string;
@@ -118,11 +118,11 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   verified: { fontSize: 12, color: colors.neutralVariant, marginTop: 4 },
   section: { marginTop: 24 },
   sectionTitle: { fontSize: 18, fontWeight: '700', color: colors.neutral, marginBottom: 12 },
-  contactCard: { borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
+  contactCard: { borderRadius: radii.sm, padding: 14, marginBottom: 8, backgroundColor: colors.surface, ...shadows.card },
   contactName: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 2 },
   contactRole: { fontSize: 14, color: colors.neutral, marginBottom: 6 },
   contactLink: { fontSize: 14, color: colors.primary, fontWeight: '600', marginBottom: 2 },
-  formCard: { borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
+  formCard: { borderRadius: radii.sm, padding: 14, marginBottom: 8, backgroundColor: colors.surface, ...shadows.card },
   formName: { fontSize: 15, fontWeight: '600', color: colors.neutral, marginBottom: 2 },
   formDesc: { fontSize: 13, color: colors.neutralVariant },
 });

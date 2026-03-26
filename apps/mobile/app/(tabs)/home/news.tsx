@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 interface NewsItem {
   id: string;
@@ -53,7 +53,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   container: { flex: 1 },
   content: { padding: 16, paddingBottom: 40 },
   heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 16 },
-  card: { borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
+  card: { borderRadius: radii.sm, padding: 14, marginBottom: 8, backgroundColor: colors.surface, ...shadows.card },
   category: { fontSize: 11, fontWeight: '700', color: colors.neutralVariant, letterSpacing: 0.5, marginBottom: 4 },
   title: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },
   desc: { fontSize: 14, color: colors.neutral, lineHeight: 20, marginBottom: 4 },

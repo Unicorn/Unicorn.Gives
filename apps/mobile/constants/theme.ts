@@ -11,7 +11,7 @@
  * See DESIGN_SYSTEM.md at the project root for full rules.
  */
 
-import { useColorScheme } from 'react-native';
+import { useColorScheme, Platform } from 'react-native';
 import { createContext, useContext } from 'react';
 
 // ---------------------------------------------------------------------------
@@ -50,6 +50,28 @@ export const radii = {
   md: 12,
   lg: 16,
   pill: 999,
+} as const;
+
+// ---------------------------------------------------------------------------
+// Shadows
+// ---------------------------------------------------------------------------
+
+export const shadows = {
+  card: Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.08,
+      shadowRadius: 4,
+    },
+    android: { elevation: 2 },
+    default: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.08,
+      shadowRadius: 4,
+    },
+  }),
 } as const;
 
 // ---------------------------------------------------------------------------

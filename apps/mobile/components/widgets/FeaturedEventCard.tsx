@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import type { EventItem } from '@/components/events/EventCard';
 
 interface FeaturedEventCardProps {
@@ -25,7 +25,7 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
 
   const cardStyle = StyleSheet.flatten([
     styles.card,
-    { borderColor: colors.outline },
+    { backgroundColor: colors.surface },
     isTablet ? styles.cardTablet : undefined,
   ]) as ViewStyle;
 
@@ -72,12 +72,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: radii.lg,
     overflow: 'hidden',
-    borderWidth: 1,
-    shadowColor: '#1a1b25',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.08,
-    shadowRadius: 24,
-    elevation: 4,
+    ...shadows.card,
   },
   cardTablet: {
     flexDirection: 'row',

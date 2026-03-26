@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { useTheme, fonts, radii } from '@/constants/theme';
+import { useTheme, fonts, radii, shadows } from '@/constants/theme';
 
 interface Badge {
   label: string;
@@ -30,7 +30,7 @@ export function EditorialCard({
 
   return (
     <Link href={href} asChild>
-      <Pressable style={StyleSheet.flatten([styles.card, { borderColor: colors.outline }])}>
+      <Pressable style={StyleSheet.flatten([styles.card, { backgroundColor: colors.surface }])}>
         <View style={styles.body}>
           <View style={styles.topRow}>
             {badge && (
@@ -63,13 +63,8 @@ export function EditorialCard({
 const styles = StyleSheet.create({
   card: {
     borderRadius: radii.md,
-    borderWidth: 1,
     overflow: 'hidden',
-    shadowColor: '#1a1b25',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
-    elevation: 3,
+    ...shadows.card,
   },
   body: {
     padding: 16,

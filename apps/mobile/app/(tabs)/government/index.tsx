@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 const DEFAULT_COUNTY = 'clare-county';
 
@@ -75,7 +75,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   name: { fontSize: 24, fontWeight: '800', color: colors.neutral, marginBottom: 6 },
   description: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22 },
   sectionTitle: { fontSize: 13, fontWeight: '800', color: colors.neutralVariant, letterSpacing: 1, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 },
-  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, borderRadius: radii.md, borderWidth: 1, borderColor: colors.outline },
+  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, borderRadius: radii.md, backgroundColor: colors.surface, ...shadows.card },
   rowTitle: { fontSize: 16, fontWeight: '700', color: colors.neutral },
   rowMeta: { fontSize: 13, color: colors.neutralVariant, marginTop: 4, textTransform: 'capitalize' },
 });

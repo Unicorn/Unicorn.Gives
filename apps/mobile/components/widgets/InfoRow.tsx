@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-import { useTheme, fonts, radii } from '@/constants/theme';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useTheme, fonts, radii, shadows } from '@/constants/theme';
 
 interface InfoRowProps {
   icon: string;
@@ -14,7 +15,7 @@ export function InfoRow({ icon, label, value, secondaryValue, href }: InfoRowPro
 
   const content = (
     <View style={styles.row}>
-      <Text style={styles.icon}>{icon}</Text>
+      <MaterialIcons name={icon as any} size={22} color={colors.neutralVariant} style={styles.icon} />
       <View style={styles.textBlock}>
         <Text style={[styles.label, { color: colors.neutral }]}>{label}</Text>
         <Text style={[styles.value, { color: colors.neutralVariant }]}>{value}</Text>
@@ -43,7 +44,7 @@ export function InfoRowGroup({ title, rows }: InfoRowGroupProps) {
   const { colors } = useTheme();
 
   return (
-    <View style={[styles.group, { borderColor: colors.outline }]}>
+    <View style={[styles.group, { backgroundColor: colors.surface }]}>
       {title && <Text style={[styles.groupTitle, { color: colors.primary }]}>{title}</Text>}
       <View style={styles.groupRows}>
         {rows.map((row, i) => (
@@ -86,9 +87,9 @@ const styles = StyleSheet.create({
   },
   group: {
     borderRadius: radii.md,
-    borderWidth: 1,
     padding: 20,
     gap: 4,
+    ...shadows.card,
   },
   groupTitle: {
     fontFamily: fonts.serifItalic,

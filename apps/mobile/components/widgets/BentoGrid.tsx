@@ -7,7 +7,8 @@ import {
 } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { useTheme, fonts, radii } from '@/constants/theme';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useTheme, fonts, radii, shadows } from '@/constants/theme';
 
 export interface BentoItem {
   key: string;
@@ -58,7 +59,7 @@ function BentoCard({ item, isTablet }: { item: BentoItem; isTablet: boolean }) {
         isTablet && isFullWidth && styles.cardFull,
       ]}
     >
-      <Text style={[styles.icon, { color: scheme.icon }]}>{item.icon}</Text>
+      <MaterialIcons name={item.icon as any} size={28} color={scheme.icon} style={styles.icon} />
       <Text style={[styles.cardTitle, { color: scheme.text }]}>{item.title}</Text>
       <Text style={[styles.cardDesc, { color: scheme.desc }]}>{item.description}</Text>
     </View>

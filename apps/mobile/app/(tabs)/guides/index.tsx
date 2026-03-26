@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Link } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { toHref } from '@/lib/navigation';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 interface Guide {
   id: string;
@@ -106,7 +106,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   chipText: { fontSize: 13, color: colors.neutral, fontWeight: '500' },
   chipTextActive: { color: colors.background },
   count: { fontSize: 13, color: colors.neutralVariant, marginBottom: 12 },
-  card: { flexDirection: 'row', borderRadius: radii.md, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: colors.outline, gap: 12, alignItems: 'flex-start' },
+  card: { flexDirection: 'row', borderRadius: radii.md, padding: 16, marginBottom: 10, backgroundColor: colors.surface, ...shadows.card, gap: 12, alignItems: 'flex-start' },
   icon: { fontSize: 28 },
   cardBody: { flex: 1 },
   title: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },
