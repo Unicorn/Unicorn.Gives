@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
-import type { MunicipalSegment } from '@/lib/municipalPaths';
-import { municipalBasePath } from '@/lib/municipalPaths';
+import type { MunicipalSegment } from '@/lib/navigation';
+import { hrefToPathString, routes } from '@/lib/navigation';
 
 const PARAM: Record<MunicipalSegment, 'townshipSlug' | 'citySlug' | 'villageSlug'> = {
   townships: 'townshipSlug',
@@ -18,6 +18,8 @@ export function useMunicipalRoute(segment: MunicipalSegment) {
   const key = PARAM[segment];
   const municipalSlug = params[key] ?? '';
   const countySlug = params.countySlug ?? '';
-  const basePath = municipalBasePath(countySlug, segment, municipalSlug);
+  const basePath = hrefToPathString(
+    routes.county.municipal.base(countySlug, segment, municipalSlug)
+  );
   return { countySlug, municipalSlug, segment, basePath };
 }

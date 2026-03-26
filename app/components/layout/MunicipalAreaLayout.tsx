@@ -3,9 +3,8 @@ import { Stack, useLocalSearchParams, usePathname } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { SubTabs } from '@/components/layout/SubTabs';
-import type { MunicipalSegment } from '@/lib/municipalPaths';
-import { municipalBasePath } from '@/lib/municipalPaths';
-import { regionSubsegments, toHref } from '@/lib/navigation';
+import type { MunicipalSegment } from '@/lib/navigation';
+import { routes, isMunicipalStackDetailPath } from '@/lib/navigation';
 
 type SlugParam = 'townshipSlug' | 'citySlug' | 'villageSlug';
 
@@ -29,19 +28,8 @@ export function MunicipalAreaLayout({ segment }: { segment: MunicipalSegment }) 
   const { region } = useRegion(municipalSlug);
 
   const regionName = region?.name ?? 'Municipality';
-  const basePath = municipalBasePath(countySlug, segment, municipalSlug);
-
-  const tabs = [
-    { label: 'Overview', href: toHref(basePath) },
-    { label: 'Minutes', href: toHref(`${basePath}/${regionSubsegments.minutes}`) },
-    { label: 'Ordinances', href: toHref(`${basePath}/${regionSubsegments.ordinances}`) },
-    { label: 'Contacts', href: toHref(`${basePath}/${regionSubsegments.contacts}`) },
-    { label: 'Elections', href: toHref(`${basePath}/${regionSubsegments.elections}`) },
-    { label: 'Permits', href: toHref(`${basePath}/permits`) },
-    { label: 'Zoning', href: toHref(`${basePath}/zoning`) },
-  ];
-
-  const isDetailPage = /\/(?:minutes|ordinances|contacts|elections)\/[^/]+$/.test(pathname);
+  const tabs = routes.county.municipal.subNavTabs(countySlug, segment, municipalSlug);
+  const isDetailPage = isMunicipalStackDetailPath(pathname);
 
   return (
     <View style={{ flex: 1 }}>

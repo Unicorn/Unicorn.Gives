@@ -13,7 +13,7 @@ import { AppHeader } from '@/components/layout/AppHeader';
 export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = {
-  initialRouteName: 'index',
+  initialRouteName: '(tabs)',
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -57,14 +57,15 @@ function RootLayoutNav() {
             },
           }}
         >
-          <Drawer.Screen name="index" options={{ title: 'Land of the Unicorns' }} />
+          <Drawer.Screen name="(tabs)" options={{ title: 'Land of the Unicorns' }} />
           <Drawer.Screen name="lore" options={{ title: 'Land & Lore', headerShown: false }} />
-          <Drawer.Screen name="help" options={{ title: 'Get Help', headerShown: false }} />
-          <Drawer.Screen name="region" options={{ title: 'Government', headerShown: false }} />
+          <Drawer.Screen name="solve" options={{ title: 'Problem Solver', headerShown: false }} />
+          <Drawer.Screen name="county" options={{ title: 'Government', headerShown: false }} />
           <Drawer.Screen name="news" options={{ title: 'News', headerShown: false }} />
           <Drawer.Screen name="events" options={{ title: 'Events', headerShown: false }} />
           <Drawer.Screen name="partners" options={{ title: 'Partners', headerShown: false }} />
           <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
+          <Drawer.Screen name="(admin)" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
           <Drawer.Screen name="+not-found" options={{ drawerItemStyle: { display: 'none' } }} />
         </Drawer>
       </ThemeProvider>

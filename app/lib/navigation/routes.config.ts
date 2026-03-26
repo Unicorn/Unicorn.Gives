@@ -39,10 +39,10 @@ export const navigationTree: {
       label: 'SOLVE',
       items: [
         {
-          id: 'help',
-          label: 'Get Help',
+          id: 'solve',
+          label: 'Problem Solver',
           pillar: 'SOLVE',
-          getHref: routes.help.index,
+          getHref: routes.solve.index,
         },
       ],
     },

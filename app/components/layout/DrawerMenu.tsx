@@ -9,6 +9,7 @@ import {
   routes,
 } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
+import { governmentHref } from '@/lib/governmentHref';
 
 interface Region {
   slug: string;
@@ -87,9 +88,9 @@ export function DrawerMenu() {
         {/* SOLVE */}
         <SectionHeader label="SOLVE" />
         <NavItem
-          label="Get Help"
-          active={isActiveHref(routes.help.index())}
-          onPress={() => navigate(routes.help.index())}
+          label="Problem Solver"
+          active={isActiveHref(routes.solve.index())}
+          onPress={() => navigate(routes.solve.index())}
         />
 
         {/* GOVERN */}
@@ -99,8 +100,8 @@ export function DrawerMenu() {
             key={r.slug}
             label={r.name}
             sublabel={r.type}
-            active={isActiveHref(routes.region.root(r.slug))}
-            onPress={() => navigate(routes.region.root(r.slug))}
+            active={isActiveHref(governmentHref(r))}
+            onPress={() => navigate(governmentHref(r))}
           />
         ))}
 

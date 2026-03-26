@@ -4,7 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import type { MunicipalSegment } from '@/lib/municipalPaths';
+import type { MunicipalSegment } from '@/lib/navigation';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 
 interface Minutes {

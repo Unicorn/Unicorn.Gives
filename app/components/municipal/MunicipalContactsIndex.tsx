@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
-import type { MunicipalSegment } from '@/lib/municipalPaths';
+import type { MunicipalSegment } from '@/lib/navigation';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 
 interface Contact {

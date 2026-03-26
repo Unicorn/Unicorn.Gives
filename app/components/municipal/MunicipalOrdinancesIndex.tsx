@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
-import type { MunicipalSegment } from '@/lib/municipalPaths';
+import type { MunicipalSegment } from '@/lib/navigation';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 
 interface Ordinance {

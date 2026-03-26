@@ -1,11 +1,9 @@
 import type { Href } from 'expo-router';
 
-/** Cast to Expo Router's typed href union (single choke point for dynamic paths). */
 export function toHref(path: string): Href {
   return path as Href;
 }
 
-/** Normalize `Href` for string comparisons (e.g. SubTabs active state). */
 export function hrefToPathString(href: Href): string {
   if (typeof href === 'string') return href;
   if (typeof href === 'object' && href !== null && 'pathname' in href) {
@@ -14,94 +12,89 @@ export function hrefToPathString(href: Href): string {
   return String(href);
 }
 
-// -----------------------------------------------------------------------------
-// Static path strings — use for pathname checks, prefixes, and building dynamic URLs
-// -----------------------------------------------------------------------------
-
 export const paths = {
   home: '/',
-
   auth: {
     signIn: '/(auth)/sign-in',
     signUp: '/(auth)/sign-up',
     admin: '/(admin)',
   },
-
-  help: { index: '/help' },
+  solve: { index: '/solve' },
   lore: { index: '/lore' },
   news: { index: '/news' },
   events: { index: '/events' },
-
-  region: { base: '/region' },
+  county: { base: '/county' },
   partners: { base: '/partners' },
 } as const;
 
-/** Region stack segments under `/region/[regionSlug]/…` */
-export const regionSubsegments = {
+export type MunicipalSegment = 'townships' | 'cities' | 'villages';
+
+export const municipalSubsegments = {
   minutes: 'minutes',
   ordinances: 'ordinances',
   contacts: 'contacts',
   elections: 'elections',
 } as const;
 
-export type RegionSubsegment =
-  (typeof regionSubsegments)[keyof typeof regionSubsegments];
+export type MunicipalSubsegment =
+  (typeof municipalSubsegments)[keyof typeof municipalSubsegments];
 
-const REGION_DETAIL_RE = new RegExp(
-  `/(?:${Object.values(regionSubsegments).join('|')})/[^/]+$`
+const MUNICIPAL_DETAIL_RE = new RegExp(
+  '/county/[^/]+/(?:townships|cities|villages)/[^/]+/(?:' +
+    Object.values(municipalSubsegments).join('|') +
+    ')/[^/]+$'
 );
 
+export function isMunicipalStackDetailPath(pathname: string): boolean {
+  return MUNICIPAL_DETAIL_RE.test(pathname);
+}
+
 export function isRegionStackDetailPath(pathname: string): boolean {
-  return REGION_DETAIL_RE.test(pathname);
+  return isMunicipalStackDetailPath(pathname);
 }
 
 function enc(s: string): string {
   return encodeURIComponent(s);
 }
 
-// -----------------------------------------------------------------------------
-// Route builders (prefer these over string templates in components)
-// -----------------------------------------------------------------------------
+function municipalEntityBase(
+  countySlug: string,
+  segment: MunicipalSegment,
+  municipalSlug: string
+) {
+  return paths.county.base + '/' + enc(countySlug) + '/' + segment + '/' + enc(municipalSlug);
+}
 
 export const routes = {
   home: () => toHref(paths.home),
-
   auth: {
     signIn: () => toHref(paths.auth.signIn),
     signUp: () => toHref(paths.auth.signUp),
     adminDashboard: () => toHref(paths.auth.admin),
   },
-
-  help: {
-    index: () => toHref(paths.help.index),
-    guide: (slug: string) => toHref(`${paths.help.index}/${enc(slug)}`),
+  solve: {
+    index: () => toHref(paths.solve.index),
+    flow: (flowSlug: string) => toHref(paths.solve.index + '/' + enc(flowSlug)),
     withCategory: (category: string) =>
-      toHref(`${paths.help.index}?category=${enc(category)}`),
+      toHref(paths.solve.index + '?category=' + enc(category)),
   },
-
   lore: {
     index: () => toHref(paths.lore.index),
-    detail: (slug: string) => toHref(`${paths.lore.index}/${enc(slug)}`),
+    detail: (slug: string) => toHref(paths.lore.index + '/' + enc(slug)),
   },
-
   news: {
     index: () => toHref(paths.news.index),
-    detail: (slug: string) => toHref(`${paths.news.index}/${enc(slug)}`),
+    detail: (slug: string) => toHref(paths.news.index + '/' + enc(slug)),
   },
-
   events: {
     index: () => toHref(paths.events.index),
-    detail: (slug: string) => toHref(`${paths.events.index}/${enc(slug)}`),
+    detail: (slug: string) => toHref(paths.events.index + '/' + enc(slug)),
   },
-
   partners: {
     index: (partnerSlug: string) =>
-      toHref(`${paths.partners.base}/${enc(partnerSlug)}`),
+      toHref(paths.partners.base + '/' + enc(partnerSlug)),
     tab: (partnerSlug: string, tabSlug: string) =>
-      toHref(`${paths.partners.base}/${enc(partnerSlug)}/${enc(tabSlug)}`),
-    /**
-     * Partner landing uses `/partners/:slug`; additional tabs use `/partners/:slug/:tab`.
-     */
+      toHref(paths.partners.base + '/' + enc(partnerSlug) + '/' + enc(tabSlug)),
     tabItems: (
       partnerSlug: string,
       tabs: { label: string; slug: string; order: number }[]
@@ -116,90 +109,167 @@ export const routes = {
       }));
     },
   },
-
-  region: {
-    root: (regionSlug: string) =>
-      toHref(`${paths.region.base}/${enc(regionSlug)}`),
-
-    minutes: {
-      index: (regionSlug: string) =>
-        toHref(
-          `${paths.region.base}/${enc(regionSlug)}/${regionSubsegments.minutes}`
-        ),
-      detail: (regionSlug: string, minuteSlug: string) =>
-        toHref(
-          `${paths.region.base}/${enc(regionSlug)}/${regionSubsegments.minutes}/${enc(minuteSlug)}`
-        ),
+  county: {
+    root: (countySlug: string) => toHref(paths.county.base + '/' + enc(countySlug)),
+    news: (countySlug: string) =>
+      toHref(paths.county.base + '/' + enc(countySlug) + '/news'),
+    events: (countySlug: string) =>
+      toHref(paths.county.base + '/' + enc(countySlug) + '/events'),
+    department: (countySlug: string, deptSlug: string) =>
+      toHref(paths.county.base + '/' + enc(countySlug) + '/departments/' + enc(deptSlug)),
+    townships: {
+      index: (countySlug: string) =>
+        toHref(paths.county.base + '/' + enc(countySlug) + '/townships'),
+      municipalRoot: (countySlug: string, townshipSlug: string) =>
+        toHref(municipalEntityBase(countySlug, 'townships', townshipSlug)),
     },
-
-    ordinances: {
-      index: (regionSlug: string) =>
-        toHref(
-          `${paths.region.base}/${enc(regionSlug)}/${regionSubsegments.ordinances}`
-        ),
-      detail: (regionSlug: string, ordinanceSlug: string) =>
-        toHref(
-          `${paths.region.base}/${enc(regionSlug)}/${regionSubsegments.ordinances}/${enc(ordinanceSlug)}`
-        ),
+    cities: {
+      index: (countySlug: string) =>
+        toHref(paths.county.base + '/' + enc(countySlug) + '/cities'),
+      municipalRoot: (countySlug: string, citySlug: string) =>
+        toHref(municipalEntityBase(countySlug, 'cities', citySlug)),
     },
-
-    contacts: {
-      index: (regionSlug: string) =>
-        toHref(
-          `${paths.region.base}/${enc(regionSlug)}/${regionSubsegments.contacts}`
-        ),
-      detail: (regionSlug: string, contactSlug: string) =>
-        toHref(
-          `${paths.region.base}/${enc(regionSlug)}/${regionSubsegments.contacts}/${enc(contactSlug)}`
-        ),
+    villages: {
+      index: (countySlug: string) =>
+        toHref(paths.county.base + '/' + enc(countySlug) + '/villages'),
+      municipalRoot: (countySlug: string, villageSlug: string) =>
+        toHref(municipalEntityBase(countySlug, 'villages', villageSlug)),
     },
-
-    elections: {
-      index: (regionSlug: string) =>
+    municipal: {
+      base: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+        toHref(municipalEntityBase(countySlug, segment, municipalSlug)),
+      minutes: {
+        index: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+          toHref(
+            municipalEntityBase(countySlug, segment, municipalSlug) +
+              '/' +
+              municipalSubsegments.minutes
+          ),
+        detail: (
+          countySlug: string,
+          segment: MunicipalSegment,
+          municipalSlug: string,
+          minuteSlug: string
+        ) =>
+          toHref(
+            municipalEntityBase(countySlug, segment, municipalSlug) +
+              '/' +
+              municipalSubsegments.minutes +
+              '/' +
+              enc(minuteSlug)
+          ),
+      },
+      ordinances: {
+        index: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+          toHref(
+            municipalEntityBase(countySlug, segment, municipalSlug) +
+              '/' +
+              municipalSubsegments.ordinances
+          ),
+        detail: (
+          countySlug: string,
+          segment: MunicipalSegment,
+          municipalSlug: string,
+          ordinanceSlug: string
+        ) =>
+          toHref(
+            municipalEntityBase(countySlug, segment, municipalSlug) +
+              '/' +
+              municipalSubsegments.ordinances +
+              '/' +
+              enc(ordinanceSlug)
+          ),
+      },
+      contacts: {
+        index: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+          toHref(
+            municipalEntityBase(countySlug, segment, municipalSlug) +
+              '/' +
+              municipalSubsegments.contacts
+          ),
+        detail: (
+          countySlug: string,
+          segment: MunicipalSegment,
+          municipalSlug: string,
+          contactSlug: string
+        ) =>
+          toHref(
+            municipalEntityBase(countySlug, segment, municipalSlug) +
+              '/' +
+              municipalSubsegments.contacts +
+              '/' +
+              enc(contactSlug)
+          ),
+      },
+      elections: {
+        index: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+          toHref(
+            municipalEntityBase(countySlug, segment, municipalSlug) +
+              '/' +
+              municipalSubsegments.elections
+          ),
+        detail: (
+          countySlug: string,
+          segment: MunicipalSegment,
+          municipalSlug: string,
+          electionSlug: string
+        ) =>
+          toHref(
+            municipalEntityBase(countySlug, segment, municipalSlug) +
+              '/' +
+              municipalSubsegments.elections +
+              '/' +
+              enc(electionSlug)
+          ),
+      },
+      permits: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/permits'),
+      zoning: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/zoning'),
+      assessor: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/assessor'),
+      fire: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/fire'),
+      sad: (countySlug: string, segment: MunicipalSegment, municipalSlug: string) =>
+        toHref(municipalEntityBase(countySlug, segment, municipalSlug) + '/sad'),
+      community: (
+        countySlug: string,
+        segment: MunicipalSegment,
+        municipalSlug: string,
+        communitySlug: string
+      ) =>
         toHref(
-          `${paths.region.base}/${enc(regionSlug)}/${regionSubsegments.elections}`
+          municipalEntityBase(countySlug, segment, municipalSlug) +
+            '/communities/' +
+            enc(communitySlug)
         ),
-      detail: (regionSlug: string, electionSlug: string) =>
-        toHref(
-          `${paths.region.base}/${enc(regionSlug)}/${regionSubsegments.elections}/${enc(electionSlug)}`
-        ),
-    },
-
-    /** Sub-navigation tabs for the region stack (Overview, Minutes, …). */
-    subNavTabs: (regionSlug: string): { label: string; href: Href }[] => {
-      const r = enc(regionSlug);
-      const base = `${paths.region.base}/${r}`;
-      return [
-        { label: 'Overview', href: toHref(base) },
-        {
-          label: 'Minutes',
-          href: toHref(`${base}/${regionSubsegments.minutes}`),
-        },
-        {
-          label: 'Ordinances',
-          href: toHref(`${base}/${regionSubsegments.ordinances}`),
-        },
-        {
-          label: 'Contacts',
-          href: toHref(`${base}/${regionSubsegments.contacts}`),
-        },
-        {
-          label: 'Elections',
-          href: toHref(`${base}/${regionSubsegments.elections}`),
-        },
-      ];
+      subNavTabs: (
+        countySlug: string,
+        segment: MunicipalSegment,
+        municipalSlug: string
+      ): { label: string; href: Href }[] => {
+        const base = municipalEntityBase(countySlug, segment, municipalSlug);
+        return [
+          { label: 'Overview', href: toHref(base) },
+          { label: 'Minutes', href: toHref(base + '/' + municipalSubsegments.minutes) },
+          { label: 'Ordinances', href: toHref(base + '/' + municipalSubsegments.ordinances) },
+          { label: 'Contacts', href: toHref(base + '/' + municipalSubsegments.contacts) },
+          { label: 'Elections', href: toHref(base + '/' + municipalSubsegments.elections) },
+          { label: 'Permits', href: toHref(base + '/permits') },
+          { label: 'Zoning', href: toHref(base + '/zoning') },
+        ];
+      },
     },
   },
 } as const;
-
-// -----------------------------------------------------------------------------
-// Active-state helpers (drawer, tabs)
-// -----------------------------------------------------------------------------
 
 export function isPathActive(pathname: string, href: Href): boolean {
   const target = href as string;
   if (target === paths.home) {
     return pathname === paths.home;
   }
-  return pathname === target || pathname.startsWith(`${target}/`);
+  return pathname === target || pathname.startsWith(target + '/');
 }
+
+export const regionSubsegments = municipalSubsegments;
+export type RegionSubsegment = MunicipalSubsegment;

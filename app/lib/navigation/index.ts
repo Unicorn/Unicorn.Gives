@@ -4,11 +4,13 @@ export {
   paths,
   routes,
   regionSubsegments,
+  municipalSubsegments,
   isRegionStackDetailPath,
+  isMunicipalStackDetailPath,
   isPathActive,
 } from './paths';
 
-export type { RegionSubsegment } from './paths';
+export type { RegionSubsegment, MunicipalSubsegment, MunicipalSegment } from './paths';
 
 export {
   navigationTree,
