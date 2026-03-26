@@ -1,52 +1,123 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
+import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import {
+  HORN_HERO,
+  HORN_MISSION,
+  HORN_PERKS,
+  HORN_INFO,
+  HORN_QUOTE,
+} from '@/constants/hornContent';
+import { HeroFeature, BentoGrid, QuoteCallout, InfoRowGroup } from '@/components/widgets';
 
 export default function CommunityTab() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.heading}>Community Hub</Text>
-      <Text style={styles.description}>
-        Connect with your neighbors. Find events, share opinions, and stay in the loop.
-      </Text>
+      {/* Hero: The Horn */}
+      <HeroFeature
+        eyebrow={HORN_HERO.eyebrow}
+        title={HORN_HERO.title}
+        description={HORN_HERO.description}
+        ctaLabel={HORN_HERO.ctaLabel}
+        ctaHref={routes.partners.index('the-horn')}
+        secondaryCta={{
+          label: HORN_HERO.secondaryCtaLabel,
+          href: routes.partners.index('the-horn'),
+        }}
+      />
 
-      <Link href={routes.community.events.index()} asChild>
-        <TouchableOpacity style={styles.card}>
-          <Text style={styles.cardTitle}>Events</Text>
-          <Text style={styles.cardDesc}>Upcoming and past community events</Text>
-        </TouchableOpacity>
-      </Link>
+      {/* Mission Quote */}
+      <QuoteCallout quote={HORN_MISSION} variant="centered" />
 
-      <Link href={routes.community.opinions.index()} asChild>
-        <TouchableOpacity style={styles.card}>
-          <Text style={styles.cardTitle}>Opinions</Text>
-          <Text style={styles.cardDesc}>Community posts, discussions, and perspectives</Text>
-        </TouchableOpacity>
-      </Link>
+      {/* Member Perks Bento */}
+      <BentoGrid
+        eyebrow="Member Benefits"
+        title="Member Perks"
+        subtitle="Designed for the modern Northern resident — balancing professional needs with the ultimate comfort."
+        items={HORN_PERKS}
+      />
 
-      <Link href={routes.community.calendar()} asChild>
-        <TouchableOpacity style={styles.card}>
-          <Text style={styles.cardTitle}>Calendar</Text>
-          <Text style={styles.cardDesc}>Calendar view of all community events</Text>
-        </TouchableOpacity>
-      </Link>
+      {/* Visit Info */}
+      <InfoRowGroup title={HORN_INFO.title} rows={[...HORN_INFO.rows]} />
+
+      {/* Decorative quote */}
+      <QuoteCallout
+        quote={HORN_QUOTE.quote}
+        attribution={HORN_QUOTE.attribution}
+        variant="aside"
+      />
+
+      {/* Existing navigation links */}
+      <View style={styles.navSection}>
+        <Text style={styles.navSectionTitle}>Explore Community</Text>
+        <Link href={routes.community.events.index()} asChild>
+          <TouchableOpacity style={styles.navCard}>
+            <Text style={styles.navCardIcon}>📅</Text>
+            <View style={styles.navCardText}>
+              <Text style={styles.navCardTitle}>Events</Text>
+              <Text style={styles.navCardDesc}>Upcoming and past community events</Text>
+            </View>
+          </TouchableOpacity>
+        </Link>
+
+        <Link href={routes.community.opinions.index()} asChild>
+          <TouchableOpacity style={styles.navCard}>
+            <Text style={styles.navCardIcon}>💬</Text>
+            <View style={styles.navCardText}>
+              <Text style={styles.navCardTitle}>Opinions</Text>
+              <Text style={styles.navCardDesc}>
+                Community posts, discussions, and perspectives
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </Link>
+
+        <Link href={routes.community.calendar()} asChild>
+          <TouchableOpacity style={styles.navCard}>
+            <Text style={styles.navCardIcon}>🗓️</Text>
+            <View style={styles.navCardText}>
+              <Text style={styles.navCardTitle}>Calendar</Text>
+              <Text style={styles.navCardDesc}>Calendar view of all community events</Text>
+            </View>
+          </TouchableOpacity>
+        </Link>
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fcf9f4' },
-  content: { padding: 20, paddingBottom: 40 },
-  heading: { fontSize: 24, fontWeight: '800', color: '#2d4a4a', marginBottom: 8 },
-  description: { fontSize: 15, color: '#73796d', lineHeight: 22, marginBottom: 24 },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#c3c8bb',
+  container: { flex: 1, backgroundColor: homeColors.background },
+  content: { padding: 16, paddingBottom: 40, gap: 24 },
+  navSection: { gap: 10 },
+  navSectionTitle: {
+    fontFamily: homeFonts.serifItalic,
+    fontSize: 24,
+    color: homeColors.primary,
+    marginBottom: 4,
   },
-  cardTitle: { fontSize: 18, fontWeight: '700', color: '#2d4a4a', marginBottom: 4 },
-  cardDesc: { fontSize: 14, color: '#73796d', lineHeight: 20 },
+  navCard: {
+    flexDirection: 'row',
+    backgroundColor: homeColors.surface,
+    borderRadius: homeRadii.md,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: homeColors.outline,
+    gap: 14,
+    alignItems: 'center',
+  },
+  navCardIcon: { fontSize: 24, width: 36, textAlign: 'center' },
+  navCardText: { flex: 1, gap: 2 },
+  navCardTitle: {
+    fontFamily: homeFonts.sansBold,
+    fontSize: 16,
+    color: homeColors.onSurface,
+  },
+  navCardDesc: {
+    fontFamily: homeFonts.sans,
+    fontSize: 13,
+    color: homeColors.onSurfaceVariant,
+    lineHeight: 19,
+  },
 });

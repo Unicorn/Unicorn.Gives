@@ -41,6 +41,56 @@ import {
   HOME_HERO_IMPACT_LABEL,
 } from '@/constants/homeDiscoverHistory';
 import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
+import { toHref } from '@/lib/navigation/paths';
+import { BentoGrid, type BentoItem } from '@/components/widgets';
+
+const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
+  {
+    key: 'gov',
+    icon: '⚖️',
+    title: 'Government & Civic Affairs',
+    description: 'Commissioner minutes, public hearings, voter registration, and county records.',
+    span: 'full',
+    colorScheme: 'surface',
+    href: routes.government.county('clare-county'),
+  },
+  {
+    key: 'permits',
+    icon: '📋',
+    title: 'Permits & Licenses',
+    description: 'Building, zoning, and business operation applications.',
+    span: 'half',
+    colorScheme: 'secondary',
+    href: toHref('/guides'),
+  },
+  {
+    key: 'property',
+    icon: '🏠',
+    title: 'Property & Building',
+    description: 'Building permits, pole barns, property splits, and zoning variances.',
+    span: 'half',
+    colorScheme: 'muted',
+    href: toHref('/guides'),
+  },
+  {
+    key: 'nature',
+    icon: '🌿',
+    title: 'Nature & Conservation',
+    description: 'Native plants, burn permits, soil erosion, and forestry advice.',
+    span: 'half',
+    colorScheme: 'primary',
+    href: toHref('/guides'),
+  },
+  {
+    key: 'safety',
+    icon: '🚨',
+    title: 'Safety & Emergency',
+    description: 'Emergency alerts, non-emergency reporting, and community safety.',
+    span: 'half',
+    colorScheme: 'tertiary',
+    href: toHref('/guides'),
+  },
+];
 
 const FALLBACK_COUNTY_SLUG = 'clare-county';
 
@@ -396,6 +446,16 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </Link>
             </View>
+          </View>
+
+          {/* Service Directory Bento */}
+          <View style={styles.serviceDirectorySection}>
+            <BentoGrid
+              eyebrow="Official Resources"
+              title="Service Directories"
+              subtitle="Access essential county services, township ordinances, and community resources in one central place."
+              items={SERVICE_DIRECTORY_ITEMS}
+            />
           </View>
 
           <View style={styles.newsletterBand}>
@@ -844,6 +904,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   bentoNewsFooter: { alignSelf: 'flex-start' },
+  serviceDirectorySection: {
+    marginTop: 24,
+  },
   newsletterBand: {
     marginTop: 20,
     backgroundColor: homeColors.primaryContainer,
