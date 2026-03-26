@@ -2,8 +2,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   useWindowDimensions,
+  type ViewStyle,
 } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
@@ -81,28 +81,23 @@ function BentoCard({ item, isTablet }: { item: BentoItem; isTablet: boolean }) {
     </View>
   );
 
+  const wrapperStyle = StyleSheet.flatten([
+    isTablet && !isFullWidth ? styles.cardHalfWrapper : undefined,
+    isTablet && isFullWidth ? styles.cardFullWrapper : undefined,
+  ]) as ViewStyle;
+
   if (item.href) {
     return (
-      <Link href={item.href} asChild>
-        <TouchableOpacity
-          style={[
-            isTablet && !isFullWidth && styles.cardHalfWrapper,
-            isTablet && isFullWidth && styles.cardFullWrapper,
-          ]}
-        >
+      <View style={wrapperStyle}>
+        <Link href={item.href} style={{ textDecorationLine: 'none' }}>
           {card}
-        </TouchableOpacity>
-      </Link>
+        </Link>
+      </View>
     );
   }
 
   return (
-    <View
-      style={[
-        isTablet && !isFullWidth && styles.cardHalfWrapper,
-        isTablet && isFullWidth && styles.cardFullWrapper,
-      ]}
-    >
+    <View style={wrapperStyle}>
       {card}
     </View>
   );

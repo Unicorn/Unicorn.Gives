@@ -152,7 +152,7 @@ export function EventsList({ regionId }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: homeColors.background },
   content: { padding: 16, paddingBottom: 40, gap: 20 },
-  section: { gap: 8 },
+  section: { gap: 8, zIndex: 1, position: 'relative' },
   sectionTitle: {
     fontFamily: homeFonts.serifItalic,
     fontSize: 26,

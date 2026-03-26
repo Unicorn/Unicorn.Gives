@@ -2,8 +2,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   useWindowDimensions,
+  type ViewStyle,
 } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
@@ -22,14 +22,15 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
   const monthDay = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
   const year = d.getFullYear();
 
+  const cardStyle = StyleSheet.flatten([
+    styles.card,
+    isTablet ? styles.cardTablet : undefined,
+  ]) as ViewStyle;
+
   return (
-    <Link href={routes.community.events.detail(event.slug)} asChild>
-      <TouchableOpacity
-        style={[styles.card, isTablet && styles.cardTablet]}
-        activeOpacity={0.85}
-      >
+    <Link href={routes.community.events.detail(event.slug)} style={cardStyle}>
         {/* Color accent side / top */}
-        <View style={[styles.accentBlock, isTablet && styles.accentBlockTablet]}>
+        <View style={StyleSheet.flatten([styles.accentBlock, isTablet ? styles.accentBlockTablet : undefined])}>
           <View style={styles.featuredBadge}>
             <Text style={styles.featuredBadgeText}>Featured</Text>
           </View>
@@ -45,8 +46,8 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
         </View>
 
         {/* Content side */}
-        <View style={[styles.content, isTablet && styles.contentTablet]}>
-          <Text style={[styles.title, isTablet && styles.titleTablet]}>
+        <View style={StyleSheet.flatten([styles.content, isTablet ? styles.contentTablet : undefined])}>
+          <Text style={StyleSheet.flatten([styles.title, isTablet ? styles.titleTablet : undefined])}>
             {event.title}
           </Text>
           {event.description && (
@@ -61,7 +62,6 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
             </View>
           </View>
         </View>
-      </TouchableOpacity>
     </Link>
   );
 }

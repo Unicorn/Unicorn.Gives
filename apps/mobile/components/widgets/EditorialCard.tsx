@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
 import { homeColors, homeFonts, homeRadii } from '@/constants/homeTheme';
@@ -28,7 +28,7 @@ export function EditorialCard({
 }: EditorialCardProps) {
   return (
     <Link href={href} asChild>
-      <TouchableOpacity style={styles.card}>
+      <Pressable style={styles.card}>
         <View style={styles.body}>
           <View style={styles.topRow}>
             {badge && (
@@ -53,7 +53,7 @@ export function EditorialCard({
           )}
           {meta && <Text style={styles.meta}>{meta}</Text>}
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </Link>
   );
 }

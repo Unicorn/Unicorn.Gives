@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 
@@ -49,7 +49,7 @@ export function EventCard({ event }: { event: EventItem }) {
 
   return (
     <Link href={routes.community.events.detail(event.slug)} asChild>
-      <TouchableOpacity style={styles.item}>
+      <Pressable style={styles.item}>
         <View style={styles.dateBox}>
           <Text style={styles.dateMonth}>
             {d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
@@ -74,7 +74,7 @@ export function EventCard({ event }: { event: EventItem }) {
           )}
           {event.recurring && <Text style={styles.recurring}>Recurring</Text>}
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </Link>
   );
 }
