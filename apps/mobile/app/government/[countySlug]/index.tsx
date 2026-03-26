@@ -52,9 +52,9 @@ export default function CountyOverview() {
     <View style={{ flex: 1 }}>
       <AppHeader />
       <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
-        <View style={[styles.header, { backgroundColor: colors.neutral }]}>
-          <Text style={[styles.type, { color: colors.gold }]}>{region.type.toUpperCase()}</Text>
-          {region.description && <Text style={[styles.description, { color: colors.outline }]}>{region.description}</Text>}
+        <View style={styles.header}>
+          <Text style={[styles.type, { color: colors.neutralVariant }]}>{region.type.toUpperCase()}</Text>
+          {region.description && <Text style={[styles.description, { color: colors.neutralVariant }]}>{region.description}</Text>}
         </View>
 
         <Text style={[styles.sectionTitle, { color: colors.neutralVariant }]}>Municipalities</Text>

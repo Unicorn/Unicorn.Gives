@@ -140,7 +140,7 @@ const lightColors = {
   surface:              '#ffffff',
   surfaceContainer:     gray[50],
   surfaceContainerHigh: gray[100],
-  background:           '#fafaf9',
+  background:           gray[100],
 
   // Utility
   outline:              gray[200],
@@ -180,7 +180,7 @@ const darkColors = {
   surface:              gray[900],
   surfaceContainer:     gray[800],
   surfaceContainerHigh: gray[700],
-  background:           '#111113',
+  background:           gray[600],
 
   // Utility
   outline:              gray[600],

@@ -18,14 +18,14 @@ export function QuoteCallout({
   return (
     <View style={[styles.container, isCentered && styles.centered]}>
       <View
-        style={[styles.bar, { backgroundColor: colors.gold }, isCentered && styles.barCentered]}
+        style={[styles.bar, { backgroundColor: colors.primary }, isCentered && styles.barCentered]}
       />
       <Text
         style={[
           styles.quote,
           { color: colors.neutral },
           isCentered && styles.quoteCentered,
-          !isCentered && [styles.quoteAside, { borderLeftColor: colors.gold }],
+          !isCentered && [styles.quoteAside, { borderLeftColor: colors.primary }],
         ]}
       >
         {quote}

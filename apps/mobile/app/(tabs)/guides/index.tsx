@@ -96,17 +96,17 @@ export default function GuidesIndex() {
 }
 
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1 },
   content: { padding: 16, paddingBottom: 40 },
   heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
   subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },
   chips: { marginBottom: 12 },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: colors.outline, marginRight: 8, backgroundColor: colors.surface },
+  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: colors.outline, marginRight: 8 },
   chipActive: { backgroundColor: colors.neutral, borderColor: colors.neutral },
   chipText: { fontSize: 13, color: colors.neutral, fontWeight: '500' },
   chipTextActive: { color: colors.background },
   count: { fontSize: 13, color: colors.neutralVariant, marginBottom: 12 },
-  card: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radii.md, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: colors.outline, gap: 12, alignItems: 'flex-start' },
+  card: { flexDirection: 'row', borderRadius: radii.md, padding: 16, marginBottom: 10, borderWidth: 1, borderColor: colors.outline, gap: 12, alignItems: 'flex-start' },
   icon: { fontSize: 28 },
   cardBody: { flex: 1 },
   title: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },

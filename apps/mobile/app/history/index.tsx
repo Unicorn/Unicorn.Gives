@@ -7,8 +7,8 @@ import { useTheme, spacing, radii, fonts } from '@/constants/theme';
 export default function HistoryHubScreen() {
   const { colors } = useTheme();
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.neutral }]} contentContainerStyle={styles.content}>
-      <Text style={[styles.intro, { color: colors.outline }]}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Text style={[styles.intro, { color: colors.neutralVariant }]}>
         Tier 0 of unicorn.gives — the stories, traditions, and histories that sit beneath the county lines.
         Read as folklore and teaching, not as a substitute for science or tribal authority.
       </Text>
@@ -17,10 +17,10 @@ export default function HistoryHubScreen() {
         if (!doc) return null;
         return (
           <Link key={slug} href={routes.history.detail(slug)} asChild>
-            <TouchableOpacity style={StyleSheet.flatten([styles.card, { backgroundColor: colors.primary, borderLeftColor: colors.gold }])}>
-              <Text style={[styles.eyebrow, { color: colors.primary }]}>{doc.eyebrow}</Text>
-              <Text style={[styles.title, { color: colors.background }]}>{doc.title}</Text>
-              <Text style={[styles.blurb, { color: colors.primaryContainer }]} numberOfLines={3}>
+            <TouchableOpacity style={StyleSheet.flatten([styles.card, { backgroundColor: colors.surface, borderColor: colors.outline, borderWidth: 1, borderLeftColor: colors.primary }])}>
+              <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>{doc.eyebrow}</Text>
+              <Text style={[styles.title, { color: colors.neutral }]}>{doc.title}</Text>
+              <Text style={[styles.blurb, { color: colors.neutralVariant }]} numberOfLines={3}>
                 {doc.intro}
               </Text>
             </TouchableOpacity>

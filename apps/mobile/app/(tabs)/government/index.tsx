@@ -66,16 +66,16 @@ export default function GovernmentIndex() {
 }
 
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background },
-  container: { flex: 1, backgroundColor: colors.background },
+  page: { flex: 1 },
+  container: { flex: 1 },
   content: { paddingBottom: 40 },
   loading: { padding: 24, color: colors.neutralVariant, textAlign: 'center' },
-  header: { padding: 20, backgroundColor: colors.neutral },
-  type: { fontSize: 11, fontWeight: '700', color: colors.gold, letterSpacing: 1, marginBottom: 6 },
-  name: { fontSize: 24, fontWeight: '800', color: colors.background, marginBottom: 6 },
-  description: { fontSize: 15, color: colors.outline, lineHeight: 22 },
+  header: { padding: 20 },
+  type: { fontSize: 11, fontWeight: '700', color: colors.neutralVariant, letterSpacing: 1, marginBottom: 6, textTransform: 'uppercase' as const },
+  name: { fontSize: 24, fontWeight: '800', color: colors.neutral, marginBottom: 6 },
+  description: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22 },
   sectionTitle: { fontSize: 13, fontWeight: '800', color: colors.neutralVariant, letterSpacing: 1, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 },
-  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, backgroundColor: colors.surface, borderRadius: radii.md, borderWidth: 1, borderColor: colors.outline },
+  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, borderRadius: radii.md, borderWidth: 1, borderColor: colors.outline },
   rowTitle: { fontSize: 16, fontWeight: '700', color: colors.neutral },
   rowMeta: { fontSize: 13, color: colors.neutralVariant, marginTop: 4, textTransform: 'capitalize' },
 });

@@ -67,12 +67,12 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
       : '?';
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.heroBar }]}>
+    <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <View style={[styles.header, isDesktop && styles.headerDesktop]}>
         {/* Left: Logo or Back */}
         {showBack ? (
           <Pressable style={styles.leftZone} onPress={() => router.back()}>
-            <Text style={[styles.backArrow, { color: colors.onHeroBar }]}>←</Text>
+            <Text style={[styles.backArrow, { color: colors.neutral }]}>←</Text>
           </Pressable>
         ) : (
           <Pressable style={styles.leftZone} onPress={toggleTheme}>
@@ -99,8 +99,8 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
                       <Text
                         style={[
                           styles.navLink,
-                          { color: `${colors.onHeroBar}B3` },
-                          active && { color: colors.onHeroBar, fontFamily: fonts.serifBold },
+                          { color: `${colors.neutral}B3` },
+                          active && { color: colors.neutral, fontFamily: fonts.serifBold },
                         ]}
                       >
                         {link.label}
@@ -119,7 +119,7 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
                 return (
                   <View key={crumb.label} style={styles.breadcrumbItem}>
                     {i > 0 && (
-                      <Text style={[styles.breadcrumbSep, { color: `${colors.onHeroBar}66` }]}>
+                      <Text style={[styles.breadcrumbSep, { color: `${colors.neutral}66` }]}>
                         {'>'}
                       </Text>
                     )}
@@ -132,7 +132,7 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
                         </Pressable>
                       </Link>
                     ) : (
-                      <Text style={[styles.breadcrumbCurrent, { color: colors.onHeroBar }]}>
+                      <Text style={[styles.breadcrumbCurrent, { color: colors.neutral }]}>
                         {crumb.label}
                       </Text>
                     )}
@@ -155,11 +155,11 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
               style={[
                 styles.avatar,
                 styles.avatarFallback,
-                { backgroundColor: `${colors.onHeroBar}26` },
+                { backgroundColor: `${colors.neutral}26` },
                 user && { backgroundColor: colors.primary },
               ]}
             >
-              <Text style={[styles.avatarText, { color: colors.onHeroBar }]}>
+              <Text style={[styles.avatarText, { color: colors.neutral }]}>
                 {user ? initials : '👤'}
               </Text>
             </View>
@@ -196,6 +196,12 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
 const styles = StyleSheet.create({
   container: {
     paddingTop: Platform.OS === 'web' ? 0 : 44,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 3,
+    zIndex: 10,
   },
   header: {
     flexDirection: 'row',

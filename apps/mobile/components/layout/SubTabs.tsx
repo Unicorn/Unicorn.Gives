@@ -1,5 +1,5 @@
 import { Link, usePathname, type Href } from 'expo-router';
-import { ScrollView, Pressable, Text, StyleSheet, View } from 'react-native';
+import { ScrollView, Pressable, Text, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { hrefToPathString } from '@/lib/navigation';
 import { useTheme } from '@/constants/theme';
 
@@ -15,14 +15,16 @@ interface SubTabsProps {
 export function SubTabs({ tabs }: SubTabsProps) {
   const pathname = usePathname();
   const { colors } = useTheme();
+  const { width } = useWindowDimensions();
+  const isWide = width >= 768;
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface, borderBottomColor: colors.outline }]}>
+    <View style={[styles.container, { borderBottomColor: colors.outline }]}>
       <View style={styles.inner}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, isWide && styles.scrollContentCentered]}
       >
         {tabs.map((tab) => {
           const tabPath = hrefToPathString(tab.href);
@@ -70,6 +72,10 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 12,
     gap: 4,
+  },
+  scrollContentCentered: {
+    flex: 1,
+    justifyContent: 'center',
   },
   tab: {
     paddingHorizontal: 16,

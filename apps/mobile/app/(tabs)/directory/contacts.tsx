@@ -74,7 +74,7 @@ export default function ContactsDirectory() {
 }
 
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1 },
   content: { padding: 16, paddingBottom: 40 },
   heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
   subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },

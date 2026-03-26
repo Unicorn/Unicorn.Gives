@@ -50,10 +50,10 @@ export default function NewsTab() {
 }
 
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1 },
   content: { padding: 16, paddingBottom: 40 },
   heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 16 },
-  card: { backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
+  card: { borderRadius: radii.sm, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: colors.outline },
   category: { fontSize: 11, fontWeight: '700', color: colors.neutralVariant, letterSpacing: 0.5, marginBottom: 4 },
   title: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },
   desc: { fontSize: 14, color: colors.neutral, lineHeight: 20, marginBottom: 4 },

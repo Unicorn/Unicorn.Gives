@@ -43,7 +43,7 @@ export function InfoRowGroup({ title, rows }: InfoRowGroupProps) {
   const { colors } = useTheme();
 
   return (
-    <View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.outline }]}>
+    <View style={[styles.group, { borderColor: colors.outline }]}>
       {title && <Text style={[styles.groupTitle, { color: colors.primary }]}>{title}</Text>}
       <View style={styles.groupRows}>
         {rows.map((row, i) => (

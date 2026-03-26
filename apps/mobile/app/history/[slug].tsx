@@ -17,18 +17,18 @@ export default function HistoryDetailScreen() {
   }
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.neutral }]} contentContainerStyle={styles.content}>
-      <Text style={[styles.breadcrumb, { color: colors.purple }]}>Land of the Unicorns</Text>
-      <Text style={[styles.eyebrow, { color: colors.primary }]}>{doc.eyebrow}</Text>
-      <Text style={[styles.title, { color: colors.background }]}>{doc.title}</Text>
-      <Text style={[styles.intro, { color: colors.primaryContainer }]}>{doc.intro}</Text>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Text style={[styles.breadcrumb, { color: colors.neutralVariant }]}>Land of the Unicorns</Text>
+      <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>{doc.eyebrow}</Text>
+      <Text style={[styles.title, { color: colors.neutral }]}>{doc.title}</Text>
+      <Text style={[styles.intro, { color: colors.neutralVariant }]}>{doc.intro}</Text>
       {doc.sections.map((section) => (
         <View key={`${slug}-${section.heading}`} style={styles.section}>
-          <Text style={[styles.sectionHeading, { color: colors.purpleContainer }]}>{section.heading}</Text>
-          <Text style={[styles.sectionBody, { color: colors.outline }]}>{section.body}</Text>
+          <Text style={[styles.sectionHeading, { color: colors.neutral }]}>{section.heading}</Text>
+          <Text style={[styles.sectionBody, { color: colors.neutralVariant }]}>{section.body}</Text>
           {section.lore_callout && (
-            <View style={[styles.callout, { backgroundColor: colors.purple, borderLeftColor: colors.gold }]}>
-              <Text style={[styles.calloutText, { color: colors.purpleContainer }]}>{section.lore_callout}</Text>
+            <View style={[styles.callout, { backgroundColor: colors.surface, borderLeftColor: colors.primary, borderWidth: 1, borderColor: colors.outline }]}>
+              <Text style={[styles.calloutText, { color: colors.neutralVariant }]}>{section.lore_callout}</Text>
             </View>
           )}
         </View>

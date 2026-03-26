@@ -4,6 +4,7 @@ import { AppHeader } from '@/components/layout/AppHeader';
 import { ContentContainer } from '@/components/layout/ContentContainer';
 import { SubTabs, type SubTabItem } from '@/components/layout/SubTabs';
 import { toHref } from '@/lib/navigation';
+import { useTheme } from '@/constants/theme';
 
 const DIR_TABS: SubTabItem[] = [
   { label: 'Partners', href: toHref('/directory') },
@@ -12,10 +13,11 @@ const DIR_TABS: SubTabItem[] = [
 
 export default function DirectoryLayout() {
   const pathname = usePathname();
+  const { colors } = useTheme();
   const isDetail = pathname !== '/directory' && pathname !== '/directory/contacts' && pathname.startsWith('/directory/');
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <AppHeader showBack={isDetail} />
       {!isDetail && <SubTabs tabs={DIR_TABS} />}
       <ContentContainer>

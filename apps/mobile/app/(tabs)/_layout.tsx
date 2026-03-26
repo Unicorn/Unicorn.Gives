@@ -28,7 +28,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.neutralVariant,
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.surface,
           borderTopWidth: 1,
           borderTopColor: colors.outline,
           ...(isDesktop ? { display: 'none' as const } : {}),

@@ -35,25 +35,25 @@ export function HeroFeature({
   const isTablet = width >= 768;
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.primaryContainer }, isTablet && styles.containerTablet]}>
+    <View style={[styles.container, isTablet && styles.containerTablet]}>
       <View style={[styles.textBlock, (isTablet && imageSource) ? styles.textBlockTablet : undefined]}>
         {eyebrow && (
           <View style={styles.eyebrowPill}>
-            <Text style={[styles.eyebrowText, { color: colors.onPrimary }]}>{eyebrow}</Text>
+            <Text style={[styles.eyebrowText, { color: colors.neutralVariant }]}>{eyebrow}</Text>
           </View>
         )}
-        <Text style={[styles.title, { color: colors.onPrimary }, isTablet && styles.titleTablet]}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+        <Text style={[styles.title, { color: colors.neutral }, isTablet && styles.titleTablet]}>{title}</Text>
+        <Text style={[styles.description, { color: colors.neutralVariant }]}>{description}</Text>
         <View style={styles.ctaRow}>
           <Link href={ctaHref} asChild>
-            <TouchableOpacity style={StyleSheet.flatten([styles.ctaPrimary, { backgroundColor: colors.onPrimary }])}>
-              <Text style={[styles.ctaPrimaryText, { color: colors.primary }]}>{ctaLabel}</Text>
+            <TouchableOpacity style={StyleSheet.flatten([styles.ctaPrimary, { backgroundColor: colors.primary }])}>
+              <Text style={[styles.ctaPrimaryText, { color: colors.onPrimary }]}>{ctaLabel}</Text>
             </TouchableOpacity>
           </Link>
           {secondaryCta && (
             <Link href={secondaryCta.href} asChild>
-              <TouchableOpacity style={styles.ctaOutline}>
-                <Text style={[styles.ctaOutlineText, { color: colors.onPrimary }]}>{secondaryCta.label}</Text>
+              <TouchableOpacity style={StyleSheet.flatten([styles.ctaOutline, { borderColor: colors.outline }])}>
+                <Text style={[styles.ctaOutlineText, { color: colors.neutral }]}>{secondaryCta.label}</Text>
               </TouchableOpacity>
             </Link>
           )}
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   eyebrowPill: {
     alignSelf: 'flex-start',
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'transparent',
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: radii.pill,

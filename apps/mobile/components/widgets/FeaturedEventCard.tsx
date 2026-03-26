@@ -25,14 +25,14 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
 
   const cardStyle = StyleSheet.flatten([
     styles.card,
-    { backgroundColor: colors.surface, borderColor: colors.outline },
+    { borderColor: colors.outline },
     isTablet ? styles.cardTablet : undefined,
   ]) as ViewStyle;
 
   return (
     <Link href={routes.community.events.detail(event.slug)} style={cardStyle as any}>
         {/* Color accent side / top */}
-        <View style={StyleSheet.flatten([styles.accentBlock, { backgroundColor: colors.primaryContainer }, isTablet ? styles.accentBlockTablet : undefined])}>
+        <View style={StyleSheet.flatten([styles.accentBlock, isTablet ? styles.accentBlockTablet : undefined])}>
           <View style={[styles.featuredBadge, { backgroundColor: chips.gold.backgroundColor, borderColor: chips.gold.borderColor }]}>
             <Text style={[styles.featuredBadgeText, { color: chips.gold.color }]}>Featured</Text>
           </View>

@@ -75,7 +75,7 @@ export function EventsList({ regionId }: Props) {
   const DEFAULT_BADGE = { bg: colors.surfaceContainer, text: colors.neutral };
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Featured event hero */}
       {featured && !categoryFilter && (
         <FeaturedEventCard event={featured} />

@@ -28,37 +28,18 @@ interface BentoGridProps {
 
 function useSchemStyles() {
   const { colors } = useTheme();
+  const base = {
+    bg: colors.surface,
+    text: colors.neutral,
+    desc: colors.neutralVariant,
+    icon: colors.primary,
+  };
   return {
-    primary: {
-      bg: colors.primaryContainer,
-      text: colors.onPrimary,
-      desc: 'rgba(255,255,255,0.8)',
-      icon: colors.onPrimary,
-    },
-    secondary: {
-      bg: colors.purpleContainer,
-      text: colors.neutral,
-      desc: 'rgba(255,251,255,0.8)',
-      icon: colors.neutral,
-    },
-    tertiary: {
-      bg: colors.gold,
-      text: colors.goldContainer,
-      desc: colors.goldContainer,
-      icon: colors.goldContainer,
-    },
-    surface: {
-      bg: colors.surfaceContainerHigh,
-      text: colors.neutral,
-      desc: colors.neutralVariant,
-      icon: colors.primary,
-    },
-    muted: {
-      bg: colors.surfaceContainer,
-      text: colors.neutral,
-      desc: colors.neutralVariant,
-      icon: colors.purple,
-    },
+    primary: base,
+    secondary: base,
+    tertiary: base,
+    surface: base,
+    muted: { ...base, bg: colors.surfaceContainer },
   } as const;
 }
 
@@ -67,11 +48,12 @@ function BentoCard({ item, isTablet }: { item: BentoItem; isTablet: boolean }) {
   const scheme = schemes[item.colorScheme || 'surface'];
   const isFullWidth = item.span === 'full';
 
+  const { colors } = useTheme();
   const card = (
     <View
       style={[
         styles.card,
-        { backgroundColor: scheme.bg },
+        { borderWidth: 0 },
         isTablet && !isFullWidth && styles.cardHalf,
         isTablet && isFullWidth && styles.cardFull,
       ]}

@@ -30,7 +30,7 @@ export function EditorialCard({
 
   return (
     <Link href={href} asChild>
-      <Pressable style={StyleSheet.flatten([styles.card, { backgroundColor: colors.surface, borderColor: colors.outline }])}>
+      <Pressable style={StyleSheet.flatten([styles.card, { borderColor: colors.outline }])}>
         <View style={styles.body}>
           <View style={styles.topRow}>
             {badge && (

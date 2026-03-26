@@ -92,7 +92,7 @@ export default function CommunityTab() {
 }
 
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1 },
   content: { padding: 16, paddingBottom: 40, gap: 24 },
   navSection: { gap: 10 },
   navSectionTitle: {
@@ -103,7 +103,6 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   },
   navCard: {
     flexDirection: 'row',
-    backgroundColor: colors.surface,
     borderRadius: radii.md,
     padding: 16,
     borderWidth: 1,

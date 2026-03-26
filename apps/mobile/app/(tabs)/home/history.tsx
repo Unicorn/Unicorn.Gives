@@ -35,26 +35,28 @@ export default function HistoryTab() {
 }
 
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.neutral },
+  container: { flex: 1 },
   content: { padding: 20, paddingBottom: 40 },
   intro: {
     fontSize: 15,
-    color: colors.outline,
+    color: colors.neutralVariant,
     lineHeight: 24,
     marginBottom: 24,
   },
   card: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.surface,
     borderRadius: radii.md,
     padding: 18,
     marginBottom: 14,
+    borderWidth: 1,
+    borderColor: colors.outline,
     borderLeftWidth: 4,
-    borderLeftColor: colors.gold,
+    borderLeftColor: colors.primary,
   },
   eyebrow: {
     fontSize: 11,
     fontWeight: '700',
-    color: colors.primary,
+    color: colors.neutralVariant,
     letterSpacing: 1,
     textTransform: 'uppercase',
     marginBottom: 6,
@@ -62,9 +64,9 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   title: {
     fontSize: 22,
     fontWeight: '700',
-    color: colors.background,
+    color: colors.neutral,
     marginBottom: 10,
     fontFamily: fonts.serif,
   },
-  blurb: { fontSize: 14, color: colors.primaryContainer, lineHeight: 21 },
+  blurb: { fontSize: 14, color: colors.neutralVariant, lineHeight: 21 },
 });
