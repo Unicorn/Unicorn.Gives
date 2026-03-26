@@ -207,14 +207,27 @@ ${lines.join(',\n')}
 ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;`;
 }
 
+function eventRegionVar(regionSlug) {
+  const map = {
+    'lincoln-township': 'lincoln_id',
+    'clare-county': 'clare_county_id',
+    'city-of-clare': 'clare_city_id',
+    'city-of-harrison': 'harrison_city_id',
+    'village-of-farwell': 'farwell_village_id',
+  };
+  return map[regionSlug] || 'NULL';
+}
+
 function genEvents(items) {
-  const lines = items.map(item =>
-    `(${esc(item.slug)}, ${esc(item.title)}, ${esc(item.description || null)}, ${esc(item.body)}, ${esc(item.date)}, ${item.endDate ? esc(item.endDate) : 'NULL'}, ${esc(item.time || null)}, ${esc(item.location || null)}, ${esc(item.category)}, ${item.recurring ? 'true' : 'false'}, ${esc(item.recurrenceRule || null)}, ${esc(item.registrationUrl || null)}, ${esc(item.cost || null)}, 'global', 'published', now(), now())`
-  );
-  return `INSERT INTO public.events (slug, title, description, body, date, end_date, time, location, category, recurring, recurrence_rule, registration_url, cost, visibility, status, created_at, published_at)
+  const lines = items.map(item => {
+    const regionRef = item.region ? eventRegionVar(item.region) : 'NULL';
+    const tags = item.tags && Array.isArray(item.tags) && item.tags.length > 0 ? escArr(item.tags) : "'{}'";
+    return `(${esc(item.slug)}, ${esc(item.title)}, ${esc(item.description || null)}, ${esc(item.body)}, ${esc(item.date)}, ${item.endDate ? esc(item.endDate) : 'NULL'}, ${esc(item.time || null)}, ${esc(item.location || null)}, ${esc(item.category)}, ${regionRef}, ${item.recurring ? 'true' : 'false'}, ${esc(item.recurrenceRule || null)}, ${esc(item.registrationUrl || null)}, ${esc(item.cost || null)}, ${tags}, 'global', 'published', now(), now())`;
+  });
+  return `INSERT INTO public.events (slug, title, description, body, date, end_date, time, location, category, region_id, recurring, recurrence_rule, registration_url, cost, tags, visibility, status, created_at, published_at)
 VALUES
 ${lines.join(',\n')}
-ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;`;
+ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body, tags = EXCLUDED.tags, region_id = EXCLUDED.region_id;`;
 }
 
 function genGuides(items) {
@@ -365,11 +378,17 @@ DO $$
 DECLARE
   lincoln_id UUID;
   clare_county_id UUID;
+  clare_city_id UUID;
+  harrison_city_id UUID;
+  farwell_village_id UUID;
   horn_id UUID;
   mane_id UUID;
 BEGIN
   SELECT id INTO lincoln_id FROM public.regions WHERE slug = 'lincoln-township';
   SELECT id INTO clare_county_id FROM public.regions WHERE slug = 'clare-county';
+  SELECT id INTO clare_city_id FROM public.regions WHERE slug = 'city-of-clare';
+  SELECT id INTO harrison_city_id FROM public.regions WHERE slug = 'city-of-harrison';
+  SELECT id INTO farwell_village_id FROM public.regions WHERE slug = 'village-of-farwell';
   SELECT id INTO horn_id FROM public.partners WHERE slug = 'the-horn';
   SELECT id INTO mane_id FROM public.partners WHERE slug = 'the-mane';
 

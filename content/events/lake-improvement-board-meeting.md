@@ -8,6 +8,10 @@ category: "government"
 recurring: true
 recurrenceRule: "As scheduled"
 cost: "Free"
+tags:
+  - meeting
+  - government
+region: "clare-county"
 ---
 
 Clare County lake improvement boards meet to address lake management, weed control, water quality, and special assessments. Multiple boards serve different lakes. Meeting schedules are posted on the county calendar.

@@ -9,6 +9,12 @@ category: "community"
 recurring: true
 recurrenceRule: "Annually in June"
 cost: "Free"
+tags:
+  - festival
+  - music
+  - summer
+  - free
+region: "city-of-clare"
 ---
 
 Downtown Clare comes alive for Summerfest weekend with live music, food vendors, craft booths, and family activities along McEwan Street.

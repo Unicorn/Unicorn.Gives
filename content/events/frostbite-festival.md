@@ -8,6 +8,11 @@ category: "community"
 recurring: true
 recurrenceRule: "Annually in January"
 cost: "Free"
+tags:
+  - festival
+  - winter
+  - outdoor
+region: "city-of-harrison"
 ---
 
 Harrison's Frostbite Festival celebrates winter on Budd Lake and throughout downtown. Events include ice fishing contests, snowmobile racing, winter games, and warming stations with hot cocoa.

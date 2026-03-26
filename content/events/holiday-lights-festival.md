@@ -8,6 +8,12 @@ category: "community"
 recurring: true
 recurrenceRule: "Annually in early December"
 cost: "Free"
+tags:
+  - festival
+  - winter
+  - family-friendly
+  - free
+region: "village-of-farwell"
 ---
 
 Farwell welcomes the holiday season with festive light displays, visits with Santa, carolers, hot chocolate, and community spirit throughout the village.

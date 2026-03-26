@@ -6,6 +6,9 @@ time: "9:00 AM - 4:00 PM"
 location: "Harrison City Hall Maintenance Shop, 2105 Sullivan Dr, Harrison, MI"
 category: "conservation"
 recurring: false
+tags:
+  - conservation
+  - outdoor
 ---
 
 Pick up your pre-ordered wildflowers and garden kits from the Clare Conservation District's annual spring plant sale. Pickup runs May 21-23. Bring your order confirmation and a vehicle suitable for transporting your plants.

@@ -7,6 +7,10 @@ location: "Harrison District Library, Harrison, MI"
 category: "conservation"
 recurring: true
 recurrenceRule: "3rd Tuesday monthly"
+tags:
+  - meeting
+  - conservation
+region: "clare-county"
 ---
 
 The Clare Conservation District Board meets monthly to discuss conservation programs, projects, and district business. Meetings are open to the public.

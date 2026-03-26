@@ -8,6 +8,10 @@ category: "government"
 recurring: true
 recurrenceRule: "As scheduled"
 cost: "Free"
+tags:
+  - meeting
+  - government
+region: "clare-county"
 ---
 
 Meetings of the Clare County Drainage Board address drainage district matters, drain maintenance, and improvement projects. Meeting dates are posted on the county calendar. Contact the Drain Commissioner at (989) 539-7320.

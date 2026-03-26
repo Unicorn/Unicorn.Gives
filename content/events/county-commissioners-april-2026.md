@@ -7,6 +7,10 @@ location: "Clare County Courthouse, 225 W Main St, Harrison, MI"
 category: "government"
 recurring: true
 recurrenceRule: "3rd Wednesday monthly"
+tags:
+  - meeting
+  - government
+region: "clare-county"
 ---
 
 The Clare County Board of Commissioners meets monthly to conduct county business. Meetings are open to the public.

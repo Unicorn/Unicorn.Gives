@@ -7,6 +7,10 @@ location: "Lincoln Township Hall, 175 Lake George Ave, Lake George, MI"
 category: "government"
 recurring: true
 recurrenceRule: "1st Tuesday after 2nd Monday monthly"
+tags:
+  - meeting
+  - government
+region: "lincoln-township"
 ---
 
 The Planning Commission meets monthly to review site plans, zoning requests, and land use matters. Meetings are open to the public.

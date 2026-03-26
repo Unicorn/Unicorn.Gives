@@ -6,6 +6,10 @@ time: "4:00 PM"
 location: "Lincoln Township Hall, 175 Lake George Ave, Lake George, MI"
 category: "government"
 recurring: false
+tags:
+  - meeting
+  - government
+region: "lincoln-township"
 ---
 
 Lincoln Township will hold public hearings for the Special Assessment Districts on Shingle Lake, Lake Bertha, and Lake George. Property owners within these SAD boundaries are encouraged to attend and provide input on the proposed assessments for lake maintenance and improvement projects.

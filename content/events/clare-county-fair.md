@@ -9,6 +9,11 @@ category: "community"
 recurring: true
 recurrenceRule: "Annually in July"
 cost: "Varies"
+tags:
+  - festival
+  - family-friendly
+  - summer
+region: "city-of-harrison"
 ---
 
 Running since 1883, the Clare County Fair is a week-long tradition featuring livestock shows, carnival rides, demolition derby, live entertainment, and 4-H exhibits at the fairgrounds in Harrison.

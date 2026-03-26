@@ -8,6 +8,9 @@ category: "community"
 recurring: true
 recurrenceRule: "Fridays and Saturdays, seasonal"
 cost: "Free admission"
+tags:
+  - auction
+  - arts
 ---
 
 The local Amish community hosts quilt auctions and flea markets at Yoder's on Leaton Road. Handcrafted quilts, furniture, baked goods, and produce. Contact (989) 386-2872 for schedule. Note: closed Thursdays.

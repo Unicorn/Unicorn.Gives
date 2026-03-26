@@ -8,6 +8,11 @@ category: "community"
 recurring: true
 recurrenceRule: "Annually in August"
 cost: "Free"
+tags:
+  - festival
+  - history
+  - summer
+region: "village-of-farwell"
 ---
 
 Farwell honors its logging heritage with lumberjack competitions, live music, craft vendors, food, and family activities. The village was a hub for Michigan's lumber industry in the 1800s.

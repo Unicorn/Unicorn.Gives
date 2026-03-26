@@ -9,6 +9,12 @@ category: "community"
 recurring: true
 recurrenceRule: "Thursdays, June through July"
 cost: "Free"
+tags:
+  - concert
+  - music
+  - free
+  - summer
+region: "city-of-clare"
 ---
 
 Bring a lawn chair and enjoy free live music at Shamrock Park in Clare every Thursday evening from June through July, 6-8pm.

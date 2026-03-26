@@ -9,6 +9,10 @@ category: "community"
 recurring: true
 recurrenceRule: "Saturdays, May through October"
 cost: "Free admission"
+tags:
+  - market
+  - food
+region: "village-of-farwell"
 ---
 
 The Farwell Farmers Market features local growers and makers every Saturday morning from May through October, 9am to 1pm. Find fresh produce, baked goods, honey, preserves, and handmade crafts.

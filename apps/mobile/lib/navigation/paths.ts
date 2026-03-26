@@ -35,6 +35,7 @@ export const municipalSubsegments = {
   ordinances: 'ordinances',
   contacts: 'contacts',
   elections: 'elections',
+  events: 'events',
 } as const;
 
 export type MunicipalSubsegment =
@@ -147,6 +148,14 @@ export const routes = {
             enc(electionSlug)
         ),
     },
+    events: {
+      index: (countySlug: string, municipalitySlug: string) =>
+        toHref(municipalityBase(countySlug, municipalitySlug) + '/events'),
+      detail: (countySlug: string, municipalitySlug: string, eventSlug: string) =>
+        toHref(
+          municipalityBase(countySlug, municipalitySlug) + '/events/' + enc(eventSlug)
+        ),
+    },
     zoning: (countySlug: string, municipalitySlug: string) =>
       toHref(municipalityBase(countySlug, municipalitySlug) + '/zoning'),
     municipalSubNavTabs: (
@@ -159,6 +168,7 @@ export const routes = {
         { label: 'Minutes', href: toHref(base + '/minutes') },
         { label: 'Ordinances', href: toHref(base + '/ordinances') },
         { label: 'Contacts', href: toHref(base + '/contacts') },
+        { label: 'Events', href: toHref(base + '/events') },
         { label: 'Elections', href: toHref(base + '/elections') },
         { label: 'Zoning', href: toHref(base + '/zoning') },
       ];

@@ -7,6 +7,10 @@ category: "community"
 recurring: true
 recurrenceRule: "Annually around July 4th"
 cost: "Free"
+tags:
+  - festival
+  - summer
+  - free
 ---
 
 The community of Lake celebrates summer with the annual Lake Daze festival, featuring food, games, fireworks, and small-town fun.

@@ -39,6 +39,8 @@ export default function MunicipalityLayout() {
         <Stack.Screen name="ordinances/[slug]" />
         <Stack.Screen name="contacts/index" />
         <Stack.Screen name="contacts/[slug]" />
+        <Stack.Screen name="events/index" />
+        <Stack.Screen name="events/[slug]" />
         <Stack.Screen name="elections/index" />
         <Stack.Screen name="elections/[slug]" />
         <Stack.Screen name="zoning" />

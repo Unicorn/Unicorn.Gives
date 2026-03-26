@@ -8,7 +8,7 @@ import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 export function MunicipalHub() {
   const { municipalitySlug, basePath } = useMunicipalRoute();
   const { region, isLoading } = useRegion(municipalitySlug);
-  const [stats, setStats] = useState({ minutes: 0, ordinances: 0, contacts: 0 });
+  const [stats, setStats] = useState({ minutes: 0, ordinances: 0, contacts: 0, events: 0 });
 
   useEffect(() => {
     if (!region) return;
@@ -16,8 +16,9 @@ export function MunicipalHub() {
       supabase.from('minutes').select('*', { count: 'exact', head: true }).eq('region_id', region.id),
       supabase.from('ordinances').select('*', { count: 'exact', head: true }).eq('region_id', region.id),
       supabase.from('contacts').select('*', { count: 'exact', head: true }).eq('region_id', region.id),
-    ]).then(([m, o, c]) => {
-      setStats({ minutes: m.count || 0, ordinances: o.count || 0, contacts: c.count || 0 });
+      supabase.from('events').select('*', { count: 'exact', head: true }).eq('region_id', region.id).eq('status', 'published'),
+    ]).then(([m, o, c, e]) => {
+      setStats({ minutes: m.count || 0, ordinances: o.count || 0, contacts: c.count || 0, events: e.count || 0 });
     });
   }, [region]);
 
@@ -28,6 +29,7 @@ export function MunicipalHub() {
     { label: 'Meeting Minutes', count: stats.minutes, href: `${basePath}/minutes`, icon: '📋' },
     { label: 'Ordinances', count: stats.ordinances, href: `${basePath}/ordinances`, icon: '📜' },
     { label: 'Contact Directory', count: stats.contacts, href: `${basePath}/contacts`, icon: '📞' },
+    { label: 'Events', count: stats.events, href: `${basePath}/events`, icon: '📅' },
     { label: 'Elections', count: 0, href: `${basePath}/elections`, icon: '🗳️' },
     { label: 'Zoning', count: 0, href: `${basePath}/zoning`, icon: '🗺️' },
   ];
