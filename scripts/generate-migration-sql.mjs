@@ -8,7 +8,8 @@
 import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import { join, basename } from 'path';
 
-const CONTENT_DIR = join(import.meta.dirname, '..', 'src', 'content');
+// Repo-root content directory (where all markdown sources live)
+const CONTENT_DIR = join(import.meta.dirname, '..', 'content');
 const OUTPUT = join(import.meta.dirname, '..', 'supabase', 'migrations', '002_seed_content.sql');
 
 // ---------------------------------------------------------------------------
@@ -24,7 +25,6 @@ function parseFrontmatter(content) {
   const data = {};
 
   // Simple YAML parser for our known frontmatter shapes
-  let currentKey = null;
   let inNested = false;
   let nestedKey = null;
   let nestedObj = {};
@@ -52,7 +52,6 @@ function parseFrontmatter(content) {
       isArray = false;
 
       const [, key, val] = topMatch;
-      currentKey = key;
 
       if (val === '' || val === undefined) {
         inNested = true;
@@ -118,6 +117,13 @@ function parseVal(val) {
   if (/^\d+$/.test(val)) return parseInt(val, 10);
   if (/^\d+\.\d+$/.test(val)) return parseFloat(val);
   return val;
+}
+
+function parseDateIsoOrNow(value) {
+  if (!value) return new Date().toISOString();
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return new Date().toISOString();
+  return d.toISOString();
 }
 
 function esc(str) {
@@ -248,33 +254,55 @@ ${formLines.join(',\n')};\n`;
   return sql;
 }
 
-function genPages(items, hornId, maneId) {
+function genPages(items) {
+  // Horn/Mane pages also need to exist in `public.pages` (global CMS),
+  // because the mobile CMS route `[slug].tsx` queries `public.pages`.
   const hornPages = [];
   const manePages = [];
-  const globalPages = [];
+  const allPages = [];
 
   for (const item of items) {
     const sub = (item.subcategory || '').toLowerCase();
     if (sub === 'the horn' || sub.includes('horn')) hornPages.push(item);
     else if (sub === 'the mane' || sub.includes('mane')) manePages.push(item);
-    else globalPages.push(item);
+    allPages.push(item);
   }
 
   let sql = '';
 
-  if (globalPages.length > 0) {
-    const lines = globalPages.map(item =>
-      `(${esc(item.slug)}, ${esc(item.title)}, ${esc(item.description || null)}, ${esc(item.body)}, ${esc(item.category || null)}, ${esc(item.subcategory || null)}, ${esc(item.navTitle || null)}, ${item.hideFromNav ? 'true' : 'false'}, ${item.order || 0}, 'published', now(), now())`
-    );
-    sql += `INSERT INTO public.pages (slug, title, description, body, category, subcategory, nav_title, hide_from_nav, display_order, status, created_at, published_at)
+  if (allPages.length > 0) {
+    const lines = allPages.map((item) => {
+      const description =
+        item.description !== undefined ? (item.description ?? null) : null;
+
+      return `(${esc(item.slug)}, ${esc(item.title)}, ${esc(description)}, ${esc(item.body)}, ${esc(
+        item.category ?? null,
+      )}, ${esc(item.subcategory ?? null)}, ${esc(item.navTitle ?? null)}, ${
+        item.hideFromNav ? 'true' : 'false'
+      }, ${item.order || 0}, 'published', ${esc(parseDateIsoOrNow(item.lastUpdated))}::timestamptz, now(), now())`;
+    });
+
+    sql += `INSERT INTO public.pages (slug, title, description, body, category, subcategory, nav_title, hide_from_nav, display_order, status, last_updated, created_at, published_at)
 VALUES
 ${lines.join(',\n')}
-ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;\n\n`;
+ON CONFLICT (slug) DO UPDATE SET
+  title = EXCLUDED.title,
+  description = EXCLUDED.description,
+  body = EXCLUDED.body,
+  category = EXCLUDED.category,
+  subcategory = EXCLUDED.subcategory,
+  nav_title = EXCLUDED.nav_title,
+  hide_from_nav = EXCLUDED.hide_from_nav,
+  display_order = EXCLUDED.display_order,
+  status = EXCLUDED.status,
+  last_updated = EXCLUDED.last_updated,
+  published_at = EXCLUDED.published_at;\n\n`;
   }
 
   function inferTab(slug, partner) {
     if (slug.includes('about') || slug === `about-the-${partner}`) return 'about';
-    if (slug.includes('hours') || slug.includes('contact')) return partner === 'horn' ? 'hours-horn' : 'hours';
+    // Normalize Horn club hours to the shared `hours` tab slug.
+    if (slug.includes('hours') || slug.includes('contact')) return 'hours';
     if (slug.includes('event')) return 'events';
     if (slug.includes('member') || slug.includes('join')) return 'membership';
     if (slug.includes('service')) return 'services';
@@ -327,7 +355,7 @@ console.log(`Content counts:
   pages: ${pages.length}
 `);
 
-let sql = `-- =============================================================================
+const sql = `-- =============================================================================
 -- Unicorn.Gives Content Seed Migration (auto-generated)
 -- Generated: ${new Date().toISOString()}
 -- =============================================================================

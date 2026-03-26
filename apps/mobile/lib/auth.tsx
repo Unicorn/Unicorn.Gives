@@ -1,158 +1,108 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from './supabase';
+import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 
-type UserRole = 'super_admin' | 'municipal_editor' | 'partner_editor' | 'community_contributor' | 'public';
+import { supabase } from './supabase';
 
-interface Profile {
-  id: string;
-  email: string;
-  display_name: string | null;
-  avatar_url: string | null;
-  role: UserRole;
-  region_ids: string[] | null;
-  partner_id: string | null;
-  is_active: boolean;
-}
-
-interface AuthContextType {
-  session: Session | null;
+type AuthContextValue = {
   user: User | null;
-  profile: Profile | null;
-  isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string, displayName?: string) => Promise<{ error: Error | null }>;
-  signInWithMagicLink: (email: string) => Promise<{ error: Error | null }>;
-  signOut: () => Promise<void>;
-  isAdmin: boolean;
-  isEditor: boolean;
-  canEditRegion: (regionId: string) => boolean;
-  canEditPartner: (partnerId: string) => boolean;
+  role: string | null;
+  loading: boolean;
+  session: Session | null;
+};
+
+const AuthContext = createContext<AuthContextValue | null>(null);
+
+async function fetchRoleForUser(user: User): Promise<string | null> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (error) return null;
+  return data?.role ?? null;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session?.user) {
-        fetchProfile(session.user.id);
-      } else {
-        setIsLoading(false);
+    let cancelled = false;
+
+    async function init() {
+      setLoading(true);
+
+      const { data } = await supabase.auth.getSession();
+      if (cancelled) return;
+
+      const nextSession = data.session ?? null;
+      setSession(nextSession);
+
+      const nextUser = nextSession?.user ?? null;
+      setUser(nextUser);
+
+      if (!nextUser) {
+        setRole(null);
+        setLoading(false);
+        return;
       }
+
+      const nextRole = await fetchRoleForUser(nextUser);
+      if (cancelled) return;
+
+      setRole(nextRole);
+      setLoading(false);
+    }
+
+    init();
+
+    const { data: subscriptionData } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
+      if (cancelled) return;
+
+      const nextUser = nextSession?.user ?? null;
+      setSession(nextSession ?? null);
+      setUser(nextUser);
+      setLoading(true);
+
+      if (!nextUser) {
+        setRole(null);
+        setLoading(false);
+        return;
+      }
+
+      const nextRole = await fetchRoleForUser(nextUser);
+      if (cancelled) return;
+
+      setRole(nextRole);
+      setLoading(false);
     });
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        } else {
-          setProfile(null);
-          setIsLoading(false);
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      subscriptionData?.subscription.unsubscribe();
+    };
   }, []);
 
-  async function fetchProfile(userId: string) {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) throw error;
-      setProfile(data as Profile);
-    } catch (err) {
-      console.error('Error fetching profile:', err);
-      setProfile(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  async function signIn(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error as Error | null };
-  }
-
-  async function signUp(email: string, password: string, displayName?: string) {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { display_name: displayName },
-      },
-    });
-    return { error: error as Error | null };
-  }
-
-  async function signInWithMagicLink(email: string) {
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    return { error: error as Error | null };
-  }
-
-  async function signOut() {
-    await supabase.auth.signOut();
-    setProfile(null);
-  }
-
-  const isAdmin = profile?.role === 'super_admin';
-  const isEditor = profile?.role !== 'public' && profile?.role !== undefined;
-
-  function canEditRegion(regionId: string): boolean {
-    if (profile?.role === 'super_admin') return true;
-    if (profile?.role === 'municipal_editor' && profile.region_ids) {
-      return profile.region_ids.includes(regionId);
-    }
-    return false;
-  }
-
-  function canEditPartner(partnerId: string): boolean {
-    if (profile?.role === 'super_admin') return true;
-    if (profile?.role === 'partner_editor') {
-      return profile.partner_id === partnerId;
-    }
-    return false;
-  }
-
-  return (
-    <AuthContext.Provider
-      value={{
-        session,
-        user: session?.user ?? null,
-        profile,
-        isLoading,
-        signIn,
-        signUp,
-        signInWithMagicLink,
-        signOut,
-        isAdmin,
-        isEditor,
-        canEditRegion,
-        canEditPartner,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo<AuthContextValue>(
+    () => ({
+      user,
+      role,
+      loading,
+      session,
+    }),
+    [user, role, loading, session],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
+  return ctx;
 }
+

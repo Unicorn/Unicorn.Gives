@@ -7,10 +7,13 @@ import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { SubTabs } from '@/components/layout/SubTabs';
 
+type PartnerTab = { label: string; slug: string; order: number };
+
 interface Partner {
   id: string;
   name: string;
-  tabs: { label: string; slug: string; order: number }[] | null;
+  tabs: PartnerTab[] | null;
+  partner_type_id: string | null;
 }
 
 interface PartnerPage {
@@ -18,26 +21,178 @@ interface PartnerPage {
   body: string;
 }
 
+const SEED_SQL_PATH_CANDIDATES = [
+  'supabase/migrations/001_initial_schema.sql',
+  '../../supabase/migrations/001_initial_schema.sql',
+  '../../../supabase/migrations/001_initial_schema.sql',
+];
+
+function loadSeedSql(): string | null {
+  // Node-only.
+  if (typeof window !== 'undefined') return null;
+
+  const fs = require('fs') as typeof import('fs');
+  const path = require('path') as typeof import('path');
+
+  for (const rel of SEED_SQL_PATH_CANDIDATES) {
+    const p = path.join(process.cwd(), rel);
+    if (fs.existsSync(p)) return fs.readFileSync(p, 'utf-8');
+  }
+
+  return null;
+}
+
+function normalizeHornTab(partnerSlug: string, tabSlug: string): string {
+  if (partnerSlug === 'the-horn' && tabSlug === 'hours-horn') return 'hours';
+  return tabSlug;
+}
+
+type PartnerStaticInfo = { partnerSlug: string; tabSlugs: string[] };
+
+function extractPartnersFromSeedSql(sql: string): PartnerStaticInfo[] {
+  const insertIdx = sql.indexOf('INSERT INTO public.partners');
+  if (insertIdx === -1) return [];
+
+  const valuesIdx = sql.indexOf('VALUES', insertIdx);
+  if (valuesIdx === -1) return [];
+
+  const statementEnd = sql.indexOf(';', valuesIdx);
+  if (statementEnd === -1) return [];
+
+  const valuesBlock = sql.slice(valuesIdx + 'VALUES'.length, statementEnd).trim();
+
+  const tuples: string[] = [];
+  let inString = false;
+  let depth = 0;
+  let tupleStart: number | null = null;
+
+  for (let i = 0; i < valuesBlock.length; i++) {
+    const ch = valuesBlock[i];
+
+    if (ch === "'") {
+      // Handle escaped single-quote in SQL strings: ''.
+      if (inString && valuesBlock[i + 1] === "'") {
+        i++;
+        continue;
+      }
+      inString = !inString;
+      continue;
+    }
+
+    if (inString) continue;
+
+    if (ch === '(') {
+      if (depth === 0) tupleStart = i;
+      depth++;
+      continue;
+    }
+
+    if (ch === ')') {
+      depth--;
+      if (depth === 0 && tupleStart !== null) {
+        tuples.push(valuesBlock.slice(tupleStart, i + 1));
+        tupleStart = null;
+      }
+    }
+  }
+
+  return tuples
+    .map((tupleStr) => {
+      const slugMatch = tupleStr.match(/\('([^']*)'/);
+      if (!slugMatch) return null;
+      const partnerSlug = slugMatch[1];
+
+      const tabsMatch = tupleStr.match(/'(\[[\s\S]*?\])'::jsonb\s*\)$/);
+      if (!tabsMatch) return null;
+
+      const tabsJson = tabsMatch[1];
+      const tabsParsed = (() => {
+        try {
+          return JSON.parse(tabsJson) as { slug: string }[];
+        } catch {
+          return [];
+        }
+      })();
+
+      const tabSlugs = tabsParsed
+        .map((t) => t.slug)
+        .filter(Boolean)
+        .map((s) => normalizeHornTab(partnerSlug, s));
+
+      return { partnerSlug, tabSlugs };
+    })
+    .filter(Boolean) as PartnerStaticInfo[];
+}
+
+export function generateStaticParams() {
+  const sql = loadSeedSql();
+  if (!sql) return [];
+
+  const partners = extractPartnersFromSeedSql(sql);
+
+  const seen = new Set<string>();
+  const out: { partnerSlug: string; tab: string }[] = [];
+
+  for (const p of partners) {
+    for (const tab of p.tabSlugs) {
+      const key = `${p.partnerSlug}:${tab}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ partnerSlug: p.partnerSlug, tab });
+    }
+  }
+
+  return out;
+}
+
 export default function PartnerTab() {
   const { partnerSlug, tab } = useLocalSearchParams<{ partnerSlug: string; tab: string }>();
   const [partner, setPartner] = useState<Partner | null>(null);
+  const [defaultTabs, setDefaultTabs] = useState<PartnerTab[]>([]);
   const [page, setPage] = useState<PartnerPage | null>(null);
 
   useEffect(() => {
     if (!partnerSlug) return;
-    supabase.from('partners').select('id, name, tabs').eq('slug', partnerSlug).single()
-      .then(({ data }) => {
-        if (data) {
-          setPartner(data);
-          supabase.from('partner_pages').select('title, body').eq('partner_id', data.id).eq('tab_slug', tab).single()
-            .then(({ data: p }) => { if (p) setPage(p); });
-        }
-      });
+
+    let cancelled = false;
+
+    (async () => {
+      const { data: partnerData } = await supabase
+        .from('partners')
+        .select('id, name, tabs, partner_type_id')
+        .eq('slug', partnerSlug)
+        .single();
+
+      if (cancelled || !partnerData) return;
+
+      setPartner(partnerData as Partner);
+
+      const { data: typeData } = partnerData.partner_type_id
+        ? await supabase.from('partner_types').select('default_tabs').eq('id', partnerData.partner_type_id).single()
+        : { data: null };
+
+      const resolvedDefaultTabs = (typeData?.default_tabs ?? []) as PartnerTab[];
+      setDefaultTabs(resolvedDefaultTabs);
+
+      const { data: p } = await supabase
+        .from('partner_pages')
+        .select('title, body')
+        .eq('partner_id', partnerData.id)
+        .eq('tab_slug', tab)
+        .single();
+
+      if (!cancelled && p) setPage(p as PartnerPage);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [partnerSlug, tab]);
 
   if (!partner) return <View style={styles.container}><AppHeader title="Partner" /><Text style={styles.loading}>Loading...</Text></View>;
 
-  const tabs = routes.partners.tabItems(partnerSlug, partner.tabs || []);
+  const effectiveTabs = partner.tabs && partner.tabs.length > 0 ? partner.tabs : defaultTabs;
+  const tabs = routes.partners.tabItems(partnerSlug, effectiveTabs);
 
   return (
     <View style={styles.container}>

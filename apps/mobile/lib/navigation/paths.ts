@@ -15,9 +15,9 @@ export function hrefToPathString(href: Href): string {
 export const paths = {
   home: '/',
   auth: {
-    signIn: '/(auth)/sign-in',
-    signUp: '/(auth)/sign-up',
-    admin: '/(admin)',
+    signIn: '/sign-in',
+    signUp: '/sign-up',
+    admin: '/admin',
   },
   solve: { index: '/solve' },
   lore: { index: '/lore' },

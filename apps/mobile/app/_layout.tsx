@@ -81,7 +81,7 @@ function RootLayoutNav() {
           <Drawer.Screen name="events" options={{ title: 'Events', headerShown: false }} />
           <Drawer.Screen name="partners" options={{ title: 'Partners', headerShown: false }} />
           <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
-          <Drawer.Screen name="(admin)" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
+          <Drawer.Screen name="admin" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
           <Drawer.Screen name="+not-found" options={{ drawerItemStyle: { display: 'none' } }} />
         </Drawer>
       </ThemeProvider>

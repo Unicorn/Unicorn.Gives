@@ -1,6 +1,6 @@
 -- =============================================================================
 -- Unicorn.Gives Content Seed Migration (auto-generated)
--- Generated: 2026-03-25T23:44:24.805Z
+-- Generated: 2026-03-26T03:00:42.896Z
 -- =============================================================================
 
 DO $$
@@ -7341,11 +7341,88 @@ VALUES
 
 
 -- =============================================================================
--- Pages (48)
+-- Pages (46)
 -- =============================================================================
 
-INSERT INTO public.pages (slug, title, description, body, category, subcategory, nav_title, hide_from_nav, display_order, status, created_at, published_at)
+INSERT INTO public.pages (slug, title, description, body, category, subcategory, nav_title, hide_from_nav, display_order, status, last_updated, created_at, published_at)
 VALUES
+('about-the-horn', 'The Horn', 'The Horn — a non-profit membership club and community center in Lake George, Michigan', '## Community Club & Center
+
+The Horn is a nonprofit community space designed to bring people together. Housed in the historic former Lake George Grocery building, The Horn is a place to connect, host gatherings, attend events, and simply spend time in good company — a space rooted in belonging.
+
+Open to the public daily from **10 AM – 2 PM**, and available to members **24/7**.
+
+### Our Story
+
+The building was purchased in 2021 and underwent extensive renovation to transform it from the old Lake George Grocery into a welcoming community space. The Horn soft launched in 2022 with a simple goal: give people a place where they belong.
+
+The renovation preserved the character of this historic village building while creating a flexible space for socializing, events, and community connection.
+
+### What We Offer
+
+- **Members-Only Club** — 24/7 access to a private community space with games, Wi-Fi, kitchen, and more
+- **VIP Lounge** — An adults-only space for members who want to BYOB and smoke indoors
+- **Community Gathering Space** — A welcoming place to connect with neighbors and friends during public hours
+- **Events & Entertainment** — Game nights, bonfire nights, potlucks, and community programming year-round with discounted member rates
+- **Late-Night Safe Space** — A comfortable place to hang out when everywhere else is closed
+- **Work-Friendly Environment** — Free Wi-Fi and a quiet daytime setup for remote work and projects
+
+### Become a Member
+
+The Horn offers individual, couple, and family memberships starting at **$40/month**, with an optional VIP add-on for **$20/month** more. Members get 24/7 key access, discounted event rates, exclusive events, and a real community.
+
+Memberships launch **Memorial Weekend** — sign up early at **[horn.love](https://horn.love)**.
+
+**[See Membership Details & Pricing](/membership)**
+
+### Events
+
+Check our [events page](/events-horn) for what''s coming up at The Horn.
+
+### Hours & Contact
+
+Open to the public **10 AM – 2 PM daily**. Members have 24/7 access.
+
+For location and contact details, visit our [hours & contact page](/hours-horn).
+
+### Part of the Community
+
+The Horn is part of the Unicorn Gives community network, working alongside:
+- [Unicorn Gives](/about-unicorn-gives)
+- [The Mane](/about-the-mane)', 'Community', 'The Horn', NULL, false, 24, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('about-the-mane', 'The Mane', 'The Mane boutique salon in Lincoln Township — hair, beauty, and self-care services', '## The Mane — Boutique Salon
+
+The Mane is a full-service salon located at 300 Lake George St in the village of Lake George, Michigan. We offer hair, color, nail, and beauty services in a welcoming, community-focused environment.
+
+### Our Story
+
+Originally established in 2005 as Expressions Hair Studio, the salon was rebranded in 2021 under new ownership by Hanna Unicorn. The Mane carries forward a long tradition of quality hair care in Lake George while bringing a fresh commitment to organic, high-quality products and community connection.
+
+### What Sets Us Apart
+
+We use trusted, professional-grade brands including **All-Nutrient**, **Sukesha**, and **I.N.O.** — products chosen for their quality ingredients and results. Our stylists and technicians take the time to understand what each client needs, whether that is a quick trim or a complete color transformation.
+
+### Services
+
+We offer a full range of hair services — cuts, color, highlights, perms, styling, and waxing — along with a complete nail services menu including acrylics, gel, manicures, and pedicures. Visit our [services page](/services-mane) for the full menu and pricing.
+
+### Now Hiring
+
+The Mane is currently hiring licensed stylists and barbers. If you are passionate about your craft and want to be part of a community-focused salon, reach out to learn about opportunities.
+
+### Book an Appointment
+
+Ready to book? Visit our [appointment page](/book-appointment) to schedule your visit online or by phone.
+
+### Hours & Contact
+
+For hours, location, and contact details, visit our [hours & contact page](/hours-mane).
+
+### Part of the Community
+
+The Mane is part of the Unicorn Gives community network in Lake George, working alongside:
+- [Unicorn Gives](/about-unicorn-gives)
+- [The Horn](/about-the-horn)', 'Community', 'The Mane', NULL, false, 28, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('about-unicorn-gives', 'About Unicorn Gives', 'Learn about Unicorn Gives, a non-profit organization serving the Lincoln Township community', '## Our Mission
 
 Unicorn Gives is a non-profit organization dedicated to strengthening the Lincoln Township community through events, outreach, and bringing people together.
@@ -7374,7 +7451,7 @@ There are many ways to be part of what we''re building:
 
 Reach out to learn more about Unicorn Gives and how you can get involved.
 
-*Contact information coming soon.*', 'Community', 'Unicorn Gives', NULL, false, 20, 'published', now(), now()),
+*Contact information coming soon.*', 'Community', 'Unicorn Gives', NULL, false, 20, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('assessor', 'Assessor', 'Lincoln Township property assessment information and contact details', '## Township Assessor
 
 The Assessor establishes the taxable value of all property in Lincoln Township.
@@ -7474,7 +7551,7 @@ If you disagree with the Board of Review decision, you may appeal to the Michiga
 - [Township Board Contact](/board)
 - [Frequently Asked Questions](/faq)
 - [Clare County Website](https://clareco.net/)
-- [Community Resources](/links)', 'Services', 'Other Services', NULL, false, 10, 'published', now(), now()),
+- [Community Resources](/links)', 'Services', 'Other Services', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('board-minutes', 'Board Meeting Minutes', 'Lincoln Township Board of Trustees meeting minutes and archives', 'Regular board meetings are held on the second Monday of each month at 7:00 PM at Lincoln Township Hall, 175 Lake George Ave, Lake George, MI 48633. Special meetings are posted no less than 18 hours in advance on the front door of the township hall.
 
 **Accessibility:** Individuals with disabilities requiring auxiliary aids or services should contact Carol Majewski, Clerk at [989-588-9841 ext. 2](tel:989-588-9841) or [clm@lincolntwp.com](mailto:clm@lincolntwp.com). PO Box 239, Lake George, MI 48633. Please provide as much notice as possible so proper arrangements can be made.
@@ -7497,7 +7574,35 @@ The archive includes Board of Trustees, Planning Commission, and ZBA minutes wit
 
 Planning Commission meeting minutes will be posted as they become available. The Planning Commission meets on the first Tuesday after the second Monday of each month at 7:00 PM at Lincoln Township Hall.
 
-For historical Planning Commission minutes (2008–2015), see the [Planning Commission page](/planning-commission).', 'Government', 'Board & Leadership', NULL, false, 9, 'published', now(), now()),
+For historical Planning Commission minutes (2008–2015), see the [Planning Commission page](/planning-commission).', 'Government', 'Board & Leadership', NULL, false, 9, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('book-appointment', 'Book an Appointment', 'Schedule an appointment at The Mane boutique salon in Lincoln Township', '## Book an Appointment
+
+Schedule your visit to The Mane in Lake George, MI.
+
+### Online Booking
+
+Book your appointment online through **Square Appointments** at any time. Select your stylist or technician, choose your service, and pick a time that works for you.
+
+### Call to Book
+
+Prefer to book by phone? Call us at **(989) 588-6988** during business hours and we will get you on the schedule.
+
+### Email
+
+You can also reach us at **hanna@unicorn.love** with questions or booking requests.
+
+### Walk-Ins
+
+Walk-ins are welcome based on availability. For the best chance of getting in same-day, we recommend calling ahead.
+
+### Before Your Visit
+
+- View our [service menu](/services-mane) to plan your visit
+- Check our [hours & contact page](/hours-mane) for availability
+
+### Cancellation Policy
+
+We ask that you provide **24 hours notice** if you need to cancel or reschedule your appointment. This allows us to offer the time slot to other clients. Thank you for being considerate of our team''s time.', 'Community', 'The Mane', NULL, false, 30, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('budget', 'Budget & Finances', 'Lincoln Township annual budget, spending reports, and financial information', '## Township Financial Overview
 
 Lincoln Township is committed to financial transparency and accountability to its residents.
@@ -7529,99 +7634,7 @@ Residents may request detailed financial records through a [FOIA request](/foia)
 
 For questions about the township budget, contact:
 - **Treasurer**: Maggie Carey — [989-588-2574](tel:989-588-2574)
-- **Supervisor**: Troy Kibbey — [(989) 588-9841 ext. 4](tel:989-588-9841)', 'Government', 'Budget & Finances', NULL, false, 5, 'published', now(), now()),
-('building', 'Lincoln Township Building Department', 'Building permits, inspections, and construction requirements for Lincoln Township', '## Building Department
-
-Lincoln Township building permits are administered by **Clare County Community Development**.
-
-### Contact Information
-
-**Clare County Building Department**
-- Address: 225 W. Main St., P.O. Box 438, Harrison, MI 48625
-- Phone: 989-539-2761
-- Website: [clareco.net](https://clareco.net/)
-
-**Lincoln Township Zoning Administrator**
-- Dick Hassberger
-- Phone: (989) 588-9841 ext. 5
-- Email: zoning@lincolntwp.com
-
-## How to Get a Building Permit
-
-### Step 1: Determine What Permits You Need
-
-**Both a Building Permit AND a Zoning Permit are required for most construction projects.**
-
-**Building Permit** (County-level)
-- Required for: New construction, additions, renovations, decks, garages, sheds over certain sizes
-- Administered by: Clare County Building Department
-- Phone: 989-539-2761
-
-**Zoning Permit** (Township-level)
-- Required for: All construction to ensure compliance with township zoning ordinances
-- Administered by: Lincoln Township Zoning Administrator
-- Phone: (989) 588-9841 ext. 5
-
-### Step 2: Download and Complete Application Forms
-
-**Building Permits**
-- [Building Permit Application](forms/building_permit_all-in-one.pdf)
-- [Plumbing Permit Application](forms/plumbing_permit.pdf) - Contact Nate Caulkins: 989-539-2741
-- [Electrical Permit Application](forms/electrical_permit.pdf)
-- [Mechanical Permit Application](forms/mechanical_permit.pdf) - Contact Nate Caulkins: 989-539-2741
-
-**Zoning Permit**
-- [Zoning Permit Application](forms/zoning_permit.pdf)
-
-### Step 3: Submit Applications
-
-**Submit Building Permit Applications to:**
-Clare County Building Department
-225 W. Main St., P.O. Box 438
-Harrison, MI 48625
-Phone: 989-539-2761
-
-**Submit Zoning Permit Applications to:**
-Dick Hassberger, Zoning Administrator
-Lincoln Township Hall
-Phone: (989) 588-9841 ext. 5
-Email: zoning@lincolntwp.com
-
-### Step 4: Pay Permit Fees
-
-Permit fees will be calculated based on project scope and valuation. Payment is required before permits are issued.
-
-### Step 5: Schedule Inspections
-
-**The person who filed the permit application must schedule inspections with the Building Department.**
-
-Contact Clare County Building Department at 989-539-2761 to schedule required inspections at various stages of construction.
-
-## Additional Requirements
-
-### Soil Erosion Control
-
-If your project disturbs soil, you may need a soil erosion permit from the Clare Conservation District:
-- Website: [clarecd.org/se.html](http://www.clarecd.org/se.html)
-- Phone: 989-539-9364
-
-### Septic System Permits
-
-Septic system permits are handled by the Central Michigan District Health Department:
-- Phone: 989-773-5921
-- Website: [cmdhd.org](https://www.cmdhd.org/)
-
-## Frequently Asked Questions
-
-[Get answers to frequently asked questions about building in Lincoln Township →](/faq#building)
-
-## Related Resources
-
-- [Zoning Information](/zba)
-- [Planning Commission](/planning-commission)
-- [Permits & Forms](/permits-forms)
-- [Township Ordinances](/ordinances)
-- [Clare County Website](https://clareco.net/)', 'Services', 'Building & Development', NULL, false, 10, 'published', now(), now()),
+- **Supervisor**: Troy Kibbey — [(989) 588-9841 ext. 4](tel:989-588-9841)', 'Government', 'Budget & Finances', NULL, false, 5, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('calendar', 'Lincoln Township Events Calendar', 'Board meetings, events, and important dates for Lincoln Township', '## Events Calendar
 
 ### Regular Meeting Schedule
@@ -7657,7 +7670,7 @@ Special meetings are posted at Township Hall at least 18 hours in advance as req
 For current meeting schedules and dates, contact the Township Clerk:
 - **Carol Majewski**
 - Phone: 989-588-9069
-- Email: clm@lincolntwp.com', 'Government', 'Meetings & Calendar', NULL, false, 205, 'published', now(), now()),
+- Email: clm@lincolntwp.com', 'Government', 'Meetings & Calendar', NULL, false, 205, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('cemeteries', 'Lincoln Township Cemeteries', 'Information about Lincoln Township Cemetery and Kilbourn Cemetery including plots, fees, and burial services', 'Lincoln Township has ownership and control of two separate cemeteries: the Township Cemetery and the [Kilbourn Cemetery](#kilbourn-cemetery).
 
 [Lincoln Township Cemeteries Ordinance](/ordinances/42.pdf)
@@ -7706,7 +7719,7 @@ The smaller of the two, Kilbourn Cemetery was a private cemetery abandoned by th
 - **Jeffrey Smith**, Sexton — (989) 588-9294
 - **Carol Majewski**, Township Clerk — (989) 588-9069, Email: [clm@lincolntwp.com](mailto:clm@lincolntwp.com)
 
-Need to do some cemetery name or grave searches? Visit [FindAGrave.com](http://www.findagrave.com/).', 'Community', 'Facilities', NULL, false, 12, 'published', now(), now()),
+Need to do some cemetery name or grave searches? Visit [FindAGrave.com](http://www.findagrave.com/).', 'Community', 'Facilities', NULL, false, 12, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('compost', 'Lincoln Township Compost Yard', 'Lincoln Township compost facility hours, location, and accepted materials', '## Lincoln Township Compost Field
 
 **Open** Wednesday, Friday, and Sunday, 9:00 AM to Noon, April 1st through November 30th (unless there is snow, then it could close for the season earlier).
@@ -7726,7 +7739,7 @@ The compost field is located on Arthur Road just east of, and across the road fr
 
 Free compost when available.
 
-Thank you all in advance for your cooperation.', 'Services', 'Other Services', NULL, false, 13, 'published', now(), now()),
+Thank you all in advance for your cooperation.', 'Services', 'Other Services', NULL, false, 13, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('donate', 'Donate', 'Support Unicorn Gives and community programs in Lincoln Township', '## Support Our Community
 
 Unicorn Gives is a non-profit supporting the Lincoln Township community. Your donations go directly toward the programs, events, and spaces that bring our community together.
@@ -7754,7 +7767,7 @@ In the meantime, if you would like to make a donation or discuss how you can sup
 
 ### Transparency
 
-Unicorn Gives is committed to financial accountability. Financial information is available, and we believe the community should always have visibility into how resources are being used. Visit our [financial reports page](/financial-reports) for more details.', 'Community', 'Unicorn Gives', NULL, false, 23, 'published', now(), now()),
+Unicorn Gives is committed to financial accountability. Financial information is available, and we believe the community should always have visibility into how resources are being used. Visit our [financial reports page](/financial-reports) for more details.', 'Community', 'Unicorn Gives', NULL, false, 23, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('election-center', 'Election Center', 'Everything you need to know about voting in Clare County — registration, absentee ballots, polling locations, and upcoming elections', '## Register to Vote
 
 Michigan offers online voter registration through the [Michigan Voter Information Center](https://mvic.sos.state.mi.us/). You can register at any time — there is no deadline for in-person registration with your local clerk.
@@ -7791,90 +7804,36 @@ Clare County is recruiting election inspectors for upcoming elections. Inspector
 
 - **Carol Majewski**, Lincoln Township Clerk — [(989) 588-9841 ext. 2](tel:9895889841)
 - **Lori Mott**, Clare County Clerk — [(989) 539-7131](tel:9895397131)
-- **Ballot Drop Box** — Lincoln Township Hall, 175 Lake George Ave, Lake George, MI', 'Government', 'Transparency', NULL, false, 30, 'published', now(), now()),
-('elections', 'Lincoln Township Election Information', 'Voter registration, absentee ballots, and election information for Lincoln Township residents', '## Elections & Voting Information
+- **Ballot Drop Box** — Lincoln Township Hall, 175 Lake George Ave, Lake George, MI', 'Government', 'Transparency', NULL, false, 30, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('events-horn', 'Events at The Horn', 'Upcoming events, recurring schedules, and happenings at The Horn community center', '## Events at The Horn
 
-### Voter Registration & Absentee Voting
+The Horn hosts a variety of community events and gatherings in the heart of Lake George. From markets and meetups to workshops and celebrations, there is always something in the works.
 
-Due to the passing of Proposal 18-3, **anyone is eligible to request an Absentee Ballot** for any reason.
+### Recurring Events
 
-**Lincoln Township Clerk**
-- Carol Majewski
-- Phone: 989-588-9069
-- Email: clm@lincolntwp.com
+**Lincoln Township Gardening Club**
+Every Saturday, 9:00 AM. Weekly hands-on gardening meetups with seed swaps, tips, and community plot maintenance. On the first Saturday of each month, a special class is held on topics like composting, native Michigan plants, container gardening, and seasonal planning. Free and open to all skill levels — beginners welcome. [Read the full announcement](/news/gardening-club-launches)
 
-### How to Get an Absentee Ballot
+### Upcoming Events
 
-**Option 1: Automatic Application (Recommended)**
-Sign up for an automatic absentee ballot application for all elections in your jurisdiction.
+Additional events will be posted here as they are scheduled. Subscribe to stay in the loop.
 
-**Option 2: Request by Application**
-- [Download Absentee Ballot Application](docs/absentee_ballot_app.pdf)
-- Contact Carol Majewski at 989-588-9069 or clm@lincolntwp.com
+### Host Your Event
 
-**Option 3: Use the Ballot Drop Box**
-A secure ballot drop box is available at Lincoln Township Hall.
+The Horn''s space is available for community events and private bookings. Whether you are planning a meeting, a workshop, a celebration, or something else entirely, reach out to inquire about availability and details.
 
-### Absentee Ballot Deadlines
+### Stay Updated
 
-**Regular Request Deadline**
-If the ballot must be issued by mail, the application must reach the township clerk by **5:00 PM on the Friday before the election**.
+The best way to hear about new events is to subscribe to our mailing list:
+- **[Subscribe for event announcements](/subscribe)**
 
-**Late Request (In-Person)**
-Absentee ballots can be picked up in person at the clerk''s office anytime up to **4:00 PM on the day before the election**. You must vote the ballot in the office.
+You can also follow along on social media or check back here regularly.
 
-**Same Day Voter Registration**
-Voters who register on Election Day can obtain an absentee ballot until **8:00 PM on Election Day**.
+### More
 
-**Emergency Request**
-Emergency requests (due to personal disability or family death/illness) must be made after the regular deadline and before **4:00 PM on Election Day**.
-
-**Return Deadline**
-**ALL BALLOTS MUST BE RETURNED TO THE CLERK BY 8:00 PM ON ELECTION DAY.**
-
-### Voter Registration
-
-**Register to Vote**
-- In person: Lincoln Township Clerk''s office
-- Same-day registration available on Election Day
-- Contact: Carol Majewski at 989-588-9069
-
-### County Election Information
-
-**Clare County Clerk** (Elections Office)
-- Phone: 989-539-7131
-- Website: [clareclerkrod.com](http://clareclerkrod.com/)
-- Services: Voter registration, election information, sample ballots
-
-**Address**
-225 West Main, Harrison, MI 48625
-
-### Additional Resources
-
-**Michigan Voter Information Center**
-- [michigan.gov/vote](https://www.michigan.gov/vote)
-- Check registration status
-- View sample ballot
-- Find polling location
-
-**Secretary of State**
-- [michigan.gov/sos](https://www.michigan.gov/sos)
-- Voter registration
-- Election information
-- Absentee voting details
-
-### Contact the Township Clerk
-
-For questions about voting, registration, or absentee ballots:
-- **Carol Majewski, Township Clerk**
-- Phone: 989-588-9069
-- Email: clm@lincolntwp.com
-
-### Related Resources
-
-- [Board Meeting Calendar](/calendar)
-- [Frequently Asked Questions](/faq)
-- [Community Resources](/links)', 'Services', 'Other Services', NULL, false, 14, 'published', now(), now()),
+- [Community Events Calendar](/events)
+- [About The Horn](/about-the-horn)
+- [News & Updates](/news)', 'Community', 'The Horn', NULL, false, 25, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('events', 'Community Events', 'Upcoming community events in Lincoln Township from Unicorn Gives, The Horn, The Mane, and more', '## Community Events
 
 Your one-stop view of everything happening in Lincoln Township — from Unicorn Gives initiatives and Horn gatherings to township meetings and community activities.
@@ -7906,7 +7865,7 @@ Events are gathered from across the community:
 - [The Horn](/about-the-horn) — community center events and gatherings
 - [The Mane](/about-the-mane) — salon specials and community days
 - [Township Board](/calendar) — government meetings and public hearings
-- [Public Notices](/public-notices) — official township announcements', 'News & Events', 'Community Events', NULL, false, 48, 'published', now(), now()),
+- [Public Notices](/public-notices) — official township announcements', 'News & Events', 'Community Events', NULL, false, 48, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('faq', 'Frequently Asked Questions', 'Frequently asked questions about Lincoln Township services, permits, taxes, and more', '## Frequently Asked Questions
 
 *[Clerk](#clerk) | [Treasurer](#treasurer) | [Zoning Admin](#zoning) | [Building Department](#building) | [Assessing](#assess) | [County Transit](#countytransit)*
@@ -8049,7 +8008,7 @@ If it is a Township appraiser he is only doing his job. In the past we had black
 ### County Transit FAQs {#countytransit}
 
 **What kind of Senior Transportation is available?**
-Clare County Transit provides Public Transportation to all citizens in Clare County. For more information go to the [Clare County Transit Website](http://www.clarecountytransit.org/).', 'Information', 'Resources', NULL, false, 10, 'published', now(), now()),
+Clare County Transit provides Public Transportation to all citizens in Clare County. For more information go to the [Clare County Transit Website](http://www.clarecountytransit.org/).', 'Information', 'Resources', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('financial-reports', 'Financial Reports', 'Lincoln Township audit reports, financial disclosures, and fiscal accountability documents', '## Financial Reports & Disclosures
 
 Lincoln Township maintains financial records in accordance with Michigan state requirements. Audit reports and financial disclosures are posted here for public review.
@@ -8077,7 +8036,7 @@ All financial records are public information. You may also:
 ### Contact
 
 For financial questions or to request documents:
-- **Treasurer**: Maggie Carey — [989-588-2574](tel:989-588-2574)', 'Government', 'Budget & Finances', NULL, false, 6, 'published', now(), now()),
+- **Treasurer**: Maggie Carey — [989-588-2574](tel:989-588-2574)', 'Government', 'Budget & Finances', NULL, false, 6, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('fire', 'Lincoln Township Fire Department', 'Lincoln Township Fire Department information, burn permits, safety resources, and emergency contacts', 'The Lincoln Township Fire Department is a volunteer fire department established and operated pursuant to the laws of the State of Michigan. Under the supervision of the Lincoln Township Board, the department is responsible for fire and rescue protection throughout Lincoln and Freeman Townships, along with any mutual aid contracts.
 
 ## Township Sirens
@@ -8114,7 +8073,7 @@ Address: 310 Bringold Ave, Lake, MI 48632
 
 ## Volunteer
 
-The Lincoln Township Fire Department is always looking for dedicated volunteers. If you''re interested in serving your community, contact Fire Chief Dale Majewski or attend a board meeting to learn more.', 'Services', 'Public Safety', NULL, false, 15, 'published', now(), now()),
+The Lincoln Township Fire Department is always looking for dedicated volunteers. If you''re interested in serving your community, contact Fire Chief Dale Majewski or attend a board meeting to learn more.', 'Services', 'Public Safety', NULL, false, 15, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('foia', 'Freedom of Information Act (FOIA)', 'Freedom of Information Act (FOIA) request procedures and forms for Lincoln Township', 'Michigan''s Freedom of Information Act (FOIA) provides the public with the right to access government records. Lincoln Township is committed to transparency and provides the following documents to help you understand and exercise your rights under FOIA.
 
 ### FOIA Documents
@@ -8132,7 +8091,7 @@ To submit a FOIA request, download the [FOIA Forms Packet](/docs/foia/foia_forms
 **Carol Majewski, Township Clerk**
 - Phone: (989) 588-9841 ext. 2
 - Email: [clm@lincolntwp.com](mailto:clm@lincolntwp.com)
-- Mail: P.O. Box 239, Lake George, MI 48633', 'Information', 'Resources', NULL, false, 6, 'published', now(), now()),
+- Mail: P.O. Box 239, Lake George, MI 48633', 'Information', 'Resources', NULL, false, 6, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('forms-permits', 'Forms & Permits Hub', 'All downloadable forms and permit applications for Lincoln Township and Clare County — building, zoning, FOIA, elections, and more', '## Building & Construction
 
 | Form | Format | Source |
@@ -8189,7 +8148,74 @@ To submit a FOIA request, download the [FOIA Forms Packet](/docs/foia/foia_forms
 
 **Need a form not listed here?** Contact the Township Office at [(989) 588-9841](tel:9895889841) or check the [Clare County website](https://clareco.net).
 
-**Note:** Some forms may require in-person submission. Call ahead to confirm what you need to bring.', 'Services', 'Building & Development', NULL, true, 5, 'published', now(), now()),
+**Note:** Some forms may require in-person submission. Call ahead to confirm what you need to bring.', 'Services', 'Building & Development', NULL, true, 5, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('hours-horn', 'The Horn — Hours & Contact', 'Hours, location, and contact information for The Horn community center and membership club', '## Hours & Access
+
+### Public Hours
+
+The Horn is open to everyone — no membership required — during public hours:
+
+**10:00 AM – 2:00 PM, Daily**
+
+Stop by to check out the space, browse artisan goods, or just hang out. Everyone is welcome.
+
+### Member Access
+
+Members enjoy **24/7 key access**, 365 days a year. Your place, anytime.
+
+Free parking is available around the clock.
+
+**[Become a Member →](/membership)**
+
+---
+
+## Location
+
+The Horn is located in the historic former Lake George Grocery building in Lake George, MI.
+
+---
+
+## Stay in the Loop
+
+The best way to stay up to date on hours, events, and what''s happening at The Horn:
+- **Subscribe** to our mailing list at [/subscribe](/subscribe) for announcements
+- Follow us on social media for the latest updates
+
+---
+
+## Find Us
+
+- [About The Horn](/about-the-horn)
+- [Events at The Horn](/events-horn)
+- [Become a Member](/membership)', 'Community', 'The Horn', NULL, false, 27, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
+('hours-mane', 'The Mane — Hours & Contact', 'Hours, location, and contact information for The Mane boutique salon', '## Hours & Contact
+
+### Location
+
+300 Lake George St
+Lake George, MI 48633
+
+### Hours
+
+Hours may vary. Call ahead or book online for the most up-to-date availability.
+
+### Contact
+
+- **Phone:** (989) 588-6988
+- **Email:** hanna@unicorn.love
+- **Online Booking:** Available through Square Appointments — visit our [appointment page](/book-appointment)
+
+### Social Media
+
+Follow us for updates, inspiration, and appointment openings:
+- **Facebook:** @themane.lg
+- **Instagram:** @themane.lg
+
+### Find Us
+
+- [About The Mane](/about-the-mane)
+- [Our Services](/services-mane)
+- [Book an Appointment](/book-appointment)', 'Community', 'The Mane', NULL, false, 31, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('index', 'Unicorn Gives | Lincoln Township Community Hub', 'Your community hub for Lincoln Township, Clare County, Michigan', '## Welcome to Your Community Hub
 
 Unicorn Gives brings together everything happening in Lincoln Township, Clare County, Michigan — from government transparency to community events, all in one place.
@@ -8249,7 +8275,7 @@ Unicorn Gives brings together everything happening in Lincoln Township, Clare Co
 - [Frequently Asked Questions](/faq)
 - [Freedom of Information Act (FOIA)](/foia)
 - [Helpful Links](/links)
-- [Plat Maps](/plat-maps)', NULL, NULL, NULL, false, 1, 'published', now(), now()),
+- [Plat Maps](/plat-maps)', NULL, NULL, NULL, false, 1, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('lakes-bertha', 'Bertha Lake', 'Bertha Lake information, parks, and resources', '## Bertha Lake
 
 Bertha Lake is one of Lincoln Township''s beautiful natural resources, providing recreation and enjoyment for residents and visitors.
@@ -8281,7 +8307,7 @@ For lake-related questions or concerns, contact the Lake Commissioner:
 - [Lake Water Quality (Michigan Lakes Info)](/docs/lakes/lake_quality.pdf)
 - [Lake Water Quality: Are We Winning the War?](/docs/lakes/lakes_winning_war.pdf)
 - [Shoreland Overlay Zoning (National Lakes Assessment)](/docs/lakes/shoreland_overlay_zoning.pdf)
-- [Watershed Management](/docs/lakes/watershed_management.pdf)', 'Natural Resources', 'Lakes', NULL, false, 999, 'published', now(), now()),
+- [Watershed Management](/docs/lakes/watershed_management.pdf)', 'Natural Resources', 'Lakes', NULL, false, 999, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('lakes-lakegeorge', 'Lake George', 'Lake George information, management resources, and water quality data', 'Lake George is one of Lincoln Township''s most cherished natural resources, providing recreation and enjoyment for residents and visitors alike.
 
 ### Lake Evaluation
@@ -8316,7 +8342,7 @@ For lake-related questions or concerns, contact the Lincoln Township Office at (
 
 - [All Township Lakes](/lakes)
 - [Shoreland Zoning Information](/zoning)
-- [Dock and Lake Ordinances](/ordinances)', 'Natural Resources', 'Lakes', NULL, false, 999, 'published', now(), now()),
+- [Dock and Lake Ordinances](/ordinances)', 'Natural Resources', 'Lakes', NULL, false, 999, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('lakes-shingle', 'Shingle Lake', 'Shingle Lake information, parks, and resources', '## Shingle Lake
 
 Shingle Lake is one of Lincoln Township''s beautiful natural resources, providing recreation and enjoyment for residents and visitors.
@@ -8339,7 +8365,7 @@ For lake-related questions or concerns, contact the Lake Commissioner:
 - [All Township Lakes](/lakes)
 - [Lake Management Information](/lakes)
 - [Shoreland Zoning Information](/zoning)
-- [Dock and Lake Ordinances](/ordinances)', 'Natural Resources', 'Lakes', NULL, false, 999, 'published', now(), now()),
+- [Dock and Lake Ordinances](/ordinances)', 'Natural Resources', 'Lakes', NULL, false, 999, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('lakes-silver', 'Silver Lake', 'Silver Lake information, parks, and resources', '## Silver Lake
 
 Silver Lake is one of Lincoln Township''s beautiful natural resources, providing recreation and enjoyment for residents and visitors.
@@ -8371,7 +8397,7 @@ For lake-related questions or concerns, contact the Lake Commissioner:
 - [Lake Water Quality (Michigan Lakes Info)](/docs/lakes/lake_quality.pdf)
 - [Lake Water Quality: Are We Winning the War?](/docs/lakes/lakes_winning_war.pdf)
 - [Shoreland Overlay Zoning (National Lakes Assessment)](/docs/lakes/shoreland_overlay_zoning.pdf)
-- [Watershed Management](/docs/lakes/watershed_management.pdf)', 'Natural Resources', 'Lakes', NULL, false, 999, 'published', now(), now()),
+- [Watershed Management](/docs/lakes/watershed_management.pdf)', 'Natural Resources', 'Lakes', NULL, false, 999, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('lakes', 'Lakes', 'Information about Lincoln Township lakes including Lake George, Shingle, Bertha, and Silver', '## Lincoln Township Lakes
 
 Click the links below for information about our lakes:
@@ -8383,7 +8409,7 @@ Click the links below for information about our lakes:
 
 ### Contact
 
-For lake-related questions or concerns, contact the Lincoln Township Office at (989) 588-9841.', 'Natural Resources', 'Lakes', NULL, false, 10, 'published', now(), now()),
+For lake-related questions or concerns, contact the Lincoln Township Office at (989) 588-9841.', 'Natural Resources', 'Lakes', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('links', 'Community Resources & Links', 'Helpful links to Clare County services, schools, and community resources', '## Community Resources & Links
 
 ### Clare County Government
@@ -8540,7 +8566,91 @@ For lake-related questions or concerns, contact the Lincoln Township Office at (
 - [Permits & Forms](/permits-forms)
 - [Fire Department](/fire)
 - [Frequently Asked Questions](/faq)
-- [Freedom of Information Requests](/foia)', 'Information', 'Resources', NULL, false, 10, 'published', now(), now()),
+- [Freedom of Information Requests](/foia)', 'Information', 'Resources', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('membership', 'Join The Horn', 'Become a member of The Horn — Lake George''s community club with 24/7 access, events, a cigar lounge, game nights, and more', '## Your Place. Anytime.
+
+The Horn is a nonprofit community space designed to bring people together — a place rooted in belonging. Members get 24/7 access to a space where you can work during the day, unwind at night, and connect with like-minded people any time in between.
+
+Whether you''re looking for a late-night safe hangout, a quiet space to be productive, or a crew to share a bonfire with — this is it. No cover. No closing time. Just your place.
+
+The community you''ve been waiting for is ready to welcome you.
+
+---
+
+## Membership Plans
+
+| | Individual | Couple / +1 | Family |
+|---|---|---|---|
+| **Monthly** | **$40/mo** | **$60/mo** | **$100/mo** |
+| Members | 1 | 2 | Up to 4 |
+| 24/7 Key Access | ✓ | ✓ | ✓ |
+| All Member Benefits | ✓ | ✓ | ✓ |
+| Discounted Event Rates | ✓ | ✓ | ✓ |
+| Bring a Guest | ✓ | ✓ | ✓ |
+
+### Add VIP — $20/mo extra
+
+Want more? Add VIP to any membership for just **$20 extra per month**. VIP unlocks the **adults-only space** — also open 24/7 — where you can bring your own drinks and smoke indoors. A private space within the space.
+
+> **Not a member yet?** The Horn is open to the public daily from **10 AM – 2 PM**. Stop by, see the space, and meet the community before you commit.
+
+---
+
+## What You Get
+
+### 24/7 Access
+This is your place — come anytime, day or night. Members get key access around the clock, 365 days a year. Work from here during the day. Hang out after midnight. It''s always open for you.
+
+### Members-Only Cigar Lounge
+A dedicated lounge space for members to relax, socialize, and enjoy. Step away from the noise and settle in.
+
+### Free Wi-Fi & Work-Friendly Space
+Need a place to get things done? The Horn has reliable Wi-Fi and a comfortable setup for remote work, studying, or creative projects. Productive days, relaxed nights — all under one roof.
+
+### Late-Night Safe Hangout
+A safe, welcoming place to be after 2 AM. No bar scene, no pressure — just good company and a comfortable space when everywhere else is closed.
+
+### Game Nights & Entertainment
+Board games, video games, TVs, and music — all available to members. Regular game nights bring the community together for some friendly competition.
+
+### Discounted Event Rates
+Members enjoy discounted rates on events at The Horn — whether you''re celebrating a birthday, hosting a gathering, or joining one of our special community events.
+
+### Events — Indoors & Out
+Bonfire nights, seasonal gatherings, potlucks, and more. Members get access to exclusive events plus priority for all public programming at The Horn.
+
+### Bring a Guest
+Members can bring a guest to share the experience. Show a friend what The Horn is all about.
+
+### Food & Kitchen Access
+Members can use the kitchen for their own food prep and customization. We also host occasional potluck nights where the community comes together over a shared table.
+
+### Free Parking (24/7)
+Dedicated parking available around the clock — no meters, no hassle, no matter what time you stop by.
+
+### Exclusive Community
+This isn''t just a membership — it''s a community. Connect with your neighbors, meet new people, and be part of something that''s genuinely ours.
+
+---
+
+## Why People Join
+
+- **"This is my place."** — A space that feels like yours, not someone else''s business
+- **Late-night safe space** — Somewhere to go when everything else is closed
+- **Social connection** — Meet like-minded people and build real friendships
+- **Escape boredom & loneliness** — There''s always something to do and someone to hang with
+- **Productivity + escape** — Work during the day, chill at night
+- **Be part of something** — An exclusive community built by and for people in Lake George
+
+---
+
+## Sign Up Early
+
+Memberships are launching by **Memorial Weekend** — but you don''t have to wait. Sign up early at **[horn.love](https://horn.love)** to unlock your spot.
+
+You can also visit The Horn during public hours (**10 AM – 2 PM daily**) to see the space and sign up in person.
+
+**[Sign Up at horn.love](https://horn.love)** · **[Contact Us](/hours-horn)** · **[Events at The Horn](/events-horn)** · **[About The Horn](/about-the-horn)**', 'Community', 'The Horn', NULL, false, 26, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('minutes-archive', 'Meeting Minutes Archive', 'Lincoln Township meeting minutes — all years, searchable and filterable', 'This page has been replaced by our comprehensive **[Meeting Minutes Archive](/minutes)** which includes:
 
 - **139 meeting minutes** from 2014 through 2026
@@ -8557,7 +8667,7 @@ For lake-related questions or concerns, contact the Lincoln Township Office at (
 
 The original Lincoln Township website (lincolntwp.com) hosted board meeting minutes from 2005 through 2010 as individual HTML pages. When the domain was lost, most of these pages were not preserved by web archives. The dates that were referenced include meetings from March 2005 through December 2010 (approximately 60 meetings).
 
-If you need access to minutes from this period, please contact Lincoln Township directly via [FOIA request](/foia) or contact the Clerk at [clm@lincolntwp.com](mailto:clm@lincolntwp.com).', 'Government', 'Board & Leadership', NULL, false, 31, 'published', now(), now()),
+If you need access to minutes from this period, please contact Lincoln Township directly via [FOIA request](/foia) or contact the Clerk at [clm@lincolntwp.com](mailto:clm@lincolntwp.com).', 'Government', 'Board & Leadership', NULL, false, 31, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('newsletters', 'Lincoln Township Newsletter', 'Township newsletter archives and subscription information', '## Township Newsletter
 
 Stay informed about Lincoln Township news, events, and updates.
@@ -8579,7 +8689,7 @@ To receive township updates and announcements:
 
 - [Board Meeting Minutes](/board-minutes)
 - [Meeting Calendar](/calendar)
-- [Frequently Asked Questions](/faq)', 'Community', 'Resources', NULL, false, 26, 'published', now(), now()),
+- [Frequently Asked Questions](/faq)', 'Community', 'Resources', NULL, false, 26, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('ordinances-zoning-ord-creation', 'Zoning Ordinance Initiative', 'Documents and meeting minutes from the 2015-2017 zoning ordinance update process', '## Zoning Ordinance Initiative: 2015 - 2017
 
 Landplan Incorporated, Rural Community Planning & Zoning Services has been hired to assist Lincoln Township in the preparation of an updated Zoning Ordinance that reflects current State of Michigan laws and requirements. Documents pertaining to this process are posted below as they become available for the public to view.
@@ -8604,21 +8714,21 @@ Landplan Incorporated, Rural Community Planning & Zoning Services has been hired
 - [Meeting Minutes 4/27/2015](/docs/zoning_ord_creation/landplan_blueprint_meeting_minutes4-27-15.pdf) (approved minutes) — posted 7/1/2015
 - [4/27/15 Meeting Agenda](/docs/zoning_ord_creation/landplan_agenda_meeting4-27-15.pdf) — posted 4/13/2015
 - [Meeting Minutes 2/23/2015](/docs/zoning_ord_creation/landplan_blueprint_meeting_minutes2-23-15.pdf) (approved minutes) — posted 7/1/2015
-- [New Zoning Ordinance / February 23 Blueprint Meeting](/docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) — posted 2/21/15', 'Planning & Zoning', 'Regulations', NULL, false, 999, 'published', now(), now()),
+- [New Zoning Ordinance / February 23 Blueprint Meeting](/docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) — posted 2/21/15', 'Planning & Zoning', 'Regulations', NULL, false, 999, 'published', '2026-01-14T00:00:00.000Z'::timestamptz, now(), now()),
 ('ordinances', 'Lincoln Township Ordinances', 'Lincoln Township ordinances, regulations, and municipal codes', '## Township Ordinances
 
-- [Ordinance 30](ordinances/30.pdf) — Control of Dogs Ordinance
-- [Ordinance 32](ordinances/32.pdf) — Parks & Public Grounds Ordinance
-- [Ordinance 33](ordinances/33.pdf) — Nuisance & Blight Ordinance
-- [Ordinance 34](ordinances/34.pdf) — Emergency Services
-- [Ordinance 35](ordinances/35.pdf) — Parental Responsibility Ordinance
-- [Ordinance 38](ordinances/38.pdf) — Lot Splitting Ordinance
-- [Ordinance 39](ordinances/39.pdf) — Lake, Dock & Boat Ordinance
-- [Ordinance 40](ordinances/40.pdf) — Flood Plain Management
-- [Ordinance 41](ordinances/41.pdf) — Michigan Planning Enabling Act
-- [Ordinance 42](ordinances/42.pdf) — Fireworks Control
-- [Ordinance 46](ordinances/46.pdf) — Cemeteries Ordinance
-- [Ordinance 46](ordinances/46.pdf) — Prohibition of Rec. Marijuana Establishments
+- Ordinance 30 — Control of Dogs Ordinance
+- Ordinance 32 — Parks & Public Grounds Ordinance
+- Ordinance 33 — Nuisance & Blight Ordinance
+- Ordinance 34 — Emergency Services
+- Ordinance 35 — Parental Responsibility Ordinance
+- Ordinance 38 — Lot Splitting Ordinance
+- Ordinance 39 — Lake, Dock & Boat Ordinance
+- Ordinance 40 — Flood Plain Management
+- Ordinance 41 — Michigan Planning Enabling Act
+- Ordinance 42 — Fireworks Control
+- Ordinance 46 — Cemeteries Ordinance
+- Ordinance 46 — Prohibition of Rec. Marijuana Establishments
 - [Ordinance 44 — Zoning Ordinance](/zoning) — available at Township Hall or by request
 
 ### Ordinance Enforcement
@@ -8628,7 +8738,7 @@ Landplan Incorporated, Rural Community Planning & Zoning Services has been hired
 
 ### Additional Resources
 
-- [Lincoln Township Master Plan](docs/master_plan.pdf)', 'Planning & Zoning', 'Regulations', NULL, false, 17, 'published', now(), now()),
+- Lincoln Township Master Plan', 'Planning & Zoning', 'Regulations', NULL, false, 17, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('parks', 'Parks', 'Lincoln Township parks at Bertha Lake, Shingle Lake, and Silver Lake with amenities and pavilion rental', 'Lincoln Township maintains public parks on the shores of Shingle Lake, Bertha Lake, and Silver Lake, offering recreation and natural beauty for residents and visitors.
 
 ### Pavilion Rental
@@ -8676,7 +8786,7 @@ Silver Lake Park offers lakefront access for residents and visitors.
 
 ### Contact
 
-For park-related questions or pavilion reservations, contact the Township Clerk at (989) 588-9841 ext. 2.', 'Community', 'Facilities', NULL, false, 20, 'published', now(), now()),
+For park-related questions or pavilion reservations, contact the Township Clerk at (989) 588-9841 ext. 2.', 'Community', 'Facilities', NULL, false, 20, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('permits-forms', 'Permits & Forms', 'Download building permits, zoning permits, and other township forms', '## Permits & Forms
 
 ### Understanding Township vs County Permits
@@ -8725,13 +8835,13 @@ Lincoln Township works with **Clare County** to provide permit services. Here''s
 ### Building Permit Forms
 
 **County-Level Permits** (Submit to Clare County)
-- [Building Permit Application](forms/building_permit_all-in-one.pdf) - 989-539-2761
-- [Plumbing Permit Application](forms/plumbing_permit.pdf) - Nate Caulkins: 989-539-2741
-- [Electrical Permit Application](forms/electrical_permit.pdf)
-- [Mechanical Permit Application](forms/mechanical_permit.pdf) - Nate Caulkins: 989-539-2741
+- Building Permit Application - 989-539-2761
+- Plumbing Permit Application - Nate Caulkins: 989-539-2741
+- Electrical Permit Application
+- Mechanical Permit Application - Nate Caulkins: 989-539-2741
 
 **Township-Level Permits** (Submit to Lincoln Township)
-- [Zoning Permit Application](forms/zoning_permit.pdf) - Dick Hassberger: (989) 588-9841 ext. 5
+- Zoning Permit Application - Dick Hassberger: (989) 588-9841 ext. 5
 
 ### Additional Construction Permits
 
@@ -8752,7 +8862,7 @@ For septic system installation or repair:
 ### Park Pavilion Rental
 
 Reserve a pavilion at Bertha Lake, Shingle Lake, or Silver Lake parks:
-- [Park Pavilion Use Agreement](forms/twp_park_use_agreement.pdf)
+- Park Pavilion Use Agreement
 - Contact: Township Supervisor at 989-588-9841
 
 [View parks information →](/parks)
@@ -8816,7 +8926,7 @@ For services beyond township level:
 - [Planning Commission](/planning-commission)
 - [Township Ordinances](/ordinances)
 - [Frequently Asked Questions](/faq)
-- [Clare County Website](https://clareco.net/)', 'Services', 'Building & Development', NULL, false, 12, 'published', now(), now()),
+- [Clare County Website](https://clareco.net/)', 'Services', 'Building & Development', NULL, false, 12, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('planning-commission', 'Planning Commission', 'Planning Commission meeting minutes, agendas, and zoning information', '## Planning Commission
 
 [Subscribe for notifications when minutes are updated](/subscribe)
@@ -8869,7 +8979,7 @@ The approval of the latest minutes will be voted on at the next meeting.
 - [10-21-08](/archive/planning_minutes/plancomm_min10-21-08.pdf)
 - [7-15-08](/archive/planning_minutes/plancomm_min7-15-08.pdf)
 - [6-17-08](/archive/planning_minutes/plancomm_min6-17-08.pdf)
-- [2-19-08](/archive/planning_minutes/plancomm_min2-19-08.pdf)', 'Planning & Zoning', 'Commissions', NULL, false, 10, 'published', now(), now()),
+- [2-19-08](/archive/planning_minutes/plancomm_min2-19-08.pdf)', 'Planning & Zoning', 'Commissions', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('plat-maps', 'Lincoln Township Plat Maps', 'Subdivision plat maps and property information for Lincoln Township', 'Below you will find plat maps for Lincoln Township organized by section (metes and bounds), White Birch subdivisions, and other named subdivisions.
 
 ---
@@ -8951,7 +9061,7 @@ The approval of the latest minutes will be voted on at the next meeting.
 - [Wigwah Trails, Section 21](/docs/plat-maps/bertha_through_woodmere/WigwahTrailsSec21.pdf)
 - [Woodland Estates Lake George, Section 16](/docs/plat-maps/bertha_through_woodmere/WoodlandEstatesLakeGeorgeSec16.pdf)
 - [Woodmere First Addition, Section 16](/docs/plat-maps/bertha_through_woodmere/WoodmereFirstAdditionSec16.pdf)
-- [Woodmere Government Lots 1, 2, 3 & 4, Section 17](/docs/plat-maps/bertha_through_woodmere/WoodmereGovLots1_2_3_4Sec17.pdf)', 'Information', 'Resources', NULL, false, 4, 'published', now(), now()),
+- [Woodmere Government Lots 1, 2, 3 & 4, Section 17](/docs/plat-maps/bertha_through_woodmere/WoodmereGovLots1_2_3_4Sec17.pdf)', 'Information', 'Resources', NULL, false, 4, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('programs', 'Programs', 'Current programs and community initiatives run by Unicorn Gives', '## Programs & Initiatives
 
 Unicorn Gives coordinates community initiatives for Lincoln Township through its partner establishments, The Horn and The Mane. Our programs focus on community building, local economic support, and bringing people together.
@@ -8978,7 +9088,7 @@ New programs are developed based on community needs. Have an idea? Get involved 
 We collaborate with local organizations including:
 - [The Horn Community Center](/about-the-horn)
 - [The Mane Boutique Salon](/about-the-mane)
-- Lincoln Township Board of Trustees', 'Community', 'Unicorn Gives', NULL, false, 21, 'published', now(), now()),
+- Lincoln Township Board of Trustees', 'Community', 'Unicorn Gives', NULL, false, 21, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('public-notices', 'Public Notices', 'Official public notices, hearing schedules, and important deadlines for Lincoln Township and Clare County residents', '## Active Notices
 
 ### Special Assessment District (SAD) Public Hearings
@@ -9018,7 +9128,7 @@ Michigan legal notices are published through the state system at [Michigan Publi
 ## Contact
 
 Questions about public notices? Contact the Township Clerk:
-- **Carol Majewski** — [(989) 588-9841 ext. 2](tel:9895889841)', 'Government', 'Transparency', NULL, false, 31, 'published', now(), now()),
+- **Carol Majewski** — [(989) 588-9841 ext. 2](tel:9895889841)', 'Government', 'Transparency', NULL, false, 31, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('seniors', 'Senior Services', 'Senior services, dining center, activities, and resources for Lincoln Township residents', '## Senior Services
 
 ### Lincoln Township Senior Dining Center
@@ -9074,7 +9184,7 @@ Call Deb at 988-9841 ext. 1 for information.
 
 **Disabled Veterans Property Tax Exemption**
 - [Information and FAQs](http://www.michigan.gov/documents/taxes/Disabled_Veterans_Exemption_FAQ_082614_466519_7.pdf)
-- [Download Exemption Form](docs/vet_exemption_form.pdf)
+- Download Exemption Form
 
 **Veterans Services**
 - Clare County Veterans Services: 989-539-7108
@@ -9083,8 +9193,8 @@ Call Deb at 988-9841 ext. 1 for information.
 #### Legal & Financial Resources
 
 - [Legal Resources for Seniors](https://www.justgreatlawyers.com/legal-resources-considerations-seniors-special-needs)
-- [Services for Seniors: Laws and Programs](docs/services_for_seniors.pdf)
-- [Protect Yourself from Abuse & Fraud](docs/guide_for_seniors_abuse-fraud.pdf)
+- Services for Seniors: Laws and Programs
+- Protect Yourself from Abuse & Fraud
 
 #### Health & Wellness
 
@@ -9097,11 +9207,11 @@ Call Deb at 988-9841 ext. 1 for information.
 
 - [Home Accommodations for Seniors](http://www.homeadvisor.com/r/budget-friendly-smart-home-accommodations-for-seniors-and-individuals-with-special-needs/)
 - [Tips to Declutter and Organize Your Home](https://www.yourstoragefinder.com/declutter-and-organize-your-home-seniors-special-needs)
-- [Disaster Preparedness for Seniors](docs/disaster_preparedness_for_seniors.pdf)
+- Disaster Preparedness for Seniors
 
 #### Family Resources
 
-- [GrandFacts: Fact Sheets for Grandparents](docs/grandfacts-michigan.pdf)
+- GrandFacts: Fact Sheets for Grandparents
 - [Senior Preferences: Guide to Community Resources](http://www.seniorpreferences.com/)
 
 ### Active Aging
@@ -9129,7 +9239,111 @@ Visit the [Growing Bolder website](http://growingbolder.com/) to see exciting th
 
 - [Community Resources & Links](/links)
 - [Frequently Asked Questions](/faq)
-- [Board of Trustees](/board)', 'Community', 'Resources', NULL, false, 10, 'published', now(), now()),
+- [Board of Trustees](/board)', 'Community', 'Resources', NULL, false, 10, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
+('services-mane', 'The Mane — Services', 'Service menu and offerings at The Mane boutique salon in Lincoln Township', '## Our Services
+
+The Mane offers a full range of hair and nail services at our Lake George salon. All hair services use professional-grade products from All-Nutrient, Sukesha, and I.N.O.
+
+### Our Team
+
+- **Hanna Unicorn** — Owner & Stylist. Licensed in 2016, MJ Murphy Beauty College.
+- **Hannah "Eileen" Herd** — Nail Technician. Licensed in 2023, MJ Murphy Beauty College. Joined The Mane in 2022.
+- **Katie McComber** — Stylist. Licensed in 2022, Protege Academy. Specializes in personalized color work.
+
+---
+
+### Hair Services
+
+#### Cuts & Grooming
+| Service | Price |
+|---|---|
+| Buzz Cut | $15 |
+| Clipper Cut | $20 |
+| Scissor Cut | $25 |
+| Beard Trim | $10 |
+| Bang Trim | $10 |
+| Kids Cut | $15 - $20 |
+
+#### Color
+| Service | Price |
+|---|---|
+| Root Touch-Up | $55 |
+| All-Over Color | $65+ |
+| Partial Highlights | $75+ |
+| Full Highlights | $95+ |
+| Color Correction | $95+/hr |
+
+#### Styling & Treatments
+| Service | Price |
+|---|---|
+| Perm | $65+ |
+| Up-Do | $45+ |
+| Special Occasion Style | $55+ |
+| Deep Conditioning Treatment | $15 - $25 |
+| Scalp Massage | $15 |
+| Gloss / Glaze | $35 - $45 |
+
+#### Waxing
+| Service | Price |
+|---|---|
+| Eyebrow Wax | $10 |
+| Lip or Chin Wax | $10 |
+
+---
+
+### Nail Services
+
+#### Acrylic Nails
+| Service | Price |
+|---|---|
+| Full Set Acrylics | $35 |
+| Acrylic Fill | $23 |
+| Acrylic Overlay | $30 |
+
+#### Gel Nails
+| Service | Price |
+|---|---|
+| Hard Gel Full Set | $40 |
+| Hard Gel Fill | $23 |
+| Gel Overlay | $35 |
+| Builder Gel | $49 |
+
+#### Manicures
+| Service | Price |
+|---|---|
+| Classic Manicure | $20 |
+| Gel Manicure | $30 |
+| Deluxe Manicure | $37 |
+
+#### Pedicures
+| Service | Price |
+|---|---|
+| Classic Pedicure | $35 |
+| Gel Pedicure | $40 |
+| Deluxe Pedicure | $45 |
+
+#### Add-Ons
+| Add-On | Price |
+|---|---|
+| Gel Polish Upgrade | $10 |
+| Nail Art | from $5 |
+| Gems / Decals | $1 - $3 |
+| French Tips | $5 |
+| Soak Off | $10 - $20 |
+
+---
+
+### eGift Cards
+
+eGift Cards are available starting at $10 — a great option for birthdays, holidays, or just because. Ask in-salon or contact us for details.
+
+### Book an Appointment
+
+Ready to schedule? Visit our [appointment page](/book-appointment) or call (989) 588-6988.
+
+### Contact
+
+For questions about our services, visit our [hours & contact page](/hours-mane).', 'Community', 'The Mane', NULL, false, 29, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('subscribe', 'Subscribe', 'Stay updated with Lincoln Township news and announcements', '## Stay Updated
 
 Receive notifications about Lincoln Township meetings, news, and important announcements.
@@ -9154,7 +9368,7 @@ Receive notifications about Lincoln Township meetings, news, and important annou
 - [Board Meeting Calendar](/calendar)
 - [Meeting Minutes](/board-minutes)
 - [Newsletter Archive](/newsletters)
-- [Frequently Asked Questions](/faq)', 'Information', 'Resources', NULL, false, 33, 'published', now(), now()),
+- [Frequently Asked Questions](/faq)', 'Information', 'Resources', NULL, false, 33, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('volunteer', 'Volunteer', 'Volunteer opportunities with Unicorn Gives in Lincoln Township', '## Volunteer With Us
 
 Unicorn Gives relies on the energy and commitment of community volunteers. Whether you have an hour or a whole weekend, there is a way to help.
@@ -9185,7 +9399,7 @@ Ready to volunteer? Here is how to get involved:
 
 - [About Unicorn Gives](/about-unicorn-gives)
 - [Current Programs](/programs)
-- [Upcoming Events](/events)', 'Community', 'Unicorn Gives', NULL, false, 22, 'published', now(), now()),
+- [Upcoming Events](/events)', 'Community', 'Unicorn Gives', NULL, false, 22, 'published', '2026-03-25T00:00:00.000Z'::timestamptz, now(), now()),
 ('zba-plancomm-minutes', 'ZBA & Planning Commission Minutes', 'Meeting minutes for the Planning Commission and Zoning Board of Appeals', '## Planning Commission and Zoning Board of Appeals Meeting Minutes
 
 The Planning Committee meets the 1st Tuesday (after the 2nd Monday) each month, 7:00 PM.
@@ -9260,7 +9474,7 @@ These minutes are approved. Approval does not happen until there is another vari
 - [3-12-10](/archive/zoning_minutes/zba_min3-12-10.pdf)
 - [6-2-09](/archive/zoning_minutes/zba_min6-2-09.pdf)
 - [7-28-08 and 7-29-08](/archive/zoning_minutes/zba_min7-28-08and7-29-08.pdf)
-- [5-20-08](/archive/zoning_minutes/zba_min5-20-08.pdf)', 'Planning & Zoning', 'Commissions', NULL, false, 999, 'published', now(), now()),
+- [5-20-08](/archive/zoning_minutes/zba_min5-20-08.pdf)', 'Planning & Zoning', 'Commissions', NULL, false, 999, 'published', '2026-01-14T00:00:00.000Z'::timestamptz, now(), now()),
 ('zba', 'Zoning Board of Appeals', 'Zoning Board of Appeals information, meeting minutes, and variance applications', '## Zoning Board of Appeals
 
 [Zoning Board of Appeals Bylaws](/docs/zba_bylaws.pdf)
@@ -9306,13 +9520,13 @@ These minutes are approved (approval does not happen until there is another vari
 - [3-12-10](/archive/zoning_minutes/zba_min3-12-10.pdf)
 - [6-2-09](/archive/zoning_minutes/zba_min6-2-09.pdf)
 - [7-28-08 and 7-29-08](/archive/zoning_minutes/zba_min7-28-08and7-29-08.pdf)
-- [5-20-08](/archive/zoning_minutes/zba_min5-20-08.pdf)', 'Planning & Zoning', 'Commissions', NULL, false, 120, 'published', now(), now()),
+- [5-20-08](/archive/zoning_minutes/zba_min5-20-08.pdf)', 'Planning & Zoning', 'Commissions', NULL, false, 120, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now()),
 ('zoning', 'Lincoln Township Zoning', 'Zoning ordinances, permits, and planning information for Lincoln Township', '## Planning Commission / Zoning Board
 
 *[Get Answers to Frequently Asked Questions about Zoning.](/faq#zoning)*
 
 Lincoln Township is in the process of creating a wholly new Zoning Ordinance.
-Click [HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) to follow this process.
+Click HERE to follow this process.
 
 ### Planning Commission
 
@@ -9334,7 +9548,7 @@ Click [HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) to 
 
 ### Key Documents
 
-- [Lincoln Township Master Plan](docs/master_plan.pdf)
+- Lincoln Township Master Plan
 - Zoning Ordinance — available at Township Hall or by request. Contact Dick Hassberger at (989) 588-9841 ext. 5.
 - [Zoning Map](/zoning.map.pdf)
 
@@ -9345,22 +9559,33 @@ Click [HERE](docs/zoning_ord_creation/landplan_blueprint_meeting2-23-15.pdf) to 
 
 ### Zoning Forms
 
-- [ZBA Application for Variance Form](forms/zoning_variance_app.pdf)
-- [Zoning Complaint Form](forms/zoning_complaint.pdf)
-- [Zoning Permit Application](forms/zoning_permit.pdf)
-- [Parcel Division Application](forms/parcel_division_app.pdf)
-- [Conditional Rezoning Application](forms/conditional_rezoning_app.pdf) — [Conditional Rezoning Procedure Information](docs/conditional_rezoning_info.pdf)
-- [Special Exemption Use Permit](forms/special_use_permit.pdf)
-- [Home Occupation Permit](forms/home_occupation_permit.pdf)
-- [Building Permit Application Form and Fees](forms/building_permit.pdf)
+- ZBA Application for Variance Form
+- Zoning Complaint Form
+- Zoning Permit Application
+- Parcel Division Application
+- Conditional Rezoning Application — Conditional Rezoning Procedure Information
+- Special Exemption Use Permit
+- Home Occupation Permit
+- Building Permit Application Form and Fees
 
 **Both the Building Permit and the Zoning Permit are needed to begin a building project.**
 
 ### Soil Erosion Resources
 
 - [Clare County Soil Erosion Information](http://www.clarecd.org/) (Clare Conservation District Website)
-- [Soil Erosion and Sedimentation Control Permit Filing Schedule](http://www.clarecd.org/Soil%20Erosion/soil%20erosion%20app%2010-1-10.pdf)', 'Planning & Zoning', 'Regulations', NULL, false, 21, 'published', now(), now())
-ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;
+- [Soil Erosion and Sedimentation Control Permit Filing Schedule](http://www.clarecd.org/Soil%20Erosion/soil%20erosion%20app%2010-1-10.pdf)', 'Planning & Zoning', 'Regulations', NULL, false, 21, 'published', '2025-01-19T00:00:00.000Z'::timestamptz, now(), now())
+ON CONFLICT (slug) DO UPDATE SET
+  title = EXCLUDED.title,
+  description = EXCLUDED.description,
+  body = EXCLUDED.body,
+  category = EXCLUDED.category,
+  subcategory = EXCLUDED.subcategory,
+  nav_title = EXCLUDED.nav_title,
+  hide_from_nav = EXCLUDED.hide_from_nav,
+  display_order = EXCLUDED.display_order,
+  status = EXCLUDED.status,
+  last_updated = EXCLUDED.last_updated,
+  published_at = EXCLUDED.published_at;
 
 INSERT INTO public.partner_pages (partner_id, slug, title, body, tab_slug, display_order, status, created_at, published_at)
 VALUES

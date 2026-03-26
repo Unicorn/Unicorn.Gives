@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Platform, View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
@@ -11,81 +11,160 @@ interface CmsPage {
   body: string;
 }
 
-// Pre-render CMS pages for static web export using the repo-level markdown archive.
-export function generateStaticParams() {
-  // Node-only: expo export calls this during build.
-  const fs = require('fs') as typeof import('fs');
-  const path = require('path') as typeof import('path');
+/**
+ * Pre-render CMS pages for static web export.
+ *
+ * We no longer require `content/pages/*.md` to exist at build time.
+ * Instead, we derive the slug list from the Supabase seed SQL.
+ */
+const SEED_SQL_PATH_CANDIDATES = [
+  // when building from repo root
+  'supabase/migrations/002_seed_content.sql',
+  // when building from apps/mobile
+  '../../supabase/migrations/002_seed_content.sql',
+  // extra fallback (some tooling may set different cwd)
+  '../../../supabase/migrations/002_seed_content.sql',
+];
 
-  function findContentPagesDir() {
-    const candidates = [
-      path.join(process.cwd(), 'content', 'pages'),
-      path.join(process.cwd(), '..', 'content', 'pages'),
-      path.join(process.cwd(), '..', '..', 'content', 'pages'),
-      path.join(process.cwd(), '..', '..', '..', 'content', 'pages'),
-    ];
-    for (const c of candidates) {
-      if (fs.existsSync(c)) return c;
-    }
-    throw new Error(`content/pages directory not found. Looked in: ${candidates.join(', ')}`);
-  }
-
-  const pagesDir = findContentPagesDir();
-  const files = fs
-    .readdirSync(pagesDir)
-    .filter((f: string) => f.endsWith('.md') || f.endsWith('.mdx'));
-
-  return files.map((f: string) => ({
-    slug: f.replace(/\.mdx?$/, ''),
-  }));
-}
-
-function loadLocalCmsPageSync(slug: string): CmsPage | null {
-  // Only do local filesystem reads during server/static rendering.
-  if (Platform.OS !== 'web') return null;
+function loadSeedSql(): string | null {
+  // Node-only.
   if (typeof window !== 'undefined') return null;
 
-  // Node-only: during expo export / SSR, this should be executed in Node.js.
   const fs = require('fs') as typeof import('fs');
   const path = require('path') as typeof import('path');
 
-  const candidates = [
-    path.join(process.cwd(), 'content', 'pages', `${slug}.md`),
-    path.join(process.cwd(), '..', '..', 'content', 'pages', `${slug}.md`),
-    path.join(process.cwd(), '..', 'content', 'pages', `${slug}.md`),
-    path.join(process.cwd(), '..', '..', '..', 'content', 'pages', `${slug}.md`),
-  ];
+  for (const rel of SEED_SQL_PATH_CANDIDATES) {
+    const p = path.join(process.cwd(), rel);
+    if (fs.existsSync(p)) return fs.readFileSync(p, 'utf-8');
+  }
+  return null;
+}
 
-  const filePath = candidates.find((p) => fs.existsSync(p));
-  if (!filePath) return null;
+function parseSqlTuples(valuesBlock: string): string[][] {
+  // Parses a comma-separated list of tuples: (...) , (...) , ...
+  // Each tuple value can be a single-quoted SQL string, NULL, boolean, number, or function like now().
+  const tuples: string[][] = [];
+  const s = valuesBlock;
+  let i = 0;
 
-  const markdown = fs.readFileSync(filePath, 'utf-8');
-
-  const match = markdown.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
-  if (!match) return null;
-  const frontmatter = match[1];
-  const body = match[2].trim();
-
-  const getYamlString = (key: string) => {
-    const re = new RegExp(`^${key}:\\s*(.+)$`, 'm');
-    const m = frontmatter.match(re);
-    if (!m) return null;
-    let v = m[1].trim();
-    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
-      v = v.slice(1, -1);
-    }
-    return v;
+  const skipWs = () => {
+    while (i < s.length && /\s/.test(s[i])) i++;
   };
 
-  const title = getYamlString('title') ?? slug;
-  const description = getYamlString('description') ?? null;
-  return { title, description, body };
+  const parseString = () => {
+    // assumes s[i] === "'"
+    i++; // skip opening quote
+    let out = '';
+    while (i < s.length) {
+      const ch = s[i];
+      if (ch === "'") {
+        // escaped quote: ''
+        if (s[i + 1] === "'") {
+          out += "'";
+          i += 2;
+          continue;
+        }
+        i++; // skip closing quote
+        break;
+      }
+      out += ch;
+      i++;
+    }
+    return out;
+  };
+
+  const parseToken = () => {
+    // Reads until a top-level comma or tuple-closing paren.
+    // Needed because seed SQL includes function calls like `now()` which contain ')'.
+    const start = i;
+    let depth = 0;
+    while (i < s.length) {
+      const ch = s[i];
+      if (ch === '(') {
+        depth++;
+        i++;
+        continue;
+      }
+      if (ch === ')') {
+        if (depth === 0) break; // tuple close; don't consume
+        depth--;
+        i++;
+        continue;
+      }
+      if (depth === 0 && ch === ',') break;
+      i++;
+    }
+    return s.slice(start, i).trim();
+  };
+
+  while (i < s.length) {
+    skipWs();
+    if (s[i] !== '(') break;
+    i++; // skip '('
+
+    const values: string[] = [];
+    while (i < s.length) {
+      skipWs();
+      if (s[i] === "'") {
+        values.push(parseString());
+      } else {
+        values.push(parseToken());
+      }
+
+      skipWs();
+      if (s[i] === ',') {
+        i++; // skip comma
+        continue;
+      }
+      if (s[i] === ')') {
+        i++; // skip ')'
+        break;
+      }
+    }
+
+    tuples.push(values);
+    skipWs();
+    if (s[i] === ',') i++;
+  }
+
+  return tuples;
+}
+
+let cachedSeedPageSlugs: string[] | null = null;
+function getSeedPageSlugs(): string[] {
+  if (cachedSeedPageSlugs) return cachedSeedPageSlugs;
+
+  const sql = loadSeedSql();
+  if (!sql) return [];
+
+  const insertIdx = sql.indexOf('INSERT INTO public.pages');
+  if (insertIdx === -1) return [];
+
+  const valuesIdx = sql.indexOf('VALUES', insertIdx);
+  if (valuesIdx === -1) return [];
+
+  const endIdx = sql.indexOf('\n;\n\n', valuesIdx);
+  const statementEnd = endIdx !== -1 ? endIdx + 3 : sql.length;
+
+  const valuesBlock = sql.slice(valuesIdx + 'VALUES'.length, statementEnd).trim();
+  const tuples = parseSqlTuples(valuesBlock);
+
+  cachedSeedPageSlugs = tuples
+    .filter((t) => t.length >= 1 && t[0])
+    .map((t) => t[0])
+    .filter(Boolean);
+
+  return cachedSeedPageSlugs;
+}
+
+export function generateStaticParams() {
+  const slugs = getSeedPageSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export default function GlobalCmsPage() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
-  const initialPage = useMemo(() => (slug ? loadLocalCmsPageSync(slug) : null), [slug]);
-  const [page, setPage] = useState<CmsPage | null>(initialPage);
+  const [page, setPage] = useState<CmsPage | null>(null);
 
   useEffect(() => {
     if (!slug) return;
@@ -103,20 +182,23 @@ export default function GlobalCmsPage() {
 
   const resolvedTitle = page?.title ?? slug?.replace(/-/g, ' ') ?? 'Page';
 
+  if (!page) {
+    return (
+      <View style={styles.page}>
+        <AppHeader title={resolvedTitle} />
+        <ScrollView contentContainerStyle={styles.content}>
+          <Text style={styles.loading}>Loading…</Text>
+        </ScrollView>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.page}>
       <AppHeader title={resolvedTitle} />
       <ScrollView contentContainerStyle={styles.content}>
-        {page ? (
-          <>
-            {page.description ? (
-              <Text style={styles.description}>{page.description}</Text>
-            ) : null}
-            <MarkdownRenderer content={page.body} />
-          </>
-        ) : (
-          <Text style={styles.notFound}>No content found for this page.</Text>
-        )}
+        {page.description ? <Text style={styles.description}>{page.description}</Text> : null}
+        <MarkdownRenderer content={page.body} />
       </ScrollView>
     </View>
   );
@@ -126,6 +208,6 @@ const styles = StyleSheet.create({
   page: { flex: 1, backgroundColor: '#fcf9f4' },
   content: { padding: 20, paddingBottom: 40, gap: 12 },
   description: { fontSize: 14, color: '#73796d', lineHeight: 20 },
-  notFound: { paddingTop: 24, color: '#73796d', textAlign: 'center' },
+  loading: { paddingTop: 24, color: '#73796d', textAlign: 'center' },
 });
 
