@@ -2,26 +2,14 @@
   "name": "unicorn-gives",
   "version": "0.0.1",
   "private": true,
-  "workspaces": [
-    "app"
-  ],
+  "packageManager": "pnpm@10.23.0",
   "scripts": {
-    "dev": "npm run dev --workspace=app",
-    "dev:web": "npm run web --workspace=app",
-    "build": "npm run build --workspace=app",
-    "astro:dev": "astro dev",
-    "astro:build": "astro build",
-    "astro:preview": "astro preview",
-    "migrate": "node scripts/migrate-to-supabase.mjs"
-  },
-  "dependencies": {
-    "astro": "^5.16.9"
+    "dev": "nx run mobile:start",
+    "build": "nx run mobile:build"
   },
   "devDependencies": {
-    "@astrojs/mdx": "^4.3.13",
-    "@astrojs/sitemap": "^3.6.1",
-    "@fontsource/barlow": "^5.2.8",
-    "@fontsource/barlow-condensed": "^5.2.8",
-    "@fontsource/bebas-neue": "^5.2.7"
+    "@nx/expo": "^22.6.1",
+    "@nx/workspace": "^22.6.1",
+    "nx": "^22.6.1"
   }
 }

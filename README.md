@@ -1,196 +1,117 @@
 # unicorn.gives
 
-Official website replica for Lincoln Township, Michigan, built with Astro and featuring unicorn.love branding.
+Community hub for Clare County, Michigan: **Expo (expo-router)** for web and native, content in-repo and Supabase, with **unicorn.love**-style branding.
 
 ## Features
 
-- 🎨 **unicorn.love Branding** - Purple color scheme, Barlow fonts
-- 🚀 **Astro Static Site** - Fast, SEO-optimized static generation
-- 📝 **Git-based CMS** - Edit content as Markdown files
-- 📱 **Responsive Design** - Mobile-friendly with hamburger menu
-- 🔍 **SEO Optimized** - Meta tags, Open Graph, structured data, sitemap
-- 🤖 **Auto Deploy** - GitHub Actions → Cloudflare Pages
+- **unicorn.love branding** — Purple palette, readable typography
+- **Expo static web export** — Static HTML routes for SEO (`apps/mobile`)
+- **Git-based content** — Markdown and app content in the monorepo
+- **Responsive** — Mobile-first layouts
+- **Deployment** — AWS: **S3** + **CloudFront** + **Route 53** (DNS on AWS; domain registration stays at your registrar)
 
-## Project Structure
+## Project structure
 
 ```
 /
-├── public/
-│   ├── assets/          # Images, PDFs, documents
-│   └── robots.txt
-├── scripts/
-│   └── scraper/         # Python scraping scripts
-├── src/
-│   ├── components/      # Astro components
-│   ├── content/
-│   │   ├── config.ts    # Content schema
-│   │   └── pages/       # Markdown content files
-│   ├── layouts/         # Page layouts
-│   ├── pages/           # Route pages
-│   └── styles/          # Global styles
-├── .github/
-│   └── workflows/       # GitHub Actions
-└── astro.config.mjs
+├── apps/
+│   ├── mobile/          # Expo app (expo-router) — primary web export
+│   └── site/            # (removed) Astro marketing/docs site
+├── packages/            # Shared packages (e.g. UI)
+├── scripts/             # Scrapers, migrations
+├── supabase/            # Supabase config/migrations
+├── deploy/
+│   └── aws.env.example  # Non-secret AWS resource IDs (copy patterns to `.env`)
+└── .github/workflows/   # CI deploy to S3 + CloudFront invalidation
 ```
 
-## Getting Started
-
-### Prerequisites
+## Prerequisites
 
 - Node.js 20+
-- Python 3.8+
-- Git
+- [pnpm](https://pnpm.io) 10.x (`corepack enable`)
+- Python 3.8+ (optional, for scraping tools)
 
-### Installation
+## Install
 
 ```bash
-# Clone the repository
 git clone https://github.com/YOUR_USERNAME/unicorn-gives.git
 cd unicorn-gives
-
-# Install Node dependencies
-npm install
-
-# Set up Python virtual environment (for scraping)
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install waybackpy beautifulsoup4 requests lxml markdownify
+pnpm install --frozen-lockfile
 ```
 
 ## Development
 
 ```bash
-# Start dev server
-npm run dev
-# → http://localhost:4321
+# Expo dev (from monorepo root)
+pnpm dev
 
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
+# Production-like web export (output: apps/mobile/dist)
+pnpm build
 ```
 
-## Content Management
+## Content
 
-### Adding/Editing Pages
+- App screens and data: `apps/mobile/`
+- Content is served from Supabase (managed in Supabase).
 
-1. Navigate to `src/content/pages/`
-2. Create or edit `.md` files
-3. Use this frontmatter format:
+## Deployment (AWS)
 
-```markdown
----
-title: "Page Title"
-description: "SEO description (max 160 chars)"
-lastUpdated: "2024-11-02"
-order: 1
----
+**Live static site:** S3 bucket → CloudFront → browsers.  
+**DNS:** Route 53 hosted zone for `unicorn.gives` (authoritative NS from AWS, set at your **registrar only**).
 
-## Your Content Here
+Reference resource names (see also [deploy/aws.env.example](./deploy/aws.env.example)):
 
-Write your content in Markdown...
-```
+| Resource | Value |
+|----------|--------|
+| CloudFront URL | `https://d25w74w41kavdz.cloudfront.net` |
+| Distribution ID | `ER9WIPUKON9J3` |
+| S3 bucket | `unicorn-gives-web-391668783184-1774490745` |
+| Route 53 zone ID | `Z06458021X03LCFPVFU9W` |
 
-4. Commit and push to deploy
+### Registrar nameservers (required for ACM + apex domain)
 
-### Navigation Order
+At your **registrar** for `unicorn.gives`, set **exactly** these four nameservers (not Google Domains / Cloudflare):
 
-Pages appear in the navigation based on the `order` field (lower = earlier).
+- `ns-1273.awsdns-31.org`
+- `ns-52.awsdns-06.com`
+- `ns-698.awsdns-23.net`
+- `ns-1978.awsdns-55.co.uk`
 
-## Scraping Lincoln Township Content
+Until public DNS returns these NS records, **ACM stays `PENDING_VALIDATION`**. After the certificate is **ISSUED**, add **`unicorn.gives`** as an alternate domain name on the CloudFront distribution and attach the ACM certificate (us-east-1), then add Route 53 **alias** `A`/`AAAA` for `unicorn.gives` → the distribution.
 
-To extract content from the archived lincolntwp.com site:
+### GitHub Actions
+
+On push to `main`, the workflow exports the web app and syncs to S3, then invalidates CloudFront.
+
+**Secrets:** `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_S3_BUCKET`, `AWS_CLOUDFRONT_DISTRIBUTION_ID`, plus `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`, optional `EXPO_PUBLIC_NEWSLETTER_URL`. (Region is `us-east-1` in the workflow.)
+
+### Manual deploy (same as CI)
 
 ```bash
-# Activate Python environment
-source venv/bin/activate
-
-# Step 1: Discover site structure
-python scripts/scraper/discover-structure.py
-
-# Step 2: Scrape all pages
-python scripts/scraper/scrape-wayback.py
-
-# Step 3: Download assets
-python scripts/scraper/download-assets.py
+pnpm install --frozen-lockfile
+pnpm build   # expo export → apps/mobile/dist
+aws s3 sync apps/mobile/dist/ "s3://unicorn-gives-web-391668783184-1774490745/" --delete
+aws cloudfront create-invalidation --distribution-id ER9WIPUKON9J3 --paths "/*"
 ```
-
-**Note**: Scraping takes time due to rate limiting (2-second delays between requests).
-
-## Deployment
-
-### GitHub Actions (Automatic)
-
-Push to `main` branch → Auto-builds and deploys to Cloudflare Pages.
-
-### Cloudflare Pages Setup
-
-1. Create new project: "unicorn-gives"
-2. Connect GitHub repository
-3. Build settings:
-   - Framework: **Astro**
-   - Build command: `npm run build`
-   - Build output: `dist`
-4. Add GitHub secrets:
-   - `CLOUDFLARE_API_TOKEN`
-   - `CLOUDFLARE_ACCOUNT_ID`
-5. Configure custom domain: `unicorn.gives`
 
 ## Branding
 
-### Colors
-
-- Primary: `#6361ad` (purple)
+- Primary: `#6361ad`
 - Link: `#7c7ac8`
 - Hover: `#47458f`
 - Selection: `#c5cde9`
 
-### Fonts
+## Tech stack
 
-- Body: Barlow
-- Headings: Barlow Condensed
-- Titles: Bebas Neue
-
-## Tech Stack
-
-- **Framework**: [Astro](https://astro.build)
-- **Content**: Markdown with Content Collections
-- **Styling**: CSS with CSS Variables
-- **Deployment**: Cloudflare Pages
-- **CI/CD**: GitHub Actions
-- **Scraping**: Python (BeautifulSoup, markdownify)
-
-## Scripts
-
-```bash
-npm run dev          # Start dev server
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run astro        # Run Astro CLI commands
-```
-
-## Contributing
-
-1. Create a new branch
-2. Make your changes
-3. Test locally with `npm run dev`
-4. Build to verify: `npm run build`
-5. Commit and push
-6. Create a pull request
-
-## Content Guidelines
-
-See [CONTENT_GUIDE.md](./CONTENT_GUIDE.md) for detailed editing instructions.
+- **App:** Expo, expo-router, React Native Web
+- **Backend / data:** Supabase
+- **Hosting:** AWS S3, CloudFront, Route 53, ACM
+- **CI:** GitHub Actions
 
 ## License
 
 © 2024 Lincoln Township. All rights reserved.
 
-## Support
-
-For issues or questions, contact the repository owner or file an issue on GitHub.
-
 ---
 
-Built with ❤️ using [Astro](https://astro.build) and [unicorn.love](https://unicorn.love) branding.
+Built with [unicorn.love](https://unicorn.love) branding.

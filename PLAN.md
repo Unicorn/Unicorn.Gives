@@ -12,7 +12,7 @@ Clare County's digital presence is **fragmented across 10+ websites**:
 
 | Source | What it has | What's broken |
 |--------|-------------|---------------|
-| lincolntwp.com | Deep ordinance/permit/FAQ content | Behind Cloudflare, volunteer-run, stale |
+| lincolntwp.com | Deep ordinance/permit/FAQ content | Third-party hosting/CDN, volunteer-run, stale |
 | lincolntwp.net | Board minutes, basic contacts | "Under Construction," missing 80% of .com content |
 | clareco.net | 25 departments, courts, sheriff, elections | Fragments across 7+ separate domains |
 | clareco-buildingdev.net | Building permits, zoning | Barely renders, JS-heavy, hard to navigate |

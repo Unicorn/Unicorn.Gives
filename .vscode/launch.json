@@ -2,8 +2,8 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "./node_modules/.bin/astro dev",
-      "name": "Development server",
+      "command": "pnpm -C apps/mobile exec expo start --web --port 8081",
+      "name": "expo-web",
       "request": "launch",
       "type": "node-terminal"
     }

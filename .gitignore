@@ -1,5 +1,9 @@
 # build output
 dist/
+apps/mobile/dist/
+
+# Nx
+.nx/
 # generated types
 .astro/
 

@@ -173,19 +173,15 @@ The site is **fully prepared for production deployment**:
 
 ### Next Steps for Deployment
 
-1. **GitHub Repository**
-   - Initialize git repository
-   - Commit all files
-   - Push to GitHub
+1. **Source control**
+   - Commit and push to GitHub (or your Git host).
 
-2. **Cloudflare Pages**
-   - Connect repository to Cloudflare Pages
-   - Configure build settings:
-     - Build command: `npm run build`
-     - Build output: `dist`
-   - Set up custom domain: unicorn.gives
+2. **AWS**
+   - Build: Expo web export to `apps/mobile/dist` (`pnpm build` from repo root).
+   - Host: sync `dist/` to S3; serve via CloudFront; DNS on Route 53 for `unicorn.gives`.
+   - See repository `README.md` and `deploy/aws.env.example` for resource names and GitHub Actions secrets.
 
-3. **Post-Launch**
+3. **Post-launch**
    - Submit sitemap to Google Search Console
    - Monitor Core Web Vitals
    - Set up uptime monitoring
