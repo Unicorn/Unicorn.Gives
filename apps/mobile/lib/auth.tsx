@@ -1,34 +1,59 @@
 import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 
 import { supabase } from './supabase';
 
+interface Profile {
+  display_name: string | null;
+  email: string;
+  avatar_url: string | null;
+  role: string;
+}
+
 type AuthContextValue = {
   user: User | null;
   role: string | null;
+  profile: Profile | null;
   loading: boolean;
   session: Session | null;
+  isEditor: boolean;
+  signOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-async function fetchRoleForUser(user: User): Promise<string | null> {
+async function fetchProfileForUser(user: User): Promise<Profile | null> {
   const { data, error } = await supabase
     .from('profiles')
-    .select('role')
+    .select('role, display_name, avatar_url')
     .eq('id', user.id)
     .maybeSingle();
 
-  if (error) return null;
-  return data?.role ?? null;
+  if (error || !data) return null;
+  return {
+    role: data.role ?? 'resident',
+    display_name: data.display_name ?? null,
+    email: user.email ?? '',
+    avatar_url: data.avatar_url ?? null,
+  };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const role = profile?.role ?? null;
+  const isEditor = role === 'super_admin' || role === 'editor';
+
+  const signOut = useCallback(async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setProfile(null);
+    setSession(null);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -46,15 +71,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(nextUser);
 
       if (!nextUser) {
-        setRole(null);
+        setProfile(null);
         setLoading(false);
         return;
       }
 
-      const nextRole = await fetchRoleForUser(nextUser);
+      const nextProfile = await fetchProfileForUser(nextUser);
       if (cancelled) return;
 
-      setRole(nextRole);
+      setProfile(nextProfile);
       setLoading(false);
     }
 
@@ -69,15 +94,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
 
       if (!nextUser) {
-        setRole(null);
+        setProfile(null);
         setLoading(false);
         return;
       }
 
-      const nextRole = await fetchRoleForUser(nextUser);
+      const nextProfile = await fetchProfileForUser(nextUser);
       if (cancelled) return;
 
-      setRole(nextRole);
+      setProfile(nextProfile);
       setLoading(false);
     });
 
@@ -91,10 +116,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       user,
       role,
+      profile,
       loading,
       session,
+      isEditor,
+      signOut,
     }),
-    [user, role, loading, session],
+    [user, role, profile, loading, session, isEditor, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -105,4 +133,3 @@ export function useAuth() {
   if (!ctx) throw new Error('useAuth must be used within an AuthProvider');
   return ctx;
 }
-

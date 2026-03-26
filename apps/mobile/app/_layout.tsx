@@ -65,9 +65,7 @@ function RootLayoutNav() {
         <Drawer
           drawerContent={() => <DrawerMenu />}
           screenOptions={{
-            header: ({ options }) => (
-              <AppHeader title={options.title} />
-            ),
+            header: () => <AppHeader />,
             drawerStyle: {
               width: 300,
             },

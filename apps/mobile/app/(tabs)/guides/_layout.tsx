@@ -8,7 +8,7 @@ export default function GuidesLayout() {
 
   return (
     <View style={{ flex: 1 }}>
-      <AppHeader title="Guides" showBack={isDetail} />
+      <AppHeader showBack={isDetail} />
       <Stack screenOptions={{ headerShown: false }} />
     </View>
   );

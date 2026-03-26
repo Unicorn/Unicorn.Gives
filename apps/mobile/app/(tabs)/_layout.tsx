@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, useWindowDimensions } from 'react-native';
 
 function TabIcon({ label, focused }: { label: string; focused: boolean }) {
   const icons: Record<string, string> = {
@@ -16,6 +16,9 @@ function TabIcon({ label, focused }: { label: string; focused: boolean }) {
 }
 
 export default function TabLayout() {
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 1024;
+
   return (
     <Tabs
       screenOptions={{
@@ -26,6 +29,7 @@ export default function TabLayout() {
           backgroundColor: '#fcf9f4',
           borderTopWidth: 1,
           borderTopColor: '#c3c8bb',
+          ...(isDesktop ? { display: 'none' as const } : {}),
         },
         tabBarLabelStyle: {
           fontSize: 11,

@@ -32,7 +32,7 @@ export default function CountyOverview() {
   if (isLoading) {
     return (
       <View style={styles.page}>
-        <AppHeader title="Government" />
+        <AppHeader />
         <Text style={styles.loading}>Loading...</Text>
       </View>
     );
@@ -40,7 +40,7 @@ export default function CountyOverview() {
   if (!region) {
     return (
       <View style={styles.page}>
-        <AppHeader title="Government" />
+        <AppHeader />
         <Text style={styles.loading}>County not found</Text>
       </View>
     );
@@ -48,7 +48,7 @@ export default function CountyOverview() {
 
   return (
     <View style={{ flex: 1 }}>
-      <AppHeader title={region.name} />
+      <AppHeader />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <Text style={styles.type}>{region.type.toUpperCase()}</Text>

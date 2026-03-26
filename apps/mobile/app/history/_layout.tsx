@@ -10,7 +10,7 @@ export default function HistoryLayout() {
 
   return (
     <View style={{ flex: 1 }}>
-      <AppHeader title="History" showBack={isDetail} />
+      <AppHeader showBack={isDetail} />
       <Stack screenOptions={{ headerShown: false }} />
     </View>
   );

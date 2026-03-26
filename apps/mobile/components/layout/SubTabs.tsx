@@ -16,6 +16,7 @@ export function SubTabs({ tabs }: SubTabsProps) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.inner}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -49,6 +50,7 @@ export function SubTabs({ tabs }: SubTabsProps) {
           );
         })}
       </ScrollView>
+      </View>
     </View>
   );
 }
@@ -58,6 +60,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#c3c8bb',
+  },
+  inner: {
+    maxWidth: 1100,
+    width: '100%',
+    alignSelf: 'center',
   },
   scrollContent: {
     paddingHorizontal: 12,

@@ -8,7 +8,7 @@ export default function GovernmentTabLayout() {
 
   return (
     <View style={{ flex: 1 }}>
-      <AppHeader title="Government" showBack={isDeep} />
+      <AppHeader showBack={isDeep} />
       <Stack screenOptions={{ headerShown: false }} />
     </View>
   );

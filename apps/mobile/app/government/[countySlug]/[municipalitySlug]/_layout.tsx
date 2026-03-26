@@ -12,14 +12,22 @@ export default function MunicipalityLayout() {
   }>();
   const pathname = usePathname();
   const { region } = useRegion(municipalitySlug);
+  const { region: county } = useRegion(countySlug);
 
   const regionName = region?.name ?? 'Municipality';
+  const countyName = county?.name ?? countySlug.replace(/-/g, ' ');
   const tabs = routes.government.municipalSubNavTabs(countySlug, municipalitySlug);
   const isDetailPage = isMunicipalDetailPath(pathname);
 
   return (
     <View style={{ flex: 1 }}>
-      <AppHeader title={regionName} showBack={isDetailPage} />
+      <AppHeader
+        showBack={isDetailPage}
+        breadcrumb={[
+          { label: countyName, href: `/government/${countySlug}` },
+          { label: regionName, href: '' },
+        ]}
+      />
       {!isDetailPage && <SubTabs tabs={tabs} />}
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />

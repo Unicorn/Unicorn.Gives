@@ -11,7 +11,7 @@ export default function OpinionsLayout() {
 
   return (
     <View style={{ flex: 1 }}>
-      <AppHeader title="Opinions" showBack={isDetail} />
+      <AppHeader showBack={isDetail} />
       <Stack screenOptions={{ headerShown: false }} />
     </View>
   );

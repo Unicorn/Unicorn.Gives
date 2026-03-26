@@ -15,7 +15,7 @@ export default function DirectoryLayout() {
 
   return (
     <View style={{ flex: 1 }}>
-      <AppHeader title="Directory" showBack={isDetail} />
+      <AppHeader showBack={isDetail} />
       {!isDetail && <SubTabs tabs={DIR_TABS} />}
       <Stack screenOptions={{ headerShown: false }} />
     </View>
