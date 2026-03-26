@@ -17,6 +17,7 @@ import {
   QuoteCallout,
 } from '@/components/widgets';
 import { routes } from '@/lib/navigation';
+import { ContentContainer } from '@/components/layout/ContentContainer';
 
 const CATEGORY_LABELS: Record<string, string> = {
   government: 'Government',
@@ -76,6 +77,7 @@ export function EventsList({ regionId }: Props) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <ContentContainer>
       {/* Featured event hero */}
       {featured && !categoryFilter && (
         <FeaturedEventCard event={featured} />
@@ -138,6 +140,7 @@ export function EventsList({ regionId }: Props) {
           attribution={COMMUNITY_SPIRIT_QUOTE.attribution}
         />
       )}
+      </ContentContainer>
     </ScrollView>
   );
 }

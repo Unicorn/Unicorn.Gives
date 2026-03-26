@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { ContentContainer } from '@/components/layout/ContentContainer';
 
 interface NewsItem {
   id: string;
@@ -31,6 +32,7 @@ export default function NewsTab() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <ContentContainer>
       <Text style={styles.heading}>Latest News</Text>
       {items.map(n => (
         <TouchableOpacity key={n.id} style={styles.card}>
@@ -45,6 +47,7 @@ export default function NewsTab() {
       {items.length === 0 && (
         <Text style={styles.empty}>No published news items yet. Check back soon for civic updates.</Text>
       )}
+      </ContentContainer>
     </ScrollView>
   );
 }

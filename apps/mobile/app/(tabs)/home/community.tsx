@@ -4,6 +4,7 @@ import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { ContentContainer } from '@/components/layout/ContentContainer';
 import {
   HORN_HERO,
   HORN_MISSION,
@@ -19,6 +20,7 @@ export default function CommunityTab() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <ContentContainer>
       {/* Hero: The Horn */}
       <HeroFeature
         eyebrow={HORN_HERO.eyebrow}
@@ -88,6 +90,7 @@ export default function CommunityTab() {
           </TouchableOpacity>
         </Link>
       </View>
+      </ContentContainer>
     </ScrollView>
   );
 }

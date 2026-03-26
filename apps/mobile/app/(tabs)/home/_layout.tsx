@@ -1,7 +1,6 @@
 import { View } from 'react-native';
 import { Stack, usePathname } from 'expo-router';
 import { AppHeader } from '@/components/layout/AppHeader';
-import { ContentContainer } from '@/components/layout/ContentContainer';
 import { SubTabs, type SubTabItem } from '@/components/layout/SubTabs';
 import { toHref } from '@/lib/navigation';
 import { useTheme } from '@/constants/theme';
@@ -24,9 +23,7 @@ export default function HomeLayout() {
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <AppHeader />
       {isTopLevel && <SubTabs tabs={HOME_TABS} />}
-      <ContentContainer>
-        <Stack screenOptions={{ headerShown: false }} />
-      </ContentContainer>
+      <Stack screenOptions={{ headerShown: false }} />
     </View>
   );
 }

@@ -4,6 +4,7 @@ import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { ContentContainer } from '@/components/layout/ContentContainer';
 
 const DEFAULT_COUNTY = 'clare-county';
 
@@ -46,6 +47,7 @@ export default function GovernmentIndex() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <ContentContainer>
       <View style={styles.header}>
         <Text style={styles.type}>{county.type.toUpperCase()}</Text>
         <Text style={styles.name}>{county.name}</Text>
@@ -61,6 +63,7 @@ export default function GovernmentIndex() {
           </TouchableOpacity>
         </Link>
       ))}
+      </ContentContainer>
     </ScrollView>
   );
 }

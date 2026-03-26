@@ -14,6 +14,7 @@ import {
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
+import { ContentContainer } from '@/components/layout/ContentContainer';
 import { routes } from '@/lib/navigation';
 import { governmentHref } from '@/lib/governmentHref';
 import { supabase } from '@/lib/supabase';
@@ -208,6 +209,7 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <ContentContainer>
       <View style={styles.hero}>
         <View
           style={[
@@ -472,6 +474,7 @@ export default function HomeScreen() {
           </View>
         </View>
       )}
+      </ContentContainer>
     </ScrollView>
   );
 }

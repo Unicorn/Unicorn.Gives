@@ -27,7 +27,6 @@ export function ContentContainer({ children, style }: ContentContainerProps) {
 
 const styles = StyleSheet.create({
   base: {
-    flex: 1,
     width: '100%',
   },
   tablet: {
