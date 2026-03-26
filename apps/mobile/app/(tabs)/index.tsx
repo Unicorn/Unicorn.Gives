@@ -9,6 +9,7 @@ import {
   Pressable,
   Platform,
   Image,
+  useWindowDimensions,
 } from 'react-native';
 import { Link } from 'expo-router';
 import { useAuth } from '@/lib/auth';
@@ -142,42 +143,92 @@ export default function HomeScreen() {
   const govHref =
     regions.length > 0 ? governmentHref(regions[0]) : routes.county.root(FALLBACK_COUNTY_SLUG);
 
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768;
+  const isDesktop = width >= 1024;
+  const panelStyle = [
+    styles.panel,
+    isTablet && styles.panelTablet,
+    isDesktop && styles.panelDesktop,
+  ];
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.hero}>
-        <View style={styles.heroPill}>
-          <Text style={styles.heroPillText}>unicorn.gives</Text>
-        </View>
-        <Text style={styles.heroTitle}>
-          <Text style={styles.heroTitleItalic}>Land of the </Text>
-          <Text style={styles.heroTitleBold}>Unicorns</Text>
-        </Text>
-        <Text style={styles.heroTagline}>{DISCOVER_TAGLINE}</Text>
-        <View style={styles.heroCtaRow}>
-          <Link href={routes.solve.index()} asChild>
-            <TouchableOpacity style={styles.heroCtaPrimary}>
-              <Text style={styles.heroCtaPrimaryText}>Problem Solver</Text>
-            </TouchableOpacity>
-          </Link>
-          <Link href={routes.lore.index()} asChild>
-            <TouchableOpacity style={styles.heroCtaOutline}>
-              <Text style={styles.heroCtaOutlineText}>Land &amp; lore</Text>
-            </TouchableOpacity>
-          </Link>
-        </View>
+        <View
+          style={[
+            styles.heroInner,
+            isTablet && styles.heroInnerTablet,
+            isDesktop && styles.heroInnerDesktop,
+          ]}
+        >
+          <View style={[styles.heroLayout, isTablet && styles.heroLayoutTablet]}>
+            <View style={styles.heroText}>
+              <View style={styles.heroPill}>
+                <Text style={styles.heroPillText}>unicorn.gives</Text>
+              </View>
+              <Text style={styles.heroTitle}>
+                <Text
+                  style={[
+                    styles.heroTitleItalic,
+                    isTablet && styles.heroTitleItalicTablet,
+                    isDesktop && styles.heroTitleItalicDesktop,
+                  ]}
+                >
+                  Land of the{' '}
+                </Text>
+                <Text
+                  style={[
+                    styles.heroTitleBold,
+                    isTablet && styles.heroTitleBoldTablet,
+                    isDesktop && styles.heroTitleBoldDesktop,
+                  ]}
+                >
+                  Unicorns
+                </Text>
+              </Text>
+              <Text style={[styles.heroTagline, isTablet && styles.heroTaglineTablet]}>
+                {DISCOVER_TAGLINE}
+              </Text>
+              <View style={[styles.heroCtaRow, isDesktop && styles.heroCtaRowDesktop]}>
+                <Link href={routes.solve.index()} asChild>
+                  <TouchableOpacity style={styles.heroCtaPrimary}>
+                    <Text style={styles.heroCtaPrimaryText}>Problem Solver</Text>
+                  </TouchableOpacity>
+                </Link>
+                <Link href={routes.lore.index()} asChild>
+                  <TouchableOpacity style={styles.heroCtaOutline}>
+                    <Text style={styles.heroCtaOutlineText}>Land &amp; lore</Text>
+                  </TouchableOpacity>
+                </Link>
+              </View>
+            </View>
 
-        <View style={styles.heroImageBlock}>
-          <Image
-            source={require('../../assets/images/home-hero.png')}
-            style={styles.heroImage}
-            resizeMode="cover"
-            accessibilityLabel="Northern Michigan landscape"
-          />
-          <View style={styles.heroQuoteCard}>
-            <Text style={styles.heroQuoteLabel}>{HOME_HERO_IMPACT_LABEL}</Text>
-            <Text style={styles.heroQuoteBody} numberOfLines={5}>
-              {DISCOVER_MISSION_LEDE}
-            </Text>
+            <View style={styles.heroMedia}>
+              <View style={styles.heroImageBlock}>
+                <Image
+                  source={require('../../assets/images/home-hero.png')}
+                  style={[
+                    styles.heroImage,
+                    isTablet && styles.heroImageTablet,
+                    isDesktop && styles.heroImageDesktop,
+                  ]}
+                  resizeMode="cover"
+                  accessibilityLabel="Northern Michigan landscape"
+                />
+                <View
+                  style={[
+                    styles.heroQuoteCard,
+                    (isTablet || isDesktop) && styles.heroQuoteCardOverlay,
+                  ]}
+                >
+                  <Text style={styles.heroQuoteLabel}>{HOME_HERO_IMPACT_LABEL}</Text>
+                  <Text style={styles.heroQuoteBody} numberOfLines={5}>
+                    {DISCOVER_MISSION_LEDE}
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -185,7 +236,7 @@ export default function HomeScreen() {
       <HomeTabBar active={tab} onChange={setTab} />
 
       {tab === 'discover' && (
-        <View style={styles.panel}>
+        <View style={panelStyle}>
           {DISCOVER_PARAGRAPHS.map((p) => (
             <Text key={p.id} style={styles.body}>
               {p.text}
@@ -215,7 +266,12 @@ export default function HomeScreen() {
               <View style={styles.partnerFeatureRow}>
                 {partners.slice(0, 2).map((p) => (
                   <Link key={p.slug} href={routes.partners.index(p.slug)} asChild>
-                    <TouchableOpacity style={styles.partnerFeatureCard}>
+                    <TouchableOpacity
+                      style={[
+                        styles.partnerFeatureCard,
+                        (isTablet || isDesktop) && styles.partnerFeatureCardTablet,
+                      ]}
+                    >
                       <View style={styles.partnerFeatureBanner}>
                         <Text style={styles.partnerFeatureBannerLetter}>
                           {p.name.charAt(0).toUpperCase()}
@@ -249,9 +305,20 @@ export default function HomeScreen() {
           )}
 
           <Text style={[styles.sectionTitle, styles.bentoTitleSpacing]}>{HOME_BENTO_REGION_TITLE}</Text>
-          <View style={styles.bentoGrid}>
+          <View
+            style={[
+              styles.bentoGrid,
+              (isTablet || isDesktop) && styles.bentoGridTablet,
+            ]}
+          >
             <Link href={routes.solve.index()} asChild>
-              <TouchableOpacity style={styles.bentoTile}>
+              <TouchableOpacity
+                style={[
+                  styles.bentoTile,
+                  !isDesktop && isTablet ? styles.bentoItemTwoThirds : null,
+                  isDesktop ? styles.bentoItemHalf : null,
+                ]}
+              >
                 <Text style={styles.bentoTileIcon}>◎</Text>
                 <Text style={styles.bentoTileHeading}>{HOME_BENTO_SOLVE_TITLE}</Text>
                 <Text style={styles.bentoTileDesc}>{HOME_BENTO_SOLVE_DESC}</Text>
@@ -259,14 +326,26 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </Link>
             <Link href={govHref} asChild>
-              <TouchableOpacity style={styles.bentoTile}>
+              <TouchableOpacity
+                style={[
+                  styles.bentoTile,
+                  !isDesktop && isTablet ? styles.bentoItemOneThird : null,
+                  isDesktop ? styles.bentoItemHalf : null,
+                ]}
+              >
                 <Text style={styles.bentoTileIcon}>⚖</Text>
                 <Text style={styles.bentoTileHeading}>{HOME_BENTO_GOV_TITLE}</Text>
                 <Text style={styles.bentoTileDesc}>{HOME_BENTO_GOV_DESC}</Text>
                 <Text style={styles.bentoTileLink}>Browse government</Text>
               </TouchableOpacity>
             </Link>
-            <View style={styles.bentoEventsTile}>
+            <View
+              style={[
+                styles.bentoEventsTile,
+                !isDesktop && isTablet ? styles.bentoItemTwoThirds : null,
+                isDesktop ? styles.bentoItemHalf : null,
+              ]}
+            >
               <Text style={styles.bentoEventsIcon}>📅</Text>
               <Text style={[styles.bentoTileHeading, styles.bentoEventsHeading]}>
                 {HOME_BENTO_EVENTS_TITLE}
@@ -294,7 +373,13 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </Link>
             </View>
-            <View style={styles.bentoNewsTile}>
+            <View
+              style={[
+                styles.bentoNewsTile,
+                !isDesktop && isTablet ? styles.bentoItemOneThird : null,
+                isDesktop ? styles.bentoItemHalf : null,
+              ]}
+            >
               <Text style={styles.bentoTileHeading}>{HOME_BENTO_NEWS_TITLE}</Text>
               {news[0] ? (
                 <Link href={routes.news.detail(news[0].slug)} asChild>
@@ -337,7 +422,7 @@ export default function HomeScreen() {
       )}
 
       {tab === 'stay' && (
-        <View style={styles.panel}>
+        <View style={panelStyle}>
           <Text style={styles.sectionTitle}>What do you need help with?</Text>
           <View style={styles.grid}>
             {CATEGORIES.map((cat) => (
@@ -400,7 +485,7 @@ export default function HomeScreen() {
       )}
 
       {tab === 'history' && (
-        <View style={styles.panel}>
+        <View style={panelStyle}>
           {HISTORY_INTRO_PARAGRAPHS.map((p) => (
             <Text key={p.id} style={styles.body}>
               {p.text}
@@ -454,7 +539,7 @@ export default function HomeScreen() {
       )}
 
       {tab === 'events' && (
-        <View style={styles.panel}>
+        <View style={panelStyle}>
           {events.length > 0 ? (
             <>
               <View style={styles.sectionHeader}>
@@ -505,7 +590,7 @@ export default function HomeScreen() {
       )}
 
       {tab === 'news' && (
-        <View style={styles.panel}>
+        <View style={panelStyle}>
           {news.length > 0 ? (
             <>
               <View style={styles.sectionHeader}>
@@ -570,6 +655,29 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 24,
   },
+  heroInner: { width: '100%' },
+  heroInnerTablet: {
+    maxWidth: 960,
+    alignSelf: 'center',
+  },
+  heroInnerDesktop: {
+    maxWidth: 1100,
+    alignSelf: 'center',
+  },
+  heroLayout: {
+    flexDirection: 'column',
+  },
+  heroLayoutTablet: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+  },
+  heroText: {
+    flex: 1,
+  },
+  heroMedia: {
+    flex: 1,
+  },
   heroPill: {
     alignSelf: 'flex-start',
     backgroundColor: 'rgba(144, 244, 228, 0.25)',
@@ -592,19 +700,25 @@ const styles = StyleSheet.create({
     fontFamily: homeFonts.serifItalic,
     color: '#f1f5f4',
   },
+  heroTitleItalicTablet: { fontSize: 40, lineHeight: 44 },
+  heroTitleItalicDesktop: { fontSize: 44, lineHeight: 48 },
   heroTitleBold: {
     fontSize: 34,
     lineHeight: 38,
     fontFamily: homeFonts.serifBold,
     color: '#ffffff',
   },
+  heroTitleBoldTablet: { fontSize: 40, lineHeight: 44 },
+  heroTitleBoldDesktop: { fontSize: 44, lineHeight: 48 },
   heroTagline: {
     fontSize: 17,
     fontFamily: homeFonts.sansMedium,
     color: homeColors.accent,
     marginBottom: 16,
   },
+  heroTaglineTablet: { fontSize: 18 },
   heroCtaRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 20 },
+  heroCtaRowDesktop: { flexWrap: 'nowrap' },
   heroCtaPrimary: {
     backgroundColor: homeColors.primary,
     paddingHorizontal: 22,
@@ -635,6 +749,7 @@ const styles = StyleSheet.create({
   heroImageBlock: {
     borderRadius: homeRadii.lg,
     overflow: 'hidden',
+    position: 'relative',
     ...shadowCard,
   },
   heroImage: {
@@ -642,11 +757,23 @@ const styles = StyleSheet.create({
     height: 220,
     backgroundColor: homeColors.surfaceContainer,
   },
+  heroImageTablet: {
+    height: 260,
+  },
+  heroImageDesktop: {
+    height: 320,
+  },
   heroQuoteCard: {
     backgroundColor: homeColors.surfaceContainerHigh,
     padding: 16,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: homeColors.outline,
+  },
+  heroQuoteCardOverlay: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    bottom: 16,
   },
   heroQuoteLabel: {
     fontSize: 10,
@@ -663,6 +790,20 @@ const styles = StyleSheet.create({
     lineHeight: 21,
   },
   panel: { padding: 20, paddingTop: 16 },
+  panelTablet: {
+    padding: 24,
+    paddingTop: 18,
+    width: '100%',
+    maxWidth: 960,
+    alignSelf: 'center',
+  },
+  panelDesktop: {
+    padding: 28,
+    paddingTop: 20,
+    width: '100%',
+    maxWidth: 1100,
+    alignSelf: 'center',
+  },
   body: {
     fontSize: 15,
     fontFamily: homeFonts.sans,
@@ -764,6 +905,12 @@ const styles = StyleSheet.create({
     borderColor: homeColors.outline,
     ...shadowCard,
   },
+  partnerFeatureCardTablet: {
+    width: '48%',
+    maxWidth: 9999,
+    flexGrow: 0,
+    flexBasis: '48%',
+  },
   partnerFeatureBanner: {
     height: 100,
     backgroundColor: homeColors.primaryContainer,
@@ -809,6 +956,30 @@ const styles = StyleSheet.create({
     color: homeColors.primary,
   },
   bentoGrid: { gap: 12 },
+  bentoGridTablet: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  bentoItemFull: {
+    width: '100%',
+    flexGrow: 0,
+    flexShrink: 0,
+  },
+  bentoItemHalf: {
+    width: '48%',
+    flexGrow: 0,
+    flexShrink: 0,
+  },
+  bentoItemTwoThirds: {
+    width: '66.666%',
+    flexGrow: 0,
+    flexShrink: 0,
+  },
+  bentoItemOneThird: {
+    width: '33.333%',
+    flexGrow: 0,
+    flexShrink: 0,
+  },
   bentoTile: {
     backgroundColor: homeColors.surfaceContainer,
     borderRadius: homeRadii.md,
