@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 import { Stack, usePathname } from 'expo-router';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { ContentContainer } from '@/components/layout/ContentContainer';
 import { paths } from '@/lib/navigation';
 
 export default function HistoryLayout() {
@@ -11,7 +12,9 @@ export default function HistoryLayout() {
   return (
     <View style={{ flex: 1 }}>
       <AppHeader showBack={isDetail} />
-      <Stack screenOptions={{ headerShown: false }} />
+      <ContentContainer>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ContentContainer>
     </View>
   );
 }

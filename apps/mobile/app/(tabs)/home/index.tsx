@@ -443,14 +443,8 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   heroInner: { width: '100%' },
-  heroInnerTablet: {
-    maxWidth: 960,
-    alignSelf: 'center',
-  },
-  heroInnerDesktop: {
-    maxWidth: 1100,
-    alignSelf: 'center',
-  },
+  heroInnerTablet: {},
+  heroInnerDesktop: {},
   heroLayout: {
     flexDirection: 'column',
   },
@@ -580,16 +574,10 @@ const styles = StyleSheet.create({
   panelTablet: {
     padding: 24,
     paddingTop: 18,
-    width: '100%',
-    maxWidth: 960,
-    alignSelf: 'center',
   },
   panelDesktop: {
     padding: 28,
     paddingTop: 20,
-    width: '100%',
-    maxWidth: 1100,
-    alignSelf: 'center',
   },
   body: {
     fontSize: 15,

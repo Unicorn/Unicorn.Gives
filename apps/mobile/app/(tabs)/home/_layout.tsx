@@ -22,7 +22,9 @@ export default function HomeLayout() {
     <View style={{ flex: 1 }}>
       <AppHeader />
       {isTopLevel && <SubTabs tabs={HOME_TABS} />}
-      <Stack screenOptions={{ headerShown: false }} />
+      <ContentContainer>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ContentContainer>
     </View>
   );
 }

@@ -2,6 +2,7 @@ import { View } from 'react-native';
 import { Stack, useLocalSearchParams, usePathname } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { ContentContainer } from '@/components/layout/ContentContainer';
 import { SubTabs } from '@/components/layout/SubTabs';
 import { routes, isMunicipalDetailPath } from '@/lib/navigation';
 
@@ -29,7 +30,8 @@ export default function MunicipalityLayout() {
         ]}
       />
       {!isDetailPage && <SubTabs tabs={tabs} />}
-      <Stack screenOptions={{ headerShown: false }}>
+      <ContentContainer>
+        <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="minutes/index" />
         <Stack.Screen name="minutes/[slug]" />
@@ -41,6 +43,7 @@ export default function MunicipalityLayout() {
         <Stack.Screen name="elections/[slug]" />
         <Stack.Screen name="zoning" />
       </Stack>
+      </ContentContainer>
     </View>
   );
 }
