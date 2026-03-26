@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, 'feat/**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-seed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify content vs seed SQL
+        run: node scripts/verify-seed-coverage.mjs

@@ -44,7 +44,7 @@ Broken markdown links were removed (replaced with plain text) from:
 - `content/pages/seniors.md`
 - `content/pages/zoning.md`
 
-`building` and `elections` CMS pages are no longer kept as markdown under `content/pages/`; updates for those slugs live in `supabase/migrations/003_update_pages_building_elections.sql`.
+`building` and `elections` CMS pages are not required as markdown under `content/pages/`; they are bootstrapped in `supabase/migrations/004_upsert_pages_building_elections.sql` (and reflected in generated `002_seed_content.sql`). Migration `003_update_pages_building_elections.sql` is a no-op placeholder kept for history.
 
 ### Next step
 Restore the missing PDFs under `apps/site/public/{docs|forms|ordinances}/...`, then re-add the markdown links.

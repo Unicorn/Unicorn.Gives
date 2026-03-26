@@ -5,7 +5,8 @@
   "packageManager": "pnpm@10.23.0",
   "scripts": {
     "dev": "nx run mobile:start",
-    "build": "nx run mobile:build"
+    "build": "nx run mobile:build",
+    "verify:seed": "node scripts/verify-seed-coverage.mjs"
   },
   "devDependencies": {
     "@nx/expo": "^22.6.1",
