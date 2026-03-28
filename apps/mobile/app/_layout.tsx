@@ -76,7 +76,7 @@ function RootLayoutNav() {
       <ThemeToggleContext.Provider value={toggleTheme}>
       <ThemeProvider value={effectiveScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Drawer
-          drawerContent={() => <DrawerMenu />}
+          drawerContent={(props) => <DrawerMenu drawerNavigation={props.navigation} />}
           screenOptions={{
             header: () => <AppHeader />,
             drawerStyle: {

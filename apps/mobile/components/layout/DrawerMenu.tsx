@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useRouter, usePathname, type Href } from 'expo-router';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { DrawerActions, type NavigationProp, type ParamListBase } from '@react-navigation/native';
 import { useAuth } from '@/lib/auth';
 import {
   isPathActive,
@@ -24,10 +24,9 @@ interface Partner {
   name: string;
 }
 
-export function DrawerMenu() {
+export function DrawerMenu({ drawerNavigation }: { drawerNavigation: NavigationProp<ParamListBase> }) {
   const router = useRouter();
   const pathname = usePathname();
-  const navigation = useNavigation();
   const { user, profile, signOut, isEditor } = useAuth();
   const [regions, setRegions] = useState<Region[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -49,7 +48,7 @@ export function DrawerMenu() {
   }, []);
 
   function navigate(target: Href) {
-    navigation.dispatch(DrawerActions.closeDrawer());
+    drawerNavigation.dispatch(DrawerActions.closeDrawer());
     router.push(target);
   }
 
@@ -138,7 +137,7 @@ export function DrawerMenu() {
                 colors={colors}
               />
             )}
-            <Pressable style={styles.signOutButton} onPress={() => { signOut(); navigation.dispatch(DrawerActions.closeDrawer()); }}>
+            <Pressable style={styles.signOutButton} onPress={() => { signOut(); drawerNavigation.dispatch(DrawerActions.closeDrawer()); }}>
               <Text style={[styles.signOutText, { color: colors.neutralVariant }]}>Sign Out</Text>
             </Pressable>
           </>

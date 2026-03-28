@@ -5,6 +5,7 @@ import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { ContentContainer } from '@/components/layout/ContentContainer';
 import { SubTabs } from '@/components/layout/SubTabs';
 import { useTheme, spacing } from '@/constants/theme';
 
@@ -204,11 +205,13 @@ export default function PartnerLanding() {
       <AppHeader title={partner.name} />
       {tabs.length > 0 && <SubTabs tabs={tabs} />}
       <ScrollView contentContainerStyle={styles.content}>
-        {firstPage ? (
-          <MarkdownRenderer content={firstPage.body} />
-        ) : partner.description ? (
-          <Text style={[styles.desc, { color: colors.neutral }]}>{partner.description}</Text>
-        ) : null}
+        <ContentContainer>
+          {firstPage ? (
+            <MarkdownRenderer content={firstPage.body} />
+          ) : partner.description ? (
+            <Text style={[styles.desc, { color: colors.neutral }]}>{partner.description}</Text>
+          ) : null}
+        </ContentContainer>
       </ScrollView>
     </View>
   );
