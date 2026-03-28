@@ -1,7 +1,8 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Linking, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 
 interface Section {
   title: string;
@@ -50,8 +51,8 @@ export function TownshipDocumentScreen({
   };
 
   return (
-    <ScrollView style={[styles.scroll, { backgroundColor: colors.background }]} contentContainerStyle={styles.scrollContent}>
-      <ContentContainer>
+    <Wrapper style={[styles.scroll, { backgroundColor: colors.background }]} contentContainerStyle={styles.scrollContent}>
+      <Container>
         {/* Header */}
         <View style={[styles.header, { backgroundColor: colors.heroBar }]}>
           <Text style={[styles.headerEyebrow, { color: colors.gold }]}>{subtitle}</Text>
@@ -142,8 +143,8 @@ export function TownshipDocumentScreen({
             </Text>
           </TouchableOpacity>
         </View>
-      </ContentContainer>
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 

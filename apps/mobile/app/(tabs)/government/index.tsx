@@ -1,10 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 const DEFAULT_COUNTY = 'clare-county';
@@ -47,8 +48,8 @@ export default function GovernmentIndex() {
   if (!county) return <View style={styles.page}><Text style={styles.loading}>Loading...</Text></View>;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <ContentContainer>
+    <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <Container>
       <View style={styles.header}>
         <Text style={styles.type}>{county.type.toUpperCase()}</Text>
         <Text style={styles.name}>{county.name}</Text>
@@ -64,8 +65,8 @@ export default function GovernmentIndex() {
           </AnimatedPressable>
         </Link>
       ))}
-      </ContentContainer>
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 

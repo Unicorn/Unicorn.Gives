@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import {
   HORN_HERO,
@@ -20,8 +21,8 @@ export default function CommunityTab() {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <ContentContainer>
+    <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <Container>
       {/* Hero: The Horn */}
       <HeroFeature
         eyebrow={HORN_HERO.eyebrow}
@@ -81,8 +82,8 @@ export default function CommunityTab() {
           </AnimatedPressable>
         </Link>
       </View>
-      </ContentContainer>
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 

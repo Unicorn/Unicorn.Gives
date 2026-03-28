@@ -1,9 +1,10 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { routes } from '@/lib/navigation';
 
@@ -34,8 +35,8 @@ export default function NewsTab() {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <ContentContainer>
+    <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <Container>
       <Text style={styles.heading}>Latest News</Text>
       {items.map(n => (
         <Link key={n.id} href={routes.community.news.detail(n.slug)} asChild>
@@ -52,8 +53,8 @@ export default function NewsTab() {
       {items.length === 0 && (
         <Text style={styles.empty}>No published news items yet. Check back soon for civic updates.</Text>
       )}
-      </ContentContainer>
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 

@@ -4,7 +4,8 @@ import { Link } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { toHref } from '@/lib/navigation';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 interface Guide {
@@ -47,8 +48,8 @@ export default function GuidesIndex() {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <ContentContainer>
+    <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <Container>
       <Text style={styles.heading}>What do you need help with?</Text>
       <Text style={styles.subheading}>
         Step-by-step guides for common civic tasks in Clare County.
@@ -96,8 +97,8 @@ export default function GuidesIndex() {
       {guides.length === 0 && (
         <Text style={styles.empty}>Loading guides...</Text>
       )}
-      </ContentContainer>
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 

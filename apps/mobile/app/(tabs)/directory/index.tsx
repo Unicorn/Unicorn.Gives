@@ -1,10 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 interface Partner {
@@ -28,8 +29,8 @@ export default function PartnersDirectory() {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <ContentContainer>
+    <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <Container>
       <Text style={styles.heading}>Community Partners</Text>
       <Text style={styles.subheading}>Organizations serving Clare County and northern Michigan.</Text>
       {partners.map(p => (
@@ -46,8 +47,8 @@ export default function PartnersDirectory() {
         </Link>
       ))}
       {partners.length === 0 && <Text style={styles.empty}>Loading partners...</Text>}
-      </ContentContainer>
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 

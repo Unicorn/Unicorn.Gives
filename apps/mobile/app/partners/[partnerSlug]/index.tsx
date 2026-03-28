@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { AppHeader } from '@/components/layout/AppHeader';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 import { SubTabs } from '@/components/layout/SubTabs';
 import { useTheme, spacing } from '@/constants/theme';
 
@@ -204,15 +205,15 @@ export default function PartnerLanding() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <AppHeader title={partner.name} />
       {tabs.length > 0 && <SubTabs tabs={tabs} />}
-      <ScrollView contentContainerStyle={styles.content}>
-        <ContentContainer>
+      <Wrapper contentContainerStyle={styles.content}>
+        <Container>
           {firstPage ? (
             <MarkdownRenderer content={firstPage.body} />
           ) : partner.description ? (
             <Text style={[styles.desc, { color: colors.neutral }]}>{partner.description}</Text>
           ) : null}
-        </ContentContainer>
-      </ScrollView>
+        </Container>
+      </Wrapper>
     </View>
   );
 }

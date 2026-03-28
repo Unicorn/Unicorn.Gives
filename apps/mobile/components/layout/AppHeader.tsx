@@ -77,14 +77,16 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
             <MaterialIcons name="arrow-back" size={24} color={colors.neutral} />
           </Pressable>
         ) : (
-          <View style={styles.leftZone}>
-            <Image
-              source={require('../../assets/images/logo.png')}
-              style={[styles.logo, isDark && { opacity: 0.8 }]}
-              resizeMode="contain"
-              accessibilityLabel="unicorn.gives logo"
-            />
-          </View>
+          <Link href={toHref('/home')} asChild>
+            <Pressable style={styles.leftZone}>
+              <Image
+                source={require('../../assets/images/logo.png')}
+                style={[styles.logo, isDark && { opacity: 0.8 }]}
+                resizeMode="contain"
+                accessibilityLabel="unicorn.gives logo"
+              />
+            </Pressable>
+          </Link>
         )}
 
         {/* Center: Desktop nav links OR breadcrumb OR empty */}

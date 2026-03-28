@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import { Text, StyleSheet, ScrollView } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { LORE_ORDER, getLoreDoc } from '@/lib/lore';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 export default function HistoryTab() {
@@ -12,8 +13,8 @@ export default function HistoryTab() {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <ContentContainer>
+    <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <Container>
       <Text style={styles.intro}>
         Tier 0 of unicorn.gives — the stories, traditions, and histories that sit beneath the county lines.
         Read as folklore and teaching, not as a substitute for science or tribal authority.
@@ -33,8 +34,8 @@ export default function HistoryTab() {
           </Link>
         );
       })}
-      </ContentContainer>
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 

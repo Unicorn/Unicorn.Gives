@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   useWindowDimensions,
 } from 'react-native';
 import { supabase } from '@/lib/supabase';
@@ -17,7 +16,8 @@ import {
   QuoteCallout,
 } from '@/components/widgets';
 import { routes } from '@/lib/navigation';
-import { ContentContainer } from '@/components/layout/ContentContainer';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 
 const CATEGORY_LABELS: Record<string, string> = {
   government: 'Government',
@@ -76,8 +76,8 @@ export function EventsList({ regionId }: Props) {
   const DEFAULT_BADGE = { bg: colors.surfaceContainer, text: colors.neutral };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <ContentContainer>
+    <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <Container>
       {/* Featured event hero */}
       {featured && !categoryFilter && (
         <FeaturedEventCard event={featured} />
@@ -140,8 +140,8 @@ export function EventsList({ regionId }: Props) {
           attribution={COMMUNITY_SPIRIT_QUOTE.attribution}
         />
       )}
-      </ContentContainer>
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 
