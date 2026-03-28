@@ -60,7 +60,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const [themeOverride, setThemeOverride] = useState<'light' | 'dark' | null>(null);
+  const [themeOverride, setThemeOverride] = useState<'light' | 'dark' | null>('light');
   const effectiveScheme = themeOverride ?? colorScheme;
 
   const toggleTheme = useCallback(() => {

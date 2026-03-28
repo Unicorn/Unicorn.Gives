@@ -79,7 +79,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   name: { fontSize: 24, fontWeight: '800', color: colors.neutral, marginBottom: 6 },
   description: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22 },
   sectionTitle: { fontSize: 13, fontWeight: '800', color: colors.neutralVariant, letterSpacing: 1, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 },
-  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, borderRadius: radii.md, backgroundColor: colors.surface, ...shadows.card },
+  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, borderRadius: radii.md, backgroundColor: colors.surface, borderLeftWidth: 3, borderLeftColor: colors.primary, ...shadows.card },
   rowTitle: { fontSize: 16, fontWeight: '700', color: colors.neutral },
   rowMeta: { fontSize: 13, color: colors.neutralVariant, marginTop: 4, textTransform: 'capitalize' },
 });

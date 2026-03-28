@@ -219,9 +219,6 @@ export default function HomeScreen() {
         >
           <View style={[styles.heroLayout, isTablet && styles.heroLayoutTablet]}>
             <View style={styles.heroText}>
-              <View style={styles.heroPill}>
-                <Text style={styles.heroPillText}>unicorn.gives</Text>
-              </View>
               <Text style={styles.heroTitle}>
                 <Text
                   style={[

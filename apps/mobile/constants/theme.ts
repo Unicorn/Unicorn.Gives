@@ -177,7 +177,7 @@ const lightColors = {
   surface:              '#ffffff',
   surfaceContainer:     gray[50],
   surfaceContainerHigh: gray[100],
-  background:           gray[100],
+  background:           gray[50],
 
   // Utility
   outline:              gray[200],
