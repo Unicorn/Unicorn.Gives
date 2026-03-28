@@ -1,6 +1,6 @@
 -- =============================================================================
 -- Unicorn.Gives Content Seed Migration (auto-generated)
--- Generated: 2026-03-26T05:43:31.428Z
+-- Generated: 2026-03-28T22:22:24.221Z
 -- =============================================================================
 
 DO $$
@@ -6562,7 +6562,7 @@ We are just getting started. Watch this space for more news, events, and communi
 ON CONFLICT (slug) DO UPDATE SET title = EXCLUDED.title, body = EXCLUDED.body;
 
 -- =============================================================================
--- Events (22)
+-- Events (23)
 -- =============================================================================
 
 INSERT INTO public.events (slug, title, description, body, date, end_date, time, location, category, region_id, recurring, recurrence_rule, registration_url, cost, tags, visibility, status, created_at, published_at)
@@ -6578,6 +6578,11 @@ VALUES
 ('irish-festival', 'Clare Irish Festival', 'Annual celebration of Clare''s Irish heritage with music, food, and family fun', 'Clare''s signature celebration of its Irish heritage. Live Irish music, traditional food, green beer, parade, and family activities throughout downtown. Clare was named after County Clare, Ireland in 1843.', '2026-03-14', NULL, 'All Day', 'Downtown Clare, McEwan Street', 'community', clare_city_id, true, 'Annually in March', NULL, 'Free', ARRAY['festival', 'music', 'food', 'free'], 'global', 'published', now(), now()),
 ('lake-daze', 'Lake Daze Festival', 'Summer community celebration in Lake, Michigan', 'The community of Lake celebrates summer with the annual Lake Daze festival, featuring food, games, fireworks, and small-town fun.', '2026-07-04', NULL, NULL, 'Lake, MI', 'community', NULL, true, 'Annually around July 4th', NULL, 'Free', ARRAY['festival', 'summer', 'free'], 'global', 'published', now(), now()),
 ('lake-improvement-board-meeting', 'Lake Improvement Board Meeting', 'Meetings for Clare County lake improvement boards', 'Clare County lake improvement boards meet to address lake management, weed control, water quality, and special assessments. Multiple boards serve different lakes. Meeting schedules are posted on the county calendar.', '2026-04-15', NULL, 'TBD', '225 W Main St, Harrison, MI 48625', 'government', clare_county_id, true, 'As scheduled', NULL, 'Free', ARRAY['meeting', 'government'], 'global', 'published', now(), now()),
+('little-forks-conservation-program', 'Free Conservation Program — Land Protection Options', 'Learn about conservation easements, land protection options, and the Forest & Water Fund at this free program hosted by Little Forks Conservancy', 'Local landowners are invited to learn about land protection options such as conservation easements and how to preserve natural features while maintaining property ownership. The program will also feature information on the Forest & Water Fund, which offers financial support for land management and conservation efforts.
+
+Presented by Shelby Gentle, Land Conservation Specialist with Little Forks Conservancy, and Vic Lane, Project Manager with the Michigan Forest Association.
+
+No registration required and no obligation to participate in any conservation program. For more information, contact Shelby Gentle at (989) 835-4886 ext. 103 or sgentle@littleforks.org.', '2026-04-11', NULL, '10:00 AM - 12:00 PM', 'Jay''s & Webber Wildlife and Education Center, 3891 East Surrey Rd, Clare, MI', 'conservation', clare_city_id, false, NULL, NULL, 'Free', ARRAY['conservation', 'free', 'outdoor'], 'global', 'published', now(), now()),
 ('lumberjack-festival', 'Farwell Lumberjack Festival', 'Celebrating Farwell''s logging heritage with competitions and family fun', 'Farwell honors its logging heritage with lumberjack competitions, live music, craft vendors, food, and family activities. The village was a hub for Michigan''s lumber industry in the 1800s.', '2026-08-15', '2026-08-16', NULL, 'Village of Farwell, MI', 'community', farwell_village_id, true, 'Annually in August', NULL, 'Free', ARRAY['festival', 'history', 'summer'], 'global', 'published', now(), now()),
 ('native-plant-pickup-flowers', 'Native Plant Sale Pickup (Wildflowers & Garden Kits)', 'Pick up your pre-ordered wildflowers and garden kits from the Clare Conservation District spring plant sale', 'Pick up your pre-ordered wildflowers and garden kits from the Clare Conservation District''s annual spring plant sale. Pickup runs May 21-23. Bring your order confirmation and a vehicle suitable for transporting your plants.', '2026-05-21', NULL, '9:00 AM - 4:00 PM', 'Harrison City Hall Maintenance Shop, 2105 Sullivan Dr, Harrison, MI', 'conservation', NULL, false, NULL, NULL, NULL, ARRAY['conservation', 'outdoor'], 'global', 'published', now(), now()),
 ('native-plant-pickup-trees', 'Native Plant Sale Pickup (Trees & Shrubs)', 'Pick up your pre-ordered native trees and shrubs from the Clare Conservation District spring plant sale', 'Pick up your pre-ordered native trees and shrubs from the Clare Conservation District''s annual spring plant sale. Pickup runs May 7-9. Bring your order confirmation and a vehicle suitable for transporting your plants.', '2026-05-07', NULL, '9:00 AM - 4:00 PM', 'Harrison City Hall Maintenance Shop, 2105 Sullivan Dr, Harrison, MI', 'conservation', NULL, false, NULL, NULL, NULL, ARRAY['conservation', 'outdoor'], 'global', 'published', now(), now()),

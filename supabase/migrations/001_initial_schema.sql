@@ -248,10 +248,13 @@ CREATE TABLE public.events (
   image_url TEXT,
   status TEXT NOT NULL DEFAULT 'draft'
     CHECK (status IN ('draft', 'published', 'archived')),
+  tags TEXT[] DEFAULT '{}',
   author_id UUID REFERENCES public.profiles(id),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   published_at TIMESTAMPTZ
 );
+
+CREATE INDEX idx_events_tags ON public.events USING GIN (tags);
 
 CREATE TABLE public.guides (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
