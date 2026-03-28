@@ -245,7 +245,7 @@ export default function HomeScreen() {
               <View style={[styles.heroCtaRow, isDesktop && styles.heroCtaRowDesktop]}>
                 <Link href={routes.community.index()} asChild>
                   <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.heroCtaPrimary, shadows.button])}>
-                    <Text style={styles.heroCtaPrimaryText}>Problem Solver</Text>
+                    <Text style={styles.heroCtaPrimaryText}>Get Involved</Text>
                   </AnimatedPressable>
                 </Link>
                 <Link href={routes.history.index()} asChild>
@@ -290,7 +290,7 @@ export default function HomeScreen() {
           <View style={styles.ctaRow}>
             <Link href={routes.community.index()} asChild>
               <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.ctaButton, shadows.button])}>
-                <Text style={styles.ctaButtonText}>Problem Solver</Text>
+                <Text style={styles.ctaButtonText}>Get Involved</Text>
               </AnimatedPressable>
             </Link>
             <Link href={routes.history.index()} asChild>

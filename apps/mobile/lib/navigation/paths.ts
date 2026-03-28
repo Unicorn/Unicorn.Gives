@@ -14,16 +14,16 @@ export function hrefToPathString(href: Href): string {
 
 export const paths = {
   home: '/',
+  homeDiscover: '/home',
   auth: {
     signIn: '/sign-in',
     signUp: '/sign-up',
     admin: '/admin',
   },
-  history: { index: '/history' },
+  history: { index: '/home/history' },
   community: {
     index: '/home/community',
     events: '/home/events',
-    eventsDetail: '/community/events',
     news: '/home/news',
   },
   government: { base: '/government' },
@@ -74,7 +74,7 @@ export const routes = {
     index: () => toHref(paths.community.index),
     events: {
       index: () => toHref(paths.community.events),
-      detail: (slug: string) => toHref(paths.community.eventsDetail + '/' + enc(slug)),
+      detail: (slug: string) => toHref(paths.community.events + '/' + enc(slug)),
     },
     news: {
       index: () => toHref(paths.community.news),
