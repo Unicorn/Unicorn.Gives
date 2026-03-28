@@ -13,7 +13,7 @@ export default function CommunityEventsLayout() {
   return (
     <View style={{ flex: 1 }}>
       <AppHeader showBack={isDetail} />
-      <ContentContainer>
+      <ContentContainer style={{ flex: 1 }}>
         <Stack screenOptions={{ headerShown: false }} />
       </ContentContainer>
     </View>

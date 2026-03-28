@@ -36,6 +36,12 @@ export function MunicipalHub() {
     { label: 'Zoning', count: 0, href: `${basePath}/zoning`, icon: '🗺️' },
   ];
 
+  const planningDocs = [
+    { label: 'Master Plan 2040', subtitle: 'Adopted March 2024', href: `${basePath}/master-plan`, icon: '📐' },
+    { label: 'Recreation Plan 2026–2030', subtitle: 'Adopted January 2026', href: `${basePath}/recreation-plan`, icon: '🌲' },
+    { label: 'Zoning Ordinance', subtitle: 'Ordinance No. 44', href: `${basePath}/zoning`, icon: '🗺️' },
+  ];
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ paddingBottom: 40 }}>
       <View style={{ backgroundColor: colors.heroBar, padding: spacing.xxl, paddingTop: spacing.lg }}>
@@ -50,6 +56,26 @@ export function MunicipalHub() {
               <Text style={{ fontSize: 28, marginBottom: spacing.sm }}>{s.icon}</Text>
               <Text style={{ fontSize: 16, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: spacing.xs }}>{s.label}</Text>
               {s.count > 0 && <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant }}>{s.count} records</Text>}
+            </TouchableOpacity>
+          </Link>
+        ))}
+      </View>
+
+      {/* Planning Documents */}
+      <View style={{ paddingHorizontal: spacing.lg, paddingTop: spacing.xl, gap: spacing.md }}>
+        <Text style={{ fontFamily: fonts.serifBold, fontSize: 22, color: colors.neutral, marginBottom: spacing.xs }}>Planning Documents</Text>
+        <Text style={{ fontFamily: fonts.sans, fontSize: 14, color: colors.neutralVariant, lineHeight: 20, marginBottom: spacing.sm }}>
+          Official township plans and ordinances with key information and downloadable PDFs.
+        </Text>
+        {planningDocs.map((doc) => (
+          <Link key={doc.label} href={doc.href as any} asChild>
+            <TouchableOpacity style={{ backgroundColor: colors.surface, borderRadius: radii.md, padding: spacing.lg, borderWidth: 1, borderColor: colors.outline, flexDirection: 'row', alignItems: 'center', gap: spacing.md }}>
+              <Text style={{ fontSize: 28 }}>{doc.icon}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 15, fontFamily: fonts.sansBold, color: colors.neutral }}>{doc.label}</Text>
+                <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant, marginTop: 2 }}>{doc.subtitle}</Text>
+              </View>
+              <Text style={{ fontSize: 18, color: colors.neutralVariant }}>{'›'}</Text>
             </TouchableOpacity>
           </Link>
         ))}

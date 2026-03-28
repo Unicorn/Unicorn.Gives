@@ -78,6 +78,7 @@ export const routes = {
     },
     news: {
       index: () => toHref(paths.community.news),
+      detail: (slug: string) => toHref('/community/news/' + enc(slug)),
     },
   },
   partners: {

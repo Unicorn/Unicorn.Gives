@@ -1,9 +1,11 @@
 import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Link } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { ContentContainer } from '@/components/layout/ContentContainer';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
+import { routes } from '@/lib/navigation';
 
 interface NewsItem {
   id: string;
@@ -36,14 +38,16 @@ export default function NewsTab() {
       <ContentContainer>
       <Text style={styles.heading}>Latest News</Text>
       {items.map(n => (
-        <AnimatedPressable key={n.id} variant="card" style={styles.card}>
-          <Text style={styles.category}>{n.category.replace(/-/g, ' ').toUpperCase()}</Text>
-          <Text style={styles.title}>{n.title}</Text>
-          {n.description && <Text style={styles.desc} numberOfLines={2}>{n.description}</Text>}
-          <Text style={styles.date}>
-            {new Date(n.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-          </Text>
-        </AnimatedPressable>
+        <Link key={n.id} href={routes.community.news.detail(n.slug)} asChild>
+          <AnimatedPressable variant="card" style={styles.card}>
+            <Text style={styles.category}>{n.category.replace(/-/g, ' ').toUpperCase()}</Text>
+            <Text style={styles.title}>{n.title}</Text>
+            {n.description && <Text style={styles.desc} numberOfLines={2}>{n.description}</Text>}
+            <Text style={styles.date}>
+              {new Date(n.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </Text>
+          </AnimatedPressable>
+        </Link>
       ))}
       {items.length === 0 && (
         <Text style={styles.empty}>No published news items yet. Check back soon for civic updates.</Text>

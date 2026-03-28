@@ -30,7 +30,7 @@ export default function MunicipalityLayout() {
         ]}
       />
       {!isDetailPage && <SubTabs tabs={tabs} />}
-      <ContentContainer>
+      <ContentContainer style={{ flex: 1 }}>
         <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="minutes/index" />
@@ -44,6 +44,8 @@ export default function MunicipalityLayout() {
         <Stack.Screen name="elections/index" />
         <Stack.Screen name="elections/[slug]" />
         <Stack.Screen name="zoning" />
+        <Stack.Screen name="master-plan" />
+        <Stack.Screen name="recreation-plan" />
       </Stack>
       </ContentContainer>
     </View>
