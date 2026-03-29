@@ -49,12 +49,12 @@ function BentoCard({ item, isTablet }: { item: BentoItem; isTablet: boolean }) {
   const scheme = schemes[item.colorScheme || 'surface'];
   const isFullWidth = item.span === 'full';
 
-  const { colors } = useTheme();
   const card = (
     <View
       style={[
         styles.card,
-        { borderWidth: 0 },
+        { backgroundColor: scheme.bg },
+        shadows.cardElevated,
         isTablet && !isFullWidth && styles.cardHalf,
         isTablet && isFullWidth && styles.cardFull,
       ]}

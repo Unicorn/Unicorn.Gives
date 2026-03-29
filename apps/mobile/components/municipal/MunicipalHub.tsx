@@ -218,7 +218,7 @@ export function MunicipalHub() {
           <Link key={doc.label} href={doc.href as any} asChild>
             <AnimatedPressable
               variant="card"
-              style={StyleSheet.flatten([styles.docCard, { backgroundColor: colors.surface }, shadows.card])}
+              style={StyleSheet.flatten([styles.docCard, { backgroundColor: colors.surface }, shadows.cardElevated])}
             >
               <View style={[styles.docIconBox, { backgroundColor: colors.surfaceContainer }]}>
                 <MaterialIcons name={doc.icon as any} size={24} color={colors.primary} />

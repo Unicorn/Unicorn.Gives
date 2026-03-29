@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     padding: 20,
     gap: 4,
-    ...shadows.card,
+    ...shadows.cardElevated,
   },
   groupTitle: {
     fontFamily: fonts.serifItalic,

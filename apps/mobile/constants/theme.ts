@@ -72,6 +72,17 @@ export const shadows = {
       shadowRadius: 4,
     },
   }),
+  /** Softer lift for marketing-style cards (home bento, partner features, elevated quotes). */
+  cardElevated: Platform.select({
+    ios: {
+      shadowColor: '#1a1b25',
+      shadowOffset: { width: 0, height: 12 },
+      shadowOpacity: 0.06,
+      shadowRadius: 24,
+    },
+    android: { elevation: 4 },
+    default: {},
+  }),
   button: Platform.select({
     ios: {
       shadowColor: '#000',

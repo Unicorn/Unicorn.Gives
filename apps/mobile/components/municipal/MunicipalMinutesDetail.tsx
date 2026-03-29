@@ -5,7 +5,7 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 interface Minutes {
   id: string;
@@ -52,7 +52,16 @@ export function MunicipalMinutesDetail() {
         </View>
       </View>
       {(item.attendees_present?.length > 0 || item.attendees_absent?.length > 0) && (
-        <View style={{ backgroundColor: colors.surfaceContainer, borderRadius: radii.sm, padding: 14, marginBottom: spacing.xl, gap: 6 }}>
+        <View
+          style={{
+            backgroundColor: colors.surface,
+            borderRadius: radii.md,
+            padding: 14,
+            marginBottom: spacing.xl,
+            gap: 6,
+            ...shadows.cardElevated,
+          }}
+        >
           {item.attendees_present?.length > 0 && (
             <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
               <Text style={{ fontSize: 13, fontFamily: fonts.sansBold, color: colors.neutral }}>Present:</Text>

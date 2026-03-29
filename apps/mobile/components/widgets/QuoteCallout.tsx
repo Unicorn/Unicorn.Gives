@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { useTheme, fonts } from '@/constants/theme';
+import { useTheme, fonts, radii, shadows } from '@/constants/theme';
 
 interface QuoteCalloutProps {
   quote: string;
@@ -16,35 +16,58 @@ export function QuoteCallout({
   const isCentered = variant === 'centered';
 
   return (
-    <View style={[styles.container, isCentered && styles.centered]}>
+    <View style={styles.wrap}>
       <View
-        style={[styles.bar, { backgroundColor: colors.primary }, isCentered && styles.barCentered]}
-      />
-      <Text
         style={[
-          styles.quote,
-          { color: colors.neutral },
-          isCentered && styles.quoteCentered,
-          !isCentered && [styles.quoteAside, { borderLeftColor: colors.primary }],
+          styles.surface,
+          { backgroundColor: colors.surface },
+          shadows.cardElevated,
         ]}
       >
-        {quote}
-      </Text>
-      {attribution && (
-        <Text style={[styles.attribution, { color: colors.neutralVariant }, isCentered && styles.attributionCentered]}>
-          {attribution}
-        </Text>
-      )}
+        <View style={[styles.inner, isCentered && styles.innerCentered]}>
+          <View
+            style={[styles.bar, { backgroundColor: colors.primary }, isCentered && styles.barCentered]}
+          />
+          <Text
+            style={[
+              styles.quote,
+              { color: colors.neutral },
+              isCentered && styles.quoteCentered,
+              !isCentered && [styles.quoteAside, { borderLeftColor: colors.primary }],
+            ]}
+          >
+            {quote}
+          </Text>
+          {attribution && (
+            <Text
+              style={[
+                styles.attribution,
+                { color: colors.neutralVariant },
+                isCentered && styles.attributionCentered,
+              ]}
+            >
+              {attribution}
+            </Text>
+          )}
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 24,
+  wrap: {
+    width: '100%',
+  },
+  surface: {
+    borderRadius: radii.md,
+    paddingVertical: 22,
+    paddingHorizontal: 20,
+  },
+  inner: {
     gap: 12,
   },
-  centered: {
+  innerCentered: {
     alignItems: 'center',
   },
   bar: {

@@ -102,7 +102,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.md,
     padding: 16,
     backgroundColor: colors.surface,
-    ...shadows.card,
+    ...shadows.cardElevated,
     gap: 14,
     alignItems: 'center',
   },

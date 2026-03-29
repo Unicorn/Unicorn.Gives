@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { useTheme, fonts, radii } from '@/constants/theme';
+import { useTheme, fonts, radii, shadows } from '@/constants/theme';
 
 interface HeroFeatureProps {
   title: string;
@@ -35,7 +35,14 @@ export function HeroFeature({
   const isTablet = width >= 768;
 
   return (
-    <View style={[styles.container, isTablet && styles.containerTablet]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colors.surface },
+        shadows.cardElevated,
+        isTablet && styles.containerTablet,
+      ]}
+    >
       <View style={[styles.textBlock, (isTablet && imageSource) ? styles.textBlockTablet : undefined]}>
         {eyebrow && (
           <View style={styles.eyebrowPill}>
@@ -76,7 +83,6 @@ export function HeroFeature({
 const styles = StyleSheet.create({
   container: {
     borderRadius: radii.lg,
-    overflow: 'hidden',
     padding: 24,
     gap: 20,
   },
@@ -118,7 +124,6 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: fonts.sans,
     fontSize: 15,
-    color: 'rgba(255,255,255,0.85)',
     lineHeight: 23,
   },
   ctaRow: {

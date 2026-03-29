@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Linking,
-  Platform,
   Image,
   useWindowDimensions,
 } from 'react-native';
@@ -479,17 +478,6 @@ export default function HomeScreen() {
   );
 }
 
-const shadowCard = Platform.select({
-  ios: {
-    shadowColor: '#1a1b25',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.06,
-    shadowRadius: 24,
-  },
-  android: { elevation: 4 },
-  default: {},
-});
-
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
   container: { flex: 1 },
   content: { paddingBottom: 40 },
@@ -588,7 +576,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.lg,
     overflow: 'hidden',
     position: 'relative',
-    ...shadowCard,
+    ...shadows.cardElevated,
   },
   heroImage: {
     width: '100%',
@@ -729,7 +717,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.md,
     overflow: 'hidden',
     backgroundColor: colors.surface,
-    ...shadowCard,
+    ...shadows.cardElevated,
   },
   partnerFeatureCardTablet: {
     width: '48%',
@@ -809,6 +797,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   bentoTile: {
     borderRadius: radii.md,
     padding: 18,
+    backgroundColor: colors.surface,
+    ...shadows.cardElevated,
   },
   bentoTileIcon: {
     fontSize: 22,
@@ -836,6 +826,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   bentoEventsTile: {
     borderRadius: radii.md,
     padding: 18,
+    backgroundColor: colors.surface,
+    ...shadows.cardElevated,
   },
   bentoEventsIcon: { fontSize: 22, marginBottom: 8 },
   bentoEventsHeading: { color: colors.neutral },
@@ -879,6 +871,8 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   bentoNewsTile: {
     borderRadius: radii.md,
     padding: 18,
+    backgroundColor: colors.surface,
+    ...shadows.cardElevated,
   },
   bentoNewsHeadline: {
     fontSize: 16,
@@ -926,7 +920,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     borderRadius: radii.md,
     padding: 16,
     backgroundColor: colors.surface,
-    ...shadowCard,
+    ...shadows.cardElevated,
   },
   cardIcon: { fontSize: 24, marginBottom: 6 },
   cardTitle: {
@@ -939,7 +933,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     padding: 14,
     marginBottom: 8,
     backgroundColor: colors.surface,
-    ...shadowCard,
+    ...shadows.cardElevated,
   },
   regionType: {
     fontSize: 10,
@@ -958,7 +952,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     padding: 12,
     marginBottom: 6,
     backgroundColor: colors.surface,
-    ...shadowCard,
+    ...shadows.cardElevated,
   },
   newsCategory: {
     fontSize: 10,
@@ -980,7 +974,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     padding: 10,
     marginBottom: 6,
     backgroundColor: colors.surface,
-    ...shadowCard,
+    ...shadows.cardElevated,
     gap: 12,
     alignItems: 'center',
   },
@@ -1096,7 +1090,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
     padding: 14,
     marginBottom: 10,
     backgroundColor: colors.surface,
-    ...shadowCard,
+    ...shadows.cardElevated,
   },
   loreTeaserKind: {
     fontSize: 10,

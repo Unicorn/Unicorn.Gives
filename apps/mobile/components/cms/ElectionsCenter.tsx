@@ -10,7 +10,7 @@ import {
 
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 const electionsHero = require('../../assets/images/elections-hero.jpg');
 const electionsCommunity = require('../../assets/images/elections-community.jpg');
@@ -84,7 +84,17 @@ export function ElectionsCenter({
         </ImageBackground>
       </View>
 
-      <View style={{ marginTop: spacing.lg, backgroundColor: colors.surface, borderRadius: radii.lg, padding: spacing.lg, borderWidth: 1, borderColor: colors.outline }}>
+      <View
+        style={{
+          marginTop: spacing.lg,
+          backgroundColor: colors.surface,
+          borderRadius: radii.lg,
+          padding: spacing.lg,
+          borderWidth: 1,
+          borderColor: colors.outline,
+          ...shadows.cardElevated,
+        }}
+      >
         <Text style={{ fontSize: 20, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: 10 }}>Voter Registration</Text>
         <Text style={{ fontSize: 14, fontFamily: fonts.sans, color: colors.neutral, lineHeight: 22, marginBottom: spacing.md }}>
           To vote in Lincoln Township, you must be a U.S. citizen, at least 18 years old by Election Day, and a resident of the township for at least 30 days.
@@ -113,7 +123,17 @@ export function ElectionsCenter({
         </View>
       </View>
 
-      <View style={{ marginTop: spacing.lg, backgroundColor: colors.surfaceContainer, borderRadius: radii.lg, padding: spacing.lg, borderWidth: 1, borderColor: colors.outline }}>
+      <View
+        style={{
+          marginTop: spacing.lg,
+          backgroundColor: colors.surface,
+          borderRadius: radii.lg,
+          padding: spacing.lg,
+          borderWidth: 1,
+          borderColor: colors.outline,
+          ...shadows.cardElevated,
+        }}
+      >
         <Text style={{ fontSize: 20, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: 10 }}>Absentee Voting</Text>
         <Text style={{ fontSize: 14, fontFamily: fonts.sans, color: colors.neutral, lineHeight: 22, marginBottom: spacing.md }}>
           All registered voters in Michigan can vote by absentee ballot — no reason required. Due to the passing of Proposal 18-3, anyone is eligible to request an absentee ballot for any reason.
@@ -139,7 +159,17 @@ export function ElectionsCenter({
         </View>
       </View>
 
-      <View style={{ marginTop: spacing.lg, backgroundColor: colors.surface, borderRadius: radii.lg, padding: spacing.lg, borderWidth: 1, borderColor: colors.outline }}>
+      <View
+        style={{
+          marginTop: spacing.lg,
+          backgroundColor: colors.surface,
+          borderRadius: radii.lg,
+          padding: spacing.lg,
+          borderWidth: 1,
+          borderColor: colors.outline,
+          ...shadows.cardElevated,
+        }}
+      >
         <Text style={{ fontSize: 20, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: 10 }}>Important Deadlines</Text>
         <View style={{ gap: spacing.md, flexDirection: 'row' }}>
           <View style={{ flex: 1, borderRadius: 14, padding: 14, borderWidth: 1, backgroundColor: colors.surface, borderColor: colors.outline }}>
@@ -184,7 +214,17 @@ export function ElectionsCenter({
         </ImageBackground>
       </View>
 
-      <View style={{ marginTop: spacing.lg, backgroundColor: colors.surface, borderRadius: radii.lg, padding: spacing.lg, borderWidth: 1, borderColor: colors.outline }}>
+      <View
+        style={{
+          marginTop: spacing.lg,
+          backgroundColor: colors.surface,
+          borderRadius: radii.lg,
+          padding: spacing.lg,
+          borderWidth: 1,
+          borderColor: colors.outline,
+          ...shadows.cardElevated,
+        }}
+      >
         <Text style={{ fontSize: 20, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: 10 }}>Additional Resources</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, gap: spacing.md }}>
           <View style={{ flexBasis: '48%', backgroundColor: colors.background, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: colors.outline }}>
