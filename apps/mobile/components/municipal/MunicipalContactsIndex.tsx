@@ -5,7 +5,7 @@ import { Wrapper } from '@/components/layout/Wrapper';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
 
 interface Contact {
   id: string;
@@ -57,20 +57,20 @@ export function MunicipalContactsIndex() {
       )}
       {filtered.map(c => (
         <View key={c.id} style={{ backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.outline }}>
-          <Text style={{ fontSize: 16, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: 2 }}>{c.name}</Text>
-          <Text style={{ fontSize: 14, fontFamily: fonts.sans, color: colors.neutral, marginBottom: 2 }}>{c.role}</Text>
-          <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: 6 }}>{c.department}</Text>
+          <Text style={{ fontSize: fontSize.lg, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: 2 }}>{c.name}</Text>
+          <Text style={{ fontSize: fontSize.md, fontFamily: fonts.sans, color: colors.neutral, marginBottom: 2 }}>{c.role}</Text>
+          <Text style={{ fontSize: fontSize.sm, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: 6 }}>{c.department}</Text>
           {c.phone && (
             <TouchableOpacity onPress={() => Linking.openURL(`tel:${c.phone}`)}>
-              <Text style={{ fontSize: 14, fontFamily: fonts.sansMedium, color: colors.primary, marginBottom: 2 }}>{c.phone}{c.phone_ext ? ` ext. ${c.phone_ext}` : ''}</Text>
+              <Text style={{ fontSize: fontSize.md, fontFamily: fonts.sansMedium, color: colors.primary, marginBottom: 2 }}>{c.phone}{c.phone_ext ? ` ext. ${c.phone_ext}` : ''}</Text>
             </TouchableOpacity>
           )}
           {c.email && (
             <TouchableOpacity onPress={() => Linking.openURL(`mailto:${c.email}`)}>
-              <Text style={{ fontSize: 14, fontFamily: fonts.sans, color: colors.primary, marginBottom: 2 }}>{c.email}</Text>
+              <Text style={{ fontSize: fontSize.md, fontFamily: fonts.sans, color: colors.primary, marginBottom: 2 }}>{c.email}</Text>
             </TouchableOpacity>
           )}
-          {c.hours && <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant, marginTop: spacing.xs }}>{c.hours}</Text>}
+          {c.hours && <Text style={{ fontSize: fontSize.sm, fontFamily: fonts.sans, color: colors.neutralVariant, marginTop: spacing.xs }}>{c.hours}</Text>}
         </View>
       ))}
       </View>

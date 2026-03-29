@@ -2,34 +2,11 @@ import { useMemo } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Switch } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
+import { FormField } from './fields/FormField';
 
-/* ── Field wrapper ── */
-
-interface FieldProps {
-  label: string;
-  required?: boolean;
-  error?: string;
-  hint?: string;
-  children: React.ReactNode;
-}
-
-export function Field({ label, required, error, hint, children }: FieldProps) {
-  const { colors } = useTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-
-  return (
-    <View style={styles.field}>
-      <Text style={styles.label}>
-        {label}
-        {required && <Text style={styles.required}> *</Text>}
-      </Text>
-      {children}
-      {hint && !error && <Text style={styles.hint}>{hint}</Text>}
-      {error && <Text style={styles.error}>{error}</Text>}
-    </View>
-  );
-}
+// Re-export FormField for direct use
+export { FormField as Field };
 
 /* ── Text input ── */
 
@@ -62,7 +39,7 @@ export function TextField({
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <Field label={label} required={required} error={error} hint={hint}>
+    <FormField label={label} required={required} error={error} hint={hint}>
       <TextInput
         style={[
           styles.input,
@@ -77,7 +54,7 @@ export function TextField({
         multiline={multiline}
         numberOfLines={multiline ? numberOfLines : undefined}
       />
-    </Field>
+    </FormField>
   );
 }
 
@@ -111,7 +88,7 @@ export function SelectField({
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <Field label={label} required={required} error={error}>
+    <FormField label={label} required={required} error={error}>
       <View style={[styles.selectWrapper, error && styles.inputError]}>
         <select
           value={value}
@@ -136,7 +113,7 @@ export function SelectField({
           ))}
         </select>
       </View>
-    </Field>
+    </FormField>
   );
 }
 
@@ -155,7 +132,7 @@ export function DateField({ label, value, onChangeText, required, error }: DateF
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <Field label={label} required={required} error={error}>
+    <FormField label={label} required={required} error={error}>
       <View style={styles.input}>
         <input
           type="date"
@@ -172,7 +149,7 @@ export function DateField({ label, value, onChangeText, required, error }: DateF
           }}
         />
       </View>
-    </Field>
+    </FormField>
   );
 }
 
@@ -231,7 +208,7 @@ export function TagsField({ label, value, onChange, placeholder = 'Add tag...', 
   }
 
   return (
-    <Field label={label} hint={hint}>
+    <FormField label={label} hint={hint}>
       <View style={styles.tagsContainer}>
         {value.map((tag) => (
           <View key={tag} style={styles.tag}>
@@ -251,7 +228,7 @@ export function TagsField({ label, value, onChange, placeholder = 'Add tag...', 
           }}
         />
       </View>
-    </Field>
+    </FormField>
   );
 }
 
@@ -276,7 +253,7 @@ export function SlugField({
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <Field label={label} hint={manuallyEdited ? 'Manually edited' : 'Auto-generated from title'}>
+    <FormField label={label} hint={manuallyEdited ? 'Manually edited' : 'Auto-generated from title'}>
       <View style={styles.slugRow}>
         <TextInput
           style={[styles.input, styles.slugInput]}
@@ -291,14 +268,14 @@ export function SlugField({
           </Pressable>
         )}
       </View>
-    </Field>
+    </FormField>
   );
 }
 
 /* ── Form row (horizontal layout) ── */
 
 export function FormRow({ children }: { children: React.ReactNode }) {
-  return <View style={{ flexDirection: 'row', gap: 16 }}>{children}</View>;
+  return <View style={{ flexDirection: 'row', gap: spacing.lg }}>{children}</View>;
 }
 
 export function FormColumn({ children, flex = 1 }: { children: React.ReactNode; flex?: number }) {
@@ -309,41 +286,24 @@ export function FormColumn({ children, flex = 1 }: { children: React.ReactNode; 
 
 const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
-    field: {
-      gap: 4,
-      marginBottom: spacing.md,
-    },
-    label: {
-      fontFamily: fonts.sansMedium,
-      fontSize: 13,
-      color: colors.neutral,
-    },
-    required: {
-      color: colors.error,
-    },
-    hint: {
-      fontFamily: fonts.sans,
-      fontSize: 12,
-      color: colors.neutralVariant,
-    },
-    error: {
-      fontFamily: fonts.sans,
-      fontSize: 12,
-      color: colors.error,
-    },
     input: {
       backgroundColor: colors.surface,
       borderWidth: 1,
       borderColor: colors.outline,
       borderRadius: radii.sm,
       paddingHorizontal: spacing.md,
-      paddingVertical: 10,
+      paddingVertical: spacing.sm + 2,
       fontFamily: fonts.sans,
-      fontSize: 14,
+      fontSize: fontSize.md,
       color: colors.neutral,
     },
     inputError: {
       borderColor: colors.error,
+    },
+    hint: {
+      fontFamily: fonts.sans,
+      fontSize: fontSize.sm,
+      color: colors.neutralVariant,
     },
     selectWrapper: {
       backgroundColor: colors.surface,
@@ -355,20 +315,18 @@ const createStyles = (colors: ThemeColors) =>
     checkboxRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 10,
+      gap: spacing.sm + 2,
       marginBottom: spacing.md,
     },
     checkboxLabel: {
       fontFamily: fonts.sans,
-      fontSize: 14,
+      fontSize: fontSize.md,
       color: colors.neutral,
     },
-
-    /* Tags */
     tagsContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      gap: 6,
+      gap: spacing.xs + 2,
       backgroundColor: colors.surface,
       borderWidth: 1,
       borderColor: colors.outline,
@@ -380,30 +338,28 @@ const createStyles = (colors: ThemeColors) =>
     tag: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 4,
+      gap: spacing.xs,
       backgroundColor: colors.surfaceContainer,
       borderRadius: radii.pill,
-      paddingHorizontal: 8,
+      paddingHorizontal: spacing.sm,
       paddingVertical: 3,
     },
     tagText: {
       fontFamily: fonts.sans,
-      fontSize: 12,
+      fontSize: fontSize.sm,
       color: colors.neutral,
     },
     tagInput: {
       flex: 1,
       minWidth: 80,
       fontFamily: fonts.sans,
-      fontSize: 14,
+      fontSize: fontSize.md,
       color: colors.neutral,
-      padding: 4,
+      padding: spacing.xs,
     },
-
-    /* Slug */
     slugRow: {
       flexDirection: 'row',
-      gap: 8,
+      gap: spacing.sm,
       alignItems: 'center',
     },
     slugInput: {

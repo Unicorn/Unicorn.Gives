@@ -7,7 +7,7 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
 
 interface Ordinance {
   title: string;
@@ -40,15 +40,15 @@ export function MunicipalOrdinancesDetail() {
       <Container>
       <View style={{ padding: spacing.xl }}>
       {item.number && <Text style={{ fontSize: 13, fontFamily: fonts.sansBold, color: colors.neutralVariant, marginBottom: spacing.xs }}>Ordinance {item.number}</Text>}
-      <Text style={{ fontSize: 24, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: spacing.sm }}>{item.title}</Text>
-      {item.description && <Text style={{ fontSize: 15, fontFamily: fonts.sans, color: colors.neutral, lineHeight: 22, marginBottom: spacing.md }}>{item.description}</Text>}
+      <Text style={{ fontSize: fontSize['3xl'], fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: spacing.sm }}>{item.title}</Text>
+      {item.description && <Text style={{ fontSize: fontSize.base, fontFamily: fonts.sans, color: colors.neutral, lineHeight: 22, marginBottom: spacing.md }}>{item.description}</Text>}
       <View style={{ flexDirection: 'row', gap: spacing.lg, marginBottom: spacing.lg }}>
         {item.adopted_date && <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant }}>Adopted: {item.adopted_date}</Text>}
         {item.amended_date && <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant }}>Amended: {item.amended_date}</Text>}
       </View>
       {item.pdf_url && (
         <TouchableOpacity style={{ backgroundColor: colors.heroBar, padding: spacing.md, borderRadius: radii.sm, alignItems: 'center', marginBottom: spacing.xl }} onPress={() => Linking.openURL(item.pdf_url!)}>
-          <Text style={{ color: colors.onHeroBar, fontFamily: fonts.sansMedium, fontSize: 14 }}>View Full PDF</Text>
+          <Text style={{ color: colors.onHeroBar, fontFamily: fonts.sansMedium, fontSize: fontSize.md }}>View Full PDF</Text>
         </TouchableOpacity>
       )}
       <MarkdownRenderer content={item.body} />

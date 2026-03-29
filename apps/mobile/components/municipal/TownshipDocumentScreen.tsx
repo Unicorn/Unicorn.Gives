@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Linking, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, letterSpacing, radii, shadows } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 
@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
   },
   headerEyebrow: {
     fontFamily: fonts.sansBold,
-    fontSize: 11,
-    letterSpacing: 1,
+    fontSize: fontSize.xs,
+    letterSpacing: letterSpacing.wide,
     textTransform: 'uppercase',
     marginBottom: spacing.xs,
   },
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   pdfCardTitle: {
     fontFamily: fonts.sansBold,
-    fontSize: 15,
+    fontSize: fontSize.base,
   },
   pdfCardSize: {
     fontFamily: fonts.sans,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: 15,
+    fontSize: fontSize.base,
     lineHeight: 24,
   },
   card: {
@@ -237,25 +237,25 @@ const styles = StyleSheet.create({
   },
   metaLabel: {
     fontFamily: fonts.sans,
-    fontSize: 12,
+    fontSize: fontSize.sm,
   },
   metaValue: {
     fontFamily: fonts.sansBold,
-    fontSize: 14,
+    fontSize: fontSize.md,
   },
   bulletRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    paddingVertical: 4,
+    paddingVertical: spacing.xs,
   },
   bullet: {
     fontFamily: fonts.sansBold,
-    fontSize: 14,
+    fontSize: fontSize.md,
     lineHeight: 22,
   },
   bulletText: {
     fontFamily: fonts.sans,
-    fontSize: 14,
+    fontSize: fontSize.md,
     lineHeight: 22,
     flex: 1,
   },
@@ -267,13 +267,13 @@ const styles = StyleSheet.create({
   },
   tocNumber: {
     fontFamily: fonts.sansBold,
-    fontSize: 18,
+    fontSize: fontSize.xl,
     width: 28,
     textAlign: 'center',
   },
   tocText: {
     fontFamily: fonts.sans,
-    fontSize: 14,
+    fontSize: fontSize.md,
     flex: 1,
   },
   bottomCta: {
@@ -287,6 +287,6 @@ const styles = StyleSheet.create({
   },
   bottomCtaText: {
     fontFamily: fonts.sansBold,
-    fontSize: 15,
+    fontSize: fontSize.base,
   },
 });

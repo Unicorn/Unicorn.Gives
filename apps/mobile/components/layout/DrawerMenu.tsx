@@ -5,13 +5,12 @@ import { DrawerActions, type NavigationProp, type ParamListBase } from '@react-n
 import { useAuth } from '@/lib/auth';
 import {
   isPathActive,
-  paths,
   routes,
   toHref,
 } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { governmentHref } from '@/lib/governmentHref';
-import { useTheme, type ThemeColors } from '@/constants/theme';
+import { useTheme, fonts, fontSize, letterSpacing, spacing, type ThemeColors } from '@/constants/theme';
 
 interface Region {
   slug: string;
@@ -58,7 +57,6 @@ export function DrawerMenu({ drawerNavigation }: { drawerNavigation: NavigationP
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* User section */}
       <View style={[styles.userSection, { backgroundColor: colors.heroBar }]}>
         {user && profile ? (
           <View>
@@ -77,77 +75,32 @@ export function DrawerMenu({ drawerNavigation }: { drawerNavigation: NavigationP
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
-        <NavItem
-          label="Home"
-          active={pathname === '/' || pathname.startsWith('/home')}
-          onPress={() => navigate(routes.home())}
-          colors={colors}
-        />
-        <NavItem
-          label="Guides"
-          active={pathname.startsWith('/guides')}
-          onPress={() => navigate(toHref('/guides'))}
-          colors={colors}
-        />
-        <NavItem
-          label="Government"
-          active={pathname.startsWith('/government')}
-          onPress={() => navigate(toHref('/government'))}
-          colors={colors}
-        />
-        <NavItem
-          label="Directory"
-          active={pathname.startsWith('/directory')}
-          onPress={() => navigate(toHref('/directory'))}
-          colors={colors}
-        />
+        <NavItem label="Home" active={pathname === '/' || pathname.startsWith('/home')} onPress={() => navigate(routes.home())} colors={colors} />
+        <NavItem label="Guides" active={pathname.startsWith('/guides')} onPress={() => navigate(toHref('/guides'))} colors={colors} />
+        <NavItem label="Government" active={pathname.startsWith('/government')} onPress={() => navigate(toHref('/government'))} colors={colors} />
+        <NavItem label="Directory" active={pathname.startsWith('/directory')} onPress={() => navigate(toHref('/directory'))} colors={colors} />
 
         <SectionHeader label="QUICK ACCESS" colors={colors} />
         {regions.map((r) => (
-          <NavItem
-            key={r.slug}
-            label={r.name}
-            sublabel={r.type}
-            active={isActiveHref(governmentHref(r))}
-            onPress={() => navigate(governmentHref(r))}
-            colors={colors}
-          />
+          <NavItem key={r.slug} label={r.name} sublabel={r.type} active={isActiveHref(governmentHref(r))} onPress={() => navigate(governmentHref(r))} colors={colors} />
         ))}
         {partners.map((p) => (
-          <NavItem
-            key={p.slug}
-            label={p.name}
-            active={isActiveHref(routes.partners.index(p.slug))}
-            onPress={() => navigate(routes.partners.index(p.slug))}
-            colors={colors}
-          />
+          <NavItem key={p.slug} label={p.name} active={isActiveHref(routes.partners.index(p.slug))} onPress={() => navigate(routes.partners.index(p.slug))} colors={colors} />
         ))}
       </ScrollView>
 
-      {/* Bottom auth section */}
       <View style={[styles.bottomSection, { borderTopColor: colors.outline }]}>
         {user ? (
           <>
             {isEditor && (
-              <NavItem
-                label="Admin Dashboard"
-                active={isActiveHref(routes.auth.adminDashboard())}
-                onPress={() => navigate(routes.auth.adminDashboard())}
-                accent
-                colors={colors}
-              />
+              <NavItem label="Admin Dashboard" active={isActiveHref(routes.auth.adminDashboard())} onPress={() => navigate(routes.auth.adminDashboard())} accent colors={colors} />
             )}
             <Pressable style={styles.signOutButton} onPress={() => { signOut(); drawerNavigation.dispatch(DrawerActions.closeDrawer()); }}>
               <Text style={[styles.signOutText, { color: colors.neutralVariant }]}>Sign Out</Text>
             </Pressable>
           </>
         ) : (
-          <NavItem
-            label="Sign In"
-            onPress={() => navigate(routes.auth.signIn())}
-            accent
-            colors={colors}
-          />
+          <NavItem label="Sign In" onPress={() => navigate(routes.auth.signIn())} accent colors={colors} />
         )}
       </View>
     </View>
@@ -189,8 +142,8 @@ function NavItem({
         style={StyleSheet.flatten([
           styles.navItemText,
           { color: colors.neutral },
-          active && { fontWeight: '700' },
-          accent && { color: colors.purple, fontWeight: '600' },
+          active && { fontFamily: fonts.sansBold },
+          accent && { color: colors.purple, fontFamily: fonts.sansMedium },
         ])}
       >
         {label}
@@ -209,64 +162,66 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userSection: {
-    padding: 20,
+    padding: spacing.xl,
     paddingTop: 48,
   },
   userName: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontFamily: fonts.sansBold,
+    fontSize: fontSize.lg,
   },
   userRole: {
-    fontSize: 12,
+    fontFamily: fonts.sans,
+    fontSize: fontSize.sm,
     textTransform: 'capitalize',
     marginTop: 2,
   },
   signInText: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontFamily: fonts.sansMedium,
+    fontSize: fontSize.lg,
   },
   scroll: {
     flex: 1,
   },
   scrollContent: {
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
   },
   sectionHeader: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    paddingBottom: 4,
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.xs,
   },
   sectionHeaderText: {
-    fontSize: 11,
-    fontWeight: '800',
-    letterSpacing: 1.5,
+    fontFamily: fonts.sansBold,
+    fontSize: fontSize.xs,
+    letterSpacing: letterSpacing.wider,
   },
   navItem: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
     borderLeftWidth: 3,
     borderLeftColor: 'transparent',
   },
   navItemActive: {},
   navItemText: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontFamily: fonts.sansMedium,
+    fontSize: fontSize.base,
   },
   navItemSublabel: {
-    fontSize: 11,
+    fontFamily: fonts.sans,
+    fontSize: fontSize.xs,
     textTransform: 'capitalize',
     marginTop: 1,
   },
   bottomSection: {
     borderTopWidth: 1,
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
   },
   signOutButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
   },
   signOutText: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontFamily: fonts.sansMedium,
+    fontSize: fontSize.base,
   },
 });

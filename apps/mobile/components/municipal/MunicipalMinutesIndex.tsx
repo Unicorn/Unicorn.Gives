@@ -7,7 +7,7 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
 
 interface MinutesSummary {
   id: string;
@@ -49,7 +49,7 @@ export function MunicipalMinutesIndex() {
       <Container>
       <View style={{ padding: spacing.lg }}>
       <TextInput
-        style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: 15, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
+        style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: fontSize.base, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
         placeholder="Search minutes..."
         value={search}
         onChangeText={setSearch}
@@ -72,14 +72,14 @@ export function MunicipalMinutesIndex() {
         <Link key={m.id} href={`${basePath}/minutes/${m.slug}` as any} asChild>
           <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.outline }}>
             <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: 2 }}>
+              <Text style={{ fontSize: fontSize.sm, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: 2 }}>
                 {new Date(m.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </Text>
-              <Text style={{ fontSize: 15, fontFamily: fonts.sansMedium, color: colors.neutral, marginBottom: 2 }}>{m.title}</Text>
-              <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant }}>{m.meeting_type}</Text>
+              <Text style={{ fontSize: fontSize.base, fontFamily: fonts.sansMedium, color: colors.neutral, marginBottom: 2 }}>{m.title}</Text>
+              <Text style={{ fontSize: fontSize.sm, fontFamily: fonts.sans, color: colors.neutralVariant }}>{m.meeting_type}</Text>
             </View>
-            <View style={{ paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, backgroundColor: m.status === 'approved' ? colors.surfaceContainer : colors.goldContainer }}>
-              <Text style={{ fontSize: 11, fontFamily: fonts.sansMedium, color: colors.neutral, textTransform: 'capitalize' }}>{m.status}</Text>
+            <View style={{ paddingHorizontal: spacing.sm, paddingVertical: 3, borderRadius: 4, backgroundColor: m.status === 'approved' ? colors.surfaceContainer : colors.goldContainer }}>
+              <Text style={{ fontSize: fontSize.xs, fontFamily: fonts.sansMedium, color: colors.neutral, textTransform: 'capitalize' }}>{m.status}</Text>
             </View>
           </TouchableOpacity>
         </Link>

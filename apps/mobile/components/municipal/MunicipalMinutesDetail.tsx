@@ -7,7 +7,7 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, shadows } from '@/constants/theme';
 
 interface Minutes {
   id: string;
@@ -46,13 +46,13 @@ export function MunicipalMinutesDetail() {
     <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 60 }}>
       <Container>
       <View style={{ padding: spacing.xl }}>
-      <Text style={{ fontSize: 24, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: spacing.sm }}>{item.title}</Text>
+      <Text style={{ fontSize: fontSize['3xl'], fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: spacing.sm }}>{item.title}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginBottom: spacing.lg }}>
-        <Text style={{ fontSize: 14, fontFamily: fonts.sans, color: colors.neutralVariant }}>
+        <Text style={{ fontSize: fontSize.md, fontFamily: fonts.sans, color: colors.neutralVariant }}>
           {new Date(item.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
         </Text>
-        <View style={{ paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, backgroundColor: item.status === 'approved' ? colors.surfaceContainer : colors.goldContainer }}>
-          <Text style={{ fontSize: 11, fontFamily: fonts.sansMedium, color: colors.neutral, textTransform: 'capitalize' }}>{item.status}</Text>
+        <View style={{ paddingHorizontal: spacing.sm, paddingVertical: 3, borderRadius: 4, backgroundColor: item.status === 'approved' ? colors.surfaceContainer : colors.goldContainer }}>
+          <Text style={{ fontSize: fontSize.xs, fontFamily: fonts.sansMedium, color: colors.neutral, textTransform: 'capitalize' }}>{item.status}</Text>
         </View>
       </View>
       {(item.attendees_present?.length > 0 || item.attendees_absent?.length > 0) && (

@@ -9,7 +9,7 @@ import {
   fetchMunicipalDocumentsForRegion,
   type MunicipalDocumentRow,
 } from '@/lib/municipal/municipalDocuments';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, letterSpacing, radii, shadows } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
 import { BentoSection } from '@/components/layout/BentoSection';
 import { Container } from '@/components/layout/Container';
@@ -143,7 +143,7 @@ export function MunicipalHub() {
   ].filter((s) => s.count > 0);
 
   return (
-    <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 48 }}>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: spacing.xxxl + spacing.lg }}>
       <SeoHead title={region.name} description={hubDescription} />
       <Container>
       {/* ── 1. Hero Section ─────────────────────── */}
@@ -285,13 +285,13 @@ const styles = StyleSheet.create({
   hero: {
     paddingHorizontal: spacing.xxl,
     paddingTop: spacing.xl,
-    paddingBottom: spacing.xxl + 4,
+    paddingBottom: spacing.xxl + spacing.xs,
     gap: spacing.sm,
   },
   heroEyebrow: {
     fontFamily: fonts.sansBold,
-    fontSize: 11,
-    letterSpacing: 1.5,
+    fontSize: fontSize.xs,
+    letterSpacing: letterSpacing.wider,
     textTransform: 'uppercase',
   },
   heroTitle: {
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
   },
   heroDescription: {
     fontFamily: fonts.sans,
-    fontSize: 15,
+    fontSize: fontSize.base,
     lineHeight: 22,
     marginTop: spacing.xs,
   },
@@ -323,28 +323,28 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
   statDivider: {
-    fontSize: 14,
+    fontSize: fontSize.md,
     opacity: 0.5,
   },
 
   /* Sections */
   section: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xxl + 4,
+    paddingTop: spacing.xxl + spacing.xs,
     gap: spacing.md,
   },
   sectionHeader: {
-    gap: 4,
+    gap: spacing.xs,
     marginBottom: spacing.xs,
   },
   sectionEyebrow: {
     fontFamily: fonts.sansBold,
-    fontSize: 11,
-    letterSpacing: 1.5,
+    fontSize: fontSize.xs,
+    letterSpacing: letterSpacing.wider,
   },
   sectionTitle: {
     fontFamily: fonts.serifItalic,
-    fontSize: 28,
+    fontSize: fontSize['4xl'],
   },
 
   seeAllRow: {
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
   },
   seeAllText: {
     fontFamily: fonts.sansBold,
-    fontSize: 14,
+    fontSize: fontSize.md,
   },
 
   /* Planning doc cards */
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   },
   docTitle: {
     fontFamily: fonts.sansBold,
-    fontSize: 15,
+    fontSize: fontSize.base,
   },
   docSubtitle: {
     fontFamily: fonts.sans,
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
   },
   ctaTitle: {
     fontFamily: fonts.sansBold,
-    fontSize: 15,
+    fontSize: fontSize.base,
   },
   ctaSubtitle: {
     fontFamily: fonts.sans,

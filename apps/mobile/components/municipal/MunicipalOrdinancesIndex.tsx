@@ -7,7 +7,7 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, letterSpacing, radii } from '@/constants/theme';
 
 interface Ordinance {
   id: string;
@@ -56,7 +56,7 @@ export function MunicipalOrdinancesIndex() {
       <Container>
       <View style={{ padding: spacing.lg }}>
       <TextInput
-        style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: 15, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
+        style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: fontSize.base, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
         placeholder="Search ordinances..."
         value={search}
         onChangeText={setSearch}
@@ -77,10 +77,10 @@ export function MunicipalOrdinancesIndex() {
       {filtered.map(o => (
         <Link key={o.id} href={`${basePath}/ordinances/${o.slug}` as any} asChild>
           <TouchableOpacity style={{ backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.outline }}>
-            {o.number && <Text style={{ fontSize: 12, fontFamily: fonts.sansBold, color: colors.neutralVariant, marginBottom: 2 }}>Ord. {o.number}</Text>}
-            <Text style={{ fontSize: 16, fontFamily: fonts.sansMedium, color: colors.neutral, marginBottom: spacing.xs }}>{o.title}</Text>
+            {o.number && <Text style={{ fontSize: fontSize.sm, fontFamily: fonts.sansBold, color: colors.neutralVariant, marginBottom: 2 }}>Ord. {o.number}</Text>}
+            <Text style={{ fontSize: fontSize.lg, fontFamily: fonts.sansMedium, color: colors.neutral, marginBottom: spacing.xs }}>{o.title}</Text>
             {o.description && <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutral, lineHeight: 20, marginBottom: spacing.xs }}>{o.description}</Text>}
-            <Text style={{ fontSize: 11, fontFamily: fonts.sans, color: colors.neutralVariant, textTransform: 'uppercase', letterSpacing: 0.5 }}>{CATEGORY_LABELS[o.category] || o.category}</Text>
+            <Text style={{ fontSize: fontSize.xs, fontFamily: fonts.sans, color: colors.neutralVariant, textTransform: 'uppercase', letterSpacing: letterSpacing.normal }}>{CATEGORY_LABELS[o.category] || o.category}</Text>
           </TouchableOpacity>
         </Link>
       ))}
