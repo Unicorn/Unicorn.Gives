@@ -51,7 +51,7 @@ export function PageForm({ data, onChange, errors = {} }: PageFormProps) {
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
   useEffect(() => {
-    if (slug !== data.slug) {
+    if (slug && !data.slug) {
       onChange({ ...data, slug });
     }
   }, [slug]);

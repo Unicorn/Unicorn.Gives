@@ -10,6 +10,8 @@ import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
 import { EventForm, EMPTY_EVENT, type EventFormData } from '@/components/admin/EventForm';
 import { useTheme, fonts, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
+import { AdminPreviewLink } from '@/components/admin/AdminPreviewLink';
+import { getContentPreviewUrl } from '@/lib/admin/contentPreview';
 
 export default function EditEventPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -151,6 +153,7 @@ export default function EditEventPage() {
       backHref="/admin/events"
       actions={
         <>
+          <AdminPreviewLink href={getContentPreviewUrl('events', { slug: form.slug })} />
           <AdminStatusBadge status={status} />
           {status === 'draft' && (
             <AdminButton

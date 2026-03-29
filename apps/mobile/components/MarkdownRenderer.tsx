@@ -1,17 +1,71 @@
 import { useRouter } from "expo-router";
 import { useCallback } from "react";
-import { Linking, Text, View } from "react-native";
+import { Linking, Platform, Text, View } from "react-native";
 import { fonts, spacing, useTheme } from "@/constants/theme";
 import { contentPathToAppHref, toHref } from "@/lib/navigation";
+import { detectContentFormat } from "@/lib/contentFormat";
 
 /**
- * Lightweight markdown-to-RN renderer. Handles headings, paragraphs,
- * bold, italic, links, lists, and horizontal rules. Good enough for
- * our content bodies; we can swap in a full library later.
+ * Lightweight content renderer. Handles both markdown (legacy seeded content)
+ * and HTML (content saved from the TipTap admin editor).
+ *
+ * For markdown: custom parser with headings, paragraphs, bold, italic, links, lists, and HRs.
+ * For HTML on web: renders via dangerouslySetInnerHTML with scoped styles.
+ * For HTML on native: strips tags and falls back to plain text (swap for a proper HTML renderer later).
  */
 export function MarkdownRenderer({ content }: { content: string }) {
 	const { colors } = useTheme();
 	const router = useRouter();
+
+	if (!content) return null;
+
+	// If content is HTML (from the admin editor), render it differently
+	if (detectContentFormat(content) === "html") {
+		if (Platform.OS === "web") {
+			return (
+				<View style={{ gap: spacing.md }}>
+					<div
+						className="cms-html-content"
+						// biome-ignore lint/security/noDangerouslySetInnerHtml: admin-authored HTML content
+						dangerouslySetInnerHTML={{ __html: content }}
+						style={{
+							fontFamily: "Manrope_400Regular, system-ui, sans-serif",
+							fontSize: 15,
+							lineHeight: 1.6,
+							color: colors.neutral,
+						}}
+					/>
+					<style>{`
+						.cms-html-content h1 { font-size: 28px; font-weight: 700; margin: 8px 0 4px; }
+						.cms-html-content h2 { font-size: 22px; font-weight: 700; margin: 8px 0 4px; color: ${colors.neutral}; }
+						.cms-html-content h3 { font-size: 18px; font-weight: 700; margin: 8px 0 4px; color: ${colors.primary}; }
+						.cms-html-content h4 { font-size: 16px; font-weight: 700; margin: 4px 0; }
+						.cms-html-content p { margin: 0 0 12px; }
+						.cms-html-content ul, .cms-html-content ol { padding-left: 24px; margin: 0 0 12px; }
+						.cms-html-content li { margin-bottom: 4px; }
+						.cms-html-content a { color: ${colors.primary}; text-decoration: underline; }
+						.cms-html-content blockquote { border-left: 3px solid ${colors.outline}; padding-left: 16px; margin: 8px 0; color: ${colors.neutralVariant}; }
+						.cms-html-content pre { background: ${colors.surfaceContainer}; padding: 12px; border-radius: 8px; overflow-x: auto; font-size: 13px; }
+						.cms-html-content code { background: ${colors.surfaceContainer}; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+						.cms-html-content hr { border: none; border-top: 1px solid ${colors.outline}; margin: 12px 0; }
+						.cms-html-content img { max-width: 100%; border-radius: 8px; }
+						.cms-html-content strong { font-weight: 700; }
+						.cms-html-content em { font-style: italic; }
+					`}</style>
+				</View>
+			);
+		}
+
+		// Native fallback: strip HTML tags and render as plain text
+		const plainText = content.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").trim();
+		return (
+			<View style={{ gap: spacing.md }}>
+				<Text style={{ fontSize: 15, fontFamily: fonts.sans, lineHeight: 24, color: colors.neutral }}>
+					{plainText}
+				</Text>
+			</View>
+		);
+	}
 
 	const openMarkdownUrl = useCallback(
 		(rawUrl: string) => {

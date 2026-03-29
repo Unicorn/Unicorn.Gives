@@ -87,9 +87,9 @@ export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 		data.title,
 	);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: sync generated slug into form (same pattern as EventForm)
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sync generated slug (only for new records)
 	useEffect(() => {
-		if (slug !== data.slug) {
+		if (slug && !data.slug) {
 			onChange({ ...data, slug });
 		}
 	}, [slug]);

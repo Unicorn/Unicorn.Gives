@@ -119,9 +119,9 @@ export function EventForm({
   const [imagePersistError, setImagePersistError] = useState<string | null>(null);
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
-  // Sync slug back to parent
+  // Sync slug back to parent (only for new records — don't overwrite DB slug)
   useEffect(() => {
-    if (slug !== data.slug) {
+    if (slug && !data.slug) {
       onChange({ ...data, slug });
     }
   }, [slug]);

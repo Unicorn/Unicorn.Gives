@@ -5,10 +5,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
+import { AdminPreviewLink } from '@/components/admin/AdminPreviewLink';
 import { AdminStatusBadge } from '@/components/admin/AdminStatusBadge';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
 import { ContactForm, EMPTY_CONTACT, type ContactFormData } from '@/components/admin/ContactForm';
 import { useTheme, fonts, type ThemeColors } from '@/constants/theme';
+import { getContentPreviewUrl } from '@/lib/admin/contentPreview';
 import { toHref } from '@/lib/navigation';
 
 export default function EditContactPage() {
@@ -132,6 +134,7 @@ export default function EditContactPage() {
       backHref="/admin/contacts"
       actions={
         <>
+          <AdminPreviewLink href={getContentPreviewUrl('contacts', { slug: form.slug })} />
           <AdminStatusBadge status={status} />
           {status === 'draft' && (
             <AdminButton

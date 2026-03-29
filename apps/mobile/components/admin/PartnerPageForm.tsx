@@ -32,7 +32,7 @@ export function PartnerPageForm({ data, onChange, errors = {} }: PartnerPageForm
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
-  useEffect(() => { if (slug !== data.slug) onChange({ ...data, slug }); }, [slug]);
+  useEffect(() => { if (slug && !data.slug) onChange({ ...data, slug }); }, [slug]);
 
   const [partners, setPartners] = useState<{ label: string; value: string }[]>([]);
   useEffect(() => {

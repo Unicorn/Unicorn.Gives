@@ -5,10 +5,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
+import { AdminPreviewLink } from '@/components/admin/AdminPreviewLink';
 import { AdminStatusBadge } from '@/components/admin/AdminStatusBadge';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
 import { GuideForm, EMPTY_GUIDE, type GuideFormData, type GuideContact, type GuideFormEntry } from '@/components/admin/GuideForm';
 import { useTheme, fonts, type ThemeColors } from '@/constants/theme';
+import { getContentPreviewUrl } from '@/lib/admin/contentPreview';
 import { toHref } from '@/lib/navigation';
 
 export default function EditGuidePage() {
@@ -165,6 +167,7 @@ export default function EditGuidePage() {
       backHref="/admin/guides"
       actions={
         <>
+          <AdminPreviewLink href={getContentPreviewUrl('guides', { slug: form.slug })} />
           <AdminStatusBadge status={status} />
           {status === 'draft' && <AdminButton label="Publish" icon="publish" onPress={handlePublish} disabled={mutating} />}
           {status === 'published' && <AdminButton label="Unpublish" variant="secondary" icon="unpublished" onPress={handleUnpublish} disabled={mutating} />}

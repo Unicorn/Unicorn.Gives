@@ -59,8 +59,8 @@ export function MinutesForm({ data, onChange, errors = {} }: MinutesFormProps) {
   const styles = useMemo(() => createStyles(colors), [colors]);
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
-  useEffect(() => { if (slug !== data.slug) onChange({ ...data, slug }); }, [slug]);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sync generated slug into form (only for new records)
+  useEffect(() => { if (slug && !data.slug) onChange({ ...data, slug }); }, [slug]);
 
   const [regions, setRegions] = useState<{ label: string; value: string }[]>([]);
   useEffect(() => {

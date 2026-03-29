@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { AdminConfirmDialog } from "@/components/admin/AdminConfirmDialog";
 import { AdminButton, AdminPageShell } from "@/components/admin/AdminPageShell";
+import { AdminPreviewLink } from "@/components/admin/AdminPreviewLink";
 import { AdminStatusBadge } from "@/components/admin/AdminStatusBadge";
 import {
 	EMPTY_NEWS,
@@ -17,6 +18,7 @@ import {
 } from "@/components/admin/NewsForm";
 import { fonts, type ThemeColors, useTheme } from "@/constants/theme";
 import { useAdminMutation } from "@/hooks/useAdminMutation";
+import { getContentPreviewUrl } from "@/lib/admin/contentPreview";
 import { paths, routes } from "@/lib/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -153,6 +155,7 @@ export default function EditNewsPage() {
 			backHref={paths.admin.news}
 			actions={
 				<>
+					<AdminPreviewLink href={getContentPreviewUrl('news', { slug: form.slug })} />
 					<AdminStatusBadge status={status} />
 					{status === "draft" && (
 						<AdminButton

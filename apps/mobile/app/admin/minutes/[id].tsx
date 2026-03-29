@@ -10,6 +10,8 @@ import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
 import { MinutesForm, EMPTY_MINUTES, type MinutesFormData } from '@/components/admin/MinutesForm';
 import { useTheme, fonts, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
+import { AdminPreviewLink } from '@/components/admin/AdminPreviewLink';
+import { getContentPreviewUrl } from '@/lib/admin/contentPreview';
 
 export default function EditMinutesPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -138,6 +140,7 @@ export default function EditMinutesPage() {
       backHref="/admin/minutes"
       actions={
         <>
+          <AdminPreviewLink href={getContentPreviewUrl('minutes', { slug: form.slug })} />
           <AdminStatusBadge status={status} />
           {status === 'draft' && (
             <AdminButton

@@ -33,7 +33,7 @@ export function RegionPageForm({ data, onChange, errors = {} }: RegionPageFormPr
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
-  useEffect(() => { if (slug !== data.slug) onChange({ ...data, slug }); }, [slug]);
+  useEffect(() => { if (slug && !data.slug) onChange({ ...data, slug }); }, [slug]);
 
   const [regions, setRegions] = useState<{ label: string; value: string }[]>([]);
   useEffect(() => {

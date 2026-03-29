@@ -38,7 +38,7 @@ export function ContactForm({ data, onChange, errors = {} }: ContactFormProps) {
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.name);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
-  useEffect(() => { if (slug !== data.slug) onChange({ ...data, slug }); }, [slug]);
+  useEffect(() => { if (slug && !data.slug) onChange({ ...data, slug }); }, [slug]);
 
   const [regions, setRegions] = useState<{ label: string; value: string }[]>([]);
   useEffect(() => {

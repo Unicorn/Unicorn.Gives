@@ -5,10 +5,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
+import { AdminPreviewLink } from '@/components/admin/AdminPreviewLink';
 import { AdminStatusBadge } from '@/components/admin/AdminStatusBadge';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
 import { PageForm, EMPTY_PAGE, type PageFormData } from '@/components/admin/PageForm';
 import { useTheme, fonts, type ThemeColors } from '@/constants/theme';
+import { getContentPreviewUrl } from '@/lib/admin/contentPreview';
 import { toHref } from '@/lib/navigation';
 
 export default function EditPagePage() {
@@ -91,6 +93,7 @@ export default function EditPagePage() {
       backHref="/admin/pages"
       actions={
         <>
+          <AdminPreviewLink href={getContentPreviewUrl('pages', { slug: form.slug })} />
           <AdminStatusBadge status={status} />
           {status === 'draft' && <AdminButton label="Publish" icon="publish" onPress={handlePublish} disabled={mutating} />}
           {status === 'published' && <AdminButton label="Unpublish" variant="secondary" icon="unpublished" onPress={handleUnpublish} disabled={mutating} />}

@@ -5,10 +5,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
+import { AdminPreviewLink } from '@/components/admin/AdminPreviewLink';
 import { AdminStatusBadge } from '@/components/admin/AdminStatusBadge';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
 import { OrdinanceForm, EMPTY_ORDINANCE, type OrdinanceFormData } from '@/components/admin/OrdinanceForm';
 import { useTheme, fonts, type ThemeColors } from '@/constants/theme';
+import { getContentPreviewUrl } from '@/lib/admin/contentPreview';
 import { toHref } from '@/lib/navigation';
 
 export default function EditOrdinancePage() {
@@ -127,6 +129,7 @@ export default function EditOrdinancePage() {
       backHref="/admin/ordinances"
       actions={
         <>
+          <AdminPreviewLink href={getContentPreviewUrl('ordinances', { slug: form.slug })} />
           <AdminStatusBadge status={status} />
           {status === 'draft' && (
             <AdminButton

@@ -9,6 +9,7 @@ import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
+import { markdownToHtml } from '@/lib/contentFormat';
 
 // TipTap — web-only imports
 let useEditor: any;
@@ -95,6 +96,10 @@ function TipTapEditor({
   colors: ThemeColors;
   styles: ReturnType<typeof createStyles>;
 }) {
+  // Auto-convert markdown to HTML on initial load so the WYSIWYG editor
+  // can render it. All subsequent saves will be HTML.
+  const initialContent = useMemo(() => markdownToHtml(value), []);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -107,7 +112,7 @@ function TipTapEditor({
       ImageExtension,
       PlaceholderExtension.configure({ placeholder }),
     ],
-    content: value,
+    content: initialContent,
     onUpdate: ({ editor: e }: any) => {
       onChange(e.getHTML());
     },

@@ -92,7 +92,7 @@ export function GuideForm({ data, onChange, errors = {} }: GuideFormProps) {
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
   useEffect(() => {
-    if (slug !== data.slug) {
+    if (slug && !data.slug) {
       onChange({ ...data, slug });
     }
   }, [slug]);
