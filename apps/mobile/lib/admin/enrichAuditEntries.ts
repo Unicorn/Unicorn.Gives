@@ -66,8 +66,42 @@ export function formatActorLabel(entry: Pick<AuditLogRow, 'actor_display_name' |
   if (name) return name;
   const email = entry.actor_email?.trim();
   if (email) return email;
-  if (entry.user_id) return `User ${entry.user_id.slice(0, 8)}…`;
   return 'Unknown user';
+}
+
+async function mergeResolvedActors(
+  client: SupabaseClient,
+  entries: AuditLogRow[],
+): Promise<AuditLogRow[]> {
+  const ids = [
+    ...new Set(
+      entries
+        .filter(
+          (e) => e.user_id && !e.actor_display_name?.trim() && !e.actor_email?.trim(),
+        )
+        .map((e) => e.user_id as string),
+    ),
+  ];
+  if (ids.length === 0) return entries;
+
+  const { data, error } = await client.rpc('resolve_audit_actors', {
+    p_user_ids: ids,
+  });
+  if (error || !Array.isArray(data) || data.length === 0) return entries;
+
+  const rows = data as { user_id: string; email: string | null; display_name: string | null }[];
+  const byId = new Map(rows.map((r) => [r.user_id, r]));
+
+  return entries.map((e) => {
+    if (!e.user_id || e.actor_display_name?.trim() || e.actor_email?.trim()) return e;
+    const r = byId.get(e.user_id);
+    if (!r) return e;
+    return {
+      ...e,
+      actor_display_name: r.display_name ?? e.actor_display_name,
+      actor_email: r.email ?? e.actor_email,
+    };
+  });
 }
 
 /**
@@ -77,9 +111,11 @@ export async function enrichAuditEntries(
   client: SupabaseClient,
   entries: AuditLogRow[],
 ): Promise<EnrichedAuditEntry[]> {
+  const withActors = await mergeResolvedActors(client, entries);
+
   const grouped = new Map<string, string[]>();
 
-  for (const e of entries) {
+  for (const e of withActors) {
     if (!BATCH_TABLES.has(e.resource_type)) continue;
     const list = grouped.get(e.resource_type) ?? [];
     if (!list.includes(e.resource_id)) list.push(e.resource_id);
@@ -106,7 +142,7 @@ export async function enrichAuditEntries(
     rowMaps.set(table, m);
   }
 
-  return entries.map((e) => {
+  return withActors.map((e) => {
     const typeLabel = AUDIT_RESOURCE_TYPE_LABELS[e.resource_type] ?? labelForUnknownTable(e.resource_type);
     const fromCh = fromChanges(e.changes);
     const row = rowMaps.get(e.resource_type)?.get(e.resource_id);

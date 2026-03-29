@@ -24,7 +24,7 @@ export function useAdminMutation(table: string): MutationResult {
       await supabase.from('audit_log').insert({
         user_id: user.id,
         actor_display_name: profile?.display_name ?? null,
-        actor_email: user.email ?? null,
+        actor_email: user.email?.trim() || profile?.email?.trim() || null,
         action,
         resource_type: table,
         resource_id: resourceId,
