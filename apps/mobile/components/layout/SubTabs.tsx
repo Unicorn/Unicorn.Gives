@@ -1,91 +1,104 @@
-import { Link, usePathname, type Href } from 'expo-router';
-import { ScrollView, Pressable, Text, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { hrefToPathString } from '@/lib/navigation';
-import { useTheme } from '@/constants/theme';
+import { type Href, Link, usePathname } from "expo-router";
+import {
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	Text,
+	useWindowDimensions,
+	View,
+} from "react-native";
+import { breakpoints, useTheme } from "@/constants/theme";
+import { hrefToPathString } from "@/lib/navigation";
 
 export interface SubTabItem {
-  label: string;
-  href: Href;
+	label: string;
+	href: Href;
 }
 
 interface SubTabsProps {
-  tabs: SubTabItem[];
+	tabs: SubTabItem[];
 }
 
 export function SubTabs({ tabs }: SubTabsProps) {
-  const pathname = usePathname();
-  const { colors } = useTheme();
-  const { width } = useWindowDimensions();
-  const isWide = width >= 768;
+	const pathname = usePathname();
+	const { colors } = useTheme();
+	const { width } = useWindowDimensions();
+	const isWide = width >= breakpoints.tablet;
 
-  return (
-    <View style={[styles.container, { borderBottomColor: colors.outline }]}>
-      <View style={styles.inner}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollContent, isWide && styles.scrollContentCentered]}
-      >
-        {tabs.map((tab) => {
-          const tabPath = hrefToPathString(tab.href);
-          const firstPath = tabs[0] ? hrefToPathString(tabs[0].href) : '';
-          const isActive =
-            pathname === tabPath ||
-            (tabPath !== firstPath && pathname.startsWith(tabPath));
+	return (
+		<View style={[styles.container, { borderBottomColor: colors.outline }]}>
+			<View style={styles.inner}>
+				<ScrollView
+					horizontal
+					showsHorizontalScrollIndicator={false}
+					contentContainerStyle={[
+						styles.scrollContent,
+						isWide && styles.scrollContentCentered,
+					]}
+				>
+					{tabs.map((tab) => {
+						const tabPath = hrefToPathString(tab.href);
+						const firstPath = tabs[0] ? hrefToPathString(tabs[0].href) : "";
+						const isActive =
+							pathname === tabPath ||
+							(tabPath !== firstPath && pathname.startsWith(tabPath));
 
-          return (
-            <Link key={tabPath} href={tab.href} asChild>
-              <Pressable
-                style={StyleSheet.flatten([
-                  styles.tab,
-                  isActive && [styles.tabActive, { borderBottomColor: colors.neutral }],
-                ])}
-              >
-                <Text
-                  style={StyleSheet.flatten([
-                    styles.tabText,
-                    { color: colors.neutralVariant },
-                    isActive && { color: colors.neutral, fontWeight: '700' },
-                  ])}
-                >
-                  {tab.label}
-                </Text>
-              </Pressable>
-            </Link>
-          );
-        })}
-      </ScrollView>
-      </View>
-    </View>
-  );
+						return (
+							<Link key={tabPath} href={tab.href} asChild>
+								<Pressable
+									style={StyleSheet.flatten([
+										styles.tab,
+										isActive && [
+											styles.tabActive,
+											{ borderBottomColor: colors.neutral },
+										],
+									])}
+								>
+									<Text
+										style={StyleSheet.flatten([
+											styles.tabText,
+											{ color: colors.neutralVariant },
+											isActive && { color: colors.neutral, fontWeight: "700" },
+										])}
+									>
+										{tab.label}
+									</Text>
+								</Pressable>
+							</Link>
+						);
+					})}
+				</ScrollView>
+			</View>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    borderBottomWidth: 1,
-  },
-  inner: {
-    maxWidth: 1100,
-    width: '100%',
-    alignSelf: 'center',
-  },
-  scrollContent: {
-    paddingHorizontal: 12,
-    gap: 4,
-  },
-  scrollContentCentered: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  tab: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
-  },
-  tabActive: {},
-  tabText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
+	container: {
+		borderBottomWidth: 1,
+	},
+	inner: {
+		maxWidth: 1100,
+		width: "100%",
+		alignSelf: "center",
+	},
+	scrollContent: {
+		paddingHorizontal: 12,
+		gap: 4,
+	},
+	scrollContentCentered: {
+		flex: 1,
+		justifyContent: "center",
+	},
+	tab: {
+		paddingHorizontal: 16,
+		paddingVertical: 12,
+		borderBottomWidth: 2,
+		borderBottomColor: "transparent",
+	},
+	tabActive: {},
+	tabText: {
+		fontSize: 14,
+		fontWeight: "500",
+	},
 });

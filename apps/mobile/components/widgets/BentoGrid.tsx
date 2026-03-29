@@ -1,8 +1,22 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import type { Href } from "expo-router";
 import { Link } from "expo-router";
-import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
-import { fonts, radii, shadows, spacing, useTheme } from "@/constants/theme";
+import {
+	type StyleProp,
+	StyleSheet,
+	Text,
+	useWindowDimensions,
+	View,
+	type ViewStyle,
+} from "react-native";
+import {
+	breakpoints,
+	fonts,
+	radii,
+	shadows,
+	spacing,
+	useTheme,
+} from "@/constants/theme";
 
 export interface BentoItem {
 	key: string;
@@ -38,35 +52,48 @@ function useSchemeStyles() {
 	} as const;
 }
 
-/** Tablet/desktop: group items into rows (full = solo row; half = pairs). */
-function chunkItemsIntoRows(items: BentoItem[]): BentoItem[][] {
-	const rows: BentoItem[][] = [];
+/**
+ * Wide layouts matching home "Around the region" bento: one wrapping row,
+ * tablet = ⅔ + ⅓ per half-pair, desktop = 48% + 48%, full = 100%.
+ */
+function buildWideCellStyles(
+	items: BentoItem[],
+	isDesktop: boolean,
+): ViewStyle[] {
+	const out: ViewStyle[] = [];
 	let i = 0;
 	while (i < items.length) {
 		const item = items[i];
 		if (item.span === "full") {
-			rows.push([item]);
+			out.push(styles.cellWideFull);
 			i += 1;
-		} else {
-			const next = items[i + 1];
-			if (next && next.span !== "full") {
-				rows.push([item, next]);
-				i += 2;
-			} else {
-				rows.push([item]);
-				i += 1;
+			continue;
+		}
+		const run: BentoItem[] = [];
+		while (i < items.length && items[i].span !== "full") {
+			run.push(items[i]);
+			i += 1;
+		}
+		for (let j = 0; j < run.length; j += 2) {
+			const a = run[j];
+			const b = run[j + 1];
+			if (b) {
+				out.push(isDesktop ? styles.cellWideHalf : styles.cellWideTwoThirds);
+				out.push(isDesktop ? styles.cellWideHalf : styles.cellWideOneThird);
+			} else if (a) {
+				out.push(styles.cellWideFull);
 			}
 		}
 	}
-	return rows;
+	return out;
 }
 
 function BentoCell({
 	item,
-	layout,
+	outerStyle,
 }: {
 	item: BentoItem;
-	layout: "stack" | "rowHalf" | "rowFull";
+	outerStyle?: StyleProp<ViewStyle>;
 }) {
 	const schemes = useSchemeStyles();
 	const scheme = schemes[item.colorScheme || "surface"];
@@ -77,13 +104,12 @@ function BentoCell({
 				styles.card,
 				{ backgroundColor: scheme.bg },
 				shadows.cardElevated,
-				layout === "rowHalf" && styles.cardRowHalf,
 			]}
 		>
 			<MaterialIcons
 				// biome-ignore lint/suspicious/noExplicitAny: icon string from bento item data
 				name={item.icon as any}
-				size={28}
+				size={22}
 				color={scheme.icon}
 				style={styles.icon}
 			/>
@@ -96,25 +122,26 @@ function BentoCell({
 		</View>
 	);
 
-	const linkWrapperStyle =
-		layout === "rowHalf" ? styles.cellRowHalf : styles.cellFullWidth;
+	const wrapStyle = [styles.cellOuter, outerStyle];
 
 	if (item.href) {
 		return (
-			<Link href={item.href} style={linkWrapperStyle}>
+			<Link href={item.href} style={wrapStyle}>
 				{card}
 			</Link>
 		);
 	}
 
-	return <View style={linkWrapperStyle}>{card}</View>;
+	return <View style={wrapStyle}>{card}</View>;
 }
 
 export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
 	const { width } = useWindowDimensions();
 	const { colors } = useTheme();
-	const isTablet = width >= 768;
-	const rows = chunkItemsIntoRows(items);
+	const isTablet = width >= breakpoints.tablet;
+	const isDesktop = width >= breakpoints.desktop;
+	const isWide = isTablet || isDesktop;
+	const wideOuterStyles = buildWideCellStyles(items, isDesktop);
 
 	return (
 		<View style={styles.container}>
@@ -131,25 +158,18 @@ export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
 					</Text>
 				)}
 			</View>
-			<View style={styles.grid}>
-				{isTablet
-					? rows.map((row) => (
-							<View
-								key={row.map((c) => c.key).join("-")}
-								style={styles.tabletRow}
-							>
-								{row.map((item) => (
-									<BentoCell
-										key={item.key}
-										item={item}
-										layout={row.length === 2 ? "rowHalf" : "rowFull"}
-									/>
-								))}
-							</View>
-						))
-					: items.map((item) => (
-							<BentoCell key={item.key} item={item} layout="stack" />
-						))}
+			<View style={[styles.grid, isWide && styles.gridWide]}>
+				{items.map((item, index) => (
+					<BentoCell
+						key={item.key}
+						item={item}
+						outerStyle={
+							isWide
+								? (wideOuterStyles[index] ?? styles.cellWideFull)
+								: undefined
+						}
+					/>
+				))}
 			</View>
 		</View>
 	);
@@ -180,40 +200,50 @@ const styles = StyleSheet.create({
 	grid: {
 		gap: spacing.md,
 	},
-	tabletRow: {
+	/** Matches home `bentoGrid` + `bentoGridTablet` (Around the region). */
+	gridWide: {
 		flexDirection: "row",
+		flexWrap: "wrap",
 		width: "100%",
-		gap: spacing.md,
-		alignItems: "stretch",
 	},
-	cellFullWidth: {
+	cellOuter: {
 		width: "100%",
-		flexGrow: 1,
+	},
+	cellWideFull: {
+		width: "100%",
+		flexGrow: 0,
 		flexShrink: 0,
 	},
-	cellRowHalf: {
-		flex: 1,
-		minWidth: 0,
+	cellWideHalf: {
+		width: "48%",
+		flexGrow: 0,
+		flexShrink: 0,
+	},
+	cellWideTwoThirds: {
+		width: "66.666%",
+		flexGrow: 0,
+		flexShrink: 0,
+	},
+	cellWideOneThird: {
+		width: "33.333%",
+		flexGrow: 0,
+		flexShrink: 0,
 	},
 	card: {
 		padding: spacing.xl,
 		borderRadius: radii.md,
 		gap: spacing.sm,
 	},
-	cardRowHalf: {
-		flex: 1,
-	},
 	icon: {
-		fontSize: 28,
-		marginBottom: spacing.xs,
+		marginBottom: spacing.md,
 	},
 	cardTitle: {
 		fontFamily: fonts.sansBold,
-		fontSize: 17,
+		fontSize: 18,
 	},
 	cardDesc: {
 		fontFamily: fonts.sans,
 		fontSize: 13,
-		lineHeight: 19,
+		lineHeight: 20,
 	},
 });

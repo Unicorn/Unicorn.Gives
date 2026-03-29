@@ -13,7 +13,7 @@ import { Link, useRouter, usePathname } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { routes, toHref } from '@/lib/navigation';
-import { useTheme, fonts } from '@/constants/theme';
+import { breakpoints, useTheme, fonts } from '@/constants/theme';
 import { useThemeToggle } from '@/lib/themeToggle';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
@@ -45,7 +45,7 @@ export function AppHeader({ showBack = false }: AppHeaderProps) {
   const effectiveShowBack = showBack || isUserScopedPath(pathname);
   const { user, signOut } = useAuth();
   const { width } = useWindowDimensions();
-  const isDesktop = width >= 1024;
+  const isDesktop = width >= breakpoints.desktop;
   const [menuOpen, setMenuOpen] = useState(false);
   const { colors, isDark } = useTheme();
   const toggleTheme = useThemeToggle();

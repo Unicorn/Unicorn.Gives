@@ -9,7 +9,7 @@ import { Link } from 'expo-router';
 import { ContentCoverImage } from '@/components/ContentCoverImage';
 import type { EventItem } from '@/components/events/eventTypes';
 import { routes } from '@/lib/navigation';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { breakpoints, useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 
 interface FeaturedEventCardProps {
   event: EventItem & { description?: string | null; location?: string | null };
@@ -18,7 +18,7 @@ interface FeaturedEventCardProps {
 export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
   const { width } = useWindowDimensions();
   const { colors, chips } = useTheme();
-  const isTablet = width >= 768;
+  const isTablet = width >= breakpoints.tablet;
 
   const d = new Date(event.date + 'T00:00:00');
   const monthDay = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { useTheme, fonts, radii, shadows } from '@/constants/theme';
+import { breakpoints, useTheme, fonts, radii, shadows } from '@/constants/theme';
 
 interface HeroFeatureProps {
   title: string;
@@ -32,7 +32,7 @@ export function HeroFeature({
 }: HeroFeatureProps) {
   const { width } = useWindowDimensions();
   const { colors } = useTheme();
-  const isTablet = width >= 768;
+  const isTablet = width >= breakpoints.tablet;
 
   return (
     <View

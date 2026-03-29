@@ -11,6 +11,7 @@ import {
 } from '@/lib/municipal/municipalDocuments';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
+import { BentoSection } from '@/components/layout/BentoSection';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
@@ -173,13 +174,14 @@ export function MunicipalHub() {
       </View>
 
       {/* ── 2. Quick Access Bento Grid ─────────── */}
-      <View style={styles.section}>
+      <BentoSection>
         <BentoGrid
           eyebrow="Quick Access"
           title="Township Resources"
+          subtitle="Meeting records, local codes, contacts, elections, and events for this municipality."
           items={bentoItems}
         />
-      </View>
+      </BentoSection>
 
       {/* ── 3. Upcoming Events Preview ─────────── */}
       {upcomingEvents.length > 0 && (

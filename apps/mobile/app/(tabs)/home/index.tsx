@@ -12,11 +12,12 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native";
-import { SeoHead } from "@/components/SeoHead";
 import { ContentCoverImage } from "@/components/ContentCoverImage";
 import { EventRowLayout } from "@/components/events/EventRowLayout";
+import { BentoSection } from "@/components/layout/BentoSection";
 import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
+import { SeoHead } from "@/components/SeoHead";
 import { AnimatedPressable } from "@/components/ui/AnimatedPressable";
 import { BentoGrid, type BentoItem } from "@/components/widgets";
 // HomeTabBar removed — SubTabs in _layout.tsx handles navigation
@@ -43,7 +44,14 @@ import {
 	HOME_NEWSLETTER_SUBSCRIBE_HELPER,
 	HOME_NEWSLETTER_TITLE,
 } from "@/constants/homeDiscoverHistory";
-import { fonts, radii, shadows, spacing, useTheme } from "@/constants/theme";
+import {
+	breakpoints,
+	fonts,
+	radii,
+	shadows,
+	spacing,
+	useTheme,
+} from "@/constants/theme";
 import { eventDateBoxFromIso } from "@/lib/events/eventDateFormat";
 import { governmentHref } from "@/lib/governmentHref";
 import { routes } from "@/lib/navigation";
@@ -198,8 +206,8 @@ export default function HomeScreen() {
 			: routes.government.county(FALLBACK_COUNTY_SLUG);
 
 	const { width } = useWindowDimensions();
-	const isTablet = width >= 768;
-	const isDesktop = width >= 1024;
+	const isTablet = width >= breakpoints.tablet;
+	const isDesktop = width >= breakpoints.desktop;
 
 	const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -599,14 +607,14 @@ export default function HomeScreen() {
 						</View>
 
 						{/* Service Directory Bento */}
-						<View style={styles.serviceDirectorySection}>
+						<BentoSection flushHorizontal>
 							<BentoGrid
 								eyebrow="Official Resources"
 								title="Service Directories"
 								subtitle="Access essential county services, township ordinances, and community resources in one central place."
 								items={SERVICE_DIRECTORY_ITEMS}
 							/>
-						</View>
+						</BentoSection>
 
 						<View style={styles.newsletterBand}>
 							<Text style={styles.newsletterTitle}>
@@ -1097,9 +1105,6 @@ const createStyles = (colors: ReturnType<typeof useTheme>["colors"]) =>
 			marginBottom: 12,
 		},
 		bentoNewsFooter: { alignSelf: "flex-start" },
-		serviceDirectorySection: {
-			marginTop: spacing.xxxl,
-		},
 		newsletterBand: {
 			marginTop: spacing.xxxl,
 			padding: spacing.xl,
