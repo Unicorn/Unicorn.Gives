@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  Linking,
-  useWindowDimensions,
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Linking } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
+import {
+  fetchMunicipalDocumentsForRegion,
+  type MunicipalDocumentRow,
+} from '@/lib/municipal/municipalDocuments';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { BentoGrid, type BentoItem } from '@/components/widgets';
 import { EditorialCard } from '@/components/widgets/EditorialCard';
+import { EventCardList } from '@/components/events/EventCardList';
+import { eventDateBoxFromIso, eventLongDateLabel } from '@/lib/events/eventDateFormat';
 import { toHref } from '@/lib/navigation/paths';
 
 interface UpcomingEvent {
@@ -28,12 +27,11 @@ interface UpcomingEvent {
 
 export function MunicipalHub() {
   const { colors } = useTheme();
-  const { width } = useWindowDimensions();
-  const isTablet = width >= 768;
   const { municipalitySlug, basePath } = useMunicipalRoute();
   const { region, isLoading } = useRegion(municipalitySlug);
   const [stats, setStats] = useState({ minutes: 0, ordinances: 0, contacts: 0, events: 0 });
   const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEvent[]>([]);
+  const [municipalDocs, setMunicipalDocs] = useState<MunicipalDocumentRow[]>([]);
 
   useEffect(() => {
     if (!region) return;
@@ -58,6 +56,8 @@ export function MunicipalHub() {
       .then(({ data }) => {
         if (data) setUpcomingEvents(data);
       });
+
+    fetchMunicipalDocumentsForRegion(region.id).then(setMunicipalDocs);
   }, [region]);
 
   if (isLoading) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Loading...</Text></View>;
@@ -112,12 +112,18 @@ export function MunicipalHub() {
     },
   ];
 
-  /* ── Planning docs ──────────────────────────── */
-  const planningDocs = [
-    { label: 'Master Plan 2040', subtitle: 'Adopted March 2024', href: `${basePath}/master-plan`, icon: 'architecture' as const },
-    { label: 'Recreation Plan 2026\u20132030', subtitle: 'Adopted January 2026', href: `${basePath}/recreation-plan`, icon: 'park' as const },
-    { label: 'Zoning Ordinance', subtitle: 'Ordinance No. 44', href: `${basePath}/zoning`, icon: 'map' as const },
-  ];
+  function iconForMunicipalDoc(kind: MunicipalDocumentRow['kind']): keyof typeof MaterialIcons.glyphMap {
+    switch (kind) {
+      case 'master_plan':
+        return 'architecture';
+      case 'recreation_plan':
+        return 'park';
+      case 'zoning_ordinance':
+        return 'map';
+      default:
+        return 'description';
+    }
+  }
 
   /* ── Stats badges ───────────────────────────── */
   const statBadges = [
@@ -176,23 +182,18 @@ export function MunicipalHub() {
               Upcoming Events
             </Text>
           </View>
-          <View style={[styles.eventsGrid, isTablet && styles.eventsGridTablet]}>
-            {upcomingEvents.map((evt) => {
-              const d = new Date(evt.date + 'T00:00:00');
-              const month = d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-              const day = d.getDate();
-              return (
-                <EditorialCard
-                  key={evt.id}
-                  title={evt.title}
-                  description={evt.location || undefined}
-                  dateBox={{ month, day }}
-                  href={toHref(`${basePath}/events/${evt.slug}`)}
-                  meta={d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-                />
-              );
-            })}
-          </View>
+          <EventCardList>
+            {upcomingEvents.map((evt) => (
+              <EditorialCard
+                key={evt.id}
+                title={evt.title}
+                description={evt.location || undefined}
+                dateBox={eventDateBoxFromIso(evt.date)}
+                href={toHref(`${basePath}/events/${evt.slug}`)}
+                meta={eventLongDateLabel(evt.date)}
+              />
+            ))}
+          </EventCardList>
           <Link href={toHref(`${basePath}/events`)} asChild>
             <AnimatedPressable style={StyleSheet.flatten(styles.seeAllRow)}>
               <Text style={[styles.seeAllText, { color: colors.primary }]}>
@@ -204,34 +205,41 @@ export function MunicipalHub() {
         </View>
       )}
 
-      {/* ── 4. Planning Documents ──────────────── */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionEyebrow, { color: colors.neutralVariant }]}>
-            OFFICIAL DOCUMENTS
-          </Text>
-          <Text style={[styles.sectionTitle, { color: colors.neutral }]}>
-            Planning & Zoning
-          </Text>
+      {/* ── 4. Planning Documents (region-scoped from DB) ── */}
+      {municipalDocs.length > 0 && (
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionEyebrow, { color: colors.neutralVariant }]}>
+              OFFICIAL DOCUMENTS
+            </Text>
+            <Text style={[styles.sectionTitle, { color: colors.neutral }]}>
+              Planning & Zoning
+            </Text>
+          </View>
+          {municipalDocs.map((doc) => {
+            const icon = iconForMunicipalDoc(doc.kind);
+            return (
+              <Link key={doc.id} href={toHref(`${basePath}/documents/${doc.slug}`)} asChild>
+                <AnimatedPressable
+                  variant="card"
+                  style={StyleSheet.flatten([styles.docCard, { backgroundColor: colors.surface }, shadows.cardElevated])}
+                >
+                  <View style={[styles.docIconBox, { backgroundColor: colors.surfaceContainer }]}>
+                    <MaterialIcons name={icon} size={24} color={colors.primary} />
+                  </View>
+                  <View style={styles.docText}>
+                    <Text style={[styles.docTitle, { color: colors.neutral }]}>{doc.title}</Text>
+                    <Text style={[styles.docSubtitle, { color: colors.neutralVariant }]}>
+                      Adopted {doc.adopted_date}
+                    </Text>
+                  </View>
+                  <MaterialIcons name="chevron-right" size={22} color={colors.neutralVariant} />
+                </AnimatedPressable>
+              </Link>
+            );
+          })}
         </View>
-        {planningDocs.map((doc) => (
-          <Link key={doc.label} href={doc.href as any} asChild>
-            <AnimatedPressable
-              variant="card"
-              style={StyleSheet.flatten([styles.docCard, { backgroundColor: colors.surface }, shadows.cardElevated])}
-            >
-              <View style={[styles.docIconBox, { backgroundColor: colors.surfaceContainer }]}>
-                <MaterialIcons name={doc.icon as any} size={24} color={colors.primary} />
-              </View>
-              <View style={styles.docText}>
-                <Text style={[styles.docTitle, { color: colors.neutral }]}>{doc.label}</Text>
-                <Text style={[styles.docSubtitle, { color: colors.neutralVariant }]}>{doc.subtitle}</Text>
-              </View>
-              <MaterialIcons name="chevron-right" size={22} color={colors.neutralVariant} />
-            </AnimatedPressable>
-          </Link>
-        ))}
-      </View>
+      )}
 
       {/* ── 5. Visit Website CTA ──────────────── */}
       {region.website && (
@@ -325,14 +333,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
 
-  /* Events grid */
-  eventsGrid: {
-    gap: spacing.md,
-  },
-  eventsGridTablet: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
   seeAllRow: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { supabase } from '@/lib/supabase';
-import { EventCard, type EventItem } from './EventCard';
+import type { EventItem } from './eventTypes';
+import { EventCardList } from './EventCardList';
+import { eventDateBoxFromIso } from '@/lib/events/eventDateFormat';
 import { useTheme, fonts } from '@/constants/theme';
 import { COMMUNITY_SPIRIT_QUOTE } from '@/constants/hornContent';
 import {
@@ -40,9 +37,7 @@ interface Props {
 export function EventsList({ regionId }: Props) {
   const [events, setEvents] = useState<EventWithDesc[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const { width } = useWindowDimensions();
   const { colors } = useTheme();
-  const isTablet = width >= 768;
 
   useEffect(() => {
     let query = supabase
@@ -99,35 +94,27 @@ export function EventsList({ regionId }: Props) {
         </Text>
       </View>
 
-      {/* Event grid */}
-      <View style={[styles.grid, isTablet && styles.gridTablet]}>
+      {/* Event list — full-width rows */}
+      <EventCardList>
         {(categoryFilter ? filtered : rest).map((e) => {
-          const d = new Date(e.date + 'T00:00:00');
           const badge = DEFAULT_BADGE;
           return (
-            <View
+            <EditorialCard
               key={e.id}
-              style={[styles.gridItem, isTablet && styles.gridItemTablet]}
-            >
-              <EditorialCard
-                title={e.title}
-                description={e.description || undefined}
-                badge={{
-                  label: CATEGORY_LABELS[e.category] || e.category,
-                  bg: badge.bg,
-                  text: badge.text,
-                }}
-                href={routes.community.events.detail(e.slug)}
-                meta={[e.time, e.location].filter(Boolean).join(' · ')}
-                dateBox={{
-                  month: d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(),
-                  day: d.getDate(),
-                }}
-              />
-            </View>
+              title={e.title}
+              description={e.description || undefined}
+              badge={{
+                label: CATEGORY_LABELS[e.category] || e.category,
+                bg: badge.bg,
+                text: badge.text,
+              }}
+              href={routes.community.events.detail(e.slug)}
+              meta={[e.time, e.location].filter(Boolean).join(' · ')}
+              dateBox={eventDateBoxFromIso(e.date)}
+            />
           );
         })}
-      </View>
+      </EventCardList>
 
       {filtered.length === 0 && (
         <Text style={[styles.empty, { color: colors.neutralVariant }]}>No upcoming events.</Text>
@@ -156,18 +143,6 @@ const styles = StyleSheet.create({
   count: {
     fontFamily: fonts.sans,
     fontSize: 13,
-  },
-  grid: {
-    gap: 12,
-  },
-  gridTablet: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  gridItem: {},
-  gridItemTablet: {
-    width: '48.5%',
   },
   empty: {
     fontFamily: fonts.sans,

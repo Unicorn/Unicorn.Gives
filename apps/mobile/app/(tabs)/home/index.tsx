@@ -6,6 +6,7 @@ import {
   Linking,
   Image,
   useWindowDimensions,
+  Pressable,
 } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -43,6 +44,8 @@ import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { toHref } from '@/lib/navigation/paths';
 import { BentoGrid, type BentoItem } from '@/components/widgets';
+import { EventRowLayout } from '@/components/events/EventRowLayout';
+import { eventDateBoxFromIso } from '@/lib/events/eventDateFormat';
 
 const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
   {
@@ -134,14 +137,6 @@ const CATEGORIES = [
   { slug: 'government', label: 'Government & Records', icon: 'account-balance' },
   { slug: 'services', label: 'Community Services', icon: 'people' },
 ];
-
-function formatEventDay(dateStr: string) {
-  const d = new Date(dateStr + 'T00:00:00');
-  return {
-    month: d.toLocaleDateString('en-US', { month: 'short' }),
-    day: d.getDate(),
-  };
-}
 
 export default function HomeScreen() {
   const { user } = useAuth();
@@ -393,19 +388,18 @@ export default function HomeScreen() {
                 {HOME_BENTO_EVENTS_TITLE}
               </Text>
               {events.length > 0 ? (
-                events.slice(0, 2).map((e) => {
-                  const { month, day } = formatEventDay(e.date);
-                  return (
-                    <View key={e.slug} style={styles.bentoEventRow}>
-                      <Text style={styles.bentoEventDate}>
-                        {month} {day}
-                      </Text>
-                      <Text style={styles.bentoEventTitle} numberOfLines={2}>
-                        {e.title}
-                      </Text>
-                    </View>
-                  );
-                })
+                events.slice(0, 2).map((e) => (
+                  <Link key={e.slug} href={routes.community.events.detail(e.slug)} asChild>
+                    <Pressable style={styles.bentoEventRow}>
+                      <EventRowLayout
+                        variant="compact"
+                        title={e.title}
+                        dateBox={eventDateBoxFromIso(e.date)}
+                        meta={[e.time, e.location].filter(Boolean).join(' · ') || undefined}
+                      />
+                    </Pressable>
+                  </Link>
+                ))
               ) : (
                 <Text style={styles.bentoEventsEmpty}>{HOME_BENTO_EVENTS_EMPTY}</Text>
               )}
@@ -832,23 +826,7 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleShe
   bentoEventsIcon: { fontSize: 22, marginBottom: 8 },
   bentoEventsHeading: { color: colors.neutral },
   bentoEventRow: {
-    flexDirection: 'row',
-    gap: 10,
-    alignItems: 'flex-start',
     marginBottom: 10,
-  },
-  bentoEventDate: {
-    width: 56,
-    fontSize: 13,
-    fontFamily: fonts.sansBold,
-    color: colors.neutralVariant,
-  },
-  bentoEventTitle: {
-    flex: 1,
-    fontSize: 14,
-    fontFamily: fonts.sans,
-    color: colors.neutral,
-    lineHeight: 20,
   },
   bentoEventsEmpty: {
     fontSize: 14,

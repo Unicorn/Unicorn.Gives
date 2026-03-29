@@ -8,7 +8,7 @@ import {
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
-import type { EventItem } from '@/components/events/EventCard';
+import type { EventItem } from '@/components/events/eventTypes';
 
 interface FeaturedEventCardProps {
   event: EventItem & { description?: string | null; location?: string | null };
