@@ -19,6 +19,7 @@ type AuthContextValue = {
   session: Session | null;
   isEditor: boolean;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -32,7 +33,7 @@ async function fetchProfileForUser(user: User): Promise<Profile | null> {
 
   if (error || !data) return null;
   return {
-    role: data.role ?? 'resident',
+    role: data.role ?? 'public',
     display_name: data.display_name ?? null,
     email: user.email ?? '',
     avatar_url: data.avatar_url ?? null,
@@ -46,7 +47,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const role = profile?.role ?? null;
-  const isEditor = role === 'super_admin' || role === 'editor';
+  const isEditor =
+    role === 'super_admin' ||
+    role === 'municipal_editor' ||
+    role === 'partner_editor' ||
+    role === 'community_contributor';
 
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
@@ -57,45 +62,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let cancelled = false;
+    let initialDone = false;
 
-    async function init() {
-      setLoading(true);
-
-      const { data } = await supabase.auth.getSession();
-      if (cancelled) return;
-
-      const nextSession = data.session ?? null;
-      setSession(nextSession);
-
-      const nextUser = nextSession?.user ?? null;
-      setUser(nextUser);
-
-      if (!nextUser) {
-        setProfile(null);
-        setLoading(false);
-        return;
-      }
-
-      const nextProfile = await fetchProfileForUser(nextUser);
-      if (cancelled) return;
-
-      setProfile(nextProfile);
-      setLoading(false);
-    }
-
-    init();
-
+    // Use onAuthStateChange for everything — it fires INITIAL_SESSION on mount,
+    // which replaces the need for a separate getSession() + init() call.
     const { data: subscriptionData } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
       if (cancelled) return;
 
       const nextUser = nextSession?.user ?? null;
       setSession(nextSession ?? null);
       setUser(nextUser);
-      setLoading(true);
+
+      // Only set loading=true on subsequent auth changes, not the initial one
+      // (loading is already true from useState default)
+      if (initialDone) setLoading(true);
 
       if (!nextUser) {
         setProfile(null);
         setLoading(false);
+        initialDone = true;
         return;
       }
 
@@ -104,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setProfile(nextProfile);
       setLoading(false);
+      initialDone = true;
     });
 
     return () => {
@@ -111,6 +97,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       subscriptionData?.subscription.unsubscribe();
     };
   }, []);
+
+  const refreshProfile = useCallback(async () => {
+    if (!user) {
+      setProfile(null);
+      return;
+    }
+    const next = await fetchProfileForUser(user);
+    setProfile(next);
+  }, [user]);
 
   const value = useMemo<AuthContextValue>(
     () => ({
@@ -121,8 +116,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       isEditor,
       signOut,
+      refreshProfile,
     }),
-    [user, role, profile, loading, session, isEditor, signOut],
+    [user, role, profile, loading, session, isEditor, signOut, refreshProfile],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

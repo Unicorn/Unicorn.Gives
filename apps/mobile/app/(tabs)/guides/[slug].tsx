@@ -4,6 +4,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 
 interface Guide {
   title: string;
@@ -53,10 +55,11 @@ export default function GuideDetail() {
 
   const styles = useMemo(() => createStyles(colors), [colors]);
 
-  if (!guide) return <View style={styles.container}><Text style={styles.loading}>Loading...</Text></View>;
+  if (!guide) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={styles.loading}>Loading...</Text></View>;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <Wrapper contentContainerStyle={styles.content}>
+      <Container>
       <View style={styles.header}>
         {guide.icon && <Text style={styles.icon}>{guide.icon}</Text>}
         <Text style={styles.title}>{guide.title}</Text>
@@ -102,12 +105,12 @@ export default function GuideDetail() {
           ))}
         </View>
       )}
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
   content: { padding: 20, paddingBottom: 60 },
   loading: { padding: 24, color: colors.neutralVariant, textAlign: 'center' },
   header: { marginBottom: 24 },

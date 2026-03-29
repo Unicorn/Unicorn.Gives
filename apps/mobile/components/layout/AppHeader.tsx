@@ -12,7 +12,7 @@ import {
 import { Link, useRouter, usePathname } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
-import { toHref } from '@/lib/navigation';
+import { routes, toHref } from '@/lib/navigation';
 import { useTheme, fonts } from '@/constants/theme';
 import { useThemeToggle } from '@/lib/themeToggle';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
@@ -36,10 +36,15 @@ const NAV_LINKS = [
   { label: 'Directory', href: '/directory' },
 ];
 
+function isUserScopedPath(pathname: string) {
+  return pathname === '/user' || pathname.startsWith('/user/');
+}
+
 export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, profile, signOut } = useAuth();
+  const effectiveShowBack = showBack || isUserScopedPath(pathname);
+  const { user, signOut } = useAuth();
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const [menuOpen, setMenuOpen] = useState(false);
@@ -65,6 +70,15 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
       case 'theme':
         toggleTheme();
         break;
+      case 'account':
+        router.push(routes.user.index());
+        break;
+      case 'profile':
+        router.push(routes.user.profile());
+        break;
+      case 'settings':
+        router.push(routes.user.settings());
+        break;
     }
   }
 
@@ -72,7 +86,7 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <View style={[styles.header, isDesktop && styles.headerDesktop]}>
         {/* Left: Logo or Back */}
-        {showBack ? (
+        {effectiveShowBack ? (
           <Pressable style={styles.leftZone} onPress={() => router.back()}>
             <MaterialIcons name="arrow-back" size={24} color={colors.neutral} />
           </Pressable>
@@ -176,6 +190,12 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
 
               {user ? (
                 <>
+                  <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('account')}>
+                    <View style={styles.popoverRow}>
+                      <MaterialIcons name="manage-accounts" size={18} color={colors.neutral} />
+                      <Text style={[styles.popoverText, { color: colors.neutral }]}>Your account</Text>
+                    </View>
+                  </AnimatedPressable>
                   <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('profile')}>
                     <View style={styles.popoverRow}>
                       <MaterialIcons name="person" size={18} color={colors.neutral} />

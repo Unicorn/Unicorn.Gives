@@ -20,6 +20,11 @@ export const paths = {
     signUp: '/sign-up',
     admin: '/admin',
   },
+  user: {
+    index: '/user',
+    profile: '/user/profile',
+    settings: '/user/settings',
+  },
   history: { index: '/home/history' },
   community: {
     index: '/home/community',
@@ -65,6 +70,11 @@ export const routes = {
     signIn: () => toHref(paths.auth.signIn),
     signUp: () => toHref(paths.auth.signUp),
     adminDashboard: () => toHref(paths.auth.admin),
+  },
+  user: {
+    index: () => toHref(paths.user.index),
+    profile: () => toHref(paths.user.profile),
+    settings: () => toHref(paths.user.settings),
   },
   history: {
     index: () => toHref(paths.history.index),
@@ -155,6 +165,15 @@ export const routes = {
           municipalityBase(countySlug, municipalitySlug) + '/events/' + enc(eventSlug)
         ),
     },
+    documents: {
+      index: (countySlug: string, municipalitySlug: string) =>
+        toHref(municipalityBase(countySlug, municipalitySlug) + '/documents'),
+      detail: (countySlug: string, municipalitySlug: string, documentSlug: string) =>
+        toHref(
+          municipalityBase(countySlug, municipalitySlug) + '/documents/' + enc(documentSlug)
+        ),
+    },
+    /** @deprecated Use documents.detail with slug zoning-ordinance-44 */
     zoning: (countySlug: string, municipalitySlug: string) =>
       toHref(municipalityBase(countySlug, municipalitySlug) + '/zoning'),
     municipalSubNavTabs: (
@@ -169,7 +188,6 @@ export const routes = {
         { label: 'Contacts', href: toHref(base + '/contacts') },
         { label: 'Events', href: toHref(base + '/events') },
         { label: 'Elections', href: toHref(base + '/elections') },
-        { label: 'Zoning', href: toHref(base + '/zoning') },
       ];
     },
   },

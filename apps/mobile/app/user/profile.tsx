@@ -1,0 +1,48 @@
+import { useMemo } from 'react';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { UserProfileSection } from '@/components/user/UserProfileSection';
+import { useTheme, fonts, spacing } from '@/constants/theme';
+
+export default function UserProfileScreen() {
+  const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
+  return (
+    <ScrollView
+      style={[styles.scroll, { backgroundColor: colors.background }]}
+      contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + spacing.xl }]}
+      keyboardShouldPersistTaps="handled"
+    >
+      <Text style={styles.pageTitle}>Profile</Text>
+      <Text style={styles.subtitle}>Update how you appear in the app.</Text>
+      <UserProfileSection showSectionTitle={false} />
+    </ScrollView>
+  );
+}
+
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+  StyleSheet.create({
+    scroll: { flex: 1 },
+    content: {
+      padding: spacing.xl,
+      gap: spacing.md,
+      maxWidth: 560,
+      alignSelf: 'center',
+      width: '100%',
+    },
+    pageTitle: {
+      fontFamily: fonts.sansBold,
+      fontSize: 28,
+      color: colors.neutral,
+    },
+    subtitle: {
+      fontFamily: fonts.sans,
+      fontSize: 14,
+      color: colors.neutralVariant,
+      lineHeight: 20,
+      marginBottom: spacing.sm,
+    },
+  });

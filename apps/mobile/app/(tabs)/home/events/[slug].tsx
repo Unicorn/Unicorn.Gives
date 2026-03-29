@@ -4,6 +4,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useTheme, spacing, radii } from '@/constants/theme';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 
 export default function EventDetail() {
   const { colors } = useTheme();
@@ -16,26 +18,27 @@ export default function EventDetail() {
       .then(({ data }) => { if (data) setItem(data); });
   }, [slug]);
 
-  if (!item) return <View style={[styles.container, { backgroundColor: colors.background }]}><Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text></View>;
+  if (!item) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text></View>;
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
-      <Text style={[styles.title, { color: colors.neutral }]}>{item.title}</Text>
-      <View style={[styles.metaBox, { backgroundColor: colors.surfaceContainer }]}>
-        <Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Date</Text>
-        <Text style={[styles.metaValue, { color: colors.neutral }]}>{new Date(item.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</Text>
-        {item.time && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Time</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.time}</Text></>}
-        {item.location && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Location</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.location}</Text></>}
-        {item.cost && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Cost</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.cost}</Text></>}
-        {item.recurring && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Recurrence</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.recurrence_rule || 'Recurring'}</Text></>}
-      </View>
-      <MarkdownRenderer content={item.body} />
-    </ScrollView>
+    <Wrapper contentContainerStyle={styles.content}>
+      <Container>
+        <Text style={[styles.title, { color: colors.neutral }]}>{item.title}</Text>
+        <View style={[styles.metaBox, { backgroundColor: colors.surfaceContainer }]}>
+          <Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Date</Text>
+          <Text style={[styles.metaValue, { color: colors.neutral }]}>{new Date(item.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</Text>
+          {item.time && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Time</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.time}</Text></>}
+          {item.location && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Location</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.location}</Text></>}
+          {item.cost && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Cost</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.cost}</Text></>}
+          {item.recurring && <><Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>Recurrence</Text><Text style={[styles.metaValue, { color: colors.neutral }]}>{item.recurrence_rule || 'Recurring'}</Text></>}
+        </View>
+        <MarkdownRenderer content={item.body} />
+      </Container>
+    </Wrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
   content: { padding: spacing.xl, paddingBottom: 60 },
   loading: { padding: spacing.xxl, textAlign: 'center' },
   title: { fontSize: 24, fontWeight: '800', marginBottom: spacing.lg },

@@ -2,6 +2,8 @@ import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 interface Contact {
@@ -63,7 +65,8 @@ export default function ContactsDirectory() {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <Wrapper contentContainerStyle={styles.content}>
+      <Container>
       <Text style={styles.heading}>Contact Directory</Text>
       <Text style={styles.subheading}>Government officials and staff across Clare County.</Text>
 
@@ -118,12 +121,12 @@ export default function ContactsDirectory() {
           {c.hours && <Text style={styles.hours}>{c.hours}</Text>}
         </View>
       ))}
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 
 const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  container: { flex: 1 },
   content: { padding: 16, paddingBottom: 40 },
   heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
   subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },

@@ -13,6 +13,7 @@ export type { MunicipalSubsegment } from './paths';
 export {
   navigationTree,
   authNav,
+  userNav,
   type NavPillar,
   type NavLayer,
   type NavNodeMeta,

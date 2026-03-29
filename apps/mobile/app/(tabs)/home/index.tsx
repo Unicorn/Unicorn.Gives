@@ -63,7 +63,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
     title: 'Permits & Licenses',
     description: 'Building, zoning, and business operation applications.',
     span: 'half',
-    colorScheme: 'secondary',
+    colorScheme: 'surface',
     href: toHref('/guides'),
   },
   {
@@ -72,7 +72,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
     title: 'Property & Building',
     description: 'Building permits, pole barns, property splits, and zoning variances.',
     span: 'half',
-    colorScheme: 'muted',
+    colorScheme: 'surface',
     href: toHref('/guides'),
   },
   {
@@ -81,7 +81,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
     title: 'Nature & Conservation',
     description: 'Native plants, burn permits, soil erosion, and forestry advice.',
     span: 'half',
-    colorScheme: 'primary',
+    colorScheme: 'surface',
     href: toHref('/guides'),
   },
   {
@@ -90,7 +90,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
     title: 'Safety & Emergency',
     description: 'Emergency alerts, non-emergency reporting, and community safety.',
     span: 'half',
-    colorScheme: 'tertiary',
+    colorScheme: 'surface',
     href: toHref('/guides'),
   },
 ];

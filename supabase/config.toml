@@ -1,0 +1,4 @@
+# Supabase local / deploy config. Run `supabase link` to fill [project] when needed.
+
+[functions.admin-ai]
+verify_jwt = true

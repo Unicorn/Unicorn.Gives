@@ -43,3 +43,6 @@ scraper.log
 content-scrape.log
 missing-pages-scrape.log
 coverage-report.txt
+
+.claude/worktrees
+.claude/settings.local.json

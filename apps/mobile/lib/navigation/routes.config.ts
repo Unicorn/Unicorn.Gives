@@ -94,3 +94,10 @@ export const authNav = {
   signIn: { id: 'sign-in', getHref: routes.auth.signIn, fileGroup: '(auth)' as const },
   signUp: { id: 'sign-up', getHref: routes.auth.signUp, fileGroup: '(auth)' as const },
 } as const;
+
+/** `/user` segment (real path, not a route group). */
+export const userNav = {
+  index: { id: 'user', getHref: routes.user.index },
+  profile: { id: 'user-profile', getHref: routes.user.profile },
+  settings: { id: 'user-settings', getHref: routes.user.settings },
+} as const;

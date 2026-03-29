@@ -1,14 +1,8 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-  type ViewStyle,
-} from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme, fonts, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, radii, shadows, spacing } from '@/constants/theme';
 
 export interface BentoItem {
   key: string;
@@ -27,7 +21,7 @@ interface BentoGridProps {
   items: BentoItem[];
 }
 
-function useSchemStyles() {
+function useSchemeStyles() {
   const { colors } = useTheme();
   const base = {
     bg: colors.surface,
@@ -44,10 +38,38 @@ function useSchemStyles() {
   } as const;
 }
 
-function BentoCard({ item, isTablet }: { item: BentoItem; isTablet: boolean }) {
-  const schemes = useSchemStyles();
+/** Tablet/desktop: group items into rows (full = solo row; half = pairs). */
+function chunkItemsIntoRows(items: BentoItem[]): BentoItem[][] {
+  const rows: BentoItem[][] = [];
+  let i = 0;
+  while (i < items.length) {
+    const item = items[i];
+    if (item.span === 'full') {
+      rows.push([item]);
+      i += 1;
+    } else {
+      const next = items[i + 1];
+      if (next && next.span !== 'full') {
+        rows.push([item, next]);
+        i += 2;
+      } else {
+        rows.push([item]);
+        i += 1;
+      }
+    }
+  }
+  return rows;
+}
+
+function BentoCell({
+  item,
+  layout,
+}: {
+  item: BentoItem;
+  layout: 'stack' | 'rowHalf' | 'rowFull';
+}) {
+  const schemes = useSchemeStyles();
   const scheme = schemes[item.colorScheme || 'surface'];
-  const isFullWidth = item.span === 'full';
 
   const card = (
     <View
@@ -55,42 +77,42 @@ function BentoCard({ item, isTablet }: { item: BentoItem; isTablet: boolean }) {
         styles.card,
         { backgroundColor: scheme.bg },
         shadows.cardElevated,
-        isTablet && !isFullWidth && styles.cardHalf,
-        isTablet && isFullWidth && styles.cardFull,
+        layout === 'rowHalf' && styles.cardRowHalf,
       ]}
     >
-      <MaterialIcons name={item.icon as any} size={28} color={scheme.icon} style={styles.icon} />
+      <MaterialIcons
+        // biome-ignore lint/suspicious/noExplicitAny: icon string from bento item data
+        name={item.icon as any}
+        size={28}
+        color={scheme.icon}
+        style={styles.icon}
+      />
       <Text style={[styles.cardTitle, { color: scheme.text }]}>{item.title}</Text>
       <Text style={[styles.cardDesc, { color: scheme.desc }]}>{item.description}</Text>
     </View>
   );
 
-  const wrapperStyle = StyleSheet.flatten([
-    isTablet && !isFullWidth ? styles.cardHalfWrapper : undefined,
-    isTablet && isFullWidth ? styles.cardFullWrapper : undefined,
-  ]) as ViewStyle;
+  const linkWrapperStyle =
+    layout === 'rowHalf'
+      ? styles.cellRowHalf
+      : styles.cellFullWidth;
 
   if (item.href) {
     return (
-      <View style={wrapperStyle}>
-        <Link href={item.href} style={{ textDecorationLine: 'none' }}>
-          {card}
-        </Link>
-      </View>
+      <Link href={item.href} style={linkWrapperStyle}>
+        {card}
+      </Link>
     );
   }
 
-  return (
-    <View style={wrapperStyle}>
-      {card}
-    </View>
-  );
+  return <View style={linkWrapperStyle}>{card}</View>;
 }
 
 export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
   const { width } = useWindowDimensions();
   const { colors } = useTheme();
   const isTablet = width >= 768;
+  const rows = chunkItemsIntoRows(items);
 
   return (
     <View style={styles.container}>
@@ -99,10 +121,20 @@ export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
         <Text style={[styles.title, { color: colors.neutral }]}>{title}</Text>
         {subtitle && <Text style={[styles.subtitle, { color: colors.neutralVariant }]}>{subtitle}</Text>}
       </View>
-      <View style={[styles.grid, isTablet && styles.gridTablet]}>
-        {items.map((item) => (
-          <BentoCard key={item.key} item={item} isTablet={isTablet} />
-        ))}
+      <View style={styles.grid}>
+        {isTablet
+          ? rows.map((row) => (
+              <View key={row.map((c) => c.key).join('-')} style={styles.tabletRow}>
+                {row.map((item) => (
+                  <BentoCell
+                    key={item.key}
+                    item={item}
+                    layout={row.length === 2 ? 'rowHalf' : 'rowFull'}
+                  />
+                ))}
+              </View>
+            ))
+          : items.map((item) => <BentoCell key={item.key} item={item} layout="stack" />)}
       </View>
     </View>
   );
@@ -110,10 +142,10 @@ export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 16,
+    gap: spacing.lg,
   },
   header: {
-    gap: 4,
+    gap: spacing.xs,
   },
   eyebrow: {
     fontFamily: fonts.sansBold,
@@ -131,21 +163,35 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   grid: {
-    gap: 10,
+    gap: spacing.md,
   },
-  gridTablet: {
+  tabletRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
+    width: '100%',
+    gap: spacing.md,
+    alignItems: 'stretch',
+  },
+  cellFullWidth: {
+    width: '100%',
+    flexGrow: 1,
+    flexShrink: 0,
+  },
+  cellRowHalf: {
+    flex: 1,
+    minWidth: 0,
   },
   card: {
-    padding: 20,
+    padding: spacing.xl,
     borderRadius: radii.md,
-    gap: 6,
+    gap: spacing.sm,
+    minHeight: 120,
+  },
+  cardRowHalf: {
+    flex: 1,
   },
   icon: {
     fontSize: 28,
-    marginBottom: 4,
+    marginBottom: spacing.xs,
   },
   cardTitle: {
     fontFamily: fonts.sansBold,
@@ -155,17 +201,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 13,
     lineHeight: 19,
-  },
-  cardHalfWrapper: {
-    width: '48.5%',
-  },
-  cardFullWrapper: {
-    width: '100%',
-  },
-  cardHalf: {
-    flex: 1,
-  },
-  cardFull: {
-    flex: 1,
   },
 });

@@ -3,6 +3,8 @@ import { useLocalSearchParams, Redirect } from 'expo-router';
 import { getLoreDoc, isLoreSlug } from '@/lib/lore';
 import { routes } from '@/lib/navigation';
 import { useTheme, spacing, radii, fonts } from '@/constants/theme';
+import { Wrapper } from '@/components/layout/Wrapper';
+import { Container } from '@/components/layout/Container';
 
 export default function HistoryDetailScreen() {
   const { colors } = useTheme();
@@ -17,7 +19,8 @@ export default function HistoryDetailScreen() {
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <Wrapper contentContainerStyle={styles.content}>
+      <Container>
       <Text style={[styles.breadcrumb, { color: colors.neutralVariant }]}>Land of the Unicorns</Text>
       <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>{doc.eyebrow}</Text>
       <Text style={[styles.title, { color: colors.neutral }]}>{doc.title}</Text>
@@ -33,12 +36,12 @@ export default function HistoryDetailScreen() {
           )}
         </View>
       ))}
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
   content: { padding: spacing.xl, paddingBottom: 48 },
   breadcrumb: {
     fontSize: 12,
