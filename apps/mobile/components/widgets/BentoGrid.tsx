@@ -124,17 +124,17 @@ function BentoCell({
 		</View>
 	);
 
-	const wrapStyle = [styles.cellOuter, outerStyle];
-
 	if (item.href) {
 		return (
-			<Link href={item.href} style={wrapStyle}>
-				{card}
-			</Link>
+			<View style={outerStyle}>
+				<Link href={item.href} style={styles.cellLink}>
+					{card}
+				</Link>
+			</View>
 		);
 	}
 
-	return <View style={wrapStyle}>{card}</View>;
+	return <View style={outerStyle}>{card}</View>;
 }
 
 export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
@@ -208,8 +208,8 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap",
 		width: "100%",
 	},
-	cellOuter: {
-		width: "100%",
+	cellLink: {
+		flex: 1,
 	},
 	cellWideFull: {
 		flexBasis: "100%",
@@ -232,6 +232,7 @@ const styles = StyleSheet.create({
 		flexShrink: 0,
 	},
 	card: {
+		flex: 1,
 		padding: spacing.xl,
 		borderRadius: radii.md,
 		gap: spacing.sm,
