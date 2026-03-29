@@ -66,12 +66,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Use onAuthStateChange for everything — it fires INITIAL_SESSION on mount,
     // which replaces the need for a separate getSession() + init() call.
-    const { data: subscriptionData } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
+    const { data: subscriptionData } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
       if (cancelled) return;
 
       const nextUser = nextSession?.user ?? null;
       setSession(nextSession ?? null);
       setUser(nextUser);
+
+      // Silent refresh: keep profile and don't flip global loading (avoids admin UI freeze).
+      if (event === 'TOKEN_REFRESHED' && initialDone) {
+        if (!nextUser) setProfile(null);
+        setLoading(false);
+        return;
+      }
 
       // Only set loading=true on subsequent auth changes, not the initial one
       // (loading is already true from useState default)
@@ -85,7 +92,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       const nextProfile = await fetchProfileForUser(nextUser);
-      if (cancelled) return;
+      if (cancelled) {
+        setLoading(false);
+        return;
+      }
 
       setProfile(nextProfile);
       setLoading(false);

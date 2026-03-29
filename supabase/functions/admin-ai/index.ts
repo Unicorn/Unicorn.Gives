@@ -4,8 +4,10 @@
  * Deploy: `supabase functions deploy admin-ai`
  * Secrets: `supabase secrets set GEMINI_API_KEY=...` and/or `OPENAI_API_KEY=...`
  *
- * - GEMINI_API_KEY: preferred for body copy (Gemini REST, gemini-2.0-flash).
- * - OPENAI_API_KEY: fallback for body (gpt-4o-mini); required for DALL·E 3 covers.
+ * - GEMINI_API_KEY: body copy + event covers (Gemini image: see GEMINI_IMAGE_MODEL).
+ * - OPENAI_API_KEY: optional fallback for body (gpt-4o-mini) and covers (DALL·E 3).
+ * - GEMINI_TEXT_MODEL: optional, default gemini-flash-latest.
+ * - GEMINI_IMAGE_MODEL: optional; tries gemini-3.1-flash-image-preview then gemini-2.5-flash-image.
  *
  * Auto-provided: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
  *
@@ -13,6 +15,10 @@
  *
  * Behavior: ~1.8s per-user per-action rate limit (in-memory); successful generations write
  * `audit_log` (actions `ai_generate_body`, `ai_generate_cover`) via service role.
+ *
+ * JWT: set `[functions.admin-ai] verify_jwt = false` in supabase/config.toml so the API
+ * gateway does not reject valid sessions as "Invalid JWT"; this function still validates
+ * the Bearer token with `auth.getUser()` and `profiles.role`.
  */
 import { createClient, type SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 
@@ -97,12 +103,20 @@ Do not use h1. Do not use <img>, <script>, <style>, <iframe>, <svg>, or inline e
 Do not use Markdown. Do not wrap the answer in code fences.
 Keep a welcoming, informative tone suitable for residents.`;
 
+type GeminiTextResponse = {
+  candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+};
+
 async function generateBodyWithGemini(apiKey: string, userPrompt: string): Promise<string> {
+  const model = Deno.env.get('GEMINI_TEXT_MODEL') ?? 'gemini-flash-latest';
   const url =
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': apiKey,
+    },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: BODY_SYSTEM }] },
       contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
@@ -116,12 +130,76 @@ async function generateBodyWithGemini(apiKey: string, userPrompt: string): Promi
     const t = await res.text();
     throw new Error(`Gemini error ${res.status}: ${t.slice(0, 400)}`);
   }
-  const data = (await res.json()) as {
-    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> }; finishReason?: string }>;
-  };
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  const data = (await res.json()) as GeminiTextResponse;
+  const parts = data.candidates?.[0]?.content?.parts ?? [];
+  const text = parts.map((p) => p.text).filter(Boolean).join('\n');
   if (!text) throw new Error('Gemini returned no text');
   return text;
+}
+
+type GeminiImagePart = { text?: string; inlineData?: { mimeType?: string; data?: string } };
+type GeminiImageResponse = {
+  candidates?: Array<{ content?: { parts?: GeminiImagePart[] } }>;
+};
+
+function base64ToBytes(b64: string): Uint8Array {
+  const binary = atob(b64);
+  const out = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) out[i] = binary.charCodeAt(i);
+  return out;
+}
+
+function geminiImageModelCandidates(): string[] {
+  const custom = Deno.env.get('GEMINI_IMAGE_MODEL')?.trim();
+  const defaults = ['gemini-3.1-flash-image-preview', 'gemini-2.5-flash-image'];
+  return [...(custom ? [custom] : []), ...defaults].filter((v, i, a) => a.indexOf(v) === i);
+}
+
+async function generateCoverWithGemini(
+  apiKey: string,
+  prompt: string,
+): Promise<{ bytes: Uint8Array; mimeType: string }> {
+  let lastErr = 'no model succeeded';
+  for (const imageModel of geminiImageModelCandidates()) {
+    const url =
+      `https://generativelanguage.googleapis.com/v1beta/models/${imageModel}:generateContent`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
+      },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseModalities: ['TEXT', 'IMAGE'],
+          imageConfig: { aspectRatio: '16:9' },
+        },
+      }),
+    });
+    const raw = await res.text();
+    if (!res.ok) {
+      lastErr = `${imageModel}: ${raw.slice(0, 280)}`;
+      continue;
+    }
+    let data: GeminiImageResponse;
+    try {
+      data = JSON.parse(raw) as GeminiImageResponse;
+    } catch {
+      lastErr = `${imageModel}: invalid JSON`;
+      continue;
+    }
+    const parts = data.candidates?.[0]?.content?.parts ?? [];
+    for (const p of parts) {
+      const d = p.inlineData?.data;
+      const mt = p.inlineData?.mimeType;
+      if (d && mt) {
+        return { bytes: base64ToBytes(d), mimeType: mt };
+      }
+    }
+    lastErr = `${imageModel}: no inline image in response`;
+  }
+  throw new Error(`Gemini image: ${lastErr}`);
 }
 
 async function generateBodyWithOpenAI(apiKey: string, userPrompt: string): Promise<string> {
@@ -181,6 +259,28 @@ async function generateCoverWithOpenAI(
   return { url };
 }
 
+async function persistCoverFromBytes(
+  admin: SupabaseClient,
+  userId: string,
+  bytes: Uint8Array,
+  mimeType: string,
+): Promise<string> {
+  const ct = mimeType.split(';')[0].trim() || 'image/png';
+  const ext = ct.includes('jpeg') || ct.includes('jpg')
+    ? 'jpg'
+    : ct.includes('webp')
+    ? 'webp'
+    : 'png';
+  const path = `${userId}/${crypto.randomUUID()}.${ext}`;
+  const { error } = await admin.storage.from('event-covers').upload(path, bytes, {
+    contentType: ct,
+    upsert: false,
+  });
+  if (error) throw new Error(error.message);
+  const { data: pub } = admin.storage.from('event-covers').getPublicUrl(path);
+  return pub.publicUrl;
+}
+
 async function persistCoverFromUrl(
   admin: SupabaseClient,
   userId: string,
@@ -189,20 +289,8 @@ async function persistCoverFromUrl(
   const imgRes = await fetch(imageUrl);
   if (!imgRes.ok) throw new Error('Failed to download generated image');
   const contentType = imgRes.headers.get('content-type') ?? 'image/png';
-  const ext = contentType.includes('jpeg') || contentType.includes('jpg')
-    ? 'jpg'
-    : contentType.includes('webp')
-    ? 'webp'
-    : 'png';
   const buf = new Uint8Array(await imgRes.arrayBuffer());
-  const path = `${userId}/${crypto.randomUUID()}.${ext}`;
-  const { error } = await admin.storage.from('event-covers').upload(path, buf, {
-    contentType: contentType.split(';')[0].trim() || 'image/png',
-    upsert: false,
-  });
-  if (error) throw new Error(error.message);
-  const { data: pub } = admin.storage.from('event-covers').getPublicUrl(path);
-  return pub.publicUrl;
+  return persistCoverFromBytes(admin, userId, buf, contentType);
 }
 
 async function writeAudit(
@@ -335,12 +423,12 @@ Deno.serve(async (req) => {
       return json({ html });
     }
 
-    // event_cover
-    if (!openaiKey) {
+    // event_cover — prefer Gemini (same key as copy); OpenAI optional
+    if (!geminiKey && !openaiKey) {
       return json(
         {
           error:
-            'Cover generation requires OPENAI_API_KEY (DALL·E 3) in Supabase Edge Function secrets.',
+            'Cover generation requires GEMINI_API_KEY (Gemini image) and/or OPENAI_API_KEY (DALL·E 3) in Edge secrets.',
         },
         503,
       );
@@ -349,15 +437,25 @@ Deno.serve(async (req) => {
     const contextBlock = buildEventContextBlock(ctx);
     const style = ctx.style?.trim() || 'clean, modern, welcoming community atmosphere';
     const imagePrompt =
-      `Professional wide event cover image for a local community/civic event. ${style}. ` +
+      `Professional wide 16:9 event cover image for a local community/civic event. ${style}. ` +
       `Scene suggestion based on: ${contextBlock.slice(0, 1200)}. ` +
       'No text, letters, logos, or watermarks in the image. Photographic or high-quality illustration.';
 
-    const { url: tempUrl } = await generateCoverWithOpenAI(openaiKey, imagePrompt);
-    const imageUrl = await persistCoverFromUrl(admin, userId, tempUrl);
+    let imageUrl: string;
+    let coverProvider: string;
+
+    if (geminiKey) {
+      const { bytes, mimeType } = await generateCoverWithGemini(geminiKey, imagePrompt);
+      imageUrl = await persistCoverFromBytes(admin, userId, bytes, mimeType);
+      coverProvider = 'gemini-image';
+    } else {
+      const { url: tempUrl } = await generateCoverWithOpenAI(openaiKey!, imagePrompt);
+      imageUrl = await persistCoverFromUrl(admin, userId, tempUrl);
+      coverProvider = 'openai-dall-e-3';
+    }
 
     await writeAudit(admin, userId, 'ai_generate_cover', eventId, {
-      provider: 'openai-dall-e-3',
+      provider: coverProvider,
     });
 
     return json({ imageUrl });

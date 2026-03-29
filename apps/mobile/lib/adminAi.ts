@@ -1,3 +1,5 @@
+import { FunctionsHttpError } from '@supabase/supabase-js';
+
 import { supabase } from '@/lib/supabase';
 
 export type AdminAiAction = 'event_body' | 'event_cover';
@@ -21,13 +23,6 @@ export async function invokeAdminAi(params: {
   context: EventAiContext;
   mode?: 'replace' | 'append';
 }): Promise<{ html?: string; imageUrl?: string }> {
-  const supabaseUrl = (process.env.EXPO_PUBLIC_SUPABASE_URL ?? '').replace(/\/$/, '');
-  const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
-
-  if (!supabaseUrl.startsWith('http')) {
-    throw new Error('EXPO_PUBLIC_SUPABASE_URL is not configured.');
-  }
-
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -36,27 +31,41 @@ export async function invokeAdminAi(params: {
     throw new Error('You must be signed in to use AI features.');
   }
 
-  const res = await fetch(`${supabaseUrl}/functions/v1/admin-ai`, {
-    method: 'POST',
+  // Pass the user JWT explicitly so fetchWithAuth does not fall back to the anon key
+  // as Bearer (which the Functions gateway may reject when verify_jwt is enabled).
+  const { data, error } = await supabase.functions.invoke('admin-ai', {
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${session.access_token}`,
-      apikey: anonKey,
     },
-    body: JSON.stringify({
+    body: {
       action: params.action,
       context: params.context,
       mode: params.mode ?? 'replace',
-    }),
+    },
   });
 
-  const payload = (await res.json().catch(() => ({}))) as { error?: string; html?: string; imageUrl?: string };
-
-  if (!res.ok) {
-    throw new Error(
-      typeof payload.error === 'string' ? payload.error : `Request failed (${res.status})`,
-    );
+  if (error) {
+    if (error instanceof FunctionsHttpError) {
+      const body = (await error.context.clone().json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      const msg =
+        typeof body?.error === 'string'
+          ? body.error
+          : `${error.message} (${error.context.status})`;
+      throw new Error(msg);
+    }
+    throw new Error(error.message || 'AI request failed');
   }
 
-  return payload;
+  if (
+    data &&
+    typeof data === 'object' &&
+    'error' in data &&
+    typeof (data as { error: unknown }).error === 'string'
+  ) {
+    throw new Error((data as { error: string }).error);
+  }
+
+  return data as { html?: string; imageUrl?: string };
 }

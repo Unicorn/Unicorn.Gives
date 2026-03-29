@@ -236,8 +236,8 @@ export function EventAiCoverModal({
           >
             <Text style={styles.title}>Generate cover image</Text>
             <Text style={styles.disclaimer}>
-              Uses your event fields as context. Images are saved to your project storage. Review
-              before publishing.
+              Uses your event fields as context. Covers are generated with Gemini (or OpenAI if
+              configured) and stored in Supabase. Review before publishing.
             </Text>
 
             <Text style={styles.fieldLabel}>Style hints (optional)</Text>

@@ -1,4 +1,6 @@
 # Supabase local / deploy config. Run `supabase link` to fill [project] when needed.
 
+# Gateway JWT checks can return "Invalid JWT" (e.g. token skew, rotation) before our code runs.
+# Auth is enforced inside the function via supabase.auth.getUser() + profiles.role.
 [functions.admin-ai]
-verify_jwt = true
+verify_jwt = false
