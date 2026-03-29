@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme, fonts, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, shadows } from '@/constants/theme';
 
 interface InfoRowProps {
   icon: string;
@@ -58,12 +58,12 @@ export function InfoRowGroup({ title, rows }: InfoRowGroupProps) {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    gap: 14,
-    paddingVertical: 12,
+    gap: spacing.lg - 2,
+    paddingVertical: spacing.md,
     alignItems: 'flex-start',
   },
   icon: {
-    fontSize: 22,
+    fontSize: fontSize['2xl'],
     width: 32,
     textAlign: 'center',
   },
@@ -73,28 +73,28 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: fonts.sansBold,
-    fontSize: 14,
+    fontSize: fontSize.md,
   },
   value: {
     fontFamily: fonts.sans,
-    fontSize: 14,
+    fontSize: fontSize.md,
     lineHeight: 20,
   },
   secondaryValue: {
     fontFamily: fonts.sans,
-    fontSize: 13,
+    fontSize: fontSize.sm + 1,
     lineHeight: 19,
   },
   group: {
     borderRadius: radii.md,
-    padding: 20,
-    gap: 4,
+    padding: spacing.xl,
+    gap: spacing.xs,
     ...shadows.cardElevated,
   },
   groupTitle: {
     fontFamily: fonts.serifItalic,
-    fontSize: 24,
-    marginBottom: 8,
+    fontSize: fontSize['3xl'],
+    marginBottom: spacing.sm,
   },
   groupRows: {
     gap: 0,

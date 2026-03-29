@@ -12,6 +12,8 @@ import {
 import {
 	breakpoints,
 	fonts,
+	fontSize,
+	letterSpacing,
 	radii,
 	shadows,
 	spacing,
@@ -184,17 +186,17 @@ const styles = StyleSheet.create({
 	},
 	eyebrow: {
 		fontFamily: fonts.sansBold,
-		fontSize: 11,
-		letterSpacing: 1.5,
+		fontSize: fontSize.xs,
+		letterSpacing: letterSpacing.wider,
 		textTransform: "uppercase",
 	},
 	title: {
 		fontFamily: fonts.serifItalic,
-		fontSize: 28,
+		fontSize: fontSize["4xl"],
 	},
 	subtitle: {
 		fontFamily: fonts.sans,
-		fontSize: 15,
+		fontSize: fontSize.base,
 		lineHeight: 22,
 	},
 	grid: {
@@ -239,11 +241,11 @@ const styles = StyleSheet.create({
 	},
 	cardTitle: {
 		fontFamily: fonts.sansBold,
-		fontSize: 18,
+		fontSize: fontSize.xl,
 	},
 	cardDesc: {
 		fontFamily: fonts.sans,
-		fontSize: 13,
+		fontSize: fontSize.sm + 1,
 		lineHeight: 20,
 	},
 });

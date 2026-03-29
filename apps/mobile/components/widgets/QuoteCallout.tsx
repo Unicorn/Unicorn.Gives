@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { useTheme, fonts, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows } from '@/constants/theme';
 
 interface QuoteCalloutProps {
   quote: string;
@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
   },
   surface: {
     borderRadius: radii.md,
-    paddingVertical: 22,
-    paddingHorizontal: 20,
+    paddingVertical: spacing.xxl - 2,
+    paddingHorizontal: spacing.xl,
   },
   inner: {
-    gap: 12,
+    gap: spacing.md,
   },
   innerCentered: {
     alignItems: 'center',
@@ -83,19 +83,19 @@ const styles = StyleSheet.create({
     lineHeight: 32,
   },
   quoteCentered: {
-    fontSize: 24,
+    fontSize: fontSize['3xl'],
     textAlign: 'center',
     maxWidth: 600,
   },
   quoteAside: {
-    fontSize: 20,
+    fontSize: fontSize.xl + 2,
     borderLeftWidth: 3,
-    paddingLeft: 16,
+    paddingLeft: spacing.lg,
   },
   attribution: {
     fontFamily: fonts.sansBold,
-    fontSize: 11,
-    letterSpacing: 1.5,
+    fontSize: fontSize.xs,
+    letterSpacing: letterSpacing.wider,
     textTransform: 'uppercase',
   },
   attributionCentered: {

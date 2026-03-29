@@ -8,7 +8,7 @@ import {
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
-import { useTheme, fonts, radii, spacing } from '@/constants/theme';
+import { useTheme, fonts, fontSize, letterSpacing, radii, spacing } from '@/constants/theme';
 import { resolveAbsoluteAssetUrl } from '@/lib/resolveAssetUrl';
 
 export interface EventRowBadge {
@@ -126,36 +126,36 @@ const defaultStyles = StyleSheet.create({
     gap: spacing.sm,
   },
   dateBox: {
-    borderRadius: 6,
+    borderRadius: spacing.xs + 2,
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingHorizontal: spacing.sm + 2,
+    paddingVertical: spacing.xs,
     alignItems: 'center',
     minWidth: 44,
   },
   dateMonth: {
     fontFamily: fonts.sansBold,
     fontSize: 9,
-    letterSpacing: 1,
+    letterSpacing: letterSpacing.wide,
     textTransform: 'uppercase',
   },
   dateDay: {
     fontFamily: fonts.sansBold,
-    fontSize: 18,
+    fontSize: fontSize.xl,
   },
   title: {
     fontFamily: fonts.sansBold,
-    fontSize: 16,
+    fontSize: fontSize.lg,
     lineHeight: 22,
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: 13,
+    fontSize: fontSize.sm + 1,
     lineHeight: 19,
   },
   meta: {
     fontFamily: fonts.sans,
-    fontSize: 12,
+    fontSize: fontSize.sm,
   },
 });
 
@@ -167,7 +167,7 @@ const compactStyles = StyleSheet.create({
   bodySplit: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 10,
+    gap: spacing.sm + 2,
   },
   rail: {
     flexDirection: 'column',
@@ -180,9 +180,9 @@ const compactStyles = StyleSheet.create({
     minWidth: 0,
   },
   dateBox: {
-    borderRadius: 6,
+    borderRadius: spacing.xs + 2,
     borderWidth: 1,
-    paddingHorizontal: 8,
+    paddingHorizontal: spacing.sm,
     paddingVertical: 3,
     alignItems: 'center',
     minWidth: 40,
@@ -195,34 +195,34 @@ const compactStyles = StyleSheet.create({
   },
   dateDay: {
     fontFamily: fonts.sansBold,
-    fontSize: 15,
+    fontSize: fontSize.base,
   },
   title: {
     fontFamily: fonts.sansMedium,
-    fontSize: 14,
+    fontSize: fontSize.md,
     lineHeight: 20,
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: 12,
+    fontSize: fontSize.sm,
     lineHeight: 18,
   },
   meta: {
     fontFamily: fonts.sans,
-    fontSize: 12,
+    fontSize: fontSize.sm,
   },
 });
 
 const styles = StyleSheet.create({
   badge: {
-    paddingHorizontal: 10,
+    paddingHorizontal: spacing.sm + 2,
     paddingVertical: 3,
     borderRadius: radii.pill,
   },
   badgeText: {
     fontFamily: fonts.sansBold,
-    fontSize: 10,
-    letterSpacing: 1,
+    fontSize: fontSize.xs - 1,
+    letterSpacing: letterSpacing.wide,
     textTransform: 'uppercase',
   },
   copyWithRail: {

@@ -1,5 +1,5 @@
 import { ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useTheme, fonts, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
 
 interface Category {
   key: string;
@@ -73,20 +73,20 @@ export function CategoryChips({
 
 const styles = StyleSheet.create({
   scroll: {
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   content: {
-    gap: 8,
-    paddingRight: 8,
+    gap: spacing.sm,
+    paddingRight: spacing.sm,
   },
   chip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
     borderRadius: radii.pill,
     borderWidth: 1,
   },
   chipText: {
     fontFamily: fonts.sans,
-    fontSize: 13,
+    fontSize: fontSize.sm + 1,
   },
 });

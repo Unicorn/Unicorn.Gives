@@ -2,14 +2,14 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Image,
   useWindowDimensions,
   type ImageSourcePropType,
 } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { breakpoints, useTheme, fonts, radii, shadows } from '@/constants/theme';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
+import { breakpoints, useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows } from '@/constants/theme';
 
 interface HeroFeatureProps {
   title: string;
@@ -53,15 +53,15 @@ export function HeroFeature({
         <Text style={[styles.description, { color: colors.neutralVariant }]}>{description}</Text>
         <View style={styles.ctaRow}>
           <Link href={ctaHref} asChild>
-            <TouchableOpacity style={StyleSheet.flatten([styles.ctaPrimary, { backgroundColor: colors.primary }])}>
+            <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.ctaPrimary, { backgroundColor: colors.primary }, shadows.button])}>
               <Text style={[styles.ctaPrimaryText, { color: colors.onPrimary }]}>{ctaLabel}</Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           </Link>
           {secondaryCta && (
             <Link href={secondaryCta.href} asChild>
-              <TouchableOpacity style={StyleSheet.flatten([styles.ctaOutline, { borderColor: colors.outline }])}>
+              <AnimatedPressable variant="button" style={StyleSheet.flatten([styles.ctaOutline, { borderColor: colors.outline }])}>
                 <Text style={[styles.ctaOutlineText, { color: colors.neutral }]}>{secondaryCta.label}</Text>
-              </TouchableOpacity>
+              </AnimatedPressable>
             </Link>
           )}
         </View>
@@ -83,18 +83,18 @@ export function HeroFeature({
 const styles = StyleSheet.create({
   container: {
     borderRadius: radii.lg,
-    padding: 24,
-    gap: 20,
+    padding: spacing.xxl,
+    gap: spacing.xl,
   },
   containerTablet: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 32,
-    gap: 32,
+    padding: spacing.xxxl,
+    gap: spacing.xxxl,
   },
   textBlock: {
     flex: 1,
-    gap: 12,
+    gap: spacing.md,
   },
   textBlockTablet: {
     flex: 1,
@@ -102,14 +102,14 @@ const styles = StyleSheet.create({
   eyebrowPill: {
     alignSelf: 'flex-start',
     backgroundColor: 'transparent',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
     borderRadius: radii.pill,
   },
   eyebrowText: {
     fontFamily: fonts.sansBold,
-    fontSize: 11,
-    letterSpacing: 1.5,
+    fontSize: fontSize.xs,
+    letterSpacing: letterSpacing.wider,
     textTransform: 'uppercase',
   },
   title: {
@@ -123,34 +123,33 @@ const styles = StyleSheet.create({
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: 15,
+    fontSize: fontSize.base,
     lineHeight: 23,
   },
   ctaRow: {
     flexDirection: 'row',
-    gap: 12,
-    marginTop: 8,
+    gap: spacing.md,
+    marginTop: spacing.sm,
     flexWrap: 'wrap',
   },
   ctaPrimary: {
-    paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.xxl,
+    paddingVertical: spacing.md,
     borderRadius: radii.pill,
   },
   ctaPrimaryText: {
     fontFamily: fonts.sansBold,
-    fontSize: 14,
+    fontSize: fontSize.md,
   },
   ctaOutline: {
     borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.5)',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.xxl,
+    paddingVertical: spacing.md,
     borderRadius: radii.pill,
   },
   ctaOutlineText: {
     fontFamily: fonts.sansBold,
-    fontSize: 14,
+    fontSize: fontSize.md,
   },
   imageBlock: {
     borderRadius: radii.md,

@@ -7,7 +7,7 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native";
-import { breakpoints, useTheme } from "@/constants/theme";
+import { breakpoints, useTheme, fonts, fontSize, spacing } from "@/constants/theme";
 import { hrefToPathString } from "@/lib/navigation";
 
 export interface SubTabItem {
@@ -83,22 +83,22 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 	},
 	scrollContent: {
-		paddingHorizontal: 12,
-		gap: 4,
+		paddingHorizontal: spacing.md,
+		gap: spacing.xs,
 	},
 	scrollContentCentered: {
 		flex: 1,
 		justifyContent: "center",
 	},
 	tab: {
-		paddingHorizontal: 16,
-		paddingVertical: 12,
+		paddingHorizontal: spacing.lg,
+		paddingVertical: spacing.md,
 		borderBottomWidth: 2,
 		borderBottomColor: "transparent",
 	},
 	tabActive: {},
 	tabText: {
-		fontSize: 14,
-		fontWeight: "500",
+		fontFamily: fonts.sansMedium,
+		fontSize: fontSize.md,
 	},
 });

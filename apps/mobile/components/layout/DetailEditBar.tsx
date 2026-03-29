@@ -2,7 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import type { Href } from "expo-router";
 import { Link } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { radii, spacing, useTheme } from "@/constants/theme";
+import { fonts, fontSize, radii, spacing, useTheme } from "@/constants/theme";
 import { useAuth } from "@/lib/auth";
 
 interface DetailEditBarProps {
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 	},
 	label: {
-		fontSize: 14,
-		fontWeight: "700",
+		fontFamily: fonts.sansBold,
+		fontSize: fontSize.md,
 	},
 });

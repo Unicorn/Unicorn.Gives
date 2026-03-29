@@ -9,7 +9,7 @@ import { Link } from 'expo-router';
 import { ContentCoverImage } from '@/components/ContentCoverImage';
 import type { EventItem } from '@/components/events/eventTypes';
 import { routes } from '@/lib/navigation';
-import { breakpoints, useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { breakpoints, useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows } from '@/constants/theme';
 
 interface FeaturedEventCardProps {
   event: EventItem & { description?: string | null; location?: string | null };
@@ -38,7 +38,6 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
           style={styles.featuredCover}
         />
         <View style={isTablet ? styles.tabletBody : undefined}>
-          {/* Color accent side / top */}
           <View style={StyleSheet.flatten([styles.accentBlock, isTablet ? styles.accentBlockTablet : undefined])}>
             <View style={[styles.featuredBadge, { backgroundColor: chips.gold.backgroundColor, borderColor: chips.gold.borderColor }]}>
               <Text style={[styles.featuredBadgeText, { color: chips.gold.color }]}>Featured</Text>
@@ -54,7 +53,6 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
             )}
           </View>
 
-          {/* Content side */}
           <View style={StyleSheet.flatten([styles.content, isTablet ? styles.contentTablet : undefined])}>
             <Text style={StyleSheet.flatten([styles.title, { color: colors.neutral }, isTablet ? styles.titleTablet : undefined])}>
               {event.title}
@@ -105,7 +103,7 @@ const styles = StyleSheet.create({
   },
   featuredBadgeText: {
     fontFamily: fonts.sansBold,
-    fontSize: 10,
+    fontSize: fontSize.xs - 1,
     letterSpacing: 1.2,
     textTransform: 'uppercase',
   },
@@ -114,20 +112,20 @@ const styles = StyleSheet.create({
   },
   dateDisplayMonth: {
     fontFamily: fonts.serifBold,
-    fontSize: 22,
+    fontSize: fontSize['2xl'],
   },
   dateDisplayYear: {
     fontFamily: fonts.sans,
-    fontSize: 14,
+    fontSize: fontSize.md,
   },
   locationText: {
     fontFamily: fonts.sans,
-    fontSize: 13,
+    fontSize: fontSize.sm + 1,
     marginTop: spacing.xs,
   },
   content: {
     padding: spacing.xxl,
-    gap: 10,
+    gap: spacing.sm + 2,
     flex: 1,
   },
   contentTablet: {
@@ -139,17 +137,17 @@ const styles = StyleSheet.create({
     lineHeight: 32,
   },
   titleTablet: {
-    fontSize: 30,
+    fontSize: fontSize['5xl'],
     lineHeight: 36,
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: 14,
+    fontSize: fontSize.md,
     lineHeight: 21,
   },
   time: {
     fontFamily: fonts.sansMedium,
-    fontSize: 13,
+    fontSize: fontSize.sm + 1,
   },
   ctaRow: {
     flexDirection: 'row',
@@ -157,11 +155,11 @@ const styles = StyleSheet.create({
   },
   ctaButton: {
     paddingHorizontal: spacing.xl,
-    paddingVertical: 10,
+    paddingVertical: spacing.sm + 2,
     borderRadius: radii.pill,
   },
   ctaText: {
     fontFamily: fonts.sansBold,
-    fontSize: 13,
+    fontSize: fontSize.sm + 1,
   },
 });
