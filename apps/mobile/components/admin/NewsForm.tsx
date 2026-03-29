@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { spacing, type ThemeColors, useTheme } from "@/constants/theme";
+import { spacing, useTheme } from "@/constants/theme";
 import { useSlugGenerator } from "@/hooks/useSlugGenerator";
 import { supabase } from "@/lib/supabase";
 import {
@@ -81,11 +81,12 @@ interface NewsFormProps {
 
 export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 	const { colors } = useTheme();
-	const styles = useMemo(() => createStyles(colors), [colors]);
+	const styles = useMemo(() => createStyles(), []);
 	const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(
 		data.title,
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sync generated slug into form (same pattern as EventForm)
 	useEffect(() => {
 		if (slug !== data.slug) {
 			onChange({ ...data, slug });
@@ -271,7 +272,7 @@ export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 	);
 }
 
-const createStyles = (colors: ThemeColors) =>
+const createStyles = () =>
 	StyleSheet.create({
 		form: {
 			gap: spacing.lg,

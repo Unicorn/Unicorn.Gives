@@ -10,14 +10,14 @@ interface DetailEditBarProps {
 }
 
 /**
- * Shown on public detail screens when the user is signed in — links to the
- * admin editor for that record (admin layout still enforces role).
+ * Shown on public detail screens for super admins — matches {@link RequireAdmin}
+ * so the Edit target is reachable. Other signed-in roles are not offered the CTA.
  */
 export function DetailEditBar({ editHref }: DetailEditBarProps) {
-	const { user } = useAuth();
+	const { user, role } = useAuth();
 	const { colors } = useTheme();
 
-	if (!user) return null;
+	if (!user || role !== "super_admin") return null;
 
 	return (
 		<View style={styles.wrap}>
