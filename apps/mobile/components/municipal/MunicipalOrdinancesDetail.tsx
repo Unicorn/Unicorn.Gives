@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, Linking } from 'react-native';
+import { Container } from '@/components/layout/Container';
+import { Wrapper } from '@/components/layout/Wrapper';
 import { useLocalSearchParams } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
@@ -34,7 +36,9 @@ export function MunicipalOrdinancesDetail() {
   if (!item) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Loading...</Text></View>;
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: spacing.xl, paddingBottom: 60 }}>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 60 }}>
+      <Container>
+      <View style={{ padding: spacing.xl }}>
       {item.number && <Text style={{ fontSize: 13, fontFamily: fonts.sansBold, color: colors.neutralVariant, marginBottom: spacing.xs }}>Ordinance {item.number}</Text>}
       <Text style={{ fontSize: 24, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: spacing.sm }}>{item.title}</Text>
       {item.description && <Text style={{ fontSize: 15, fontFamily: fonts.sans, color: colors.neutral, lineHeight: 22, marginBottom: spacing.md }}>{item.description}</Text>}
@@ -48,6 +52,8 @@ export function MunicipalOrdinancesDetail() {
         </TouchableOpacity>
       )}
       <MarkdownRenderer content={item.body} />
-    </ScrollView>
+      </View>
+      </Container>
+    </Wrapper>
   );
 }

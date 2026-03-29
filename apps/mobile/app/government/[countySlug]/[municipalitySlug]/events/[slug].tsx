@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { Container } from '@/components/layout/Container';
+import { Wrapper } from '@/components/layout/Wrapper';
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useTheme, spacing, radii } from '@/constants/theme';
@@ -32,13 +34,15 @@ export default function MunicipalEventDetail() {
       .then(({ data }) => { if (data) setEvent(data); });
   }, [slug]);
 
-  if (!event) return <View style={[styles.container, { backgroundColor: colors.background }]}><Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text></View>;
+  if (!event) return <View style={styles.loadingWrap}><Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text></View>;
 
   const d = new Date(event.date + 'T00:00:00');
   const tags = event.tags?.length ? event.tags : [];
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={styles.content}>
+      <Container>
+      <View style={{ padding: spacing.lg }}>
       <Text style={[styles.title, { color: colors.neutral }]}>{event.title}</Text>
       <Text style={[styles.date, { color: colors.neutral }]}>
         {d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
@@ -59,13 +63,15 @@ export default function MunicipalEventDetail() {
         </View>
       )}
       {event.body && <Text style={[styles.body, { color: colors.neutral }]}>{event.body}</Text>}
-    </ScrollView>
+      </View>
+      </Container>
+    </Wrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { padding: spacing.lg, paddingBottom: 40 },
+  loadingWrap: { flex: 1 },
+  content: { paddingBottom: 40, flexGrow: 1 },
   loading: { padding: spacing.xxl, textAlign: 'center' },
   title: { fontSize: 22, fontWeight: '800', marginBottom: spacing.md },
   date: { fontSize: 15, fontWeight: '600', marginBottom: spacing.xs },

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Linking } from 'react-native';
+import { View, Text, StyleSheet, Linking } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRegion } from '@/lib/hooks/useRegion';
@@ -10,6 +10,8 @@ import {
   type MunicipalDocumentRow,
 } from '@/lib/municipal/municipalDocuments';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { Container } from '@/components/layout/Container';
+import { Wrapper } from '@/components/layout/Wrapper';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { BentoGrid, type BentoItem } from '@/components/widgets';
 import { EditorialCard } from '@/components/widgets/EditorialCard';
@@ -134,7 +136,8 @@ export function MunicipalHub() {
   ].filter((s) => s.count > 0);
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ paddingBottom: 48 }}>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 48 }}>
+      <Container>
       {/* ── 1. Hero Section ─────────────────────── */}
       <View style={[styles.hero, { backgroundColor: colors.heroBar }]}>
         <Text style={[styles.heroEyebrow, { color: colors.gold }]}>
@@ -262,7 +265,8 @@ export function MunicipalHub() {
           </AnimatedPressable>
         </View>
       )}
-    </ScrollView>
+      </Container>
+    </Wrapper>
   );
 }
 

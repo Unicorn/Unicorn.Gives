@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Container } from '@/components/layout/Container';
+import { Wrapper } from '@/components/layout/Wrapper';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
-import { AppHeader } from '@/components/layout/AppHeader';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii } from '@/constants/theme';
@@ -33,25 +34,22 @@ export default function CountyOverview() {
 
   if (isLoading) {
     return (
-      <View style={[styles.page, { backgroundColor: colors.background }]}>
-        <AppHeader />
+      <View style={styles.page}>
         <Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text>
       </View>
     );
   }
   if (!region) {
     return (
-      <View style={[styles.page, { backgroundColor: colors.background }]}>
-        <AppHeader />
+      <View style={styles.page}>
         <Text style={[styles.loading, { color: colors.neutralVariant }]}>County not found</Text>
       </View>
     );
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <AppHeader />
-      <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={styles.content}>
+      <Container>
         <View style={styles.header}>
           <Text style={[styles.type, { color: colors.neutralVariant }]}>{region.type.toUpperCase()}</Text>
           {region.description && <Text style={[styles.description, { color: colors.neutralVariant }]}>{region.description}</Text>}
@@ -66,15 +64,14 @@ export default function CountyOverview() {
             </TouchableOpacity>
           </Link>
         ))}
-      </ScrollView>
-    </View>
+      </Container>
+    </Wrapper>
   );
 }
 
 const styles = StyleSheet.create({
   page: { flex: 1 },
-  container: { flex: 1 },
-  content: { paddingBottom: 40 },
+  content: { paddingBottom: 40, flexGrow: 1 },
   loading: { padding: spacing.xxl, textAlign: 'center' },
   header: { padding: spacing.xl },
   type: { fontSize: 11, fontWeight: '700', letterSpacing: 1, marginBottom: 6 },

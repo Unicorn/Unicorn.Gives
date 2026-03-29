@@ -2,18 +2,20 @@ import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { Stack, useLocalSearchParams, usePathname } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
-import { AppHeader, AppBreadcrumbBar } from '@/components/layout/AppHeader';
-import { Container } from '@/components/layout/Container';
+import { AppBreadcrumbBar } from '@/components/layout/AppHeader';
 import { SubTabs, type SubTabItem } from '@/components/layout/SubTabs';
+import { useTheme } from '@/constants/theme';
 import { routes, isMunicipalDetailPath } from '@/lib/navigation';
 import { fetchMunicipalDocumentsForRegion } from '@/lib/municipal/municipalDocuments';
 
 export default function MunicipalityLayout() {
+  const { colors } = useTheme();
   const { countySlug, municipalitySlug } = useLocalSearchParams<{
     countySlug: string;
     municipalitySlug: string;
   }>();
   const pathname = usePathname();
+  const isDetailPage = isMunicipalDetailPath(pathname);
   const { region } = useRegion(municipalitySlug);
   const { region: county } = useRegion(countySlug);
 
@@ -52,38 +54,35 @@ export default function MunicipalityLayout() {
     [baseTabs, planningTab]
   );
 
-  const isDetailPage = isMunicipalDetailPath(pathname);
-
   const breadcrumbItems = [
     { label: countyName, href: `/government/${countySlug}` },
     { label: regionName, href: '' },
   ];
 
   return (
-    <View style={{ flex: 1 }}>
-      <AppHeader showBack={isDetailPage} />
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       {!isDetailPage && <SubTabs tabs={tabs} />}
       <AppBreadcrumbBar items={breadcrumbItems} />
-      <Container style={{ flex: 1 }}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="minutes/index" />
-          <Stack.Screen name="minutes/[slug]" />
-          <Stack.Screen name="ordinances/index" />
-          <Stack.Screen name="ordinances/[slug]" />
-          <Stack.Screen name="contacts/index" />
-          <Stack.Screen name="contacts/[slug]" />
-          <Stack.Screen name="events/index" />
-          <Stack.Screen name="events/[slug]" />
-          <Stack.Screen name="elections/index" />
-          <Stack.Screen name="elections/[slug]" />
-          <Stack.Screen name="documents/index" />
-          <Stack.Screen name="documents/[slug]" />
-          <Stack.Screen name="zoning" />
-          <Stack.Screen name="master-plan" />
-          <Stack.Screen name="recreation-plan" />
-        </Stack>
-      </Container>
+      <View style={{ flex: 1 }}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="minutes/index" />
+        <Stack.Screen name="minutes/[slug]" />
+        <Stack.Screen name="ordinances/index" />
+        <Stack.Screen name="ordinances/[slug]" />
+        <Stack.Screen name="contacts/index" />
+        <Stack.Screen name="contacts/[slug]" />
+        <Stack.Screen name="events/index" />
+        <Stack.Screen name="events/[slug]" />
+        <Stack.Screen name="elections/index" />
+        <Stack.Screen name="elections/[slug]" />
+        <Stack.Screen name="documents/index" />
+        <Stack.Screen name="documents/[slug]" />
+        <Stack.Screen name="zoning" />
+        <Stack.Screen name="master-plan" />
+        <Stack.Screen name="recreation-plan" />
+      </Stack>
+      </View>
     </View>
   );
 }

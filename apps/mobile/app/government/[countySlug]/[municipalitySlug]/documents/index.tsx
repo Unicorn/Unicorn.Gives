@@ -10,6 +10,8 @@ import {
   type MunicipalDocumentRow,
 } from '@/lib/municipal/municipalDocuments';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { Container } from '@/components/layout/Container';
+import { Wrapper } from '@/components/layout/Wrapper';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { toHref } from '@/lib/navigation/paths';
 import { routes } from '@/lib/navigation';
@@ -69,36 +71,38 @@ export default function MunicipalDocumentsIndexScreen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background, paddingBottom: 48 }}>
-      <View style={styles.section}>
-        <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>OFFICIAL DOCUMENTS</Text>
-        <Text style={[styles.title, { color: colors.neutral }]}>Planning & Zoning</Text>
-      </View>
-      <View style={styles.list}>
-        {docs.map((doc) => {
-          const icon = iconForMunicipalDoc(doc.kind);
-          return (
-            <Link key={doc.id} href={toHref(`${basePath}/documents/${doc.slug}`)} asChild>
-              <AnimatedPressable
-                variant="card"
-                style={[styles.card, { backgroundColor: colors.surface }, shadows.cardElevated]}
-              >
-                <View style={[styles.iconBox, { backgroundColor: colors.surfaceContainer }]}>
-                  <MaterialIcons name={icon} size={24} color={colors.primary} />
-                </View>
-                <View style={styles.textCol}>
-                  <Text style={[styles.cardTitle, { color: colors.neutral }]}>{doc.title}</Text>
-                  <Text style={[styles.cardSub, { color: colors.neutralVariant }]}>
-                    Adopted {doc.adopted_date}
-                  </Text>
-                </View>
-                <MaterialIcons name="chevron-right" size={22} color={colors.neutralVariant} />
-              </AnimatedPressable>
-            </Link>
-          );
-        })}
-      </View>
-    </View>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 48 }}>
+      <Container>
+        <View style={styles.section}>
+          <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>OFFICIAL DOCUMENTS</Text>
+          <Text style={[styles.title, { color: colors.neutral }]}>Planning & Zoning</Text>
+        </View>
+        <View style={styles.list}>
+          {docs.map((doc) => {
+            const icon = iconForMunicipalDoc(doc.kind);
+            return (
+              <Link key={doc.id} href={toHref(`${basePath}/documents/${doc.slug}`)} asChild>
+                <AnimatedPressable
+                  variant="card"
+                  style={[styles.card, { backgroundColor: colors.surface }, shadows.cardElevated]}
+                >
+                  <View style={[styles.iconBox, { backgroundColor: colors.surfaceContainer }]}>
+                    <MaterialIcons name={icon} size={24} color={colors.primary} />
+                  </View>
+                  <View style={styles.textCol}>
+                    <Text style={[styles.cardTitle, { color: colors.neutral }]}>{doc.title}</Text>
+                    <Text style={[styles.cardSub, { color: colors.neutralVariant }]}>
+                      Adopted {doc.adopted_date}
+                    </Text>
+                  </View>
+                  <MaterialIcons name="chevron-right" size={22} color={colors.neutralVariant} />
+                </AnimatedPressable>
+              </Link>
+            );
+          })}
+        </View>
+      </Container>
+    </Wrapper>
   );
 }
 

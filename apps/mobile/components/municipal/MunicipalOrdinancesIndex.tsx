@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, TextInput, View } from 'react-native';
+import { Container } from '@/components/layout/Container';
+import { Wrapper } from '@/components/layout/Wrapper';
 import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
@@ -50,7 +52,9 @@ export function MunicipalOrdinancesIndex() {
   });
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: spacing.lg, paddingBottom: 40 }}>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 40 }}>
+      <Container>
+      <View style={{ padding: spacing.lg }}>
       <TextInput
         style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: 15, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
         placeholder="Search ordinances..."
@@ -80,6 +84,8 @@ export function MunicipalOrdinancesIndex() {
           </TouchableOpacity>
         </Link>
       ))}
-    </ScrollView>
+      </View>
+      </Container>
+    </Wrapper>
   );
 }

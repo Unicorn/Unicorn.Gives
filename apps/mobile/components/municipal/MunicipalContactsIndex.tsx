@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { Container } from '@/components/layout/Container';
+import { Wrapper } from '@/components/layout/Wrapper';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
@@ -38,7 +40,9 @@ export function MunicipalContactsIndex() {
   const filtered = deptFilter ? contacts.filter(c => c.department === deptFilter) : contacts;
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: spacing.lg, paddingBottom: 40 }}>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 40 }}>
+      <Container>
+      <View style={{ padding: spacing.lg }}>
       {depts.length > 1 && (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: spacing.md }}>
           <TouchableOpacity style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: !deptFilter ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: !deptFilter ? colors.heroBar : colors.surface }} onPress={() => setDeptFilter(null)}>
@@ -69,6 +73,8 @@ export function MunicipalContactsIndex() {
           {c.hours && <Text style={{ fontSize: 12, fontFamily: fonts.sans, color: colors.neutralVariant, marginTop: spacing.xs }}>{c.hours}</Text>}
         </View>
       ))}
-    </ScrollView>
+      </View>
+      </Container>
+    </Wrapper>
   );
 }

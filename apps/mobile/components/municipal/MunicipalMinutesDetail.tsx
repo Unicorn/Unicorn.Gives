@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text } from 'react-native';
+import { Container } from '@/components/layout/Container';
+import { Wrapper } from '@/components/layout/Wrapper';
 import { useLocalSearchParams } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
@@ -41,7 +43,9 @@ export function MunicipalMinutesDetail() {
   if (!item) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Loading...</Text></View>;
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ padding: spacing.xl, paddingBottom: 60 }}>
+    <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 60 }}>
+      <Container>
+      <View style={{ padding: spacing.xl }}>
       <Text style={{ fontSize: 24, fontFamily: fonts.sansBold, color: colors.neutral, marginBottom: spacing.sm }}>{item.title}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginBottom: spacing.lg }}>
         <Text style={{ fontSize: 14, fontFamily: fonts.sans, color: colors.neutralVariant }}>
@@ -83,6 +87,8 @@ export function MunicipalMinutesDetail() {
         </View>
       )}
       <MarkdownRenderer content={item.body} />
-    </ScrollView>
+      </View>
+      </Container>
+    </Wrapper>
   );
 }
