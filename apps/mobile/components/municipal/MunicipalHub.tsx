@@ -107,7 +107,7 @@ export function MunicipalHub() {
       title: 'Elections',
       description: 'Polling locations & deadlines',
       span: 'half',
-      colorScheme: 'muted',
+      colorScheme: 'surface',
       href: toHref(`${basePath}/elections`),
     },
   ];
