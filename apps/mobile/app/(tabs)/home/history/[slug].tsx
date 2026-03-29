@@ -4,7 +4,13 @@ import { getLoreDoc, isLoreSlug } from '@/lib/lore';
 import { routes } from '@/lib/navigation';
 import { useTheme, spacing, radii, fonts } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
+import { SeoHead } from '@/components/SeoHead';
 import { Container } from '@/components/layout/Container';
+import { fetchHistorySlugParams } from '@/lib/static-build-queries';
+
+export async function generateStaticParams() {
+  return fetchHistorySlugParams();
+}
 
 export default function HistoryDetailScreen() {
   const { colors } = useTheme();
@@ -20,6 +26,7 @@ export default function HistoryDetailScreen() {
 
   return (
     <Wrapper contentContainerStyle={styles.content}>
+      <SeoHead title={doc.title} description={doc.seo_description} />
       <Container>
       <Text style={[styles.breadcrumb, { color: colors.neutralVariant }]}>Land of the Unicorns</Text>
       <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>{doc.eyebrow}</Text>

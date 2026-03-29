@@ -9,6 +9,10 @@ import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { SubTabs } from '@/components/layout/SubTabs';
 import { useTheme, spacing } from '@/constants/theme';
+import { SeoHead } from '@/components/SeoHead';
+import { getPartnerStaticLandingParams } from '@/lib/partner-static-from-seed';
+import { getDefaultDescription } from '@/lib/seo';
+import { fetchPartnerSlugParams } from '@/lib/static-build-queries';
 
 type PartnerTab = { label: string; slug: string; order: number };
 
@@ -28,123 +32,9 @@ interface PartnerPage {
   tab_slug: string | null;
 }
 
-const SEED_SQL_PATH_CANDIDATES = [
-  'supabase/migrations/001_initial_schema.sql',
-  '../../supabase/migrations/001_initial_schema.sql',
-  '../../../supabase/migrations/001_initial_schema.sql',
-];
-
-function loadSeedSql(): string | null {
-  // Node-only.
-  if (typeof window !== 'undefined') return null;
-
-  const fs = require('fs') as typeof import('fs');
-  const path = require('path') as typeof import('path');
-
-  for (const rel of SEED_SQL_PATH_CANDIDATES) {
-    const p = path.join(process.cwd(), rel);
-    if (fs.existsSync(p)) return fs.readFileSync(p, 'utf-8');
-  }
-
-  return null;
-}
-
-function normalizeHornTab(partnerSlug: string, tabSlug: string): string {
-  if (partnerSlug === 'the-horn' && tabSlug === 'hours-horn') return 'hours';
-  return tabSlug;
-}
-
-type PartnerStaticInfo = { partnerSlug: string; tabSlugs: string[] };
-
-function extractPartnersFromSeedSql(sql: string): PartnerStaticInfo[] {
-  const insertIdx = sql.indexOf('INSERT INTO public.partners');
-  if (insertIdx === -1) return [];
-
-  const valuesIdx = sql.indexOf('VALUES', insertIdx);
-  if (valuesIdx === -1) return [];
-
-  const statementEnd = sql.indexOf(';', valuesIdx);
-  if (statementEnd === -1) return [];
-
-  const valuesBlock = sql.slice(valuesIdx + 'VALUES'.length, statementEnd).trim();
-
-  const tuples: string[] = [];
-  let inString = false;
-  let depth = 0;
-  let tupleStart: number | null = null;
-
-  for (let i = 0; i < valuesBlock.length; i++) {
-    const ch = valuesBlock[i];
-
-    if (ch === "'") {
-      // Handle escaped single-quote in SQL strings: ''.
-      if (inString && valuesBlock[i + 1] === "'") {
-        i++;
-        continue;
-      }
-      inString = !inString;
-      continue;
-    }
-
-    if (inString) continue;
-
-    if (ch === '(') {
-      if (depth === 0) tupleStart = i;
-      depth++;
-      continue;
-    }
-
-    if (ch === ')') {
-      depth--;
-      if (depth === 0 && tupleStart !== null) {
-        tuples.push(valuesBlock.slice(tupleStart, i + 1));
-        tupleStart = null;
-      }
-    }
-  }
-
-  return tuples
-    .map((tupleStr) => {
-      const slugMatch = tupleStr.match(/\('([^']*)'/);
-      if (!slugMatch) return null;
-      const partnerSlug = slugMatch[1];
-
-      const tabsMatch = tupleStr.match(/'(\[[\s\S]*?\])'::jsonb\s*\)$/);
-      if (!tabsMatch) return null;
-
-      const tabsJson = tabsMatch[1];
-      const tabsParsed = (() => {
-        try {
-          return JSON.parse(tabsJson) as { slug: string }[];
-        } catch {
-          return [];
-        }
-      })();
-
-      const tabSlugs = tabsParsed.map((t) => t.slug).filter(Boolean).map((s) => normalizeHornTab(partnerSlug, s));
-
-      return { partnerSlug, tabSlugs };
-    })
-    .filter(Boolean) as PartnerStaticInfo[];
-}
-
-export function generateStaticParams() {
-  const sql = loadSeedSql();
-  if (!sql) return [];
-
-  const partners = extractPartnersFromSeedSql(sql);
-
-  // Landing route needs only `{ partnerSlug }`.
-  const seen = new Set<string>();
-  const out: { partnerSlug: string }[] = [];
-
-  for (const p of partners) {
-    if (seen.has(p.partnerSlug)) continue;
-    seen.add(p.partnerSlug);
-    out.push({ partnerSlug: p.partnerSlug });
-  }
-
-  return out;
+export async function generateStaticParams() {
+  const fromDb = await fetchPartnerSlugParams();
+  return fromDb.length > 0 ? fromDb : getPartnerStaticLandingParams();
 }
 
 export default function PartnerLanding() {
@@ -196,13 +86,25 @@ export default function PartnerLanding() {
     };
   }, [partnerSlug]);
 
-  if (!partner) return <View style={[styles.container, { backgroundColor: colors.background }]}><AppHeader title="Partner" /><Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text></View>;
+  if (!partner) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <SeoHead
+          title={partnerSlug ? `Partner · ${partnerSlug}` : 'Partner'}
+          description={getDefaultDescription()}
+        />
+        <AppHeader title="Partner" />
+        <Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text>
+      </View>
+    );
+  }
 
   const effectiveTabs = partner.tabs && partner.tabs.length > 0 ? partner.tabs : defaultTabs;
   const tabs = routes.partners.tabItems(partnerSlug, effectiveTabs);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <SeoHead title={partner.name} description={partner.description ?? undefined} />
       <AppHeader title={partner.name} />
       {tabs.length > 0 && <SubTabs tabs={tabs} />}
       <Wrapper contentContainerStyle={styles.content}>

@@ -7,6 +7,13 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { SeoHead } from '@/components/SeoHead';
+import { getDefaultDescription } from '@/lib/seo';
+import { fetchCountySlugParams } from '@/lib/static-build-queries';
+
+export async function generateStaticParams() {
+  return fetchCountySlugParams();
+}
 
 interface ChildRegion {
   id: string;
@@ -35,6 +42,10 @@ export default function CountyOverview() {
   if (isLoading) {
     return (
       <View style={styles.page}>
+        <SeoHead
+          title={countySlug ? `County · ${String(countySlug)}` : 'County'}
+          description={getDefaultDescription()}
+        />
         <Text style={[styles.loading, { color: colors.neutralVariant }]}>Loading...</Text>
       </View>
     );
@@ -42,6 +53,7 @@ export default function CountyOverview() {
   if (!region) {
     return (
       <View style={styles.page}>
+        <SeoHead title="County not found" description={getDefaultDescription()} noIndex />
         <Text style={[styles.loading, { color: colors.neutralVariant }]}>County not found</Text>
       </View>
     );
@@ -49,6 +61,10 @@ export default function CountyOverview() {
 
   return (
     <Wrapper style={{ flex: 1 }} contentContainerStyle={styles.content}>
+      <SeoHead
+        title={region.name}
+        description={region.description ?? `${region.name} municipalities and local government on UNI Gives.`}
+      />
       <Container>
         <View style={styles.header}>
           <Text style={[styles.type, { color: colors.neutralVariant }]}>{region.type.toUpperCase()}</Text>

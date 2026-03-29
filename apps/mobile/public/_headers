@@ -1,0 +1,13 @@
+# Netlify-style headers (copied to dist/ on export). Adjust if your CDN uses different syntax.
+
+/_expo/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate

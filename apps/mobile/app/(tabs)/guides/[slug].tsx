@@ -5,7 +5,14 @@ import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
+import { SeoHead } from '@/components/SeoHead';
 import { Container } from '@/components/layout/Container';
+import { getDefaultDescription } from '@/lib/seo';
+import { fetchGuideSlugParams } from '@/lib/static-build-queries';
+
+export async function generateStaticParams() {
+  return fetchGuideSlugParams();
+}
 
 interface Guide {
   title: string;
@@ -55,10 +62,21 @@ export default function GuideDetail() {
 
   const styles = useMemo(() => createStyles(colors), [colors]);
 
-  if (!guide) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={styles.loading}>Loading...</Text></View>;
+  if (!guide) {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <SeoHead
+          title={slug ? `Guides · ${slug}` : 'Guides'}
+          description={getDefaultDescription()}
+        />
+        <Text style={styles.loading}>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <Wrapper contentContainerStyle={styles.content}>
+      <SeoHead title={guide.title} description={guide.description ?? undefined} />
       <Container>
       <View style={styles.header}>
         {guide.icon && <Text style={styles.icon}>{guide.icon}</Text>}

@@ -15,7 +15,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm exec expo export --platform web",
+        "command": "pnpm exec tsx scripts/generate-sitemap.ts && pnpm exec expo export --platform web",
         "cwd": "apps/mobile"
       }
     }

@@ -10,6 +10,11 @@ import {
   type MunicipalDocumentRow,
 } from '@/lib/municipal/municipalDocuments';
 import { useTheme, spacing } from '@/constants/theme';
+import { fetchMunicipalDocumentsStaticParams } from '@/lib/static-build-queries';
+
+export async function generateStaticParams() {
+  return fetchMunicipalDocumentsStaticParams();
+}
 
 export default function MunicipalDocumentDetailScreen() {
   const { colors } = useTheme();

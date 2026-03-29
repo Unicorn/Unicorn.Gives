@@ -3,6 +3,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { useTheme, spacing } from '@/constants/theme';
+import { fetchElectionsStaticParams } from '@/lib/static-build-queries';
+
+export async function generateStaticParams() {
+  return fetchElectionsStaticParams();
+}
 
 export default function ElectionDetail() {
   const { colors } = useTheme();
