@@ -193,7 +193,7 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
                   <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('account')}>
                     <View style={styles.popoverRow}>
                       <MaterialIcons name="manage-accounts" size={18} color={colors.neutral} />
-                      <Text style={[styles.popoverText, { color: colors.neutral }]}>Your account</Text>
+                      <Text style={[styles.popoverText, { color: colors.neutral }]}>Account</Text>
                     </View>
                   </AnimatedPressable>
                   <AnimatedPressable variant="subtle" style={styles.popoverItem} onPress={() => handleMenuAction('profile')}>

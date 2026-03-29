@@ -10,10 +10,19 @@ export default function UserProfileScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
+  const scrollStyle = useMemo(
+    () => StyleSheet.flatten([styles.scroll, { backgroundColor: colors.background }]),
+    [styles.scroll, colors.background],
+  );
+  const contentContainerStyle = useMemo(
+    () => StyleSheet.flatten([styles.content, { paddingBottom: insets.bottom + spacing.xl }]),
+    [styles.content, insets.bottom],
+  );
+
   return (
     <ScrollView
-      style={[styles.scroll, { backgroundColor: colors.background }]}
-      contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + spacing.xl }]}
+      style={scrollStyle}
+      contentContainerStyle={contentContainerStyle}
       keyboardShouldPersistTaps="handled"
     >
       <Text style={styles.pageTitle}>Profile</Text>

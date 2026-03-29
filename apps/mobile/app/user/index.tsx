@@ -14,6 +14,15 @@ export default function UserIndexScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
+  const scrollStyle = useMemo(
+    () => StyleSheet.flatten([styles.scroll, { backgroundColor: colors.background }]),
+    [styles.scroll, colors.background],
+  );
+  const contentContainerStyle = useMemo(
+    () => StyleSheet.flatten([styles.content, { paddingBottom: insets.bottom + spacing.xl }]),
+    [styles.content, insets.bottom],
+  );
+
   const rows: { label: string; description: string; href: Href; icon: keyof typeof MaterialIcons.glyphMap }[] = [
     {
       label: 'Profile',
@@ -30,23 +39,35 @@ export default function UserIndexScreen() {
   ];
 
   return (
-    <ScrollView
-      style={[styles.scroll, { backgroundColor: colors.background }]}
-      contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + spacing.xl }]}
-    >
-      <Text style={styles.pageTitle}>Your account</Text>
+    <ScrollView style={scrollStyle} contentContainerStyle={contentContainerStyle}>
+      <Text style={styles.pageTitle}>Account</Text>
       <Text style={styles.subtitle}>Manage your profile and app preferences.</Text>
 
       <View style={styles.list}>
         {rows.map((row) => (
           <Link key={row.label} href={row.href} asChild>
-            <AnimatedPressable variant="subtle" style={[styles.row, { borderColor: colors.outline, backgroundColor: colors.surface }]}>
-              <View style={[styles.iconWrap, { backgroundColor: colors.outlineVariant }]}>
+            <AnimatedPressable
+              variant="subtle"
+              style={StyleSheet.flatten([
+                styles.row,
+                { borderColor: colors.outline, backgroundColor: colors.surface },
+              ])}
+            >
+              <View
+                style={StyleSheet.flatten([
+                  styles.iconWrap,
+                  { backgroundColor: colors.outlineVariant },
+                ])}
+              >
                 <MaterialIcons name={row.icon} size={22} color={colors.neutral} />
               </View>
               <View style={styles.rowText}>
-                <Text style={[styles.rowLabel, { color: colors.neutral }]}>{row.label}</Text>
-                <Text style={[styles.rowDesc, { color: colors.neutralVariant }]}>{row.description}</Text>
+                <Text style={StyleSheet.flatten([styles.rowLabel, { color: colors.neutral }])}>
+                  {row.label}
+                </Text>
+                <Text style={StyleSheet.flatten([styles.rowDesc, { color: colors.neutralVariant }])}>
+                  {row.description}
+                </Text>
               </View>
               <MaterialIcons name="chevron-right" size={22} color={colors.neutralVariant} />
             </AnimatedPressable>

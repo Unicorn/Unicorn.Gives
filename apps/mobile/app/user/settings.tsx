@@ -10,11 +10,17 @@ export default function UserSettingsScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
+  const scrollStyle = useMemo(
+    () => StyleSheet.flatten([styles.scroll, { backgroundColor: colors.background }]),
+    [styles.scroll, colors.background],
+  );
+  const contentContainerStyle = useMemo(
+    () => StyleSheet.flatten([styles.content, { paddingBottom: insets.bottom + spacing.xl }]),
+    [styles.content, insets.bottom],
+  );
+
   return (
-    <ScrollView
-      style={[styles.scroll, { backgroundColor: colors.background }]}
-      contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + spacing.xl }]}
-    >
+    <ScrollView style={scrollStyle} contentContainerStyle={contentContainerStyle}>
       <Text style={styles.pageTitle}>Settings</Text>
       <Text style={styles.subtitle}>Appearance and notification preferences.</Text>
       <UserSettingsSection showSectionTitle={false} />
