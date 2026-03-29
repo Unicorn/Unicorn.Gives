@@ -1,7 +1,8 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import type { Href } from "expo-router";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import {
+	Pressable,
 	type StyleProp,
 	StyleSheet,
 	Text,
@@ -97,17 +98,12 @@ function BentoCell({
 	item: BentoItem;
 	outerStyle?: StyleProp<ViewStyle>;
 }) {
+	const router = useRouter();
 	const schemes = useSchemeStyles();
 	const scheme = schemes[item.colorScheme || "surface"];
 
-	const card = (
-		<View
-			style={[
-				styles.card,
-				{ backgroundColor: scheme.bg },
-				shadows.cardElevated,
-			]}
-		>
+	const cardContent = (
+		<>
 			<MaterialIcons
 				// biome-ignore lint/suspicious/noExplicitAny: icon string from bento item data
 				name={item.icon as any}
@@ -121,20 +117,28 @@ function BentoCell({
 			<Text style={[styles.cardDesc, { color: scheme.desc }]}>
 				{item.description}
 			</Text>
-		</View>
+		</>
 	);
+
+	const cardStyle = [
+		styles.card,
+		{ backgroundColor: scheme.bg },
+		shadows.cardElevated,
+	];
 
 	if (item.href) {
 		return (
-			<View style={outerStyle}>
-				<Link href={item.href} style={styles.cellLink}>
-					{card}
-				</Link>
-			</View>
+			<Pressable
+				style={StyleSheet.flatten([outerStyle, ...cardStyle])}
+				onPress={() => router.push(item.href!)}
+				accessibilityRole="link"
+			>
+				{cardContent}
+			</Pressable>
 		);
 	}
 
-	return <View style={outerStyle}>{card}</View>;
+	return <View style={[outerStyle, ...cardStyle]}>{cardContent}</View>;
 }
 
 export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
@@ -208,9 +212,6 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap",
 		width: "100%",
 	},
-	cellLink: {
-		flex: 1,
-	},
 	cellWideFull: {
 		flexBasis: "100%",
 		flexGrow: 0,
@@ -232,7 +233,6 @@ const styles = StyleSheet.create({
 		flexShrink: 0,
 	},
 	card: {
-		flex: 1,
 		padding: spacing.xl,
 		borderRadius: radii.md,
 		gap: spacing.sm,
