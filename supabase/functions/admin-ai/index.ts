@@ -300,8 +300,16 @@ async function writeAudit(
   resourceId: string,
   meta: Record<string, unknown>,
 ): Promise<void> {
+  const { data: actor } = await admin
+    .from('profiles')
+    .select('display_name, email')
+    .eq('id', userId)
+    .maybeSingle();
+
   await admin.from('audit_log').insert({
     user_id: userId,
+    actor_display_name: actor?.display_name ?? null,
+    actor_email: actor?.email ?? null,
     action,
     resource_type: 'events',
     resource_id: resourceId,

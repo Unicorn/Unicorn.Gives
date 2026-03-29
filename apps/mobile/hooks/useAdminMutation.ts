@@ -14,7 +14,7 @@ export interface MutationResult {
 }
 
 export function useAdminMutation(table: string): MutationResult {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,13 +23,15 @@ export function useAdminMutation(table: string): MutationResult {
       if (!user) return;
       await supabase.from('audit_log').insert({
         user_id: user.id,
+        actor_display_name: profile?.display_name ?? null,
+        actor_email: user.email ?? null,
         action,
         resource_type: table,
         resource_id: resourceId,
         changes,
       });
     },
-    [user, table],
+    [user, profile, table],
   );
 
   const insert = useCallback(

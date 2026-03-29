@@ -14,6 +14,11 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
+import {
+  enrichAuditEntries,
+  formatActorLabel,
+  type EnrichedAuditEntry,
+} from '@/lib/admin/enrichAuditEntries';
 
 /* ── Types ── */
 
@@ -25,15 +30,6 @@ interface ContentCount {
   drafts: number;
   published: number;
   adminPath: string;
-}
-
-interface AuditEntry {
-  id: string;
-  action: string;
-  resource_type: string;
-  resource_id: string;
-  created_at: string;
-  changes: Record<string, unknown> | null;
 }
 
 /* ── Tables to count ── */
@@ -59,7 +55,7 @@ export default function AdminDashboard() {
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   const [counts, setCounts] = useState<ContentCount[]>([]);
-  const [auditEntries, setAuditEntries] = useState<AuditEntry[]>([]);
+  const [auditEntries, setAuditEntries] = useState<EnrichedAuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -95,11 +91,14 @@ export default function AdminDashboard() {
       // Fetch recent audit log
       const { data: auditData } = await supabase
         .from('audit_log')
-        .select('id, action, resource_type, resource_id, created_at, changes')
+        .select(
+          'id, action, resource_type, resource_id, created_at, changes, user_id, actor_display_name, actor_email',
+        )
         .order('created_at', { ascending: false })
         .limit(10);
 
-      setAuditEntries(auditData ?? []);
+      const enriched = await enrichAuditEntries(supabase, auditData ?? []);
+      setAuditEntries(enriched);
       setLoading(false);
     }
 
@@ -200,22 +199,38 @@ export default function AdminDashboard() {
         </View>
       ) : (
         <View style={styles.auditTable}>
-          {auditEntries.map((entry) => (
-            <View key={entry.id} style={styles.auditRow}>
-              <Text style={styles.auditAction}>{entry.action}</Text>
-              <Text style={styles.auditResource}>
-                {entry.resource_type}
-              </Text>
-              <Text style={styles.auditTime}>
-                {new Date(entry.created_at).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  hour: 'numeric',
-                  minute: '2-digit',
-                })}
-              </Text>
-            </View>
-          ))}
+          {auditEntries.map((entry, index) => {
+            const showSlugLine =
+              Boolean(entry.contentSlug) && entry.contentSlug !== entry.contentLabel;
+            const isLast = index === auditEntries.length - 1;
+            return (
+              <View
+                key={entry.id}
+                style={[styles.auditRow, isLast && styles.auditRowLast]}
+              >
+                <View style={styles.auditRowMain}>
+                  <View style={styles.auditRowTop}>
+                    <Text style={styles.auditAction}>{entry.action}</Text>
+                    <Text style={styles.auditTime}>
+                      {new Date(entry.created_at).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                      })}
+                    </Text>
+                  </View>
+                  <Text style={styles.auditActor}>{formatActorLabel(entry)}</Text>
+                  <Text style={styles.auditContent}>
+                    {entry.typeLabel} · {entry.contentLabel}
+                  </Text>
+                  {showSlugLine ? (
+                    <Text style={styles.auditSlug}>/{entry.contentSlug}</Text>
+                  ) : null}
+                </View>
+              </View>
+            );
+          })}
         </View>
       )}
     </ScrollView>
@@ -370,28 +385,47 @@ const createStyles = (colors: ThemeColors) =>
       borderColor: colors.outlineVariant,
     },
     auditRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
       paddingHorizontal: spacing.lg,
       paddingVertical: spacing.md,
       borderBottomWidth: 1,
       borderBottomColor: colors.outlineVariant,
-      gap: 16,
+    },
+    auditRowLast: {
+      borderBottomWidth: 0,
+    },
+    auditRowMain: {
+      flex: 1,
+      gap: 4,
+    },
+    auditRowTop: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: spacing.md,
     },
     auditAction: {
       fontFamily: fonts.sansMedium,
       fontSize: 13,
       color: colors.neutral,
       textTransform: 'capitalize',
-      minWidth: 80,
-    },
-    auditResource: {
-      fontFamily: fonts.sans,
-      fontSize: 13,
-      color: colors.neutralVariant,
-      flex: 1,
     },
     auditTime: {
+      fontFamily: fonts.sans,
+      fontSize: 12,
+      color: colors.neutralVariant,
+      flexShrink: 0,
+    },
+    auditActor: {
+      fontFamily: fonts.sans,
+      fontSize: 12,
+      color: colors.neutralVariant,
+    },
+    auditContent: {
+      fontFamily: fonts.sansMedium,
+      fontSize: 13,
+      color: colors.neutral,
+    },
+    auditSlug: {
       fontFamily: fonts.sans,
       fontSize: 12,
       color: colors.neutralVariant,
