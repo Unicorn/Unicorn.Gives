@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { routes } from '@/lib/navigation';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 export default function UserIndexScreen() {
@@ -78,7 +78,7 @@ export default function UserIndexScreen() {
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     scroll: { flex: 1 },
     content: {
@@ -89,12 +89,12 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
     },
     pageTitle: {
       fontFamily: fonts.sansBold,
-      fontSize: 28,
+      fontSize: fontSize['4xl'],
       color: colors.neutral,
     },
     subtitle: {
       fontFamily: fonts.sans,
-      fontSize: 14,
+      fontSize: fontSize.md,
       color: colors.neutralVariant,
       lineHeight: 20,
       marginTop: spacing.sm,
@@ -119,10 +119,10 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
     rowText: { flex: 1, gap: 2 },
     rowLabel: {
       fontFamily: fonts.sansBold,
-      fontSize: 16,
+      fontSize: fontSize.lg,
     },
     rowDesc: {
       fontFamily: fonts.sans,
-      fontSize: 13,
+      fontSize: fontSize.sm + 1,
     },
   });

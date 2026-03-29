@@ -1,9 +1,11 @@
 import { useState, useMemo } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
+import { Button } from '@/components/ui';
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -36,49 +38,103 @@ export default function SignUpScreen() {
 
   return (
     <View style={styles.page}>
-      <Text style={styles.title}>Create an account</Text>
+      <View style={styles.form}>
+        <View style={styles.header}>
+          <MaterialIcons name="eco" size={32} color={colors.primary} />
+          <Text style={styles.brand}>UNI Gives</Text>
+        </View>
 
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        placeholder="Email"
-      />
+        <Text style={styles.title}>Create an account</Text>
 
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        placeholder="Password"
-      />
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          placeholder="Email"
+          placeholderTextColor={colors.neutralVariant}
+        />
 
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          placeholder="Password"
+          placeholderTextColor={colors.neutralVariant}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={onSignUp} disabled={submitting}>
-        <Text style={styles.buttonText}>{submitting ? 'Creating\u2026' : 'Create account'}</Text>
-      </TouchableOpacity>
+        {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      <TouchableOpacity
-        style={styles.secondaryButton}
-        onPress={() => router.replace('/sign-in')}
-        disabled={submitting}
-      >
-        <Text style={styles.secondaryButtonText}>Back to sign-in</Text>
-      </TouchableOpacity>
+        <Button
+          label={submitting ? 'Creating\u2026' : 'Create account'}
+          onPress={onSignUp}
+          size="lg"
+          disabled={submitting}
+          loading={submitting}
+        />
+
+        <Button
+          label="Back to sign-in"
+          variant="ghost"
+          onPress={() => router.replace('/sign-in')}
+          size="lg"
+          disabled={submitting}
+        />
+      </View>
     </View>
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  page: { flex: 1, backgroundColor: colors.background, padding: 20, gap: 12, justifyContent: 'center' },
-  title: { fontSize: 30, fontWeight: '900', color: colors.neutral, marginBottom: 10 },
-  input: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.outline, borderRadius: radii.md, padding: 12, fontSize: 16 },
-  error: { color: colors.error, backgroundColor: colors.surface, borderRadius: radii.md, padding: 10, borderWidth: 1, borderColor: colors.errorContainer },
-  button: { backgroundColor: colors.primary, borderRadius: radii.md, paddingVertical: 12, alignItems: 'center' },
-  buttonText: { color: colors.onPrimary, fontWeight: '900' },
-  secondaryButton: { borderRadius: radii.md, paddingVertical: 12, alignItems: 'center', borderWidth: 1, borderColor: colors.primary },
-  secondaryButtonText: { color: colors.primary, fontWeight: '900' },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    page: {
+      flex: 1,
+      backgroundColor: colors.background,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: spacing.xl,
+    },
+    form: {
+      width: '100%',
+      maxWidth: 400,
+      gap: spacing.md,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      marginBottom: spacing.sm,
+    },
+    brand: {
+      fontFamily: fonts.sansBold,
+      fontSize: fontSize.xl,
+      color: colors.neutral,
+    },
+    title: {
+      fontFamily: fonts.serifBold,
+      fontSize: fontSize['5xl'],
+      lineHeight: 36,
+      color: colors.neutral,
+      marginBottom: spacing.sm,
+    },
+    input: {
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.outline,
+      borderRadius: radii.md,
+      padding: spacing.md,
+      fontFamily: fonts.sans,
+      fontSize: fontSize.lg,
+      color: colors.neutral,
+    },
+    error: {
+      fontFamily: fonts.sans,
+      fontSize: fontSize.md,
+      color: colors.error,
+      backgroundColor: colors.errorContainer,
+      borderRadius: radii.sm,
+      padding: spacing.md,
+    },
+  });

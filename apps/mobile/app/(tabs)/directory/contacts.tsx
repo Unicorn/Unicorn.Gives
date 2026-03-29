@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
@@ -16,7 +16,6 @@ interface Contact {
   hours: string | null;
 }
 
-// Municipality labels derived from department name prefixes
 const MUNICIPALITIES = ['Lincoln Township', 'Clare County'] as const;
 
 function getMunicipality(department: string): string {
@@ -40,7 +39,6 @@ export default function ContactsDirectory() {
       .order('display_order')
       .then(({ data }) => {
         if (!data) return;
-        // Deduplicate by name+department (contacts may appear under multiple regions)
         const seen = new Set<string>();
         const unique = data.filter(c => {
           const key = `${c.name}|${c.department}`;
@@ -126,21 +124,21 @@ export default function ContactsDirectory() {
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  content: { padding: 16, paddingBottom: 40 },
-  heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
-  subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },
-  filterLabel: { fontSize: 12, fontWeight: '600', color: colors.neutralVariant, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 },
-  chips: { marginBottom: 12 },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: colors.outline, marginRight: 8, backgroundColor: colors.surface },
+const createStyles = (colors: ThemeColors) => StyleSheet.create({
+  content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
+  heading: { fontFamily: fonts.sansBold, fontSize: fontSize['2xl'], color: colors.neutral, marginBottom: spacing.xs },
+  subheading: { fontFamily: fonts.sans, fontSize: fontSize.base, color: colors.neutralVariant, lineHeight: 22, marginBottom: spacing.lg },
+  filterLabel: { fontFamily: fonts.sansMedium, fontSize: fontSize.sm, color: colors.neutralVariant, marginBottom: spacing.xs, textTransform: 'uppercase', letterSpacing: letterSpacing.normal },
+  chips: { marginBottom: spacing.md },
+  chip: { paddingHorizontal: spacing.lg - 2, paddingVertical: spacing.xs + 2, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.outline, marginRight: spacing.sm, backgroundColor: colors.surface },
   chipActive: { backgroundColor: colors.neutral, borderColor: colors.neutral },
-  chipText: { fontSize: 13, color: colors.neutral, fontWeight: '500' },
+  chipText: { fontFamily: fonts.sansMedium, fontSize: fontSize.sm + 1, color: colors.neutral },
   chipTextActive: { color: colors.background },
-  count: { fontSize: 13, color: colors.neutralVariant, marginBottom: 12 },
-  card: { backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: 8, ...shadows.card },
-  name: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 2 },
-  role: { fontSize: 14, color: colors.neutral, marginBottom: 2 },
-  dept: { fontSize: 12, color: colors.neutralVariant, marginBottom: 6 },
-  link: { fontSize: 14, color: colors.primary, fontWeight: '600', marginBottom: 2 },
-  hours: { fontSize: 12, color: colors.neutralVariant, marginTop: 4 },
+  count: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, color: colors.neutralVariant, marginBottom: spacing.md },
+  card: { backgroundColor: colors.surface, borderRadius: radii.sm, padding: spacing.lg - 2, marginBottom: spacing.sm, ...shadows.card },
+  name: { fontFamily: fonts.sansBold, fontSize: fontSize.lg, color: colors.neutral, marginBottom: 2 },
+  role: { fontFamily: fonts.sans, fontSize: fontSize.md, color: colors.neutral, marginBottom: 2 },
+  dept: { fontFamily: fonts.sans, fontSize: fontSize.sm, color: colors.neutralVariant, marginBottom: spacing.xs + 2 },
+  link: { fontFamily: fonts.sansMedium, fontSize: fontSize.md, color: colors.primary, marginBottom: 2 },
+  hours: { fontFamily: fonts.sans, fontSize: fontSize.sm, color: colors.neutralVariant, marginTop: spacing.xs },
 });

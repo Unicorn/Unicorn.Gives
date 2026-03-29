@@ -18,7 +18,7 @@ import {
 	HORN_PERKS,
 	HORN_QUOTE,
 } from "@/constants/hornContent";
-import { fonts, radii, shadows, spacing, useTheme } from "@/constants/theme";
+import { fonts, fontSize, radii, shadows, spacing, useTheme, type ThemeColors } from "@/constants/theme";
 import { routes } from "@/lib/navigation";
 
 export default function CommunityTab() {
@@ -104,40 +104,40 @@ export default function CommunityTab() {
 	);
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>["colors"]) =>
+const createStyles = (colors: ThemeColors) =>
 	StyleSheet.create({
 		container: { flex: 1 },
 		content: {
 			padding: spacing.lg,
-			paddingBottom: 40,
+			paddingBottom: spacing.xxxl + spacing.sm,
 		},
 		stack: { width: "100%", gap: spacing.xxxl + spacing.sm },
 		navSection: { gap: spacing.md, marginTop: spacing.lg },
 		navSectionTitle: {
 			fontFamily: fonts.serifItalic,
-			fontSize: 24,
+			fontSize: fontSize["3xl"],
 			color: colors.primary,
-			marginBottom: 4,
+			marginBottom: spacing.xs,
 		},
 		navCard: {
 			flexDirection: "row",
 			borderRadius: radii.md,
-			padding: 16,
+			padding: spacing.lg,
 			backgroundColor: colors.surface,
 			...shadows.cardElevated,
-			gap: 14,
+			gap: spacing.lg - 2,
 			alignItems: "center",
 		},
-		navCardIcon: { fontSize: 24, width: 36, textAlign: "center" },
+		navCardIcon: { fontSize: fontSize["3xl"], width: 36, textAlign: "center" },
 		navCardText: { flex: 1, gap: 2 },
 		navCardTitle: {
 			fontFamily: fonts.sansBold,
-			fontSize: 16,
+			fontSize: fontSize.lg,
 			color: colors.neutral,
 		},
 		navCardDesc: {
 			fontFamily: fonts.sans,
-			fontSize: 13,
+			fontSize: fontSize.sm + 1,
 			color: colors.neutralVariant,
 			lineHeight: 19,
 		},

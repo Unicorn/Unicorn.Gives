@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UserProfileSection } from '@/components/user/UserProfileSection';
-import { useTheme, fonts, spacing } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, type ThemeColors } from '@/constants/theme';
 
 export default function UserProfileScreen() {
   const insets = useSafeAreaInsets();
@@ -32,7 +32,7 @@ export default function UserProfileScreen() {
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     scroll: { flex: 1 },
     content: {
@@ -44,12 +44,12 @@ const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
     },
     pageTitle: {
       fontFamily: fonts.sansBold,
-      fontSize: 28,
+      fontSize: fontSize['4xl'],
       color: colors.neutral,
     },
     subtitle: {
       fontFamily: fonts.sans,
-      fontSize: 14,
+      fontSize: fontSize.md,
       color: colors.neutralVariant,
       lineHeight: 20,
       marginBottom: spacing.sm,

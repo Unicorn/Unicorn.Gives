@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
@@ -52,16 +52,16 @@ export default function PartnersDirectory() {
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: 16, paddingBottom: 40 },
-  heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
-  subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },
-  card: { flexDirection: 'row', borderRadius: radii.md, padding: 16, marginBottom: 10, backgroundColor: colors.surface, ...shadows.card, gap: 14, alignItems: 'center' },
+  content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
+  heading: { fontFamily: fonts.sansBold, fontSize: fontSize['2xl'], color: colors.neutral, marginBottom: spacing.xs },
+  subheading: { fontFamily: fonts.sans, fontSize: fontSize.base, color: colors.neutralVariant, lineHeight: 22, marginBottom: spacing.lg },
+  card: { flexDirection: 'row', borderRadius: radii.md, padding: spacing.lg, marginBottom: spacing.sm + 2, backgroundColor: colors.surface, ...shadows.card, gap: spacing.lg - 2, alignItems: 'center' },
   avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: colors.neutral, justifyContent: 'center', alignItems: 'center' },
-  avatarText: { fontSize: 20, fontWeight: '700', color: colors.background },
+  avatarText: { fontFamily: fonts.sansBold, fontSize: fontSize.xl + 2, color: colors.background },
   body: { flex: 1 },
-  name: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },
-  desc: { fontSize: 14, color: colors.neutral, lineHeight: 20 },
-  empty: { textAlign: 'center', color: colors.neutralVariant, marginTop: 40 },
+  name: { fontFamily: fonts.sansBold, fontSize: fontSize.lg, color: colors.neutral, marginBottom: spacing.xs },
+  desc: { fontFamily: fonts.sans, fontSize: fontSize.md, color: colors.neutral, lineHeight: 20 },
+  empty: { fontFamily: fonts.sans, textAlign: 'center', color: colors.neutralVariant, marginTop: spacing.xxxl + spacing.sm },
 });

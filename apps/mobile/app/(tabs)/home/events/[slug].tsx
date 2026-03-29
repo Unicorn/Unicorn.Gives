@@ -6,7 +6,7 @@ import { Container } from "@/components/layout/Container";
 import { DetailEditBar } from "@/components/layout/DetailEditBar";
 import { Wrapper } from "@/components/layout/Wrapper";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-import { radii, spacing, useTheme } from "@/constants/theme";
+import { fonts, fontSize, letterSpacing, radii, spacing, useTheme } from "@/constants/theme";
 import { SeoHead } from "@/components/SeoHead";
 import { routes } from "@/lib/navigation";
 import { getDefaultDescription } from "@/lib/seo";
@@ -160,24 +160,24 @@ export default function EventDetail() {
 }
 
 const styles = StyleSheet.create({
-	content: { padding: spacing.xl, paddingBottom: 60 },
+	content: { padding: spacing.xl, paddingBottom: spacing.xxxl * 2 },
 	heroImage: {
 		marginBottom: spacing.lg,
 	},
-	loading: { padding: spacing.xxl, textAlign: "center" },
-	title: { fontSize: 24, fontWeight: "800", marginBottom: spacing.lg },
+	loading: { fontFamily: fonts.sans, padding: spacing.xxl, textAlign: "center" },
+	title: { fontFamily: fonts.sansBold, fontSize: fontSize["3xl"], marginBottom: spacing.lg },
 	metaBox: {
 		borderRadius: radii.sm,
-		padding: 14,
+		padding: spacing.lg - 2,
 		marginBottom: spacing.xl,
 		gap: spacing.xs,
 	},
 	metaLabel: {
-		fontSize: 11,
-		fontWeight: "700",
+		fontFamily: fonts.sansBold,
+		fontSize: fontSize.xs,
 		textTransform: "uppercase",
-		letterSpacing: 0.5,
-		marginTop: 6,
+		letterSpacing: letterSpacing.normal,
+		marginTop: spacing.xs + 2,
 	},
-	metaValue: { fontSize: 15, fontWeight: "500" },
+	metaValue: { fontFamily: fonts.sansMedium, fontSize: fontSize.base },
 });

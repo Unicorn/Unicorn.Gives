@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { SeoHead } from '@/components/SeoHead';
 import { Container } from '@/components/layout/Container';
@@ -128,22 +128,22 @@ export default function GuideDetail() {
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
-  content: { padding: 20, paddingBottom: 60 },
-  loading: { padding: 24, color: colors.neutralVariant, textAlign: 'center' },
-  header: { marginBottom: 24 },
-  icon: { fontSize: 36, marginBottom: 8 },
-  title: { fontSize: 24, fontWeight: '800', color: colors.neutral, marginBottom: 8 },
-  desc: { fontSize: 16, color: colors.neutral, lineHeight: 24, marginBottom: 8 },
-  meta: { fontSize: 13, color: colors.neutralVariant, textTransform: 'capitalize' },
-  verified: { fontSize: 12, color: colors.neutralVariant, marginTop: 4 },
-  section: { marginTop: 24 },
-  sectionTitle: { fontSize: 18, fontWeight: '700', color: colors.neutral, marginBottom: 12 },
-  contactCard: { borderRadius: radii.sm, padding: 14, marginBottom: 8, backgroundColor: colors.surface, ...shadows.card },
-  contactName: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 2 },
-  contactRole: { fontSize: 14, color: colors.neutral, marginBottom: 6 },
-  contactLink: { fontSize: 14, color: colors.primary, fontWeight: '600', marginBottom: 2 },
-  formCard: { borderRadius: radii.sm, padding: 14, marginBottom: 8, backgroundColor: colors.surface, ...shadows.card },
-  formName: { fontSize: 15, fontWeight: '600', color: colors.neutral, marginBottom: 2 },
-  formDesc: { fontSize: 13, color: colors.neutralVariant },
+const createStyles = (colors: ThemeColors) => StyleSheet.create({
+  content: { padding: spacing.xl, paddingBottom: spacing.xxxl * 2 },
+  loading: { fontFamily: fonts.sans, padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' },
+  header: { marginBottom: spacing.xxl },
+  icon: { fontSize: 36, marginBottom: spacing.sm },
+  title: { fontFamily: fonts.sansBold, fontSize: fontSize['3xl'], color: colors.neutral, marginBottom: spacing.sm },
+  desc: { fontFamily: fonts.sans, fontSize: fontSize.lg, color: colors.neutral, lineHeight: 24, marginBottom: spacing.sm },
+  meta: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, color: colors.neutralVariant, textTransform: 'capitalize' },
+  verified: { fontFamily: fonts.sans, fontSize: fontSize.sm, color: colors.neutralVariant, marginTop: spacing.xs },
+  section: { marginTop: spacing.xxl },
+  sectionTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.xl, color: colors.neutral, marginBottom: spacing.md },
+  contactCard: { borderRadius: radii.sm, padding: spacing.lg - 2, marginBottom: spacing.sm, backgroundColor: colors.surface, ...shadows.card },
+  contactName: { fontFamily: fonts.sansBold, fontSize: fontSize.lg, color: colors.neutral, marginBottom: 2 },
+  contactRole: { fontFamily: fonts.sans, fontSize: fontSize.md, color: colors.neutral, marginBottom: spacing.xs + 2 },
+  contactLink: { fontFamily: fonts.sansMedium, fontSize: fontSize.md, color: colors.primary, marginBottom: 2 },
+  formCard: { borderRadius: radii.sm, padding: spacing.lg - 2, marginBottom: spacing.sm, backgroundColor: colors.surface, ...shadows.card },
+  formName: { fontFamily: fonts.sansMedium, fontSize: fontSize.base, color: colors.neutral, marginBottom: 2 },
+  formDesc: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, color: colors.neutralVariant },
 });

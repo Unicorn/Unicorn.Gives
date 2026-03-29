@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { toHref } from '@/lib/navigation';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
@@ -102,22 +102,22 @@ export default function GuidesIndex() {
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: 16, paddingBottom: 40 },
-  heading: { fontSize: 22, fontWeight: '800', color: colors.neutral, marginBottom: 4 },
-  subheading: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22, marginBottom: 16 },
-  chips: { marginBottom: 12 },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: colors.outline, marginRight: 8 },
+  content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
+  heading: { fontFamily: fonts.sansBold, fontSize: fontSize['2xl'], color: colors.neutral, marginBottom: spacing.xs },
+  subheading: { fontFamily: fonts.sans, fontSize: fontSize.base, color: colors.neutralVariant, lineHeight: 22, marginBottom: spacing.lg },
+  chips: { marginBottom: spacing.md },
+  chip: { paddingHorizontal: spacing.lg - 2, paddingVertical: spacing.xs + 2, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.outline, marginRight: spacing.sm },
   chipActive: { backgroundColor: colors.neutral, borderColor: colors.neutral },
-  chipText: { fontSize: 13, color: colors.neutral, fontWeight: '500' },
+  chipText: { fontFamily: fonts.sansMedium, fontSize: fontSize.sm + 1, color: colors.neutral },
   chipTextActive: { color: colors.background },
-  count: { fontSize: 13, color: colors.neutralVariant, marginBottom: 12 },
-  card: { flexDirection: 'row', borderRadius: radii.md, padding: 16, marginBottom: 10, backgroundColor: colors.surface, ...shadows.card, gap: 12, alignItems: 'flex-start' },
-  icon: { fontSize: 28 },
+  count: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, color: colors.neutralVariant, marginBottom: spacing.md },
+  card: { flexDirection: 'row', borderRadius: radii.md, padding: spacing.lg, marginBottom: spacing.sm + 2, backgroundColor: colors.surface, ...shadows.card, gap: spacing.md, alignItems: 'flex-start' },
+  icon: { fontSize: fontSize['4xl'] },
   cardBody: { flex: 1 },
-  title: { fontSize: 16, fontWeight: '700', color: colors.neutral, marginBottom: 4 },
-  desc: { fontSize: 14, color: colors.neutral, lineHeight: 20, marginBottom: 6 },
-  meta: { fontSize: 12, color: colors.neutralVariant },
-  empty: { textAlign: 'center', color: colors.neutralVariant, marginTop: 40 },
+  title: { fontFamily: fonts.sansBold, fontSize: fontSize.lg, color: colors.neutral, marginBottom: spacing.xs },
+  desc: { fontFamily: fonts.sans, fontSize: fontSize.md, color: colors.neutral, lineHeight: 20, marginBottom: spacing.xs + 2 },
+  meta: { fontFamily: fonts.sans, fontSize: fontSize.sm, color: colors.neutralVariant },
+  empty: { fontFamily: fonts.sans, textAlign: 'center', color: colors.neutralVariant, marginTop: spacing.xxxl + spacing.sm },
 });

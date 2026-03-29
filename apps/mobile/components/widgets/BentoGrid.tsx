@@ -210,23 +210,23 @@ const styles = StyleSheet.create({
 		width: "100%",
 	},
 	cellWideFull: {
-		width: "100%",
+		flexBasis: "100%",
 		flexGrow: 0,
 		flexShrink: 0,
 	},
 	cellWideHalf: {
-		width: "48%",
-		flexGrow: 0,
+		flexBasis: "45%",
+		flexGrow: 1,
 		flexShrink: 0,
 	},
 	cellWideTwoThirds: {
-		width: "66.666%",
-		flexGrow: 0,
+		flexBasis: "60%",
+		flexGrow: 1,
 		flexShrink: 0,
 	},
 	cellWideOneThird: {
-		width: "33.333%",
-		flexGrow: 0,
+		flexBasis: "28%",
+		flexGrow: 1,
 		flexShrink: 0,
 	},
 	card: {

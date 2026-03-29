@@ -1008,23 +1008,23 @@ const createStyles = (colors: ReturnType<typeof useTheme>["colors"]) =>
 			flexWrap: "wrap",
 		},
 		bentoItemFull: {
-			width: "100%",
+			flexBasis: "100%",
 			flexGrow: 0,
 			flexShrink: 0,
 		},
 		bentoItemHalf: {
-			width: "48%",
-			flexGrow: 0,
+			flexBasis: "45%",
+			flexGrow: 1,
 			flexShrink: 0,
 		},
 		bentoItemTwoThirds: {
-			width: "66.666%",
-			flexGrow: 0,
+			flexBasis: "60%",
+			flexGrow: 1,
 			flexShrink: 0,
 		},
 		bentoItemOneThird: {
-			width: "33.333%",
-			flexGrow: 0,
+			flexBasis: "28%",
+			flexGrow: 1,
 			flexShrink: 0,
 		},
 		bentoTile: {

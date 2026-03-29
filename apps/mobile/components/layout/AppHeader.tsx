@@ -13,7 +13,7 @@ import { Link, useRouter, usePathname } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { routes, toHref } from '@/lib/navigation';
-import { breakpoints, useTheme, fonts } from '@/constants/theme';
+import { breakpoints, useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
 import { useThemeToggle } from '@/lib/themeToggle';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
@@ -253,30 +253,30 @@ const breadcrumbBarStyles = StyleSheet.create({
     maxWidth: 1100,
     width: '100%',
     alignSelf: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
-    gap: 6,
+    gap: spacing.xs + 2,
   },
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: spacing.xs + 2,
   },
   sep: {
-    fontSize: 12,
+    fontSize: fontSize.sm,
   },
   link: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontFamily: fonts.sansMedium,
+    fontSize: fontSize.sm + 1,
   },
   current: {
-    fontSize: 13,
-    fontWeight: '700',
+    fontFamily: fonts.sansBold,
+    fontSize: fontSize.sm + 1,
   },
 });
 
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 56,
-    paddingHorizontal: 12,
+    paddingHorizontal: spacing.md,
   },
   headerDesktop: {
     maxWidth: 1100,
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    borderRadius: spacing.lg,
   },
 
   /* Center zone */
@@ -324,14 +324,14 @@ const styles = StyleSheet.create({
   },
   desktopNav: {
     flexDirection: 'row',
-    gap: 32,
+    gap: spacing.xxxl,
     alignItems: 'center',
   },
   navLinkWrap: {
-    paddingVertical: 4,
+    paddingVertical: spacing.xs,
   },
   navLink: {
-    fontSize: 16,
+    fontSize: fontSize.lg,
     fontFamily: fonts.serif,
   },
 
@@ -349,11 +349,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     paddingTop: Platform.OS === 'web' ? 56 : 100,
-    paddingRight: 12,
+    paddingRight: spacing.md,
   },
   popover: {
-    borderRadius: 12,
-    paddingVertical: 4,
+    borderRadius: radii.md,
+    paddingVertical: spacing.xs,
     minWidth: 180,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
@@ -362,20 +362,20 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   popoverItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
   },
   popoverRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: spacing.sm + 2,
   },
   popoverText: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontFamily: fonts.sansMedium,
+    fontSize: fontSize.base,
   },
   popoverDivider: {
     height: 1,
-    marginHorizontal: 12,
+    marginHorizontal: spacing.md,
   },
 });

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Link, Stack } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { StyleSheet, View, Text } from 'react-native';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 
 export default function NotFoundScreen() {
   const { colors } = useTheme();
@@ -22,25 +22,26 @@ export default function NotFoundScreen() {
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: spacing.xl,
     backgroundColor: colors.background,
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: fonts.sansBold,
+    fontSize: fontSize.xl + 2,
     color: colors.neutral,
   },
   link: {
-    marginTop: 15,
-    paddingVertical: 15,
+    marginTop: spacing.lg,
+    paddingVertical: spacing.lg,
   },
   linkText: {
-    fontSize: 14,
+    fontFamily: fonts.sansMedium,
+    fontSize: fontSize.md,
     color: colors.primary,
   },
 });

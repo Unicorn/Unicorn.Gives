@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii } from '@/constants/theme';
+import { useTheme, fonts, fontSize, letterSpacing, spacing, radii } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
 import { getDefaultDescription } from '@/lib/seo';
 import { fetchCountySlugParams } from '@/lib/static-build-queries';
+import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 export async function generateStaticParams() {
   return fetchCountySlugParams();
@@ -74,10 +75,10 @@ export default function CountyOverview() {
         <Text style={[styles.sectionTitle, { color: colors.neutralVariant }]}>Municipalities</Text>
         {children.map((c) => (
           <Link key={c.slug} href={routes.government.municipality(countySlug, c.slug)} asChild>
-            <TouchableOpacity style={StyleSheet.flatten([styles.row, { backgroundColor: colors.surface, borderColor: colors.outline }])}>
+            <AnimatedPressable variant="card" style={StyleSheet.flatten([styles.row, { backgroundColor: colors.surface, borderColor: colors.outline }])}>
               <Text style={[styles.rowTitle, { color: colors.neutral }]}>{c.name}</Text>
               <Text style={[styles.rowMeta, { color: colors.neutralVariant }]}>{c.type}</Text>
-            </TouchableOpacity>
+            </AnimatedPressable>
           </Link>
         ))}
       </Container>
@@ -87,13 +88,13 @@ export default function CountyOverview() {
 
 const styles = StyleSheet.create({
   page: { flex: 1 },
-  content: { paddingBottom: 40, flexGrow: 1 },
-  loading: { padding: spacing.xxl, textAlign: 'center' },
+  content: { paddingBottom: spacing.xxxl + spacing.sm, flexGrow: 1 },
+  loading: { fontFamily: fonts.sans, padding: spacing.xxl, textAlign: 'center' },
   header: { padding: spacing.xl },
-  type: { fontSize: 11, fontWeight: '700', letterSpacing: 1, marginBottom: 6 },
-  description: { fontSize: 15, lineHeight: 22 },
-  sectionTitle: { fontSize: 13, fontWeight: '800', letterSpacing: 1, paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.sm },
+  type: { fontFamily: fonts.sansBold, fontSize: fontSize.xs, letterSpacing: letterSpacing.wide, marginBottom: spacing.xs + 2 },
+  description: { fontFamily: fonts.sans, fontSize: fontSize.base, lineHeight: 22 },
+  sectionTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.sm + 1, letterSpacing: letterSpacing.wide, paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.sm },
   row: { marginHorizontal: spacing.lg, marginBottom: spacing.sm, padding: spacing.lg, borderRadius: radii.sm, borderWidth: 1 },
-  rowTitle: { fontSize: 16, fontWeight: '700' },
-  rowMeta: { fontSize: 13, marginTop: spacing.xs, textTransform: 'capitalize' },
+  rowTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.lg },
+  rowMeta: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, marginTop: spacing.xs, textTransform: 'capitalize' },
 });

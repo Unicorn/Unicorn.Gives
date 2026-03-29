@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useLocalSearchParams, Redirect } from 'expo-router';
 import { getLoreDoc, isLoreSlug } from '@/lib/lore';
 import { routes } from '@/lib/navigation';
-import { useTheme, spacing, radii, fonts } from '@/constants/theme';
+import { useTheme, spacing, radii, fonts, fontSize, letterSpacing } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { SeoHead } from '@/components/SeoHead';
 import { Container } from '@/components/layout/Container';
@@ -49,51 +49,52 @@ export default function HistoryDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: { padding: spacing.xl, paddingBottom: 48 },
+  content: { padding: spacing.xl, paddingBottom: spacing.xxxl + spacing.lg },
   breadcrumb: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontFamily: fonts.sansMedium,
+    fontSize: fontSize.sm,
     marginBottom: spacing.md,
-    letterSpacing: 0.5,
+    letterSpacing: letterSpacing.normal,
   },
   eyebrow: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 1,
+    fontFamily: fonts.sansBold,
+    fontSize: fontSize.xs,
+    letterSpacing: letterSpacing.wide,
     textTransform: 'uppercase',
     marginBottom: spacing.sm,
   },
   title: {
-    fontSize: 28,
-    fontWeight: '700',
-    marginBottom: spacing.lg,
     fontFamily: fonts.serif,
+    fontSize: fontSize['4xl'],
+    marginBottom: spacing.lg,
   },
   intro: {
-    fontSize: 16,
+    fontFamily: fonts.sans,
+    fontSize: fontSize.lg,
     lineHeight: 26,
     marginBottom: spacing.xxl,
   },
-  section: { marginBottom: 28 },
+  section: { marginBottom: spacing.xxl + spacing.xs },
   sectionHeading: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 10,
+    fontFamily: fonts.sansBold,
+    fontSize: fontSize.xl,
+    marginBottom: spacing.sm + 2,
   },
   sectionBody: {
-    fontSize: 15,
+    fontFamily: fonts.sans,
+    fontSize: fontSize.base,
     lineHeight: 24,
   },
   callout: {
-    marginTop: 14,
-    padding: 14,
+    marginTop: spacing.lg - 2,
+    padding: spacing.lg - 2,
     borderRadius: radii.sm,
     borderLeftWidth: 3,
   },
   calloutText: {
-    fontSize: 14,
+    fontFamily: fonts.serif,
+    fontSize: fontSize.md,
     lineHeight: 22,
     fontStyle: 'italic',
-    fontFamily: fonts.serif,
   },
 });

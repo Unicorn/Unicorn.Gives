@@ -42,6 +42,47 @@ export const spacing = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Font sizes (standalone scale for custom combinations)
+// ---------------------------------------------------------------------------
+
+export const fontSize = {
+  xs: 11,
+  sm: 12,
+  md: 14,
+  base: 15,
+  lg: 16,
+  xl: 18,
+  '2xl': 22,
+  '3xl': 24,
+  '4xl': 28,
+  '5xl': 30,
+} as const;
+
+// ---------------------------------------------------------------------------
+// Letter spacing
+// ---------------------------------------------------------------------------
+
+export const letterSpacing = {
+  tight: 0.25,
+  normal: 0.5,
+  wide: 1,
+  wider: 1.5,
+} as const;
+
+// ---------------------------------------------------------------------------
+// Line heights
+// ---------------------------------------------------------------------------
+
+export const lineHeight = {
+  tight: 16,
+  snug: 18,
+  normal: 21,
+  relaxed: 24,
+  loose: 30,
+  display: 36,
+} as const;
+
+// ---------------------------------------------------------------------------
 // Layout breakpoints (use with useWindowDimensions)
 // ---------------------------------------------------------------------------
 
@@ -361,6 +402,9 @@ export function useTheme() {
     colors,
     fonts,
     spacing,
+    fontSize,
+    letterSpacing,
+    lineHeight,
     radii,
     typography: buildTypography(colors),
     chips: buildChipTokens(colors),

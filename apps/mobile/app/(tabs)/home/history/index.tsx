@@ -6,7 +6,7 @@ import { Wrapper } from "@/components/layout/Wrapper";
 import { AnimatedPressable } from "@/components/ui/AnimatedPressable";
 import { HeroFeature } from "@/components/widgets";
 import { HISTORY_TAB_HERO } from "@/constants/homeDiscoverHistory";
-import { fonts, radii, shadows, spacing, useTheme } from "@/constants/theme";
+import { fonts, fontSize, letterSpacing, radii, shadows, spacing, useTheme, type ThemeColors } from "@/constants/theme";
 import { getLoreDoc, LORE_ORDER } from "@/lib/lore";
 import { routes } from "@/lib/navigation";
 
@@ -55,39 +55,39 @@ export default function HistoryTab() {
 	);
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>["colors"]) =>
+const createStyles = (colors: ThemeColors) =>
 	StyleSheet.create({
 		container: { flex: 1 },
-		content: { padding: spacing.lg, paddingBottom: 40 },
+		content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
 		stack: { width: "100%", gap: spacing.xxxl + spacing.sm },
 		intro: {
-			fontSize: 15,
+			fontFamily: fonts.sans,
+			fontSize: fontSize.base,
 			color: colors.neutralVariant,
 			lineHeight: 24,
 		},
 		card: {
 			backgroundColor: colors.surface,
 			borderRadius: radii.md,
-			padding: 18,
-			marginBottom: 14,
+			padding: spacing.xl - 2,
+			marginBottom: spacing.lg - 2,
 			...shadows.card,
 			borderLeftWidth: 4,
 			borderLeftColor: colors.primary,
 		},
 		eyebrow: {
-			fontSize: 11,
-			fontWeight: "700",
+			fontFamily: fonts.sansBold,
+			fontSize: fontSize.xs,
 			color: colors.neutralVariant,
-			letterSpacing: 1,
+			letterSpacing: letterSpacing.wide,
 			textTransform: "uppercase",
-			marginBottom: 6,
+			marginBottom: spacing.xs + 2,
 		},
 		title: {
-			fontSize: 22,
-			fontWeight: "700",
-			color: colors.neutral,
-			marginBottom: 10,
 			fontFamily: fonts.serif,
+			fontSize: fontSize["2xl"],
+			color: colors.neutral,
+			marginBottom: spacing.sm + 2,
 		},
-		blurb: { fontSize: 14, color: colors.neutralVariant, lineHeight: 21 },
+		blurb: { fontFamily: fonts.sans, fontSize: fontSize.md, color: colors.neutralVariant, lineHeight: 21 },
 	});

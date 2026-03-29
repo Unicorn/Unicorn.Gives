@@ -7,7 +7,7 @@ import { Wrapper } from "@/components/layout/Wrapper";
 import { AnimatedPressable } from "@/components/ui/AnimatedPressable";
 import { HeroFeature } from "@/components/widgets";
 import { NEWS_TAB_HERO } from "@/constants/eventsTabContent";
-import { radii, shadows, spacing, useTheme } from "@/constants/theme";
+import { fonts, fontSize, letterSpacing, radii, shadows, spacing, useTheme, type ThemeColors } from "@/constants/theme";
 import { routes } from "@/lib/navigation";
 import { supabase } from "@/lib/supabase";
 
@@ -105,10 +105,10 @@ export default function NewsTab() {
 	);
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>["colors"]) =>
+const createStyles = (colors: ThemeColors) =>
 	StyleSheet.create({
 		container: { flex: 1 },
-		content: { padding: spacing.lg, paddingBottom: 40 },
+		content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
 		stack: { width: "100%", gap: spacing.xxxl + spacing.sm },
 		listSection: { gap: spacing.sm },
 		card: {
@@ -118,27 +118,28 @@ const createStyles = (colors: ReturnType<typeof useTheme>["colors"]) =>
 			...shadows.card,
 		},
 		cardBody: {
-			padding: 14,
+			padding: spacing.lg - 2,
 		},
 		category: {
-			fontSize: 11,
-			fontWeight: "700",
+			fontFamily: fonts.sansBold,
+			fontSize: fontSize.xs,
 			color: colors.neutralVariant,
-			letterSpacing: 0.5,
-			marginBottom: 4,
+			letterSpacing: letterSpacing.normal,
+			marginBottom: spacing.xs,
 		},
 		title: {
-			fontSize: 16,
-			fontWeight: "700",
+			fontFamily: fonts.sansBold,
+			fontSize: fontSize.lg,
 			color: colors.neutral,
-			marginBottom: 4,
+			marginBottom: spacing.xs,
 		},
 		desc: {
-			fontSize: 14,
+			fontFamily: fonts.sans,
+			fontSize: fontSize.md,
 			color: colors.neutral,
 			lineHeight: 20,
-			marginBottom: 4,
+			marginBottom: spacing.xs,
 		},
-		date: { fontSize: 12, color: colors.neutralVariant },
-		empty: { textAlign: "center", color: colors.neutralVariant, marginTop: 40 },
+		date: { fontFamily: fonts.sans, fontSize: fontSize.sm, color: colors.neutralVariant },
+		empty: { fontFamily: fonts.sans, textAlign: "center", color: colors.neutralVariant, marginTop: spacing.xxxl + spacing.sm },
 	});

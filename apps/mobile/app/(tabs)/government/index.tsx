@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
-import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
@@ -70,17 +70,17 @@ export default function GovernmentIndex() {
   );
 }
 
-const createStyles = (colors: ReturnType<typeof useTheme>['colors']) => StyleSheet.create({
+const createStyles = (colors: ThemeColors) => StyleSheet.create({
   page: { flex: 1 },
   container: { flex: 1 },
-  content: { paddingBottom: 40 },
-  loading: { padding: 24, color: colors.neutralVariant, textAlign: 'center' },
-  header: { padding: 20 },
-  type: { fontSize: 11, fontWeight: '700', color: colors.neutralVariant, letterSpacing: 1, marginBottom: 6, textTransform: 'uppercase' as const },
-  name: { fontSize: 24, fontWeight: '800', color: colors.neutral, marginBottom: 6 },
-  description: { fontSize: 15, color: colors.neutralVariant, lineHeight: 22 },
-  sectionTitle: { fontSize: 13, fontWeight: '800', color: colors.neutralVariant, letterSpacing: 1, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 },
-  row: { marginHorizontal: 16, marginBottom: 8, padding: 16, borderRadius: radii.md, backgroundColor: colors.surface, borderLeftWidth: 3, borderLeftColor: colors.primary, ...shadows.card },
-  rowTitle: { fontSize: 16, fontWeight: '700', color: colors.neutral },
-  rowMeta: { fontSize: 13, color: colors.neutralVariant, marginTop: 4, textTransform: 'capitalize' },
+  content: { paddingBottom: spacing.xxxl + spacing.sm },
+  loading: { fontFamily: fonts.sans, padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' },
+  header: { padding: spacing.xl },
+  type: { fontFamily: fonts.sansBold, fontSize: fontSize.xs, color: colors.neutralVariant, letterSpacing: letterSpacing.wide, marginBottom: spacing.xs + 2, textTransform: 'uppercase' as const },
+  name: { fontFamily: fonts.sansBold, fontSize: fontSize['3xl'], color: colors.neutral, marginBottom: spacing.xs + 2 },
+  description: { fontFamily: fonts.sans, fontSize: fontSize.base, color: colors.neutralVariant, lineHeight: 22 },
+  sectionTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.sm + 1, color: colors.neutralVariant, letterSpacing: letterSpacing.wide, paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.sm },
+  row: { marginHorizontal: spacing.lg, marginBottom: spacing.sm, padding: spacing.lg, borderRadius: radii.md, backgroundColor: colors.surface, borderLeftWidth: 3, borderLeftColor: colors.primary, ...shadows.card },
+  rowTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.lg, color: colors.neutral },
+  rowMeta: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, color: colors.neutralVariant, marginTop: spacing.xs, textTransform: 'capitalize' },
 });

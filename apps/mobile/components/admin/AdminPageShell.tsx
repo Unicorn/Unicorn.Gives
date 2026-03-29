@@ -3,7 +3,7 @@ import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
-import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
 
 interface AdminPageShellProps {
@@ -139,12 +139,12 @@ const createStyles = (colors: ThemeColors) =>
     },
     title: {
       fontFamily: fonts.sansBold,
-      fontSize: 22,
+      fontSize: fontSize['2xl'],
       color: colors.neutral,
     },
     subtitle: {
       fontFamily: fonts.sans,
-      fontSize: 13,
+      fontSize: fontSize.sm + 1,
       color: colors.neutralVariant,
       marginTop: 2,
     },
@@ -166,7 +166,7 @@ const createStyles = (colors: ThemeColors) =>
     },
     btnPrimaryText: {
       fontFamily: fonts.sansMedium,
-      fontSize: 13,
+      fontSize: fontSize.sm + 1,
       color: colors.onPrimary,
     },
     btnSecondary: {
@@ -182,7 +182,7 @@ const createStyles = (colors: ThemeColors) =>
     },
     btnSecondaryText: {
       fontFamily: fonts.sansMedium,
-      fontSize: 13,
+      fontSize: fontSize.sm + 1,
       color: colors.neutral,
     },
     btnDanger: {
@@ -198,7 +198,7 @@ const createStyles = (colors: ThemeColors) =>
     },
     btnDangerText: {
       fontFamily: fonts.sansMedium,
-      fontSize: 13,
+      fontSize: fontSize.sm + 1,
       color: colors.error,
     },
   });
