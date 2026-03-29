@@ -1,6 +1,15 @@
 import type { ReactNode } from 'react';
-import { View, Text, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 import { useTheme, fonts, radii, spacing } from '@/constants/theme';
+import { resolveAbsoluteAssetUrl } from '@/lib/resolveAssetUrl';
 
 export interface EventRowBadge {
   label: string;
@@ -18,6 +27,8 @@ export interface EventRowLayoutProps {
   footer?: ReactNode;
   variant?: 'default' | 'compact';
   style?: StyleProp<ViewStyle>;
+  /** Square thumbnail; only rendered when `variant` is `compact` */
+  compactThumbnailUrl?: string | null;
 }
 
 export function EventRowLayout({
@@ -29,13 +40,46 @@ export function EventRowLayout({
   footer,
   variant = 'default',
   style,
+  compactThumbnailUrl,
 }: EventRowLayoutProps) {
   const { colors } = useTheme();
   const hasRail = Boolean(badge || dateBox);
   const v = variant === 'compact' ? compactStyles : defaultStyles;
+  const [thumbFailed, setThumbFailed] = useState(false);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: clear load error when the stored URL changes
+  useEffect(() => {
+    setThumbFailed(false);
+  }, [compactThumbnailUrl]);
+
+  const compactThumbUri = useMemo(() => {
+    if (variant !== 'compact' || thumbFailed || !compactThumbnailUrl?.trim()) {
+      return null;
+    }
+    return resolveAbsoluteAssetUrl(compactThumbnailUrl);
+  }, [variant, compactThumbnailUrl, thumbFailed]);
+
+  const useRowLayout = hasRail || Boolean(compactThumbUri);
 
   return (
-    <View style={[v.body, hasRail && v.bodySplit, style]}>
+    <View style={[v.body, useRowLayout && v.bodySplit, style]}>
+      {compactThumbUri ? (
+        <View
+          style={[
+            styles.compactThumbWrap,
+            { borderColor: colors.outline, backgroundColor: colors.surfaceContainer },
+          ]}
+        >
+          <Image
+            source={{ uri: compactThumbUri }}
+            style={styles.compactThumbImage}
+            resizeMode="cover"
+            accessibilityLabel={title}
+            accessibilityIgnoresInvertColors
+            onError={() => setThumbFailed(true)}
+          />
+        </View>
+      ) : null}
       {hasRail && (
         <View style={v.rail}>
           {badge && (
@@ -184,5 +228,16 @@ const styles = StyleSheet.create({
   copyWithRail: {
     flex: 1,
     minWidth: 0,
+  },
+  compactThumbWrap: {
+    width: 56,
+    height: 56,
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    overflow: 'hidden',
+  },
+  compactThumbImage: {
+    width: '100%',
+    height: '100%',
   },
 });

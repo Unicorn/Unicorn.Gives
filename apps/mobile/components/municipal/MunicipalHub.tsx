@@ -10,6 +10,7 @@ import {
   type MunicipalDocumentRow,
 } from '@/lib/municipal/municipalDocuments';
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
+import { SeoHead } from '@/components/SeoHead';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
@@ -25,6 +26,7 @@ interface UpcomingEvent {
   title: string;
   date: string;
   location?: string;
+  image_url?: string | null;
 }
 
 export function MunicipalHub() {
@@ -49,7 +51,7 @@ export function MunicipalHub() {
     // Fetch upcoming events for preview
     supabase
       .from('events')
-      .select('id, slug, title, date, location')
+      .select('id, slug, title, date, location, image_url')
       .eq('region_id', region.id)
       .eq('status', 'published')
       .gte('date', new Date().toISOString().split('T')[0])
@@ -66,6 +68,10 @@ export function MunicipalHub() {
   if (!region) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Municipality not found</Text></View>;
 
   /* ── Bento grid items ───────────────────────── */
+  const hubDescription =
+    region.description ??
+    `Government minutes, ordinances, events, and contacts for ${region.name}.`;
+
   const bentoItems: BentoItem[] = [
     {
       key: 'minutes',
@@ -137,6 +143,7 @@ export function MunicipalHub() {
 
   return (
     <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 48 }}>
+      <SeoHead title={region.name} description={hubDescription} />
       <Container>
       {/* ── 1. Hero Section ─────────────────────── */}
       <View style={[styles.hero, { backgroundColor: colors.heroBar }]}>
@@ -194,6 +201,7 @@ export function MunicipalHub() {
                 dateBox={eventDateBoxFromIso(evt.date)}
                 href={toHref(`${basePath}/events/${evt.slug}`)}
                 meta={eventLongDateLabel(evt.date)}
+                thumbnailUrl={evt.image_url}
               />
             ))}
           </EventCardList>

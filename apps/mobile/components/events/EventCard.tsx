@@ -41,6 +41,7 @@ export function EventCard({ event }: { event: EventItem }) {
       meta={[event.time, event.location].filter(Boolean).join(' · ') || undefined}
       dateBox={dateBox}
       footer={footer}
+      thumbnailUrl={event.image_url}
     />
   );
 }

@@ -1,17 +1,26 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { ContentCoverImage } from "@/components/ContentCoverImage";
 import { Container } from "@/components/layout/Container";
 import { DetailEditBar } from "@/components/layout/DetailEditBar";
 import { Wrapper } from "@/components/layout/Wrapper";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { radii, spacing, useTheme } from "@/constants/theme";
+import { SeoHead } from "@/components/SeoHead";
 import { routes } from "@/lib/navigation";
+import { getDefaultDescription } from "@/lib/seo";
 import { supabase } from "@/lib/supabase";
+import { fetchHomeEventsSlugParams } from "@/lib/static-build-queries";
+
+export async function generateStaticParams() {
+	return fetchHomeEventsSlugParams();
+}
 
 interface EventRow {
 	id: string;
 	title: string;
+	description: string | null;
 	date: string;
 	time: string | null;
 	location: string | null;
@@ -19,6 +28,7 @@ interface EventRow {
 	recurring: boolean | null;
 	recurrence_rule: string | null;
 	body: string | null;
+	image_url: string | null;
 }
 
 function normalizeSlug(
@@ -39,7 +49,7 @@ export default function EventDetail() {
 		void supabase
 			.from("events")
 			.select(
-				"id, title, date, time, location, cost, recurring, recurrence_rule, body",
+				"id, title, description, date, time, location, cost, recurring, recurrence_rule, body, image_url",
 			)
 			.eq("slug", slug)
 			.single()
@@ -51,6 +61,10 @@ export default function EventDetail() {
 	if (!item) {
 		return (
 			<View style={{ flex: 1, backgroundColor: colors.background }}>
+				<SeoHead
+					title={slug ? `Events · ${slug}` : "Events"}
+					description={getDefaultDescription()}
+				/>
 				<Text style={[styles.loading, { color: colors.neutralVariant }]}>
 					Loading…
 				</Text>
@@ -60,8 +74,19 @@ export default function EventDetail() {
 
 	return (
 		<Wrapper contentContainerStyle={styles.content}>
+			<SeoHead
+				title={item.title}
+				description={item.description ?? undefined}
+				imageUrl={item.image_url}
+			/>
 			<Container>
 				<DetailEditBar editHref={routes.admin.editEvent(item.id)} />
+				<ContentCoverImage
+					imageUrl={item.image_url}
+					variant="hero"
+					accessibilityLabel={item.title}
+					style={styles.heroImage}
+				/>
 				<Text style={[styles.title, { color: colors.neutral }]}>
 					{item.title}
 				</Text>
@@ -136,6 +161,9 @@ export default function EventDetail() {
 
 const styles = StyleSheet.create({
 	content: { padding: spacing.xl, paddingBottom: 60 },
+	heroImage: {
+		marginBottom: spacing.lg,
+	},
 	loading: { padding: spacing.xxl, textAlign: "center" },
 	title: { fontSize: 24, fontWeight: "800", marginBottom: spacing.lg },
 	metaBox: {

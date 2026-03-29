@@ -45,7 +45,7 @@ export function EventsList({ regionId }: Props) {
 		let query = supabase
 			.from("events")
 			.select(
-				"id, slug, title, description, date, time, location, category, recurring, tags",
+				"id, slug, title, description, date, time, location, category, recurring, tags, image_url",
 			)
 			.eq("status", "published");
 
@@ -133,6 +133,7 @@ export function EventsList({ regionId }: Props) {
 									href={routes.community.events.detail(e.slug)}
 									meta={[e.time, e.location].filter(Boolean).join(" · ")}
 									dateBox={eventDateBoxFromIso(e.date)}
+									thumbnailUrl={e.image_url}
 								/>
 							);
 						})}

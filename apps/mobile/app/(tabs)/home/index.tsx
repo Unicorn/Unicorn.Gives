@@ -12,6 +12,8 @@ import {
 	useWindowDimensions,
 	View,
 } from "react-native";
+import { SeoHead } from "@/components/SeoHead";
+import { ContentCoverImage } from "@/components/ContentCoverImage";
 import { EventRowLayout } from "@/components/events/EventRowLayout";
 import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
@@ -46,6 +48,7 @@ import { eventDateBoxFromIso } from "@/lib/events/eventDateFormat";
 import { governmentHref } from "@/lib/governmentHref";
 import { routes } from "@/lib/navigation";
 import { toHref } from "@/lib/navigation/paths";
+import { getDefaultDescription } from "@/lib/seo";
 import { supabase } from "@/lib/supabase";
 
 const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
@@ -126,6 +129,7 @@ interface NewsItem {
 	title: string;
 	date: string;
 	category: string;
+	image_url: string | null;
 }
 interface Event {
 	slug: string;
@@ -133,6 +137,7 @@ interface Event {
 	date: string;
 	time: string | null;
 	location: string | null;
+	image_url: string | null;
 }
 interface Partner {
 	slug: string;
@@ -159,7 +164,7 @@ export default function HomeScreen() {
 			});
 		supabase
 			.from("news")
-			.select("slug, title, date, category")
+			.select("slug, title, date, category, image_url")
 			.eq("status", "published")
 			.in("visibility", ["global", "both"])
 			.order("date", { ascending: false })
@@ -169,7 +174,7 @@ export default function HomeScreen() {
 			});
 		supabase
 			.from("events")
-			.select("slug, title, date, time, location")
+			.select("slug, title, date, time, location, image_url")
 			.eq("status", "published")
 			.in("visibility", ["global", "both"])
 			.gte("date", new Date().toISOString().split("T")[0])
@@ -244,6 +249,10 @@ export default function HomeScreen() {
 
 	return (
 		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
+			<SeoHead
+				title="Home"
+				description={`${DISCOVER_TAGLINE} ${getDefaultDescription()}`}
+			/>
 			<Container>
 				<View style={styles.hero}>
 					<View
@@ -522,6 +531,7 @@ export default function HomeScreen() {
 														[e.time, e.location].filter(Boolean).join(" · ") ||
 														undefined
 													}
+													compactThumbnailUrl={e.image_url}
 												/>
 											</Pressable>
 										</Link>
@@ -561,6 +571,12 @@ export default function HomeScreen() {
 										asChild
 									>
 										<AnimatedPressable variant="subtle">
+											<ContentCoverImage
+												imageUrl={news[0].image_url}
+												variant="card"
+												accessibilityLabel={news[0].title}
+												style={styles.bentoNewsThumb}
+											/>
 											<Text style={styles.bentoNewsHeadline} numberOfLines={3}>
 												{news[0].title}
 											</Text>
@@ -1066,6 +1082,12 @@ const createStyles = (colors: ReturnType<typeof useTheme>["colors"]) =>
 			padding: 18,
 			backgroundColor: colors.surface,
 			...shadows.cardElevated,
+		},
+		bentoNewsThumb: {
+			height: 72,
+			marginBottom: 8,
+			borderRadius: radii.sm,
+			overflow: "hidden",
 		},
 		bentoNewsHeadline: {
 			fontSize: 16,

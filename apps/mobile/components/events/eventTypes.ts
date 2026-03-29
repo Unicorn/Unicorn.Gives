@@ -8,4 +8,5 @@ export interface EventItem {
   category: string;
   recurring: boolean;
   tags: string[] | null;
+  image_url?: string | null;
 }

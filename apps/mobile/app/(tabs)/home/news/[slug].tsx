@@ -8,13 +8,21 @@ import {
 	Text,
 	View,
 } from "react-native";
+import { ContentCoverImage } from "@/components/ContentCoverImage";
 import { Container } from "@/components/layout/Container";
 import { DetailEditBar } from "@/components/layout/DetailEditBar";
 import { Wrapper } from "@/components/layout/Wrapper";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { radii, spacing, useTheme } from "@/constants/theme";
+import { SeoHead } from "@/components/SeoHead";
 import { routes } from "@/lib/navigation";
+import { getDefaultDescription } from "@/lib/seo";
 import { supabase } from "@/lib/supabase";
+import { fetchHomeNewsSlugParams } from "@/lib/static-build-queries";
+
+export async function generateStaticParams() {
+	return fetchHomeNewsSlugParams();
+}
 
 interface NewsArticle {
 	id: string;
@@ -26,6 +34,7 @@ interface NewsArticle {
 	author_name: string | null;
 	source: string | null;
 	source_url: string | null;
+	image_url: string | null;
 }
 
 function normalizeSlug(
@@ -56,7 +65,7 @@ export default function NewsArticleDetail() {
 		void supabase
 			.from("news")
 			.select(
-				"id, title, date, category, description, body, author_name, source, source_url",
+				"id, title, date, category, description, body, author_name, source, source_url, image_url",
 			)
 			.eq("slug", slug)
 			.eq("status", "published")
@@ -82,6 +91,11 @@ export default function NewsArticleDetail() {
 	if (!slug || (phase === "done" && !item)) {
 		return (
 			<View style={[styles.centered, { backgroundColor: colors.background }]}>
+				<SeoHead
+					title="Article not found"
+					description={getDefaultDescription()}
+					noIndex
+				/>
 				<Text style={[styles.message, { color: colors.neutralVariant }]}>
 					{!slug
 						? "This article link is invalid."
@@ -94,6 +108,10 @@ export default function NewsArticleDetail() {
 	if (phase === "loading" || !item) {
 		return (
 			<View style={[styles.centered, { backgroundColor: colors.background }]}>
+				<SeoHead
+					title={slug ? `News · ${slug}` : "News"}
+					description={getDefaultDescription()}
+				/>
 				<ActivityIndicator color={colors.primary} />
 				<Text style={[styles.loadingLabel, { color: colors.neutralVariant }]}>
 					Loading…
@@ -110,8 +128,19 @@ export default function NewsArticleDetail() {
 
 	return (
 		<Wrapper contentContainerStyle={styles.content}>
+			<SeoHead
+				title={item.title}
+				description={item.description ?? undefined}
+				imageUrl={item.image_url}
+			/>
 			<Container>
 				<DetailEditBar editHref={routes.admin.editNews(item.id)} />
+				<ContentCoverImage
+					imageUrl={item.image_url}
+					variant="hero"
+					accessibilityLabel={item.title}
+					style={styles.heroImage}
+				/>
 				<Text style={[styles.category, { color: colors.neutralVariant }]}>
 					{categoryLabel}
 				</Text>
@@ -174,6 +203,9 @@ export default function NewsArticleDetail() {
 const createStyles = (typography: ReturnType<typeof useTheme>["typography"]) =>
 	StyleSheet.create({
 		content: { padding: spacing.xl, paddingBottom: 60 },
+		heroImage: {
+			marginBottom: spacing.lg,
+		},
 		centered: {
 			flex: 1,
 			justifyContent: "center",

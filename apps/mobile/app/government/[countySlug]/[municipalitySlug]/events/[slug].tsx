@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { ContentCoverImage } from '@/components/ContentCoverImage';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useTheme, spacing, radii } from '@/constants/theme';
+import { fetchMunicipalEventsStaticParams } from '@/lib/static-build-queries';
+
+export async function generateStaticParams() {
+  return fetchMunicipalEventsStaticParams();
+}
 
 interface EventDetail {
   id: string;
@@ -21,6 +27,7 @@ interface EventDetail {
   recurrence_rule: string | null;
   cost: string | null;
   tags: string[] | null;
+  image_url: string | null;
 }
 
 export default function MunicipalEventDetail() {
@@ -43,6 +50,12 @@ export default function MunicipalEventDetail() {
     <Wrapper style={{ flex: 1 }} contentContainerStyle={styles.content}>
       <Container>
       <View style={{ padding: spacing.lg }}>
+      <ContentCoverImage
+        imageUrl={event.image_url}
+        variant="hero"
+        accessibilityLabel={event.title}
+        style={styles.heroImage}
+      />
       <Text style={[styles.title, { color: colors.neutral }]}>{event.title}</Text>
       <Text style={[styles.date, { color: colors.neutral }]}>
         {d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
@@ -73,6 +86,7 @@ const styles = StyleSheet.create({
   loadingWrap: { flex: 1 },
   content: { paddingBottom: 40, flexGrow: 1 },
   loading: { padding: spacing.xxl, textAlign: 'center' },
+  heroImage: { marginBottom: spacing.lg },
   title: { fontSize: 22, fontWeight: '800', marginBottom: spacing.md },
   date: { fontSize: 15, fontWeight: '600', marginBottom: spacing.xs },
   meta: { fontSize: 14, marginBottom: 2 },

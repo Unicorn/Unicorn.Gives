@@ -1,6 +1,7 @@
 import { Link } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { ContentCoverImage } from "@/components/ContentCoverImage";
 import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
 import { AnimatedPressable } from "@/components/ui/AnimatedPressable";
@@ -17,6 +18,7 @@ interface NewsItem {
 	date: string;
 	category: string;
 	description: string | null;
+	image_url: string | null;
 }
 
 export default function NewsTab() {
@@ -26,7 +28,7 @@ export default function NewsTab() {
 	useEffect(() => {
 		supabase
 			.from("news")
-			.select("id, slug, title, date, category, description")
+			.select("id, slug, title, date, category, description, image_url")
 			.eq("status", "published")
 			.in("visibility", ["global", "both"])
 			.order("date", { ascending: false })
@@ -62,25 +64,32 @@ export default function NewsTab() {
 								asChild
 							>
 								<AnimatedPressable variant="card" style={styles.card}>
-									<Text style={styles.category}>
-										{n.category.replace(/-/g, " ").toUpperCase()}
-									</Text>
-									<Text style={styles.title}>{n.title}</Text>
-									{n.description && (
-										<Text style={styles.desc} numberOfLines={2}>
-											{n.description}
+									<ContentCoverImage
+										imageUrl={n.image_url}
+										variant="card"
+										accessibilityLabel={n.title}
+									/>
+									<View style={styles.cardBody}>
+										<Text style={styles.category}>
+											{n.category.replace(/-/g, " ").toUpperCase()}
 										</Text>
-									)}
-									<Text style={styles.date}>
-										{new Date(`${n.date}T00:00:00`).toLocaleDateString(
-											"en-US",
-											{
-												month: "short",
-												day: "numeric",
-												year: "numeric",
-											},
+										<Text style={styles.title}>{n.title}</Text>
+										{n.description && (
+											<Text style={styles.desc} numberOfLines={2}>
+												{n.description}
+											</Text>
 										)}
-									</Text>
+										<Text style={styles.date}>
+											{new Date(`${n.date}T00:00:00`).toLocaleDateString(
+												"en-US",
+												{
+													month: "short",
+													day: "numeric",
+													year: "numeric",
+												},
+											)}
+										</Text>
+									</View>
 								</AnimatedPressable>
 							</Link>
 						))}
@@ -104,9 +113,12 @@ const createStyles = (colors: ReturnType<typeof useTheme>["colors"]) =>
 		listSection: { gap: spacing.sm },
 		card: {
 			borderRadius: radii.sm,
-			padding: 14,
+			overflow: "hidden",
 			backgroundColor: colors.surface,
 			...shadows.card,
+		},
+		cardBody: {
+			padding: 14,
 		},
 		category: {
 			fontSize: 11,
