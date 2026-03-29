@@ -556,7 +556,10 @@ export default function HomeScreen() {
 									{HOME_BENTO_NEWS_TITLE}
 								</Text>
 								{news[0] ? (
-									<Link href={routes.community.news.index()} asChild>
+									<Link
+										href={routes.community.news.detail(news[0].slug)}
+										asChild
+									>
 										<AnimatedPressable variant="subtle">
 											<Text style={styles.bentoNewsHeadline} numberOfLines={3}>
 												{news[0].title}

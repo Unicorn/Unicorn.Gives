@@ -43,6 +43,7 @@ interface TextFieldProps {
   hint?: string;
   multiline?: boolean;
   numberOfLines?: number;
+  onBlur?: () => void;
 }
 
 export function TextField({
@@ -55,6 +56,7 @@ export function TextField({
   hint,
   multiline,
   numberOfLines = 4,
+  onBlur,
 }: TextFieldProps) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
@@ -69,6 +71,7 @@ export function TextField({
         ]}
         value={value}
         onChangeText={onChangeText}
+        onBlur={onBlur}
         placeholder={placeholder}
         placeholderTextColor={colors.outlineVariant}
         multiline={multiline}

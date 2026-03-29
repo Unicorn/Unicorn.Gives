@@ -1,8 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
-import { View, StyleSheet, Platform, Pressable, Text } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Platform,
+  Pressable,
+  Text,
+  Image,
+  Linking,
+  ActivityIndicator,
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { supabase } from '@/lib/supabase';
+import { resolveAbsoluteAssetUrl } from '@/lib/resolveAssetUrl';
 import { useSlugGenerator } from '@/hooks/useSlugGenerator';
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import {
@@ -86,13 +96,27 @@ interface EventFormProps {
   errors?: Record<string, string>;
   /** When editing an existing row, passed for AI audit context */
   eventId?: string | null;
+  /**
+   * When set (edit event only), cover URL changes are saved to the row:
+   * after AI generate, Remove cover, and when the Image URL field loses focus.
+   */
+  onPersistImageUrl?: (url: string | null) => Promise<boolean>;
 }
 
-export function EventForm({ data, onChange, errors = {}, eventId = null }: EventFormProps) {
+export function EventForm({
+  data,
+  onChange,
+  errors = {},
+  eventId = null,
+  onPersistImageUrl,
+}: EventFormProps) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const [bodyAiOpen, setBodyAiOpen] = useState(false);
   const [coverAiOpen, setCoverAiOpen] = useState(false);
+  const [coverPersisting, setCoverPersisting] = useState(false);
+  const [thumbFailed, setThumbFailed] = useState(false);
+  const [imagePersistError, setImagePersistError] = useState<string | null>(null);
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
   // Sync slug back to parent
@@ -127,6 +151,56 @@ export function EventForm({ data, onChange, errors = {}, eventId = null }: Event
 
   function set<K extends keyof EventFormData>(key: K, value: EventFormData[K]) {
     onChange({ ...data, [key]: value });
+  }
+
+  const canAutoPersistCover = Boolean(onPersistImageUrl && eventId);
+  const absolutePreview = useMemo(
+    () => resolveAbsoluteAssetUrl(data.image_url),
+    [data.image_url],
+  );
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only reset thumbnail error when cover URL changes
+  useEffect(() => {
+    setThumbFailed(false);
+  }, [data.image_url]);
+
+  async function persistCoverUrl(url: string | null) {
+    if (!canAutoPersistCover || !onPersistImageUrl) return;
+    setCoverPersisting(true);
+    setImagePersistError(null);
+    try {
+      const ok = await onPersistImageUrl(url);
+      if (!ok) setImagePersistError('Could not save cover to the server.');
+    } finally {
+      setCoverPersisting(false);
+    }
+  }
+
+  async function handleImageUrlBlur() {
+    if (!canAutoPersistCover) return;
+    await persistCoverUrl(data.image_url.trim() || null);
+  }
+
+  async function handleRemoveCover() {
+    setThumbFailed(false);
+    onChange({ ...data, image_url: '' });
+    if (canAutoPersistCover) {
+      await persistCoverUrl(null);
+    }
+  }
+
+  async function handleApplyCoverFromAi(url: string) {
+    setThumbFailed(false);
+    onChange({ ...data, image_url: url });
+    if (canAutoPersistCover) {
+      await persistCoverUrl(url);
+    }
+  }
+
+  function openPreview() {
+    if (absolutePreview) {
+      void Linking.openURL(absolutePreview);
+    }
   }
 
   return (
@@ -275,22 +349,57 @@ export function EventForm({ data, onChange, errors = {}, eventId = null }: Event
       </FormRow>
 
       {/* Image */}
-      <TextField
-        label="Image URL"
-        value={data.image_url}
-        onChangeText={(v) => set('image_url', v)}
-        placeholder="https://... (cover image)"
-      />
-      {Platform.OS === 'web' && (
-        <Pressable
-          style={styles.aiTextLink}
-          onPress={() => setCoverAiOpen(true)}
-          accessibilityRole="button"
-        >
-          <MaterialIcons name="auto-awesome" size={16} color={colors.primary} />
-          <Text style={styles.aiTextLinkLabel}>Generate cover with AI</Text>
-        </Pressable>
-      )}
+      <View style={styles.imageRow}>
+        <View style={styles.imageFieldCol}>
+          <TextField
+            label="Image URL"
+            value={data.image_url}
+            onChangeText={(v) => set('image_url', v)}
+            onBlur={() => void handleImageUrlBlur()}
+            placeholder="https://... (cover image)"
+          />
+          <View style={styles.imageActionsRow}>
+            {Platform.OS === 'web' && (
+              <Pressable
+                style={styles.aiTextLink}
+                onPress={() => setCoverAiOpen(true)}
+                accessibilityRole="button"
+              >
+                <MaterialIcons name="auto-awesome" size={16} color={colors.primary} />
+                <Text style={styles.aiTextLinkLabel}>Generate cover with AI</Text>
+              </Pressable>
+            )}
+            {coverPersisting && (
+              <ActivityIndicator size="small" color={colors.primary} style={styles.coverSpinner} />
+            )}
+          </View>
+          {imagePersistError && <Text style={styles.imagePersistError}>{imagePersistError}</Text>}
+        </View>
+
+        {absolutePreview ? (
+          <View style={styles.imagePreviewCol}>
+            {!thumbFailed ? (
+              <Image
+                source={{ uri: absolutePreview }}
+                style={styles.coverThumb}
+                resizeMode="cover"
+                accessibilityLabel="Cover preview"
+                onError={() => setThumbFailed(true)}
+              />
+            ) : (
+              <View style={[styles.coverThumb, styles.coverThumbFallback]}>
+                <MaterialIcons name="broken-image" size={28} color={colors.outlineVariant} />
+              </View>
+            )}
+            <Pressable onPress={openPreview} accessibilityRole="link">
+              <Text style={styles.previewLink}>Preview</Text>
+            </Pressable>
+            <Pressable onPress={() => void handleRemoveCover()} accessibilityRole="button">
+              <Text style={styles.removeCoverLink}>Remove cover</Text>
+            </Pressable>
+          </View>
+        ) : null}
+      </View>
 
       {/* Tags */}
       <TagsField
@@ -332,7 +441,7 @@ export function EventForm({ data, onChange, errors = {}, eventId = null }: Event
         onClose={() => setCoverAiOpen(false)}
         formData={data}
         eventId={eventId}
-        onApplyImageUrl={(url) => set('image_url', url)}
+        onApplyImageUrl={(url) => void handleApplyCoverFromAi(url)}
       />
     </View>
   );
@@ -359,12 +468,65 @@ const createStyles = (colors: ThemeColors) =>
       fontSize: 12,
       color: colors.primary,
     },
+    imageRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.lg,
+      alignItems: 'flex-start',
+      marginBottom: spacing.md,
+    },
+    imageFieldCol: {
+      flex: 1,
+      minWidth: 0,
+    },
+    imageActionsRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.md,
+      marginTop: -spacing.sm,
+      flexWrap: 'wrap',
+    },
+    coverSpinner: {
+      marginBottom: spacing.sm,
+    },
+    imagePersistError: {
+      fontFamily: fonts.sans,
+      fontSize: 12,
+      color: colors.error,
+      marginTop: spacing.xs,
+    },
+    imagePreviewCol: {
+      width: 96,
+      paddingTop: 22,
+      gap: spacing.sm,
+    },
+    coverThumb: {
+      width: 88,
+      height: 56,
+      borderRadius: radii.sm,
+      borderWidth: 1,
+      borderColor: colors.outline,
+      backgroundColor: colors.surfaceContainer,
+    },
+    coverThumbFallback: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    previewLink: {
+      fontFamily: fonts.sansMedium,
+      fontSize: 13,
+      color: colors.primary,
+    },
+    removeCoverLink: {
+      fontFamily: fonts.sansMedium,
+      fontSize: 12,
+      color: colors.neutralVariant,
+    },
     aiTextLink: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 8,
-      marginTop: -spacing.sm,
-      marginBottom: spacing.md,
+      marginBottom: spacing.sm,
       alignSelf: 'flex-start',
     },
     aiTextLinkLabel: {

@@ -24,7 +24,6 @@ export interface BreadcrumbItem {
 
 interface AppHeaderProps {
   showBack?: boolean;
-  breadcrumb?: BreadcrumbItem[];
   /** @deprecated Title is no longer displayed — logo replaces it. Kept for compat. */
   title?: string;
 }
@@ -40,7 +39,7 @@ function isUserScopedPath(pathname: string) {
   return pathname === '/user' || pathname.startsWith('/user/');
 }
 
-export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
+export function AppHeader({ showBack = false }: AppHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const effectiveShowBack = showBack || isUserScopedPath(pathname);
@@ -103,9 +102,9 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
           </Link>
         )}
 
-        {/* Center: Desktop nav links OR breadcrumb OR empty */}
+        {/* Center: Desktop main nav (tabs cover primary nav on narrow screens) */}
         <View style={styles.centerZone}>
-          {isDesktop && !breadcrumb && (
+          {isDesktop && (
             <View style={styles.desktopNav}>
               {NAV_LINKS.map((link) => {
                 const active =
@@ -125,36 +124,6 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
                       </Text>
                     </Pressable>
                   </Link>
-                );
-              })}
-            </View>
-          )}
-
-          {breadcrumb && breadcrumb.length > 0 && (
-            <View style={styles.breadcrumbRow}>
-              {breadcrumb.map((crumb, i) => {
-                const isLast = i === breadcrumb.length - 1;
-                return (
-                  <View key={crumb.label} style={styles.breadcrumbItem}>
-                    {i > 0 && (
-                      <Text style={[styles.breadcrumbSep, { color: `${colors.neutral}66` }]}>
-                        {'>'}
-                      </Text>
-                    )}
-                    {!isLast && crumb.href ? (
-                      <Link href={toHref(crumb.href)} asChild>
-                        <Pressable>
-                          <Text style={[styles.breadcrumbLink, { color: colors.primary }]}>
-                            {crumb.label}
-                          </Text>
-                        </Pressable>
-                      </Link>
-                    ) : (
-                      <Text style={[styles.breadcrumbCurrent, { color: colors.neutral }]}>
-                        {crumb.label}
-                      </Text>
-                    )}
-                  </View>
                 );
               })}
             </View>
@@ -240,6 +209,77 @@ export function AppHeader({ showBack = false, breadcrumb }: AppHeaderProps) {
   );
 }
 
+/** Renders below primary header + sub-tabs; keeps top header on main nav only. */
+export function AppBreadcrumbBar({ items }: { items: BreadcrumbItem[] }) {
+  const { colors } = useTheme();
+
+  if (!items.length) return null;
+
+  return (
+    <View style={[breadcrumbBarStyles.wrap, { backgroundColor: colors.surface, borderBottomColor: colors.outlineVariant }]}>
+      <View style={breadcrumbBarStyles.inner}>
+        <View style={breadcrumbBarStyles.row}>
+          {items.map((crumb, i) => {
+            const isLast = i === items.length - 1;
+            const itemKey = crumb.href || `trail:${crumb.label}`;
+            return (
+              <View key={itemKey} style={breadcrumbBarStyles.item}>
+                {i > 0 && (
+                  <Text style={[breadcrumbBarStyles.sep, { color: `${colors.neutral}66` }]}>{'>'}</Text>
+                )}
+                {!isLast && crumb.href ? (
+                  <Link href={toHref(crumb.href)} asChild>
+                    <Pressable>
+                      <Text style={[breadcrumbBarStyles.link, { color: colors.primary }]}>{crumb.label}</Text>
+                    </Pressable>
+                  </Link>
+                ) : (
+                  <Text style={[breadcrumbBarStyles.current, { color: colors.neutral }]}>{crumb.label}</Text>
+                )}
+              </View>
+            );
+          })}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+const breadcrumbBarStyles = StyleSheet.create({
+  wrap: {
+    borderBottomWidth: 1,
+  },
+  inner: {
+    maxWidth: 1100,
+    width: '100%',
+    alignSelf: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  sep: {
+    fontSize: 12,
+  },
+  link: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  current: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+});
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: Platform.OS === 'web' ? 0 : 44,
@@ -293,29 +333,6 @@ const styles = StyleSheet.create({
   navLink: {
     fontSize: 16,
     fontFamily: fonts.serif,
-  },
-
-  /* Breadcrumb */
-  breadcrumbRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  breadcrumbItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  breadcrumbSep: {
-    fontSize: 12,
-  },
-  breadcrumbLink: {
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  breadcrumbCurrent: {
-    fontSize: 13,
-    fontWeight: '700',
   },
 
   /* Right zone */

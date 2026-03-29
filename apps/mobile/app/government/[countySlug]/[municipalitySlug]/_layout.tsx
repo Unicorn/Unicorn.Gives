@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { Stack, useLocalSearchParams, usePathname } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
-import { AppHeader } from '@/components/layout/AppHeader';
+import { AppHeader, AppBreadcrumbBar } from '@/components/layout/AppHeader';
 import { Container } from '@/components/layout/Container';
 import { SubTabs, type SubTabItem } from '@/components/layout/SubTabs';
 import { routes, isMunicipalDetailPath } from '@/lib/navigation';
@@ -54,16 +54,16 @@ export default function MunicipalityLayout() {
 
   const isDetailPage = isMunicipalDetailPath(pathname);
 
+  const breadcrumbItems = [
+    { label: countyName, href: `/government/${countySlug}` },
+    { label: regionName, href: '' },
+  ];
+
   return (
     <View style={{ flex: 1 }}>
-      <AppHeader
-        showBack={isDetailPage}
-        breadcrumb={[
-          { label: countyName, href: `/government/${countySlug}` },
-          { label: regionName, href: '' },
-        ]}
-      />
+      <AppHeader showBack={isDetailPage} />
       {!isDetailPage && <SubTabs tabs={tabs} />}
+      <AppBreadcrumbBar items={breadcrumbItems} />
       <Container style={{ flex: 1 }}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />

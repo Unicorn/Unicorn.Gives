@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, ActivityIndicator, Platform, StyleSheet } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
@@ -8,7 +8,7 @@ import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
 import { AdminStatusBadge } from '@/components/admin/AdminStatusBadge';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
 import { EventForm, EMPTY_EVENT, type EventFormData } from '@/components/admin/EventForm';
-import { useTheme, fonts, spacing, type ThemeColors } from '@/constants/theme';
+import { useTheme, fonts, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
 
 export default function EditEventPage() {
@@ -128,6 +128,14 @@ export default function EditEventPage() {
     setShowDelete(false);
   }
 
+  const persistEventImageUrl = useCallback(
+    async (url: string | null) => {
+      if (!id) return false;
+      return update(id, { image_url: url || null });
+    },
+    [id, update],
+  );
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -186,7 +194,13 @@ export default function EditEventPage() {
         </>
       }
     >
-      <EventForm data={form} onChange={setForm} errors={errors} eventId={id} />
+      <EventForm
+        data={form}
+        onChange={setForm}
+        errors={errors}
+        eventId={id}
+        onPersistImageUrl={persistEventImageUrl}
+      />
 
       <AdminConfirmDialog
         visible={showDelete}

@@ -9,12 +9,15 @@ import {
 	View,
 } from "react-native";
 import { Container } from "@/components/layout/Container";
+import { DetailEditBar } from "@/components/layout/DetailEditBar";
 import { Wrapper } from "@/components/layout/Wrapper";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { radii, spacing, useTheme } from "@/constants/theme";
+import { routes } from "@/lib/navigation";
 import { supabase } from "@/lib/supabase";
 
 interface NewsArticle {
+	id: string;
 	title: string;
 	date: string;
 	category: string;
@@ -53,7 +56,7 @@ export default function NewsArticleDetail() {
 		void supabase
 			.from("news")
 			.select(
-				"title, date, category, description, body, author_name, source, source_url",
+				"id, title, date, category, description, body, author_name, source, source_url",
 			)
 			.eq("slug", slug)
 			.eq("status", "published")
@@ -108,6 +111,7 @@ export default function NewsArticleDetail() {
 	return (
 		<Wrapper contentContainerStyle={styles.content}>
 			<Container>
+				<DetailEditBar editHref={routes.admin.editNews(item.id)} />
 				<Text style={[styles.category, { color: colors.neutralVariant }]}>
 					{categoryLabel}
 				</Text>
