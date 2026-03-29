@@ -69,6 +69,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: 'Regions', path: '/admin/regions', icon: 'place' },
       { label: 'Partners', path: '/admin/partners', icon: 'store' },
       { label: 'Users', path: '/admin/users', icon: 'people' },
+      { label: 'Media Library', path: '/admin/media', icon: 'perm-media' },
       { label: 'Site Settings', path: '/admin/settings', icon: 'settings' },
       { label: 'Audit Log', path: '/admin/audit-log', icon: 'history' },
     ],

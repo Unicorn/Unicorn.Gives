@@ -13,6 +13,7 @@ import {
 	TextField,
 } from "./AdminForm";
 import { AdminRichEditor } from "./AdminRichEditor";
+import { AdminImageUpload } from "./AdminImageUpload";
 
 const NEWS_CATEGORIES = [
 	{ label: "Ordinance change", value: "ordinance-change" },
@@ -225,11 +226,12 @@ export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 				placeholder="https://…"
 			/>
 
-			<TextField
-				label="Image URL"
+			<AdminImageUpload
+				label="Cover Image"
 				value={data.image_url}
-				onChangeText={(v) => set("image_url", v)}
-				placeholder="/images/… or full URL"
+				onChange={(v) => set("image_url", v)}
+				folder="news"
+				hint="Upload or paste a URL for the article cover image"
 			/>
 
 			<FormRow>
