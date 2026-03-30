@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { useSlugGenerator } from '@/hooks/useSlugGenerator';
+import { useCategories } from '@/hooks/useCategories';
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import {
   TextField,
@@ -15,16 +16,6 @@ import {
 import { AdminRichEditor } from './AdminRichEditor';
 
 /* ── Constants ── */
-
-const GUIDE_CATEGORIES = [
-  { label: 'Property & Building', value: 'property' },
-  { label: 'Taxes & Assessment', value: 'taxes' },
-  { label: 'Public Safety', value: 'safety' },
-  { label: 'Nature & Conservation', value: 'nature' },
-  { label: 'Government', value: 'government' },
-  { label: 'Community Services', value: 'services' },
-  { label: 'Records', value: 'records' },
-];
 
 const JURISDICTION_OPTIONS = [
   { label: 'Township', value: 'township' },
@@ -89,6 +80,7 @@ interface GuideFormProps {
 export function GuideForm({ data, onChange, errors = {} }: GuideFormProps) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const { categories: guideCategories } = useCategories('guides');
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
   useEffect(() => {
@@ -169,7 +161,7 @@ export function GuideForm({ data, onChange, errors = {} }: GuideFormProps) {
             label="Category"
             value={data.category}
             onValueChange={(v) => set('category', v)}
-            options={GUIDE_CATEGORIES}
+            options={guideCategories}
             required
             error={errors.category}
           />

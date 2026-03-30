@@ -14,6 +14,7 @@ import {
 } from "@/constants/theme";
 import { useAdminMutation } from "@/hooks/useAdminMutation";
 import { useAdminQuery } from "@/hooks/useAdminQuery";
+import { useCategories } from "@/hooks/useCategories";
 import { routes } from "@/lib/navigation";
 
 interface NewsRow {
@@ -26,17 +27,6 @@ interface NewsRow {
 	visibility: string;
 	created_at: string;
 }
-
-const NEWS_CATEGORIES = [
-	{ label: "All Categories", value: "" },
-	{ label: "Ordinance change", value: "ordinance-change" },
-	{ label: "Government action", value: "government-action" },
-	{ label: "Public safety", value: "public-safety" },
-	{ label: "Public notice", value: "public-notice" },
-	{ label: "Community", value: "community" },
-	{ label: "Infrastructure", value: "infrastructure" },
-	{ label: "Election", value: "election" },
-];
 
 const STATUS_OPTIONS = [
 	{ label: "All Status", value: "" },
@@ -55,6 +45,8 @@ export default function NewsListPage() {
 	const [categoryFilter, setCategoryFilter] = useState("");
 	const [statusFilter, setStatusFilter] = useState("");
 	const [deleteTarget, setDeleteTarget] = useState<NewsRow | null>(null);
+	const { categories: newsCategories } = useCategories('news');
+	const categoryFilterOptions = [{ label: 'All Categories', value: '' }, ...newsCategories];
 
 	const filters: Record<string, string> = {};
 	if (categoryFilter) filters.category = categoryFilter;
@@ -155,7 +147,7 @@ export default function NewsListPage() {
 						}}
 						style={selectStyle(colors)}
 					>
-						{NEWS_CATEGORIES.map((c) => (
+						{categoryFilterOptions.map((c) => (
 							<option key={c.value} value={c.value}>
 								{c.label}
 							</option>

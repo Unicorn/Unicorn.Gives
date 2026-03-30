@@ -64,6 +64,13 @@ const NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
+    label: 'Taxonomy',
+    items: [
+      { label: 'Categories', path: '/admin/categories', icon: 'category' },
+      { label: 'Tags', path: '/admin/tags', icon: 'label' },
+    ],
+  },
+  {
     label: 'System',
     items: [
       { label: 'Regions', path: '/admin/regions', icon: 'place' },

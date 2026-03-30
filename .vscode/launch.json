@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "pnpm -C apps/mobile exec expo start --web --port 8081",
+      "command": "pnpm -C apps/mobile exec expo start --web --port 3000",
       "name": "expo-web",
       "request": "launch",
       "type": "node-terminal"

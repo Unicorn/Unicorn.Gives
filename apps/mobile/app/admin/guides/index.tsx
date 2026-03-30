@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { useAdminQuery } from '@/hooks/useAdminQuery';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
+import { useCategories } from '@/hooks/useCategories';
 import { AdminDataTable, type Column } from '@/components/admin/AdminDataTable';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
@@ -21,17 +22,6 @@ interface GuideRow {
   status: string;
   created_at: string;
 }
-
-const GUIDE_CATEGORIES = [
-  { label: 'All Categories', value: '' },
-  { label: 'Property & Building', value: 'property' },
-  { label: 'Taxes & Assessment', value: 'taxes' },
-  { label: 'Public Safety', value: 'safety' },
-  { label: 'Nature & Conservation', value: 'nature' },
-  { label: 'Government', value: 'government' },
-  { label: 'Community Services', value: 'services' },
-  { label: 'Records', value: 'records' },
-];
 
 const STATUS_OPTIONS = [
   { label: 'All Status', value: '' },
@@ -50,6 +40,8 @@ export default function GuidesListPage() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<GuideRow | null>(null);
+  const { categories: guideCategories } = useCategories('guides');
+  const categoryFilterOptions = [{ label: 'All Categories', value: '' }, ...guideCategories];
 
   const filters: Record<string, string> = {};
   if (categoryFilter) filters.category = categoryFilter;
@@ -134,7 +126,7 @@ export default function GuidesListPage() {
         <View style={styles.selectWrap}>
           <select value={categoryFilter} onChange={(e: any) => { setCategoryFilter(e.target.value); setPage(1); }}
             style={selectStyle(colors)}>
-            {GUIDE_CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+            {categoryFilterOptions.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
           </select>
         </View>
         <View style={styles.selectWrap}>

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Switch } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -190,17 +190,32 @@ interface TagsFieldProps {
   onChange: (tags: string[]) => void;
   placeholder?: string;
   hint?: string;
+  /** Pre-loaded tag suggestions: { label, value } pairs from useTags() */
+  suggestions?: { label: string; value: string }[];
 }
 
-export function TagsField({ label, value, onChange, placeholder = 'Add tag...', hint }: TagsFieldProps) {
+export function TagsField({ label, value, onChange, placeholder = 'Add tag...', hint, suggestions = [] }: TagsFieldProps) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const [inputText, setInputText] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const filtered = useMemo(() => {
+    if (!inputText.trim() || suggestions.length === 0) return [];
+    const q = inputText.trim().toLowerCase();
+    return suggestions
+      .filter((s) => s.value.includes(q) || s.label.toLowerCase().includes(q))
+      .filter((s) => !value.includes(s.value))
+      .slice(0, 8);
+  }, [inputText, suggestions, value]);
 
   function addTag(text: string) {
     const tag = text.trim().toLowerCase();
     if (tag && !value.includes(tag)) {
       onChange([...value, tag]);
     }
+    setInputText('');
+    setShowSuggestions(false);
   }
 
   function removeTag(tag: string) {
@@ -222,12 +237,35 @@ export function TagsField({ label, value, onChange, placeholder = 'Add tag...', 
           style={styles.tagInput}
           placeholder={placeholder}
           placeholderTextColor={colors.outlineVariant}
-          onSubmitEditing={(e) => {
-            addTag(e.nativeEvent.text);
-            (e.target as any).value = '';
+          value={inputText}
+          onChangeText={(text) => {
+            setInputText(text);
+            setShowSuggestions(true);
+          }}
+          onSubmitEditing={() => {
+            addTag(inputText);
+          }}
+          onFocus={() => setShowSuggestions(true)}
+          onBlur={() => {
+            // Delay to allow suggestion press to register
+            setTimeout(() => setShowSuggestions(false), 150);
           }}
         />
       </View>
+      {showSuggestions && filtered.length > 0 && (
+        <View style={styles.suggestionsDropdown}>
+          {filtered.map((s) => (
+            <Pressable
+              key={s.value}
+              style={styles.suggestionItem}
+              onPress={() => addTag(s.value)}
+            >
+              <Text style={styles.suggestionText}>{s.label}</Text>
+              <Text style={styles.suggestionSlug}>{s.value}</Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
     </FormField>
   );
 }
@@ -373,5 +411,33 @@ const createStyles = (colors: ThemeColors) =>
       backgroundColor: colors.surfaceContainer,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    suggestionsDropdown: {
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.outline,
+      borderRadius: radii.sm,
+      marginTop: 4,
+      maxHeight: 200,
+      overflow: 'hidden',
+    },
+    suggestionItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.md,
+      paddingVertical: 8,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: colors.outlineVariant,
+    },
+    suggestionText: {
+      fontFamily: fonts.sans,
+      fontSize: fontSize.sm,
+      color: colors.neutral,
+    },
+    suggestionSlug: {
+      fontFamily: fonts.sans,
+      fontSize: fontSize.sm,
+      color: colors.outlineVariant,
     },
   });

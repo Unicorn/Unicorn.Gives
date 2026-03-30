@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { useAdminQuery } from '@/hooks/useAdminQuery';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
+import { useCategories } from '@/hooks/useCategories';
 import { AdminDataTable, type Column } from '@/components/admin/AdminDataTable';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
@@ -25,17 +26,6 @@ interface EventRow {
   created_at: string;
 }
 
-const EVENT_CATEGORIES = [
-  { label: 'All Categories', value: '' },
-  { label: 'Government', value: 'government' },
-  { label: 'Community', value: 'community' },
-  { label: 'Conservation', value: 'conservation' },
-  { label: 'Seniors', value: 'seniors' },
-  { label: 'Horn', value: 'horn' },
-  { label: 'Unicorn Gives', value: 'unicorn-gives' },
-  { label: 'The Mane', value: 'the-mane' },
-];
-
 const STATUS_OPTIONS = [
   { label: 'All Status', value: '' },
   { label: 'Draft', value: 'draft' },
@@ -53,6 +43,8 @@ export default function EventsListPage() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<EventRow | null>(null);
+  const { categories: eventCategories } = useCategories('events');
+  const categoryFilterOptions = [{ label: 'All Categories', value: '' }, ...eventCategories];
 
   const filters: Record<string, string> = {};
   if (categoryFilter) filters.category = categoryFilter;
@@ -151,7 +143,7 @@ export default function EventsListPage() {
             onChange={(e: any) => { setCategoryFilter(e.target.value); setPage(1); }}
             style={selectStyle(colors)}
           >
-            {EVENT_CATEGORIES.map((c) => (
+            {categoryFilterOptions.map((c) => (
               <option key={c.value} value={c.value}>{c.label}</option>
             ))}
           </select>

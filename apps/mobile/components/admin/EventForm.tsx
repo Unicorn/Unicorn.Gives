@@ -14,6 +14,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { supabase } from '@/lib/supabase';
 import { resolveAbsoluteAssetUrl } from '@/lib/resolveAssetUrl';
 import { useSlugGenerator } from '@/hooks/useSlugGenerator';
+import { useCategories } from '@/hooks/useCategories';
+import { useTags } from '@/hooks/useTags';
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import {
   TextField,
@@ -29,16 +31,6 @@ import { AdminRichEditor } from './AdminRichEditor';
 import { EventAiBodyModal, EventAiCoverModal } from './EventAiModals';
 
 /* ── Constants ── */
-
-const EVENT_CATEGORIES = [
-  { label: 'Government', value: 'government' },
-  { label: 'Community', value: 'community' },
-  { label: 'Conservation', value: 'conservation' },
-  { label: 'Seniors', value: 'seniors' },
-  { label: 'Horn', value: 'horn' },
-  { label: 'Unicorn Gives', value: 'unicorn-gives' },
-  { label: 'The Mane', value: 'the-mane' },
-];
 
 const VISIBILITY_OPTIONS = [
   { label: 'Global', value: 'global' },
@@ -112,6 +104,8 @@ export function EventForm({
 }: EventFormProps) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const { categories: eventCategories } = useCategories('events');
+  const { tags: tagSuggestions } = useTags();
   const [bodyAiOpen, setBodyAiOpen] = useState(false);
   const [coverAiOpen, setCoverAiOpen] = useState(false);
   const [coverPersisting, setCoverPersisting] = useState(false);
@@ -275,7 +269,7 @@ export function EventForm({
             label="Category"
             value={data.category}
             onValueChange={(v) => set('category', v)}
-            options={EVENT_CATEGORIES}
+            options={eventCategories}
             required
             error={errors.category}
           />
@@ -407,6 +401,7 @@ export function EventForm({
         value={data.tags}
         onChange={(v) => set('tags', v)}
         hint="Press Enter to add a tag"
+        suggestions={tagSuggestions}
       />
 
       {/* Body / Rich text editor */}

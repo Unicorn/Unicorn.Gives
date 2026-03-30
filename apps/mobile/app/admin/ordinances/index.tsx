@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { useAdminQuery } from '@/hooks/useAdminQuery';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
+import { useCategories } from '@/hooks/useCategories';
 import { AdminDataTable, type Column } from '@/components/admin/AdminDataTable';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
@@ -21,16 +22,6 @@ interface OrdinanceRow {
   adopted_date: string | null;
   created_at: string;
 }
-
-const ORDINANCE_CATEGORIES = [
-  { label: 'All Categories', value: '' },
-  { label: 'Zoning', value: 'zoning' },
-  { label: 'Public Safety', value: 'public-safety' },
-  { label: 'Environment', value: 'environment' },
-  { label: 'Property', value: 'property' },
-  { label: 'Infrastructure', value: 'infrastructure' },
-  { label: 'General', value: 'general' },
-];
 
 const STATUS_OPTIONS = [
   { label: 'All Status', value: '' },
@@ -49,6 +40,8 @@ export default function OrdinancesListPage() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<OrdinanceRow | null>(null);
+  const { categories: ordinanceCategories } = useCategories('ordinances');
+  const categoryFilterOptions = [{ label: 'All Categories', value: '' }, ...ordinanceCategories];
 
   const filters: Record<string, string> = {};
   if (categoryFilter) filters.category = categoryFilter;
@@ -140,7 +133,7 @@ export default function OrdinancesListPage() {
             onChange={(e: any) => { setCategoryFilter(e.target.value); setPage(1); }}
             style={selectStyle(colors)}
           >
-            {ORDINANCE_CATEGORIES.map((c) => (
+            {categoryFilterOptions.map((c) => (
               <option key={c.value} value={c.value}>{c.label}</option>
             ))}
           </select>

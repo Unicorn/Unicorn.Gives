@@ -3,19 +3,11 @@ import { View, StyleSheet } from 'react-native';
 
 import { supabase } from '@/lib/supabase';
 import { useSlugGenerator } from '@/hooks/useSlugGenerator';
+import { useCategories } from '@/hooks/useCategories';
 import { useTheme, type ThemeColors } from '@/constants/theme';
 import { TextField, SelectField, DateField, SlugField, FormRow, FormColumn } from './AdminForm';
 import { AdminRichEditor } from './AdminRichEditor';
 import { AdminFileUpload } from './AdminImageUpload';
-
-const ORDINANCE_CATEGORIES = [
-  { label: 'Zoning', value: 'zoning' },
-  { label: 'Public Safety', value: 'public-safety' },
-  { label: 'Environment', value: 'environment' },
-  { label: 'Property', value: 'property' },
-  { label: 'Infrastructure', value: 'infrastructure' },
-  { label: 'General', value: 'general' },
-];
 
 export interface OrdinanceFormData {
   title: string;
@@ -44,6 +36,7 @@ interface OrdinanceFormProps {
 export function OrdinanceForm({ data, onChange, errors = {} }: OrdinanceFormProps) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const { categories: ordinanceCategories } = useCategories('ordinances');
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
@@ -72,7 +65,7 @@ export function OrdinanceForm({ data, onChange, errors = {} }: OrdinanceFormProp
       <TextField label="Description" value={data.description} onChangeText={(v) => set('description', v)} placeholder="Short description" multiline numberOfLines={2} />
 
       <FormRow>
-        <FormColumn><SelectField label="Category" value={data.category} onValueChange={(v) => set('category', v)} options={ORDINANCE_CATEGORIES} required error={errors.category} /></FormColumn>
+        <FormColumn><SelectField label="Category" value={data.category} onValueChange={(v) => set('category', v)} options={ordinanceCategories} required error={errors.category} /></FormColumn>
         <FormColumn><DateField label="Adopted Date" value={data.adopted_date} onChangeText={(v) => set('adopted_date', v)} /></FormColumn>
         <FormColumn><DateField label="Amended Date" value={data.amended_date} onChangeText={(v) => set('amended_date', v)} /></FormColumn>
       </FormRow>

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { spacing, useTheme } from "@/constants/theme";
 import { useSlugGenerator } from "@/hooks/useSlugGenerator";
+import { useCategories } from "@/hooks/useCategories";
 import { supabase } from "@/lib/supabase";
 import {
 	CheckboxField,
@@ -14,16 +15,6 @@ import {
 } from "./AdminForm";
 import { AdminRichEditor } from "./AdminRichEditor";
 import { AdminImageUpload } from "./AdminImageUpload";
-
-const NEWS_CATEGORIES = [
-	{ label: "Ordinance change", value: "ordinance-change" },
-	{ label: "Government action", value: "government-action" },
-	{ label: "Public safety", value: "public-safety" },
-	{ label: "Public notice", value: "public-notice" },
-	{ label: "Community", value: "community" },
-	{ label: "Infrastructure", value: "infrastructure" },
-	{ label: "Election", value: "election" },
-];
 
 const VISIBILITY_OPTIONS = [
 	{ label: "Global", value: "global" },
@@ -83,6 +74,7 @@ interface NewsFormProps {
 export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 	const { colors } = useTheme();
 	const styles = useMemo(() => createStyles(), []);
+	const { categories: newsCategories } = useCategories('news');
 	const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(
 		data.title,
 	);
@@ -185,7 +177,7 @@ export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 						label="Category"
 						value={data.category}
 						onValueChange={(v) => set("category", v)}
-						options={NEWS_CATEGORIES}
+						options={newsCategories}
 						required
 						error={errors.category}
 					/>
