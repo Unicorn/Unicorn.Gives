@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { View, Text, Pressable, Linking, StyleSheet } from 'react-native';
+import { View, Text, Pressable, Linking, Platform, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useTheme, fonts, fontSize, spacing, radii, teal, type ThemeColors } from '@/constants/theme';
@@ -58,7 +58,7 @@ export function ContactSection({ phone, email, address, hours, socialLinks }: Co
                 </Pressable>
               )}
               {address && (
-                <View style={styles.contactRow}>
+                <Pressable style={styles.contactRow} onPress={() => Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(address)}`)}>
                   <View style={styles.iconCircle}>
                     <MaterialIcons name="place" size={18} color={colors.primary} />
                   </View>
@@ -66,7 +66,7 @@ export function ContactSection({ phone, email, address, hours, socialLinks }: Co
                     <Text style={styles.contactLabel}>Address</Text>
                     <Text style={styles.contactText}>{address}</Text>
                   </View>
-                </View>
+                </Pressable>
               )}
             </View>
           )}
@@ -84,6 +84,20 @@ export function ContactSection({ phone, email, address, hours, socialLinks }: Co
             </View>
           )}
         </View>
+
+        {/* Map embed */}
+        {address && Platform.OS === 'web' && (
+          <View style={styles.mapContainer}>
+            <iframe
+              title="Map"
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+              style={{ border: 0, width: '100%', height: 250, borderRadius: radii.lg }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </View>
+        )}
 
         {/* Social links */}
         {hasSocial && (
@@ -175,6 +189,11 @@ const createStyles = (colors: ThemeColors) =>
       fontFamily: fonts.sansBold,
       fontSize: fontSize.lg,
       color: colors.neutral,
+    },
+    mapContainer: {
+      marginTop: spacing.xl,
+      borderRadius: radii.lg,
+      overflow: 'hidden',
     },
     socialRow: {
       flexDirection: 'row',

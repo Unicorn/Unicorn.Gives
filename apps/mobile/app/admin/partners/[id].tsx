@@ -12,6 +12,7 @@ import { TextField, CheckboxField, FormRow, FormColumn } from '@/components/admi
 import { AdminImageUpload } from '@/components/admin/AdminImageUpload';
 import { AdminRichEditor } from '@/components/admin/AdminRichEditor';
 import { RepeatableListEditor } from '@/components/admin/RepeatableListEditor';
+import { SquareTab } from '@/components/admin/SquareTab';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
 
@@ -96,7 +97,7 @@ const ALL_SECTIONS = [
   { key: 'custom', label: 'Custom Sections' },
 ];
 
-type TabKey = 'general' | 'landing' | 'domain';
+type TabKey = 'general' | 'landing' | 'domain' | 'square';
 
 /* ── Main Component ── */
 
@@ -276,6 +277,7 @@ export default function EditPartnerPage() {
     { key: 'general', label: 'General', icon: 'settings' },
     { key: 'landing', label: 'Landing Page', icon: 'web' },
     { key: 'domain', label: 'Domain Settings', icon: 'language' },
+    { key: 'square', label: 'Square', icon: 'store' },
   ];
 
   return (
@@ -347,6 +349,9 @@ export default function EditPartnerPage() {
           colors={colors}
           styles={styles}
         />
+      )}
+      {activeTab === 'square' && (
+        <SquareTab partnerId={partner.id} />
       )}
 
       <AdminConfirmDialog
