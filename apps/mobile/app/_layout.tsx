@@ -23,6 +23,7 @@ import { DrawerMenu } from '@/components/layout/DrawerMenu';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { ThemeOverrideContext } from '@/constants/theme';
 import { ThemeToggleContext } from '@/lib/themeToggle';
+import { useIsHydrated } from '@/hooks/useHydrated';
 import {
   ThemePreferenceProvider,
   type ThemePreference,
@@ -61,6 +62,27 @@ export default function RootLayout() {
 
   // Web static export must not return an empty shell while fonts load.
   if (!loaded && Platform.OS !== 'web') {
+    return null;
+  }
+
+  return <HydrationGate />;
+}
+
+/**
+ * On web with static export, the server-rendered HTML will never match the
+ * client's first render (Drawer, Tabs, gesture handlers, auth state all
+ * differ). React 19 treats hydration mismatches as fatal errors that can
+ * crash the app before useEffect data-fetches ever run.
+ *
+ * Fix: render nothing during the hydration pass (matching the server's
+ * pre-rendered empty root), then mount the real app after hydration.
+ */
+function HydrationGate() {
+  const hydrated = useIsHydrated();
+
+  if (!hydrated) {
+    // Return a minimal placeholder that matches the server-rendered shell.
+    // This prevents a structural mismatch during hydration.
     return null;
   }
 
