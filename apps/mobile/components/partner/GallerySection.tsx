@@ -57,18 +57,18 @@ const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: spacing.xl,
-      paddingVertical: spacing.xxl,
+      paddingVertical: spacing.xxxl + 16,
     },
     inner: {
-      maxWidth: 900,
+      maxWidth: 1000,
       alignSelf: 'center',
       width: '100%' as any,
     },
     heading: {
       fontFamily: fonts.sansBold,
-      fontSize: 28,
+      fontSize: 32,
       color: colors.neutral,
-      marginBottom: spacing.xl,
+      marginBottom: spacing.xxl,
       textAlign: 'center',
     },
     grid: {

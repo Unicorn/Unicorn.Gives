@@ -28,7 +28,7 @@ interface LandingPageData {
   about_title?: string | null;
   about_body?: string | null;
   about_image_url?: string | null;
-  services?: { title: string; description: string; icon?: string; image_url?: string }[];
+  services?: { title: string; description: string; icon?: string; image_url?: string; price?: string }[];
   team_members?: { name: string; role: string; image_url?: string; bio?: string }[];
   testimonials?: { quote: string; author: string; role?: string; image_url?: string }[];
   gallery_images?: { url: string; caption?: string }[];

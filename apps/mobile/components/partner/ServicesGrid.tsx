@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 
 interface ServiceItem {
@@ -8,6 +7,7 @@ interface ServiceItem {
   description: string;
   icon?: string;
   image_url?: string;
+  price?: string;
 }
 
 interface ServicesGridProps {
@@ -24,20 +24,16 @@ export function ServicesGrid({ items }: ServicesGridProps) {
     <View style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.heading}>Services</Text>
-        <View style={styles.grid}>
+        <View style={styles.list}>
           {items.map((item, i) => (
-            <View key={i} style={styles.card}>
-              {item.icon && (
-                <MaterialIcons
-                  name={item.icon as keyof typeof MaterialIcons.glyphMap}
-                  size={28}
-                  color={colors.primary}
-                />
-              )}
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              {item.description && (
-                <Text style={styles.cardDesc}>{item.description}</Text>
-              )}
+            <View key={i} style={styles.item}>
+              <View style={styles.itemHeader}>
+                <Text style={styles.itemTitle}>{item.title}</Text>
+                {item.price && <Text style={styles.itemPrice}>{item.price}</Text>}
+              </View>
+              {item.description ? (
+                <Text style={styles.itemDesc}>{item.description}</Text>
+              ) : null}
             </View>
           ))}
         </View>
@@ -50,45 +46,50 @@ const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: spacing.xl,
-      paddingVertical: spacing.xxl,
+      paddingVertical: spacing.xxxl + 16,
       backgroundColor: colors.surfaceContainer,
     },
     inner: {
-      maxWidth: 900,
+      maxWidth: 1000,
       alignSelf: 'center',
       width: '100%' as any,
     },
     heading: {
       fontFamily: fonts.sansBold,
-      fontSize: 28,
+      fontSize: 32,
       color: colors.neutral,
-      marginBottom: spacing.xl,
-      textAlign: 'center',
+      marginBottom: spacing.xxl,
     },
-    grid: {
+    list: {
+      gap: 0,
+    },
+    item: {
+      paddingVertical: spacing.lg,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.outlineVariant,
+    },
+    itemHeader: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: spacing.lg,
-      justifyContent: 'center',
+      justifyContent: 'space-between',
+      alignItems: 'baseline',
+      gap: spacing.md,
     },
-    card: {
-      backgroundColor: colors.surface,
-      borderRadius: radii.md,
-      padding: spacing.xl,
-      width: 260,
-      gap: spacing.sm,
-      borderWidth: 1,
-      borderColor: colors.outlineVariant,
-    },
-    cardTitle: {
+    itemTitle: {
       fontFamily: fonts.sansBold,
       fontSize: fontSize.lg,
       color: colors.neutral,
+      flex: 1,
     },
-    cardDesc: {
+    itemPrice: {
+      fontFamily: fonts.sansBold,
+      fontSize: fontSize.lg,
+      color: colors.primary,
+    },
+    itemDesc: {
       fontFamily: fonts.sans,
       fontSize: fontSize.md,
       color: colors.neutralVariant,
       lineHeight: 22,
+      marginTop: spacing.xs,
     },
   });

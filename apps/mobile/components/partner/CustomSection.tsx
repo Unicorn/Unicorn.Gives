@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import { useTheme, fonts, spacing, type ThemeColors } from '@/constants/theme';
+import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 
 interface CustomSectionProps {
   title?: string;
@@ -32,23 +32,23 @@ const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: spacing.xl,
-      paddingVertical: spacing.xxl,
+      paddingVertical: spacing.xxxl + 16,
     },
     inner: {
-      maxWidth: 900,
+      maxWidth: 1000,
       alignSelf: 'center',
       width: '100%' as any,
     },
     title: {
       fontFamily: fonts.sansBold,
-      fontSize: 28,
+      fontSize: 32,
       color: colors.neutral,
-      marginBottom: spacing.lg,
+      marginBottom: spacing.xl,
     },
     image: {
       width: '100%' as any,
       height: 300,
-      borderRadius: 12,
-      marginBottom: spacing.lg,
+      borderRadius: radii.lg,
+      marginBottom: spacing.xl,
     },
   });

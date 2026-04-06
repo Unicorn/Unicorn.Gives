@@ -53,7 +53,7 @@ interface LandingPageData {
   custom_sections: CustomSection[];
 }
 
-interface ServiceItem { title: string; description: string; icon: string; image_url: string }
+interface ServiceItem { title: string; description: string; icon: string; image_url: string; price: string }
 interface TeamMember { name: string; role: string; image_url: string; bio: string }
 interface TestimonialItem { quote: string; author: string; role: string; image_url: string }
 interface GalleryItem { url: string; caption: string }
@@ -487,10 +487,13 @@ function LandingTab({
         items={landing.services}
         onChange={(v) => update('services', v)}
         fields={[]}
-        createEmpty={() => ({ title: '', description: '', icon: '', image_url: '' })}
+        createEmpty={() => ({ title: '', description: '', icon: '', image_url: '', price: '' })}
         renderItem={(item, _i, updateItem) => (
           <View style={{ gap: spacing.sm }}>
-            <TextField label="Title" value={item.title} onChangeText={(v) => updateItem({ title: v })} />
+            <FormRow>
+              <FormColumn><TextField label="Title" value={item.title} onChangeText={(v) => updateItem({ title: v })} /></FormColumn>
+              <FormColumn><TextField label="Price" value={item.price} onChangeText={(v) => updateItem({ price: v })} placeholder="e.g. $30" /></FormColumn>
+            </FormRow>
             <TextField label="Description" value={item.description} onChangeText={(v) => updateItem({ description: v })} multiline numberOfLines={2} />
             <TextField label="Icon Name" value={item.icon} onChangeText={(v) => updateItem({ icon: v })} placeholder="MaterialIcons name" hint="e.g. spa, cut, palette" />
           </View>

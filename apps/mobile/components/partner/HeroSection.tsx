@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { View, Text, Pressable, ImageBackground, StyleSheet, Linking } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Linking } from 'react-native';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 
 interface HeroSectionProps {
@@ -16,76 +16,90 @@ export function HeroSection({ headline, subheadline, imageUrl, ctaLabel, ctaUrl 
 
   if (!headline && !subheadline && !imageUrl) return null;
 
-  const content = (
-    <View style={styles.overlay}>
+  return (
+    <View style={styles.container}>
       <View style={styles.inner}>
-        {headline && <Text style={styles.headline}>{headline}</Text>}
-        {subheadline && <Text style={styles.subheadline}>{subheadline}</Text>}
-        {ctaLabel && ctaUrl && (
-          <Pressable style={styles.cta} onPress={() => Linking.openURL(ctaUrl)}>
-            <Text style={styles.ctaText}>{ctaLabel}</Text>
-          </Pressable>
+        {/* Text column */}
+        <View style={styles.textCol}>
+          {headline && <Text style={styles.headline}>{headline}</Text>}
+          {subheadline && <Text style={styles.subheadline}>{subheadline}</Text>}
+          {ctaLabel && ctaUrl && (
+            <Pressable style={styles.cta} onPress={() => Linking.openURL(ctaUrl)}>
+              <Text style={styles.ctaText}>{ctaLabel}</Text>
+            </Pressable>
+          )}
+        </View>
+
+        {/* Image column */}
+        {imageUrl && (
+          <View style={styles.imageCol}>
+            <Image
+              source={{ uri: imageUrl }}
+              style={styles.heroImage}
+              resizeMode="contain"
+            />
+          </View>
         )}
       </View>
     </View>
   );
-
-  if (imageUrl) {
-    return (
-      <ImageBackground source={{ uri: imageUrl }} style={styles.container} resizeMode="cover">
-        {content}
-      </ImageBackground>
-    );
-  }
-
-  return <View style={[styles.container, styles.noImage]}>{content}</View>;
 }
 
 const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     container: {
-      minHeight: 340,
-      justifyContent: 'center',
-    },
-    noImage: {
-      backgroundColor: colors.primaryContainer,
-    },
-    overlay: {
-      flex: 1,
-      justifyContent: 'center',
-      backgroundColor: 'rgba(0,0,0,0.4)',
+      backgroundColor: colors.surface,
       paddingHorizontal: spacing.xl,
-      paddingVertical: spacing.xxl,
+      paddingVertical: spacing.xxxl + 16,
     },
     inner: {
-      maxWidth: 700,
+      maxWidth: 1000,
       alignSelf: 'center',
+      width: '100%' as any,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
       alignItems: 'center',
+      gap: spacing.xxxl,
+    },
+    textCol: {
+      flex: 1,
+      minWidth: 280,
+      gap: spacing.lg,
     },
     headline: {
       fontFamily: fonts.sansBold,
       fontSize: 36,
-      color: '#fff',
-      textAlign: 'center',
-      marginBottom: spacing.md,
+      color: colors.neutral,
+      lineHeight: 44,
     },
     subheadline: {
       fontFamily: fonts.sans,
-      fontSize: fontSize.lg,
-      color: 'rgba(255,255,255,0.9)',
-      textAlign: 'center',
+      fontSize: fontSize.xl,
+      color: colors.neutralVariant,
       lineHeight: 28,
-      marginBottom: spacing.xl,
     },
     cta: {
       backgroundColor: colors.primary,
-      paddingHorizontal: spacing.xl + 4,
-      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.xxl,
+      paddingVertical: spacing.md + 2,
       borderRadius: radii.sm,
+      alignSelf: 'flex-start',
+      marginTop: spacing.sm,
     },
     ctaText: {
       fontFamily: fonts.sansBold,
       fontSize: fontSize.md,
       color: colors.onPrimary,
+    },
+    imageCol: {
+      flex: 1,
+      minWidth: 280,
+      alignItems: 'center',
+    },
+    heroImage: {
+      width: '100%' as any,
+      aspectRatio: 1,
+      maxWidth: 420,
+      maxHeight: 420,
     },
   });

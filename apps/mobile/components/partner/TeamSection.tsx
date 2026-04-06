@@ -23,20 +23,22 @@ export function TeamSection({ members }: TeamSectionProps) {
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
-        <Text style={styles.heading}>Our Team</Text>
-        <View style={styles.grid}>
+        <Text style={styles.heading}>Meet Our Team</Text>
+        <View style={styles.list}>
           {members.map((member, i) => (
             <View key={i} style={styles.card}>
               {member.image_url ? (
-                <Image source={{ uri: member.image_url }} style={styles.avatar} resizeMode="cover" />
+                <Image source={{ uri: member.image_url }} style={styles.photo} resizeMode="cover" />
               ) : (
-                <View style={[styles.avatar, styles.avatarPlaceholder]}>
-                  <MaterialIcons name="person" size={32} color={colors.neutralVariant} />
+                <View style={[styles.photo, styles.photoPlaceholder]}>
+                  <MaterialIcons name="person" size={48} color={colors.neutralVariant} />
                 </View>
               )}
-              <Text style={styles.name}>{member.name}</Text>
-              {member.role && <Text style={styles.role}>{member.role}</Text>}
-              {member.bio && <Text style={styles.bio}>{member.bio}</Text>}
+              <View style={styles.textCol}>
+                <Text style={styles.name}>{member.name}</Text>
+                {member.role && <Text style={styles.role}>{member.role}</Text>}
+                {member.bio && <Text style={styles.bio}>{member.bio}</Text>}
+              </View>
             </View>
           ))}
         </View>
@@ -49,60 +51,58 @@ const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: spacing.xl,
-      paddingVertical: spacing.xxl,
+      paddingVertical: spacing.xxxl + 16,
     },
     inner: {
-      maxWidth: 900,
+      maxWidth: 1000,
       alignSelf: 'center',
       width: '100%' as any,
     },
     heading: {
       fontFamily: fonts.sansBold,
-      fontSize: 28,
+      fontSize: 32,
       color: colors.neutral,
-      marginBottom: spacing.xl,
-      textAlign: 'center',
+      marginBottom: spacing.xxl,
     },
-    grid: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: spacing.lg,
-      justifyContent: 'center',
+    list: {
+      gap: spacing.xxxl,
     },
     card: {
-      alignItems: 'center',
+      flexDirection: 'row',
+      gap: spacing.xxl,
+      flexWrap: 'wrap',
+    },
+    photo: {
       width: 200,
-      gap: spacing.xs,
+      height: 240,
+      borderRadius: radii.lg,
     },
-    avatar: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
-      marginBottom: spacing.sm,
-    },
-    avatarPlaceholder: {
+    photoPlaceholder: {
       backgroundColor: colors.surfaceContainer,
       alignItems: 'center',
       justifyContent: 'center',
     },
+    textCol: {
+      flex: 1,
+      minWidth: 240,
+      gap: spacing.xs,
+      justifyContent: 'center',
+    },
     name: {
       fontFamily: fonts.sansBold,
-      fontSize: fontSize.md,
+      fontSize: fontSize['2xl'],
       color: colors.neutral,
-      textAlign: 'center',
     },
     role: {
-      fontFamily: fonts.sans,
-      fontSize: fontSize.sm,
+      fontFamily: fonts.sansMedium,
+      fontSize: fontSize.md,
       color: colors.primary,
-      textAlign: 'center',
+      marginBottom: spacing.sm,
     },
     bio: {
       fontFamily: fonts.sans,
-      fontSize: fontSize.sm,
+      fontSize: fontSize.base,
       color: colors.neutralVariant,
-      textAlign: 'center',
-      lineHeight: 20,
-      marginTop: spacing.xs,
+      lineHeight: 24,
     },
   });
