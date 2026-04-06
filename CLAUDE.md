@@ -59,6 +59,7 @@ aws cloudfront create-invalidation --distribution-id ER9WIPUKON9J3 --paths "/*"
 - **`apps/mobile/.env`** — `EXPO_PUBLIC_*` vars for local dev
 - **`apps/mobile/.env.production.local`** — `EXPO_PUBLIC_*` vars baked into production builds (Expo loads this with highest priority during `expo export`)
 - All `EXPO_PUBLIC_*` vars are inlined at build time — changes require a rebuild + redeploy
+- **`EXPO_PUBLIC_SUPABASE_ANON_KEY`** must be the full JWT (starts with `eyJ...`), NOT the `sb_publishable_*` format
 
 ### Supabase
 
@@ -66,6 +67,14 @@ aws cloudfront create-invalidation --distribution-id ER9WIPUKON9J3 --paths "/*"
 - Migrations: `supabase/migrations/` (applied via `supabase db push` or `supabase migration up`)
 - Check remote status: `supabase migration list --linked` (from `supabase/` dir)
 - Supabase CLI is linked to the project (ref stored in `supabase/.temp/project-ref`)
+
+### Web hydration
+
+- Expo static export (`output: "static"`) pre-renders HTML at build time, then hydrates client-side
+- React 19 treats server/client structural mismatches as fatal (error #418)
+- `HydrationGate` in `_layout.tsx` renders `null` during hydration, then mounts the full app — this avoids mismatches from Drawer, Tabs, gesture handlers, and auth state
+- `useHydratedDimensions` (in `hooks/useHydrated.ts`) replaces `useWindowDimensions` — returns `{width:0, height:0}` during hydration to prevent responsive layout mismatches
+- **Never use `useWindowDimensions` directly** — always use `useHydratedDimensions` from `@/hooks/useHydrated`
 
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
