@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { usePathname } from 'expo-router';
 // Same Helmet instance as expo-router's Head.Provider (avoids duplicate titles on static export).
 import { Helmet } from 'expo-router/vendor/react-helmet-async/lib/index.js';
@@ -35,6 +36,9 @@ export function SeoHead({
   noIndex = false,
 }: SeoHeadProps) {
   const pathname = usePathname();
+
+  // Helmet requires a HelmetProvider (web-only); skip on native to avoid crash.
+  if (Platform.OS !== 'web') return null;
   const site = getSiteName();
   const pageTitle =
     !appendSiteName || title.includes(site) ? title : `${title} · ${site}`;

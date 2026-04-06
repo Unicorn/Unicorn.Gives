@@ -5,10 +5,16 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 import { LORE_ORDER } from '@/lib/lore';
-import {
-  getPartnerStaticLandingParams,
-  getPartnerStaticTabParams,
-} from '@/lib/partner-static-from-seed';
+// Lazily imported to avoid pulling Node's `fs` into the Metro bundle.
+// Only used as a fallback inside collectPublicPathsForSitemap().
+async function getPartnerStaticLandingParams() {
+  const m = await import('@/lib/partner-static-from-seed');
+  return m.getPartnerStaticLandingParams();
+}
+async function getPartnerStaticTabParams() {
+  const m = await import('@/lib/partner-static-from-seed');
+  return m.getPartnerStaticTabParams();
+}
 import { paths, routes, hrefToPathString } from '@/lib/navigation';
 import { escapeXml } from '@/lib/seo';
 
@@ -400,8 +406,8 @@ export async function collectPublicPathsForSitemap(): Promise<string[]> {
   const partnersFromDb = await fetchPartnerSlugParams();
   const tabsFromDb = await fetchPartnerTabParams();
   const partners =
-    partnersFromDb.length > 0 ? partnersFromDb : getPartnerStaticLandingParams();
-  const tabs = tabsFromDb.length > 0 ? tabsFromDb : getPartnerStaticTabParams();
+    partnersFromDb.length > 0 ? partnersFromDb : await getPartnerStaticLandingParams();
+  const tabs = tabsFromDb.length > 0 ? tabsFromDb : await getPartnerStaticTabParams();
 
   for (const { partnerSlug } of partners) {
     add(hrefToPathString(routes.partners.index(partnerSlug)));

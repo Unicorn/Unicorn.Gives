@@ -10,7 +10,6 @@ import { Container } from '@/components/layout/Container';
 import { SubTabs } from '@/components/layout/SubTabs';
 import { useTheme, spacing } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
-import { getPartnerStaticTabParams } from '@/lib/partner-static-from-seed';
 import { getDefaultDescription } from '@/lib/seo';
 import { fetchPartnerTabParams } from '@/lib/static-build-queries';
 
@@ -31,7 +30,9 @@ interface PartnerPage {
 
 export async function generateStaticParams() {
   const fromDb = await fetchPartnerTabParams();
-  return fromDb.length > 0 ? fromDb : getPartnerStaticTabParams();
+  if (fromDb.length > 0) return fromDb;
+  const { getPartnerStaticTabParams } = await import('@/lib/partner-static-from-seed');
+  return getPartnerStaticTabParams();
 }
 
 export default function PartnerTab() {

@@ -11,7 +11,6 @@ import { Container } from '@/components/layout/Container';
 import { SubTabs } from '@/components/layout/SubTabs';
 import { useTheme, spacing } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
-import { getPartnerStaticLandingParams } from '@/lib/partner-static-from-seed';
 import { getDefaultDescription } from '@/lib/seo';
 import { fetchPartnerSlugParams } from '@/lib/static-build-queries';
 
@@ -35,7 +34,9 @@ interface PartnerPage {
 
 export async function generateStaticParams() {
   const fromDb = await fetchPartnerSlugParams();
-  return fromDb.length > 0 ? fromDb : getPartnerStaticLandingParams();
+  if (fromDb.length > 0) return fromDb;
+  const { getPartnerStaticLandingParams } = await import('@/lib/partner-static-from-seed');
+  return getPartnerStaticLandingParams();
 }
 
 export default function PartnerLanding() {
@@ -125,7 +126,7 @@ export default function PartnerLanding() {
         />
         <AppHeader title={partner.name} />
         <ScrollView contentContainerStyle={styles.landingContent}>
-          <LandingPageRenderer data={landingPage} />
+          <LandingPageRenderer data={landingPage} partnerId={partner.id} />
         </ScrollView>
       </View>
     );

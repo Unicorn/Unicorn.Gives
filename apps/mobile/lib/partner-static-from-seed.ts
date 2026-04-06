@@ -12,8 +12,11 @@ const SEED_SQL_PATH_CANDIDATES = [
 export function loadPartnerSeedSql(): string | null {
   if (typeof window !== 'undefined') return null;
 
-  const fs = require('fs') as typeof import('fs');
-  const path = require('path') as typeof import('path');
+  // Dynamic require hidden from Metro's static analysis
+  const nodeRequire = typeof require !== 'undefined' ? require : undefined;
+  if (!nodeRequire) return null;
+  const fs = nodeRequire(/* webpackIgnore: true */ 'f' + 's') as typeof import('fs');
+  const path = nodeRequire(/* webpackIgnore: true */ 'pa' + 'th') as typeof import('path');
 
   for (const rel of SEED_SQL_PATH_CANDIDATES) {
     const p = path.join(process.cwd(), rel);
