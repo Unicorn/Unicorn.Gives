@@ -38,6 +38,9 @@ __pycache__/
 # design / reference exports (not part of the app)
 stitch-reference/
 
+# static document PDFs (managed in Supabase Storage)
+apps/mobile/public/documents/
+
 # scraper logs
 *.log
 asset-download.log
@@ -49,3 +52,9 @@ coverage-report.txt
 
 .claude/worktrees
 .claude/settings.local.json
+.agents/
+.claude/plans/
+.claude/settings.json
+.cursor/
+.expo/
+supabase/.branches/
