@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
+import { LandingPageRenderer } from '@/components/partner/LandingPageRenderer';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
@@ -43,6 +44,7 @@ export default function PartnerLanding() {
   const [partner, setPartner] = useState<Partner | null>(null);
   const [defaultTabs, setDefaultTabs] = useState<PartnerTab[]>([]);
   const [firstPage, setFirstPage] = useState<PartnerPage | null>(null);
+  const [landingPage, setLandingPage] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
     if (!partnerSlug) return;
@@ -59,6 +61,19 @@ export default function PartnerLanding() {
       if (cancelled || !partnerData) return;
 
       setPartner(partnerData as Partner);
+
+      // Check for a published landing page
+      const { data: lpData } = await supabase
+        .from('partner_landing_pages')
+        .select('*')
+        .eq('partner_id', partnerData.id)
+        .eq('status', 'published')
+        .single();
+
+      if (!cancelled && lpData) {
+        setLandingPage(lpData as Record<string, unknown>);
+        return; // skip tab-based content fetch
+      }
 
       const { data: typeData } = partnerData.partner_type_id
         ? await supabase.from('partner_types').select('default_tabs').eq('id', partnerData.partner_type_id).single()
@@ -99,6 +114,24 @@ export default function PartnerLanding() {
     );
   }
 
+  // Landing page mode — full marketing layout
+  if (landingPage) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <SeoHead
+          title={partner.name}
+          description={partner.description ?? undefined}
+          imageUrl={landingPage.hero_image_url as string | undefined}
+        />
+        <AppHeader title={partner.name} />
+        <ScrollView contentContainerStyle={styles.landingContent}>
+          <LandingPageRenderer data={landingPage} />
+        </ScrollView>
+      </View>
+    );
+  }
+
+  // Tab-based fallback — existing behavior
   const effectiveTabs = partner.tabs && partner.tabs.length > 0 ? partner.tabs : defaultTabs;
   const tabs = routes.partners.tabItems(partnerSlug, effectiveTabs);
 
@@ -124,5 +157,6 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   loading: { padding: spacing.xxl, textAlign: 'center' },
   content: { padding: spacing.xl, paddingBottom: 40 },
+  landingContent: { paddingBottom: 40 },
   desc: { fontSize: 15, lineHeight: 24 },
 });
