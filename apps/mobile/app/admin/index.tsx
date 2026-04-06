@@ -43,7 +43,7 @@ const CONTENT_TABLES = [
   { table: 'ordinances', label: 'Ordinances', icon: 'policy' as const, path: '/admin/ordinances' },
   { table: 'contacts', label: 'Contacts', icon: 'contacts' as const, path: '/admin/contacts' },
   { table: 'elections', label: 'Elections', icon: 'how-to-vote' as const, path: '/admin/elections' },
-  { table: 'municipal_documents', label: 'Municipal Documents', icon: 'folder' as const, path: '/admin/municipal-documents' },
+  { table: 'municipal_documents', label: 'Documents', icon: 'folder' as const, path: '/admin/municipal-documents' },
   { table: 'region_pages', label: 'Region Pages', icon: 'map' as const, path: '/admin/region-pages' },
   { table: 'partner_pages', label: 'Partner Pages', icon: 'handshake' as const, path: '/admin/partner-pages' },
 ];

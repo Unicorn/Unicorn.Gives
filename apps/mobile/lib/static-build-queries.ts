@@ -172,6 +172,40 @@ export async function fetchMunicipalDocumentsStaticParams(): Promise<MunicipalSl
   return out;
 }
 
+export async function fetchResourcePagesStaticParams(): Promise<MunicipalSlugParam[]> {
+  const sb = getBuildTimeClient();
+  if (!sb) return [];
+
+  const municipalities = await fetchMunicipalityParams();
+  const out: MunicipalSlugParam[] = [];
+
+  for (const { countySlug, municipalitySlug } of municipalities) {
+    const { data: region, error: rErr } = await sb
+      .from('regions')
+      .select('id')
+      .eq('slug', municipalitySlug)
+      .maybeSingle();
+
+    if (rErr || !region) continue;
+
+    const { data: rows, error } = await sb
+      .from('region_pages')
+      .select('slug')
+      .eq('region_id', region.id)
+      .eq('category', 'resources')
+      .eq('parent_slug', 'resources')
+      .eq('status', 'published');
+
+    if (error || !rows?.length) continue;
+    for (const row of rows) {
+      const s = String(row.slug ?? '').trim();
+      if (s) out.push({ countySlug, municipalitySlug, slug: s });
+    }
+  }
+
+  return out;
+}
+
 export async function fetchMunicipalEventsStaticParams(): Promise<MunicipalSlugParam[]> {
   const sb = getBuildTimeClient();
   if (!sb) return [];
@@ -399,6 +433,19 @@ export async function collectPublicPathsForSitemap(): Promise<string[]> {
     add(
       hrefToPathString(
         routes.government.documents.detail(row.countySlug, row.municipalitySlug, row.slug),
+      ),
+    );
+  }
+  for (const row of await fetchResourcePagesStaticParams()) {
+    // Add both the resources landing and each subpage
+    add(
+      hrefToPathString(
+        routes.government.resources.index(row.countySlug, row.municipalitySlug),
+      ),
+    );
+    add(
+      hrefToPathString(
+        routes.government.resources.detail(row.countySlug, row.municipalitySlug, row.slug),
       ),
     );
   }

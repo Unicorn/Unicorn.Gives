@@ -4,3 +4,15 @@
 # Auth is enforced inside the function via supabase.auth.getUser() + profiles.role.
 [functions.admin-ai]
 verify_jwt = false
+
+[functions.square-oauth]
+verify_jwt = false
+
+[functions.square-sync]
+verify_jwt = false
+
+[functions.square-webhooks]
+verify_jwt = false
+
+[functions.square-bookings]
+verify_jwt = false

@@ -37,6 +37,15 @@ export default function EditRegionPagePage() {
           setLoading(false);
           return;
         }
+        const rawAttachments = data.attachments;
+        let parsedAttachments: any[] = [];
+        if (rawAttachments) {
+          if (typeof rawAttachments === 'string') {
+            try { parsedAttachments = JSON.parse(rawAttachments); } catch { /* ignore */ }
+          } else if (Array.isArray(rawAttachments)) {
+            parsedAttachments = rawAttachments;
+          }
+        }
         setForm({
           title: data.title ?? '',
           slug: data.slug ?? '',
@@ -45,6 +54,8 @@ export default function EditRegionPagePage() {
           category: data.category ?? 'general',
           display_order: data.display_order ?? 0,
           region_id: data.region_id ?? '',
+          parent_slug: data.parent_slug ?? '',
+          attachments: parsedAttachments,
         });
         setStatus(data.status ?? 'draft');
         setLoading(false);
@@ -68,6 +79,8 @@ export default function EditRegionPagePage() {
       description: form.description || null,
       body: form.body || null,
       category: form.category || null,
+      parent_slug: form.parent_slug || null,
+      attachments: form.attachments.length > 0 ? JSON.stringify(form.attachments) : '[]',
       display_order: form.display_order,
       region_id: form.region_id,
     };

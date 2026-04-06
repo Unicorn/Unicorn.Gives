@@ -30,6 +30,8 @@ export default function NewRegionPagePage() {
       description: form.description || null,
       body: form.body || null,
       category: form.category || null,
+      parent_slug: form.parent_slug || null,
+      attachments: form.attachments.length > 0 ? JSON.stringify(form.attachments) : '[]',
       display_order: form.display_order,
       region_id: form.region_id,
       status,

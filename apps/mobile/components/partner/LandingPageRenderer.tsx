@@ -11,6 +11,8 @@ import { TestimonialsSection } from './TestimonialsSection';
 import { GallerySection } from './GallerySection';
 import { ContactSection } from './ContactSection';
 import { CustomSection } from './CustomSection';
+import { BookingsSection } from './BookingsSection';
+import { useSquareFeatureConfig } from '@/hooks/useSquareBookings';
 
 interface SocialLinks {
   facebook?: string;
@@ -44,13 +46,15 @@ interface LandingPageData {
 
 interface LandingPageRendererProps {
   data: LandingPageData;
+  partnerId?: string;
 }
 
 const DEFAULT_ORDER = ['hero', 'about', 'services', 'team', 'testimonials', 'gallery', 'contact'];
 
-export function LandingPageRenderer({ data }: LandingPageRendererProps) {
+export function LandingPageRenderer({ data, partnerId }: LandingPageRendererProps) {
   const order = data.section_order?.length ? data.section_order : DEFAULT_ORDER;
   const hidden = new Set(data.hidden_sections ?? []);
+  const { config: squareConfig } = useSquareFeatureConfig(partnerId);
 
   function renderSection(key: string) {
     if (hidden.has(key)) return null;
@@ -108,6 +112,9 @@ export function LandingPageRenderer({ data }: LandingPageRendererProps) {
             ))}
           </View>
         );
+      case 'bookings':
+        if (!partnerId || !squareConfig?.bookings_enabled) return null;
+        return <BookingsSection key={key} partnerId={partnerId} />;
       default:
         return null;
     }

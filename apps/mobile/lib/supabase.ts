@@ -12,7 +12,7 @@ import { Platform } from 'react-native';
 const rawSupabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
 const rawAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
-const supabaseUrl = rawSupabaseUrl.startsWith('http://') || rawSupabaseUrl.startsWith('https://')
+export const supabaseUrl = rawSupabaseUrl.startsWith('http://') || rawSupabaseUrl.startsWith('https://')
   ? rawSupabaseUrl
   : 'https://example.supabase.co';
 

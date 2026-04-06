@@ -86,7 +86,7 @@ export default function EditMunicipalDocumentPage() {
   }
 
   return (
-    <AdminPageShell title="Edit Municipal Document" backHref="/admin/municipal-documents"
+    <AdminPageShell title="Edit Document" backHref="/admin/municipal-documents"
       actions={<>
         <AdminStatusBadge status={status} />
         {status === 'draft' && <AdminButton label="Publish" icon="publish" onPress={handlePublish} disabled={mutating} />}

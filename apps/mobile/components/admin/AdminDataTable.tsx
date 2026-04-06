@@ -184,6 +184,7 @@ const createStyles = (colors: ThemeColors) =>
     },
     table: {
       minWidth: 600,
+      width: '100%' as any,
     },
     headerRow: {
       flexDirection: 'row',

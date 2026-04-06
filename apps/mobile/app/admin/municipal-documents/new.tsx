@@ -54,7 +54,7 @@ export default function NewMunicipalDocumentPage() {
   }
 
   return (
-    <AdminPageShell title="New Municipal Document" backHref="/admin/municipal-documents"
+    <AdminPageShell title="New Document" backHref="/admin/municipal-documents"
       actions={<>
         <AdminButton label="Save Draft" variant="secondary" icon="save" onPress={() => handleSave('draft')} disabled={loading} />
         <AdminButton label="Publish" icon="publish" onPress={() => handleSave('published')} disabled={loading} />

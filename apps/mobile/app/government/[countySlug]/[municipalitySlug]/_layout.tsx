@@ -6,7 +6,7 @@ import { AppBreadcrumbBar } from '@/components/layout/AppHeader';
 import { SubTabs, type SubTabItem } from '@/components/layout/SubTabs';
 import { useTheme } from '@/constants/theme';
 import { routes, isMunicipalDetailPath } from '@/lib/navigation';
-import { fetchMunicipalDocumentsForRegion } from '@/lib/municipal/municipalDocuments';
+import { fetchResourceLanding } from '@/lib/municipal/resourcePages';
 
 export default function MunicipalityLayout() {
   const { colors } = useTheme();
@@ -25,23 +25,23 @@ export default function MunicipalityLayout() {
     () => routes.government.municipalSubNavTabs(countySlug, municipalitySlug),
     [countySlug, municipalitySlug]
   );
-  const [planningTab, setPlanningTab] = useState<SubTabItem | null>(null);
+  const [resourcesTab, setResourcesTab] = useState<SubTabItem | null>(null);
 
   useEffect(() => {
     if (!region?.id) {
-      setPlanningTab(null);
+      setResourcesTab(null);
       return;
     }
     let cancelled = false;
-    fetchMunicipalDocumentsForRegion(region.id).then((docs) => {
+    fetchResourceLanding(region.id).then((landing) => {
       if (cancelled) return;
-      if (docs.length > 0) {
-        setPlanningTab({
-          label: 'Planning',
-          href: routes.government.documents.index(countySlug, municipalitySlug),
+      if (landing) {
+        setResourcesTab({
+          label: 'Resources',
+          href: routes.government.resources.index(countySlug, municipalitySlug),
         });
       } else {
-        setPlanningTab(null);
+        setResourcesTab(null);
       }
     });
     return () => {
@@ -50,8 +50,8 @@ export default function MunicipalityLayout() {
   }, [region?.id, countySlug, municipalitySlug]);
 
   const tabs = useMemo(
-    () => (planningTab ? [...baseTabs, planningTab] : baseTabs),
-    [baseTabs, planningTab]
+    () => (resourcesTab ? [...baseTabs, resourcesTab] : baseTabs),
+    [baseTabs, resourcesTab]
   );
 
   const breadcrumbItems = [
@@ -78,6 +78,8 @@ export default function MunicipalityLayout() {
         <Stack.Screen name="elections/[slug]" />
         <Stack.Screen name="documents/index" />
         <Stack.Screen name="documents/[slug]" />
+        <Stack.Screen name="resources/index" />
+        <Stack.Screen name="resources/[slug]" />
         <Stack.Screen name="zoning" />
         <Stack.Screen name="master-plan" />
         <Stack.Screen name="recreation-plan" />

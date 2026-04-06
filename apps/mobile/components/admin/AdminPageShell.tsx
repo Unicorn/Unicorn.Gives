@@ -113,7 +113,6 @@ const createStyles = (colors: ThemeColors) =>
       flex: 1,
     },
     content: {
-      maxWidth: 1000,
       paddingBottom: 40,
     },
     header: {

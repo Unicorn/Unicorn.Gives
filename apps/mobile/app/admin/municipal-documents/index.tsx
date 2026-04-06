@@ -87,7 +87,7 @@ export default function MunicipalDocumentsListPage() {
   }
 
   return (
-    <AdminPageShell title="Municipal Documents" subtitle={`${total} total documents`}
+    <AdminPageShell title="Documents" subtitle={`${total} total documents`}
       actions={<AdminButton label="New Document" icon="add" onPress={() => router.push(toHref('/admin/municipal-documents/new'))} />}>
       <View style={styles.filtersRow}>
         <TextInput style={styles.searchInput} value={search} onChangeText={(t) => { setSearch(t); setPage(1); }} placeholder="Search documents..." placeholderTextColor={colors.outlineVariant} />

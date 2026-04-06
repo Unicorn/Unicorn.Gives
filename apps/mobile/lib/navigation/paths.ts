@@ -45,6 +45,7 @@ export const municipalSubsegments = {
 	contacts: "contacts",
 	elections: "elections",
 	events: "events",
+	resources: "resources",
 } as const;
 
 export type MunicipalSubsegment =
@@ -212,6 +213,20 @@ export const routes = {
 					municipalityBase(countySlug, municipalitySlug) +
 						"/documents/" +
 						enc(documentSlug),
+				),
+		},
+		resources: {
+			index: (countySlug: string, municipalitySlug: string) =>
+				toHref(municipalityBase(countySlug, municipalitySlug) + "/resources"),
+			detail: (
+				countySlug: string,
+				municipalitySlug: string,
+				resourceSlug: string,
+			) =>
+				toHref(
+					municipalityBase(countySlug, municipalitySlug) +
+						"/resources/" +
+						enc(resourceSlug),
 				),
 		},
 		/** @deprecated Use documents.detail with slug zoning-ordinance-44 */
