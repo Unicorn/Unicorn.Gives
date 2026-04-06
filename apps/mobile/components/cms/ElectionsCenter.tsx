@@ -30,18 +30,18 @@ export function ElectionsCenter({
 
   useEffect(() => {
     // Preserve migrated CMS links (PDF + internal pages) alongside the hand-coded layout.
-    supabase
-      .from('pages')
-      .select('body')
-      .eq('slug', 'elections')
-      .single()
-      .then(({ data }) => {
-        if (data?.body) setPageBody(data.body as string);
-      })
-      .catch(() => {
-        // If Supabase isn't available (e.g. during some static export scenarios), we still
-        // keep the hand-coded layout as a fallback.
-      });
+    Promise.resolve(
+      supabase
+        .from('pages')
+        .select('body')
+        .eq('slug', 'elections')
+        .single()
+    ).then(({ data }) => {
+      if (data?.body) setPageBody(data.body as string);
+    }).catch(() => {
+      // If Supabase isn't available (e.g. during some static export scenarios), we still
+      // keep the hand-coded layout as a fallback.
+    });
   }, []);
 
   return (

@@ -19,6 +19,7 @@ type PartnerTab = { label: string; slug: string; order: number };
 interface Partner {
   id: string;
   name: string;
+  description: string | null;
   tabs: PartnerTab[] | null;
   partner_type_id: string | null;
 }

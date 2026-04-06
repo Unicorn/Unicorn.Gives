@@ -30,7 +30,7 @@ export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
   ]) as ViewStyle;
 
   return (
-    <Link href={routes.community.events.detail(event.slug)} style={cardStyle}>
+    <Link href={routes.community.events.detail(event.slug)} style={cardStyle as any}>
         <ContentCoverImage
           imageUrl={event.image_url}
           variant="card"

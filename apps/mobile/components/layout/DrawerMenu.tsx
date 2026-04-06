@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useRouter, usePathname, type Href } from 'expo-router';
-import { DrawerActions, type NavigationProp, type ParamListBase } from '@react-navigation/native';
+import { DrawerActions, type NavigationHelpers, type ParamListBase } from '@react-navigation/native';
 import { useAuth } from '@/lib/auth';
 import {
   isPathActive,
@@ -23,7 +23,7 @@ interface Partner {
   name: string;
 }
 
-export function DrawerMenu({ drawerNavigation }: { drawerNavigation: NavigationProp<ParamListBase> }) {
+export function DrawerMenu({ drawerNavigation }: { drawerNavigation: { dispatch: NavigationHelpers<ParamListBase>['dispatch'] } }) {
   const router = useRouter();
   const pathname = usePathname();
   const { user, profile, signOut, isEditor } = useAuth();

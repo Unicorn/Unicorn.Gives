@@ -43,7 +43,7 @@ interface AdminDataTableProps<T> {
   keyExtractor?: (row: T) => string;
 }
 
-export function AdminDataTable<T extends Record<string, unknown>>({
+export function AdminDataTable<T extends Record<string, any>>({
   columns,
   data,
   loading,

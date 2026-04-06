@@ -277,6 +277,7 @@
   <url><loc>https://unicorn.gives/home</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/home/community</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/home/events</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://unicorn.gives/home/events/beyond-maps-edge-group</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/home/events/board-of-commissioners-meeting</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/home/events/clare-county-fair</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/home/events/conservation-board-april-2026</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
