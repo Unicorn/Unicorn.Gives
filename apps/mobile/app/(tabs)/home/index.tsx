@@ -9,7 +9,6 @@ import {
 	StyleSheet,
 	Text,
 	TextInput,
-	useWindowDimensions,
 	View,
 } from "react-native";
 import { ContentCoverImage } from "@/components/ContentCoverImage";
@@ -55,6 +54,7 @@ import {
 	useTheme,
 	type ThemeColors,
 } from "@/constants/theme";
+import { useHydratedDimensions } from "@/hooks/useHydrated";
 import { eventDateBoxFromIso } from "@/lib/events/eventDateFormat";
 import { governmentHref } from "@/lib/governmentHref";
 import { routes } from "@/lib/navigation";
@@ -208,7 +208,7 @@ export default function HomeScreen() {
 			? governmentHref(regions[0])
 			: routes.government.county(FALLBACK_COUNTY_SLUG);
 
-	const { width } = useWindowDimensions();
+	const { width } = useHydratedDimensions();
 	const isTablet = width >= breakpoints.tablet;
 	const isDesktop = width >= breakpoints.desktop;
 

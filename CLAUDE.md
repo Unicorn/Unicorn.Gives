@@ -32,6 +32,41 @@ Token file: `apps/mobile/constants/theme.ts`
 - Never hardcode colors — always reference theme tokens
 
 
+## Hosting & Deployment
+
+- **Static site** hosted on **AWS S3 + CloudFront**
+- S3 bucket: `unicorn-gives-web-391668783184-1774490745` (us-east-1)
+- CloudFront distribution: `ER9WIPUKON9J3` → `unicorn.gives`
+- AWS credentials are in the root `.env` (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)
+
+### Build & deploy workflow
+
+```bash
+# 1. Build (generates sitemap + Expo web export)
+pnpm nx run mobile:build
+
+# 2. Deploy to S3 (source env for AWS creds)
+source .env
+aws s3 sync apps/mobile/dist/ s3://unicorn-gives-web-391668783184-1774490745 --delete
+
+# 3. Invalidate CloudFront cache
+aws cloudfront create-invalidation --distribution-id ER9WIPUKON9J3 --paths "/*"
+```
+
+### Environment variables
+
+- **Root `.env`** — AWS creds, Supabase server-side keys (DB password, service role)
+- **`apps/mobile/.env`** — `EXPO_PUBLIC_*` vars for local dev
+- **`apps/mobile/.env.production.local`** — `EXPO_PUBLIC_*` vars baked into production builds (Expo loads this with highest priority during `expo export`)
+- All `EXPO_PUBLIC_*` vars are inlined at build time — changes require a rebuild + redeploy
+
+### Supabase
+
+- Project ID: `kifhbevwmpqdeuxqnjxa`
+- Migrations: `supabase/migrations/` (applied via `supabase db push` or `supabase migration up`)
+- Check remote status: `supabase migration list --linked` (from `supabase/` dir)
+- Supabase CLI is linked to the project (ref stored in `supabase/.temp/project-ref`)
+
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
 

@@ -13,7 +13,6 @@ import {
   ScrollView,
   StyleSheet,
   Platform,
-  useWindowDimensions,
 } from 'react-native';
 import { Slot, useRouter, usePathname } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -22,6 +21,7 @@ import { RequireAdmin } from '@/lib/routeGuards';
 import { useAuth } from '@/lib/auth';
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 /* ── Sidebar nav structure ── */
 
@@ -93,7 +93,7 @@ export default function AdminLayout() {
 
 function AdminShell() {
   const { colors } = useTheme();
-  const { width } = useWindowDimensions();
+  const { width } = useHydratedDimensions();
   const sidebarCollapsed = width < 900;
   const styles = useMemo(() => createStyles(colors), [colors]);
 

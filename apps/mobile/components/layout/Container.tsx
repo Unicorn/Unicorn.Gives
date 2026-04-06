@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import {
 	StyleSheet,
-	useWindowDimensions,
 	View,
 	type ViewStyle,
 } from "react-native";
 import { breakpoints } from "@/constants/theme";
+import { useHydratedDimensions } from "@/hooks/useHydrated";
 
 interface ContainerProps {
 	children: ReactNode;
@@ -19,7 +19,7 @@ interface ContainerProps {
  * to constrain content width on tablet/desktop.
  */
 export function Container({ children, style, flush }: ContainerProps) {
-	const { width } = useWindowDimensions();
+	const { width } = useHydratedDimensions();
 	const isTablet = width >= breakpoints.tablet;
 	const isDesktop = width >= breakpoints.desktop;
 

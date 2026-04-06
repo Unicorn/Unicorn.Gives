@@ -3,13 +3,13 @@ import {
   Text,
   StyleSheet,
   Image,
-  useWindowDimensions,
   type ImageSourcePropType,
 } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { breakpoints, useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows } from '@/constants/theme';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 interface HeroFeatureProps {
   title: string;
@@ -30,7 +30,7 @@ export function HeroFeature({
   secondaryCta,
   imageSource,
 }: HeroFeatureProps) {
-  const { width } = useWindowDimensions();
+  const { width } = useHydratedDimensions();
   const { colors } = useTheme();
   const isTablet = width >= breakpoints.tablet;
 

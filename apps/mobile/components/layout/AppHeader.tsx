@@ -6,13 +6,13 @@ import {
   Image,
   StyleSheet,
   Platform,
-  useWindowDimensions,
 } from 'react-native';
 import { Link, useRouter, usePathname } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { toHref } from '@/lib/navigation';
 import { breakpoints, useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 import { HeaderUserMenu } from './HeaderUserMenu';
 
 // Re-export for backwards compat
@@ -41,7 +41,7 @@ export function AppHeader({ showBack = false }: AppHeaderProps) {
   const pathname = usePathname();
   const effectiveShowBack = showBack || isUserScopedPath(pathname);
   const { user } = useAuth();
-  const { width } = useWindowDimensions();
+  const { width } = useHydratedDimensions();
   const isDesktop = width >= breakpoints.desktop;
   const [menuOpen, setMenuOpen] = useState(false);
   const { colors, isDark } = useTheme();

@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  useWindowDimensions,
   type ViewStyle,
 } from 'react-native';
 import { Link } from 'expo-router';
@@ -10,13 +9,14 @@ import { ContentCoverImage } from '@/components/ContentCoverImage';
 import type { EventItem } from '@/components/events/eventTypes';
 import { routes } from '@/lib/navigation';
 import { breakpoints, useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows } from '@/constants/theme';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 interface FeaturedEventCardProps {
   event: EventItem & { description?: string | null; location?: string | null };
 }
 
 export function FeaturedEventCard({ event }: FeaturedEventCardProps) {
-  const { width } = useWindowDimensions();
+  const { width } = useHydratedDimensions();
   const { colors, chips } = useTheme();
   const isTablet = width >= breakpoints.tablet;
 

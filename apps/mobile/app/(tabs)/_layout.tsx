@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router';
-import { Text, StyleSheet, useWindowDimensions } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { breakpoints, useTheme } from '@/constants/theme';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 const TAB_ICONS: Record<string, keyof typeof MaterialIcons.glyphMap> = {
   Home: 'home',
@@ -21,7 +22,7 @@ function TabIcon({ label, focused, color }: { label: string; focused: boolean; c
 }
 
 export default function TabLayout() {
-  const { width } = useWindowDimensions();
+  const { width } = useHydratedDimensions();
   const isDesktop = width >= breakpoints.desktop;
   const { colors } = useTheme();
 

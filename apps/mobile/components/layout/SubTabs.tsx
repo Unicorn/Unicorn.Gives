@@ -4,10 +4,10 @@ import {
 	ScrollView,
 	StyleSheet,
 	Text,
-	useWindowDimensions,
 	View,
 } from "react-native";
 import { breakpoints, useTheme, fonts, fontSize, spacing } from "@/constants/theme";
+import { useHydratedDimensions } from "@/hooks/useHydrated";
 import { hrefToPathString } from "@/lib/navigation";
 
 export interface SubTabItem {
@@ -22,7 +22,7 @@ interface SubTabsProps {
 export function SubTabs({ tabs }: SubTabsProps) {
 	const pathname = usePathname();
 	const { colors } = useTheme();
-	const { width } = useWindowDimensions();
+	const { width } = useHydratedDimensions();
 	const isWide = width >= breakpoints.tablet;
 
 	return (

@@ -6,7 +6,6 @@ import {
 	type StyleProp,
 	StyleSheet,
 	Text,
-	useWindowDimensions,
 	View,
 	type ViewStyle,
 } from "react-native";
@@ -20,6 +19,7 @@ import {
 	spacing,
 	useTheme,
 } from "@/constants/theme";
+import { useHydratedDimensions } from "@/hooks/useHydrated";
 
 export interface BentoItem {
 	key: string;
@@ -142,7 +142,7 @@ function BentoCell({
 }
 
 export function BentoGrid({ eyebrow, title, subtitle, items }: BentoGridProps) {
-	const { width } = useWindowDimensions();
+	const { width } = useHydratedDimensions();
 	const { colors } = useTheme();
 	const isTablet = width >= breakpoints.tablet;
 	const isDesktop = width >= breakpoints.desktop;
