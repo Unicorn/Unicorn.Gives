@@ -5,8 +5,9 @@
 import { useMemo, useState } from 'react';
 import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, breakpoints, type ThemeColors } from '@/constants/theme';
 import { useSquareServices, type SquareService } from '@/hooks/useSquareBookings';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 import { BookingFlow } from './BookingFlow';
 
 interface BookingsSectionProps {
@@ -30,6 +31,8 @@ function formatPrice(amount: number | undefined, _currency?: string): string {
 
 export function BookingsSection({ partnerId }: BookingsSectionProps) {
   const { colors } = useTheme();
+  const { width } = useHydratedDimensions();
+  const columns = width >= breakpoints.desktop ? 3 : width >= breakpoints.tablet ? 2 : 1;
   const styles = useMemo(() => createStyles(colors), [colors]);
   const { services, teamMembers, loading } = useSquareServices(partnerId);
   const [selectedService, setSelectedService] = useState<SquareService | null>(null);
@@ -52,45 +55,47 @@ export function BookingsSection({ partnerId }: BookingsSectionProps) {
         <Text style={styles.heading}>Book an Appointment</Text>
         <Text style={styles.subheading}>Select a service to get started</Text>
 
-        <View style={styles.serviceList}>
+        <View style={styles.serviceGrid}>
           {services.map((service) => {
             const variation = service.data.item_data?.variations?.[0];
             const price = variation?.item_variation_data?.price_money;
             const duration = variation?.item_variation_data?.service_duration;
 
             return (
-              <View key={service.id} style={styles.serviceCard}>
-                <View style={styles.serviceInfo}>
-                  <Text style={styles.serviceName}>
-                    {service.data.item_data?.name ?? service.display_name}
-                  </Text>
-                  <View style={styles.serviceMeta}>
-                    {duration != null && (
-                      <View style={styles.metaItem}>
-                        <MaterialIcons name="schedule" size={14} color={colors.neutralVariant} />
-                        <Text style={styles.metaText}>{formatDuration(duration)}</Text>
-                      </View>
-                    )}
-                    {price?.amount != null && (
-                      <View style={styles.metaItem}>
-                        <Text style={styles.priceText}>
-                          {formatPrice(price.amount, price.currency)}
-                        </Text>
-                      </View>
+              <View key={service.id} style={{ width: columns === 1 ? '100%' : `${(100 - (columns - 1) * 1.5) / columns}%` as any }}>
+                <View style={styles.serviceCard}>
+                  <View style={styles.serviceInfo}>
+                    <Text style={styles.serviceName}>
+                      {service.data.item_data?.name ?? service.display_name}
+                    </Text>
+                    <View style={styles.serviceMeta}>
+                      {duration != null && (
+                        <View style={styles.metaItem}>
+                          <MaterialIcons name="schedule" size={14} color={colors.neutralVariant} />
+                          <Text style={styles.metaText}>{formatDuration(duration)}</Text>
+                        </View>
+                      )}
+                      {price?.amount != null && (
+                        <View style={styles.metaItem}>
+                          <Text style={styles.priceText}>
+                            {formatPrice(price.amount, price.currency)}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                    {service.data.item_data?.description && (
+                      <Text style={styles.serviceDesc} numberOfLines={2}>
+                        {service.data.item_data.description}
+                      </Text>
                     )}
                   </View>
-                  {service.data.item_data?.description && (
-                    <Text style={styles.serviceDesc} numberOfLines={2}>
-                      {service.data.item_data.description}
-                    </Text>
-                  )}
+                  <Pressable
+                    style={styles.bookBtn}
+                    onPress={() => setSelectedService(service)}
+                  >
+                    <Text style={styles.bookBtnText}>Book</Text>
+                  </Pressable>
                 </View>
-                <Pressable
-                  style={styles.bookBtn}
-                  onPress={() => setSelectedService(service)}
-                >
-                  <Text style={styles.bookBtnText}>Book</Text>
-                </Pressable>
               </View>
             );
           })}
@@ -133,13 +138,13 @@ const createStyles = (colors: ThemeColors) =>
       color: colors.neutralVariant,
       marginBottom: spacing.xxl,
     },
-    serviceList: {
+    serviceGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
       gap: spacing.md,
     },
     serviceCard: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flex: 1,
       backgroundColor: colors.surface,
       borderWidth: 1,
       borderColor: colors.outlineVariant,
@@ -185,9 +190,9 @@ const createStyles = (colors: ThemeColors) =>
     },
     bookBtn: {
       backgroundColor: colors.primary,
-      paddingHorizontal: spacing.xl,
       paddingVertical: spacing.sm + 2,
       borderRadius: radii.sm,
+      alignItems: 'center',
     },
     bookBtnText: {
       fontFamily: fonts.sansMedium,

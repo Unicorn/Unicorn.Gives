@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { toHref } from '@/lib/navigation';
-import { useTheme, fonts, fontSize, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, shadows, breakpoints, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 interface Guide {
   id: string;
@@ -30,8 +31,10 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export default function GuidesIndex() {
   const { colors } = useTheme();
+  const { width } = useHydratedDimensions();
   const [guides, setGuides] = useState<Guide[]>([]);
   const [filter, setFilter] = useState<string | null>(null);
+  const columns = width >= breakpoints.desktop ? 3 : width >= breakpoints.tablet ? 2 : 1;
 
   useEffect(() => {
     supabase
@@ -79,20 +82,24 @@ export default function GuidesIndex() {
 
       <Text style={styles.count}>{filtered.length} guides</Text>
 
-      {filtered.map(g => (
-        <Link key={g.id} href={toHref(`/guides/${g.slug}`)} asChild>
-          <AnimatedPressable variant="card" style={styles.card}>
-            {g.icon && <Text style={styles.icon}>{g.icon}</Text>}
-            <View style={styles.cardBody}>
-              <Text style={styles.title}>{g.title}</Text>
-              <Text style={styles.desc} numberOfLines={2}>{g.description}</Text>
-              <Text style={styles.meta}>
-                {CATEGORY_LABELS[g.category] || g.category} · {g.jurisdiction}
-              </Text>
-            </View>
-          </AnimatedPressable>
-        </Link>
-      ))}
+      <View style={styles.grid}>
+        {filtered.map(g => (
+          <View key={g.id} style={{ width: columns === 1 ? '100%' : `${(100 - (columns - 1) * 1.5) / columns}%` as any }}>
+            <Link href={toHref(`/guides/${g.slug}`)} asChild>
+              <AnimatedPressable variant="card" style={styles.card}>
+                {g.icon && <Text style={styles.icon}>{g.icon}</Text>}
+                <View style={styles.cardBody}>
+                  <Text style={styles.title}>{g.title}</Text>
+                  <Text style={styles.desc} numberOfLines={2}>{g.description}</Text>
+                  <Text style={styles.meta}>
+                    {CATEGORY_LABELS[g.category] || g.category} · {g.jurisdiction}
+                  </Text>
+                </View>
+              </AnimatedPressable>
+            </Link>
+          </View>
+        ))}
+      </View>
 
       {guides.length === 0 && (
         <Text style={styles.empty}>Loading guides...</Text>
@@ -113,7 +120,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
   chipText: { fontFamily: fonts.sansMedium, fontSize: fontSize.sm + 1, color: colors.neutral },
   chipTextActive: { color: colors.background },
   count: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, color: colors.neutralVariant, marginBottom: spacing.md },
-  card: { flexDirection: 'row', borderRadius: radii.md, padding: spacing.lg, marginBottom: spacing.sm + 2, backgroundColor: colors.surface, ...shadows.card, gap: spacing.md, alignItems: 'flex-start' },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
+  card: { flexDirection: 'row', borderRadius: radii.md, padding: spacing.lg, backgroundColor: colors.surface, ...shadows.card, gap: spacing.md, alignItems: 'flex-start' },
   icon: { fontSize: fontSize['4xl'] },
   cardBody: { flex: 1 },
   title: { fontFamily: fonts.sansBold, fontSize: fontSize.lg, color: colors.neutral, marginBottom: spacing.xs },
