@@ -1,7 +1,8 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { toHref } from '@/lib/navigation';
-import { useTheme, fonts, fontSize, spacing } from '@/constants/theme';
+import { useTheme, breakpoints, fonts, fontSize, spacing } from '@/constants/theme';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 export interface BreadcrumbItem {
   label: string;
@@ -10,12 +11,15 @@ export interface BreadcrumbItem {
 
 export function AppBreadcrumbBar({ items }: { items: BreadcrumbItem[] }) {
   const { colors } = useTheme();
+  const { width } = useHydratedDimensions();
+  const isTablet = width >= breakpoints.tablet;
+  const isDesktop = width >= breakpoints.desktop;
 
   if (!items.length) return null;
 
   return (
     <View style={[styles.wrap, { backgroundColor: colors.surface, borderBottomColor: colors.outlineVariant }]}>
-      <View style={styles.inner}>
+      <View style={[styles.inner, isTablet && styles.innerTablet, isDesktop && styles.innerDesktop]}>
         <View style={styles.row}>
           {items.map((crumb, i) => {
             const isLast = i === items.length - 1;
@@ -48,11 +52,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   inner: {
-    maxWidth: 1100,
     width: '100%',
-    alignSelf: 'center',
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
+  },
+  innerTablet: {
+    maxWidth: 960,
+    alignSelf: 'center',
+    paddingHorizontal: 24,
+  },
+  innerDesktop: {
+    maxWidth: 1100,
+    alignSelf: 'center',
+    paddingHorizontal: 28,
   },
   row: {
     flexDirection: 'row',

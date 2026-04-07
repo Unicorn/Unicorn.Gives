@@ -6,9 +6,9 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 import {
-  fetchMunicipalDocumentsForRegion,
-  type MunicipalDocumentRow,
-} from '@/lib/municipal/municipalDocuments';
+  fetchResourceSubpages,
+  type ResourcePageRow,
+} from '@/lib/municipal/resourcePages';
 import { useTheme, fonts, fontSize, spacing, letterSpacing, radii, shadows } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
 import { BentoSection } from '@/components/layout/BentoSection';
@@ -36,7 +36,7 @@ export function MunicipalHub() {
   const { region, isLoading } = useRegion(municipalitySlug);
   const [stats, setStats] = useState({ minutes: 0, ordinances: 0, contacts: 0, events: 0 });
   const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEvent[]>([]);
-  const [municipalDocs, setMunicipalDocs] = useState<MunicipalDocumentRow[]>([]);
+  const [resourcePages, setResourcePages] = useState<ResourcePageRow[]>([]);
 
   useEffect(() => {
     if (!region) return;
@@ -62,7 +62,7 @@ export function MunicipalHub() {
         if (data) setUpcomingEvents(data);
       });
 
-    fetchMunicipalDocumentsForRegion(region.id).then(setMunicipalDocs);
+    fetchResourceSubpages(region.id).then(setResourcePages);
   }, [region]);
 
   if (isLoading) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Loading...</Text></View>;
@@ -121,17 +121,13 @@ export function MunicipalHub() {
     },
   ];
 
-  function iconForMunicipalDoc(kind: MunicipalDocumentRow['kind']): keyof typeof MaterialIcons.glyphMap {
-    switch (kind) {
-      case 'master_plan':
-        return 'architecture';
-      case 'recreation_plan':
-        return 'park';
-      case 'zoning_ordinance':
-        return 'map';
-      default:
-        return 'description';
-    }
+  function iconForResourcePage(slug: string): keyof typeof MaterialIcons.glyphMap {
+    if (slug.includes('master-plan')) return 'architecture';
+    if (slug.includes('recreation')) return 'park';
+    if (slug.includes('zoning')) return 'map';
+    if (slug.includes('budget') || slug.includes('financial')) return 'account-balance';
+    if (slug.includes('meeting') || slug.includes('minutes')) return 'groups';
+    return 'description';
   }
 
   /* ── Stats badges ───────────────────────────── */
@@ -218,21 +214,23 @@ export function MunicipalHub() {
         </View>
       )}
 
-      {/* ── 4. Planning Documents (region-scoped from DB) ── */}
-      {municipalDocs.length > 0 && (
+      {/* ── 4. Resources ────────────────────────── */}
+      {(resourcePages.length > 0 || region.website) && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionEyebrow, { color: colors.neutralVariant }]}>
-              OFFICIAL DOCUMENTS
+              RESOURCES
             </Text>
             <Text style={[styles.sectionTitle, { color: colors.neutral }]}>
-              Planning & Zoning
+              Documents & Links
             </Text>
           </View>
-          {municipalDocs.map((doc) => {
-            const icon = iconForMunicipalDoc(doc.kind);
+
+          {/* Resource page cards */}
+          {resourcePages.map((page) => {
+            const icon = iconForResourcePage(page.slug);
             return (
-              <Link key={doc.id} href={toHref(`${basePath}/documents/${doc.slug}`)} asChild>
+              <Link key={page.id} href={toHref(`${basePath}/resources/${page.slug}`)} asChild>
                 <AnimatedPressable
                   variant="card"
                   style={StyleSheet.flatten([styles.docCard, { backgroundColor: colors.surface }, shadows.cardElevated])}
@@ -241,40 +239,53 @@ export function MunicipalHub() {
                     <MaterialIcons name={icon} size={24} color={colors.primary} />
                   </View>
                   <View style={styles.docText}>
-                    <Text style={[styles.docTitle, { color: colors.neutral }]}>{doc.title}</Text>
-                    <Text style={[styles.docSubtitle, { color: colors.neutralVariant }]}>
-                      Adopted {doc.adopted_date}
-                    </Text>
+                    <Text style={[styles.docTitle, { color: colors.neutral }]}>{page.title}</Text>
+                    {page.description ? (
+                      <Text style={[styles.docSubtitle, { color: colors.neutralVariant }]} numberOfLines={1}>
+                        {page.description}
+                      </Text>
+                    ) : null}
                   </View>
                   <MaterialIcons name="chevron-right" size={22} color={colors.neutralVariant} />
                 </AnimatedPressable>
               </Link>
             );
           })}
+
+          {/* External resource links */}
+          {region.website && (
+            <AnimatedPressable
+              variant="card"
+              onPress={() => Linking.openURL(region.website!)}
+              style={StyleSheet.flatten([styles.docCard, { backgroundColor: colors.surface }, shadows.cardElevated])}
+            >
+              <View style={[styles.docIconBox, { backgroundColor: colors.surfaceContainer }]}>
+                <MaterialIcons name="language" size={24} color={colors.primary} />
+              </View>
+              <View style={styles.docText}>
+                <Text style={[styles.docTitle, { color: colors.neutral }]}>Official Website</Text>
+                <Text style={[styles.docSubtitle, { color: colors.neutralVariant }]} numberOfLines={1}>
+                  {region.website.replace(/^https?:\/\//, '')}
+                </Text>
+              </View>
+              <MaterialIcons name="open-in-new" size={18} color={colors.neutralVariant} />
+            </AnimatedPressable>
+          )}
+
+          {/* See all resources link */}
+          {resourcePages.length > 0 && (
+            <Link href={toHref(`${basePath}/resources`)} asChild>
+              <AnimatedPressable style={StyleSheet.flatten(styles.seeAllRow)}>
+                <Text style={[styles.seeAllText, { color: colors.primary }]}>
+                  See all resources
+                </Text>
+                <MaterialIcons name="arrow-forward" size={16} color={colors.primary} />
+              </AnimatedPressable>
+            </Link>
+          )}
         </View>
       )}
 
-      {/* ── 5. Visit Website CTA ──────────────── */}
-      {region.website && (
-        <View style={styles.section}>
-          <AnimatedPressable
-            variant="card"
-            onPress={() => Linking.openURL(region.website!)}
-            style={[styles.ctaCard, { backgroundColor: colors.primaryContainer }]}
-          >
-            <MaterialIcons name="language" size={28} color={colors.primary} />
-            <View style={styles.ctaText}>
-              <Text style={[styles.ctaTitle, { color: colors.neutral }]}>
-                Visit Official Website
-              </Text>
-              <Text style={[styles.ctaSubtitle, { color: colors.neutralVariant }]} numberOfLines={1}>
-                {region.website.replace(/^https?:\/\//, '')}
-              </Text>
-            </View>
-            <MaterialIcons name="open-in-new" size={18} color={colors.primary} />
-          </AnimatedPressable>
-        </View>
-      )}
       </Container>
     </Wrapper>
   );
@@ -387,24 +398,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
-  /* CTA card */
-  ctaCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: radii.md,
-    padding: spacing.xl,
-    gap: spacing.md,
-  },
-  ctaText: {
-    flex: 1,
-    gap: 2,
-  },
-  ctaTitle: {
-    fontFamily: fonts.sansBold,
-    fontSize: fontSize.base,
-  },
-  ctaSubtitle: {
-    fontFamily: fonts.sans,
-    fontSize: 13,
-  },
 });
