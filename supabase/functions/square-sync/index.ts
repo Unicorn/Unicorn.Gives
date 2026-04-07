@@ -135,32 +135,30 @@ Deno.serve(async (req) => {
         bookingsResult.errors.push(`Team members: ${teamRes.status}`);
       }
 
-      // 2. Fetch catalog items (services)
+      // 2. Fetch catalog items (services) + related categories in one call
       const catalogRes = await squareFetch(
-        '/v2/catalog/search',
+        '/v2/catalog/search-catalog-items',
         accessToken,
         {
           method: 'POST',
           body: JSON.stringify({
-            object_types: ['ITEM'],
-            query: {
-              exact_query: {
-                attribute_name: 'product_type',
-                attribute_value: 'APPOINTMENTS_SERVICE',
-              },
-            },
+            product_types: ['APPOINTMENTS_SERVICE'],
+            include_related_objects: true,
           }),
         },
       );
 
       if (catalogRes.ok) {
         const catalogData = await catalogRes.json() as {
-          objects?: Array<{
+          items?: Array<{
             id: string;
             type: string;
             item_data?: {
               name?: string;
               description?: string;
+              category_id?: string;
+              categories?: Array<{ id?: string; ordinal?: number }>;
+              reporting_category?: { id?: string };
               variations?: Array<{
                 id: string;
                 item_variation_data?: {
@@ -171,10 +169,15 @@ Deno.serve(async (req) => {
               }>;
             };
           }>;
+          related_objects?: Array<{
+            id: string;
+            type: string;
+            category_data?: { name?: string; parent_category?: { id?: string } };
+          }>;
         };
 
         let order = 0;
-        for (const item of catalogData.objects ?? []) {
+        for (const item of catalogData.items ?? []) {
           await admin.from('square_bookings_cache').upsert({
             partner_id: body.partner_id,
             data_type: 'service',
@@ -182,6 +185,58 @@ Deno.serve(async (req) => {
             data: item,
             display_name: item.item_data?.name ?? null,
             display_order: order++,
+            is_active: true,
+            synced_at: new Date().toISOString(),
+          }, { onConflict: 'partner_id,data_type,square_id' });
+          bookingsResult.synced++;
+        }
+
+        // Collect category IDs referenced by services (from related_objects or inline).
+        const categoryIds = new Set<string>();
+        for (const related of catalogData.related_objects ?? []) {
+          if (related.type === 'CATEGORY') categoryIds.add(related.id);
+        }
+        for (const item of catalogData.items ?? []) {
+          const idata = item.item_data;
+          if (idata?.category_id) categoryIds.add(idata.category_id);
+          if (idata?.reporting_category?.id) categoryIds.add(idata.reporting_category.id);
+          for (const c of idata?.categories ?? []) {
+            if (c.id) categoryIds.add(c.id);
+          }
+        }
+
+        // Fetch full category objects via batch-retrieve for accurate names.
+        let catalogCategories: Array<{ id: string; category_data?: { name?: string } }> = [];
+        if (categoryIds.size > 0) {
+          const catRes = await squareFetch(
+            '/v2/catalog/batch-retrieve',
+            accessToken,
+            {
+              method: 'POST',
+              body: JSON.stringify({ object_ids: Array.from(categoryIds) }),
+            },
+          );
+          if (catRes.ok) {
+            const catData = await catRes.json() as {
+              objects?: Array<{ id: string; type: string; category_data?: { name?: string } }>;
+            };
+            catalogCategories = (catData.objects ?? []).filter((o) => o.type === 'CATEGORY');
+          } else {
+            bookingsResult.errors.push(`Categories: ${catRes.status}`);
+          }
+        }
+
+        // Upsert categories into square_catalog_cache so the UI can resolve
+        // category IDs → names for grouping/filtering.
+        let catOrder = 0;
+        for (const cat of catalogCategories) {
+          await admin.from('square_catalog_cache').upsert({
+            partner_id: body.partner_id,
+            data_type: 'category',
+            square_id: cat.id,
+            data: cat,
+            display_name: cat.category_data?.name ?? null,
+            display_order: catOrder++,
             is_active: true,
             synced_at: new Date().toISOString(),
           }, { onConflict: 'partner_id,data_type,square_id' });
@@ -226,6 +281,74 @@ Deno.serve(async (req) => {
     }
 
     results.bookings = bookingsResult;
+  }
+
+  // ── Sync Subscription Plans ──
+  if (body.features.includes('subscriptions')) {
+    const subsResult = { synced: 0, errors: [] as string[] };
+
+    try {
+      // Fetch SUBSCRIPTION_PLAN catalog objects + variations.
+      const catalogRes = await squareFetch(
+        '/v2/catalog/list?types=SUBSCRIPTION_PLAN,SUBSCRIPTION_PLAN_VARIATION',
+        accessToken,
+      );
+
+      if (catalogRes.ok) {
+        const data = await catalogRes.json() as {
+          objects?: Array<{
+            id: string;
+            type: string;
+            subscription_plan_data?: {
+              name?: string;
+              subscription_plan_variations?: Array<{
+                id: string;
+                subscription_plan_variation_data?: {
+                  name?: string;
+                  phases?: Array<{
+                    cadence?: string;
+                    pricing?: { price?: { amount?: number; currency?: string } };
+                  }>;
+                };
+              }>;
+            };
+            subscription_plan_variation_data?: {
+              name?: string;
+              subscription_plan_id?: string;
+              phases?: Array<{
+                cadence?: string;
+                pricing?: { price?: { amount?: number; currency?: string } };
+              }>;
+            };
+          }>;
+        };
+
+        let order = 0;
+        for (const obj of data.objects ?? []) {
+          // Only store subscription plan variations — those are what checkout uses.
+          if (obj.type !== 'SUBSCRIPTION_PLAN_VARIATION') continue;
+
+          const displayName = obj.subscription_plan_variation_data?.name ?? null;
+          await admin.from('square_catalog_cache').upsert({
+            partner_id: body.partner_id,
+            data_type: 'subscription_plan',
+            square_id: obj.id,
+            data: obj,
+            display_name: displayName,
+            display_order: order++,
+            is_active: true,
+            synced_at: new Date().toISOString(),
+          }, { onConflict: 'partner_id,data_type,square_id' });
+          subsResult.synced++;
+        }
+      } else {
+        subsResult.errors.push(`Subscription plans: ${catalogRes.status}`);
+      }
+    } catch (e) {
+      subsResult.errors.push(e instanceof Error ? e.message : 'Unknown error');
+    }
+
+    results.subscriptions = subsResult;
   }
 
   // Update last synced timestamp

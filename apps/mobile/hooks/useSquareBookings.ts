@@ -16,16 +16,27 @@ export interface SquareService {
     item_data?: {
       name?: string;
       description?: string;
+      category_id?: string;
+      categories?: Array<{ id?: string; ordinal?: number }>;
+      reporting_category?: { id?: string };
       variations?: Array<{
         id: string;
         item_variation_data?: {
           name?: string;
           price_money?: { amount?: number; currency?: string };
           service_duration?: number; // milliseconds
+          available_for_booking?: boolean;
         };
       }>;
     };
   };
+}
+
+export interface SquareCategory {
+  id: string;
+  square_id: string;
+  display_name: string | null;
+  display_order: number;
 }
 
 export interface SquareTeamMember {
@@ -62,6 +73,7 @@ export interface BookingCustomer {
 export function useSquareServices(partnerId: string | undefined) {
   const [services, setServices] = useState<SquareService[]>([]);
   const [teamMembers, setTeamMembers] = useState<SquareTeamMember[]>([]);
+  const [categories, setCategories] = useState<SquareCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -70,7 +82,7 @@ export function useSquareServices(partnerId: string | undefined) {
     async function load() {
       setLoading(true);
 
-      const [servicesRes, teamRes] = await Promise.all([
+      const [servicesRes, teamRes, catRes] = await Promise.all([
         supabase
           .from('square_bookings_cache')
           .select('id, square_id, display_name, display_order, data')
@@ -84,17 +96,25 @@ export function useSquareServices(partnerId: string | undefined) {
           .eq('partner_id', partnerId!)
           .eq('data_type', 'team_member')
           .eq('is_active', true),
+        supabase
+          .from('square_catalog_cache')
+          .select('id, square_id, display_name, display_order')
+          .eq('partner_id', partnerId!)
+          .eq('data_type', 'category')
+          .eq('is_active', true)
+          .order('display_order'),
       ]);
 
       setServices((servicesRes.data ?? []) as SquareService[]);
       setTeamMembers((teamRes.data ?? []) as SquareTeamMember[]);
+      setCategories((catRes.data ?? []) as SquareCategory[]);
       setLoading(false);
     }
 
     load();
   }, [partnerId]);
 
-  return { services, teamMembers, loading };
+  return { services, teamMembers, categories, loading };
 }
 
 /* ── useSquareAvailability ── */
@@ -197,6 +217,99 @@ export function useCreateBooking(partnerId: string | undefined) {
   }, [partnerId]);
 
   return { create, loading, error, booking };
+}
+
+/* ── Subscription plans ── */
+
+export interface SquareSubscriptionPlan {
+  id: string;
+  square_id: string;
+  display_name: string | null;
+  display_order: number;
+  data: {
+    id: string;
+    subscription_plan_variation_data?: {
+      name?: string;
+      subscription_plan_id?: string;
+      phases?: Array<{
+        cadence?: string;
+        pricing?: { price?: { amount?: number; currency?: string } };
+      }>;
+    };
+  };
+}
+
+export function useSquareSubscriptionPlans(partnerId: string | undefined) {
+  const [plans, setPlans] = useState<SquareSubscriptionPlan[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!partnerId) { setLoading(false); return; }
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      const { data } = await supabase
+        .from('square_catalog_cache')
+        .select('id, square_id, display_name, display_order, data')
+        .eq('partner_id', partnerId)
+        .eq('data_type', 'subscription_plan')
+        .eq('is_active', true)
+        .order('display_order');
+      if (!cancelled) {
+        setPlans((data ?? []) as SquareSubscriptionPlan[]);
+        setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [partnerId]);
+
+  return { plans, loading };
+}
+
+export function useCreateSubscriptionCheckout(partnerId: string | undefined) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const create = useCallback(async (params: {
+    plan_variation_id: string;
+    tier?: 'individual' | 'couple' | 'family';
+    customer: {
+      given_name: string;
+      family_name?: string;
+      email_address: string;
+      phone_number?: string;
+    };
+    redirect_url?: string;
+  }): Promise<{ checkout_url: string } | null> => {
+    if (!partnerId) return null;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(`${supabaseUrl}/functions/v1/square-subscriptions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create_checkout',
+          partner_id: partnerId,
+          ...params,
+        }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error((errData as { error?: string }).error ?? 'Failed to create checkout');
+      }
+      const data = await res.json() as { checkout_url: string };
+      return data;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to create checkout';
+      setError(msg);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, [partnerId]);
+
+  return { create, loading, error };
 }
 
 /* ── useSquareFeatureConfig (public read) ── */
