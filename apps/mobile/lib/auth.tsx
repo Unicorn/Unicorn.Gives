@@ -66,23 +66,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Use onAuthStateChange for everything — it fires INITIAL_SESSION on mount,
     // which replaces the need for a separate getSession() + init() call.
-    const { data: subscriptionData } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
+    const { data: subscriptionData } = supabase.auth.onAuthStateChange((event, nextSession) => {
       if (cancelled) return;
 
       const nextUser = nextSession?.user ?? null;
       setSession(nextSession ?? null);
       setUser(nextUser);
 
-      // Silent refresh: keep profile and don't flip global loading (avoids admin UI freeze).
-      if (event === 'TOKEN_REFRESHED' && initialDone) {
+      // After initial load, never flip global loading back on. Events like
+      // SIGNED_IN (fired on tab refocus) and TOKEN_REFRESHED must be silent —
+      // otherwise RequireAdmin unmounts the admin tree and the dashboard
+      // re-enters its own loading state.
+      if (initialDone) {
         if (!nextUser) setProfile(null);
-        setLoading(false);
         return;
       }
-
-      // Only set loading=true on subsequent auth changes, not the initial one
-      // (loading is already true from useState default)
-      if (initialDone) setLoading(true);
 
       if (!nextUser) {
         setProfile(null);
@@ -91,15 +89,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const nextProfile = await fetchProfileForUser(nextUser);
-      if (cancelled) {
+      // IMPORTANT: do NOT await inside the onAuthStateChange callback —
+      // supabase-js holds the auth lock for the duration of the callback,
+      // which deadlocks any concurrent supabase queries (e.g. the admin
+      // dashboard's data fetch) after a tab visibility change.
+      fetchProfileForUser(nextUser).then((nextProfile) => {
+        if (cancelled) return;
+        setProfile(nextProfile);
         setLoading(false);
-        return;
-      }
-
-      setProfile(nextProfile);
-      setLoading(false);
-      initialDone = true;
+        initialDone = true;
+      });
     });
 
     return () => {
