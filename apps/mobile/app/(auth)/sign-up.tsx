@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { supabase } from '@/lib/supabase';
@@ -9,6 +9,7 @@ import { Button } from '@/components/ui';
 
 export default function SignUpScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams<{ redirect?: string }>();
   const { colors } = useTheme();
 
   const [email, setEmail] = useState('');
@@ -26,7 +27,10 @@ export default function SignUpScreen() {
       });
 
       if (res.error) throw res.error;
-      router.replace('/sign-in');
+      const next = params.redirect
+        ? `/sign-in?redirect=${encodeURIComponent(params.redirect)}`
+        : '/sign-in';
+      router.replace(next as any);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Sign-up failed.');
     } finally {
@@ -78,7 +82,7 @@ export default function SignUpScreen() {
         <Button
           label="Back to sign-in"
           variant="ghost"
-          onPress={() => router.replace('/sign-in')}
+          onPress={() => router.replace((params.redirect ? `/sign-in?redirect=${encodeURIComponent(params.redirect)}` : '/sign-in') as any)}
           size="lg"
           disabled={submitting}
         />

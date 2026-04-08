@@ -19,3 +19,9 @@ verify_jwt = false
 
 [functions.square-subscriptions]
 verify_jwt = false
+
+[functions.square-account]
+verify_jwt = false
+
+[functions.square-reconcile]
+verify_jwt = false

@@ -12,6 +12,7 @@ export default function UserLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="profile" />
         <Stack.Screen name="settings" />
+        <Stack.Screen name="account" />
       </Stack>
     </RequireAuth>
   );

@@ -25,6 +25,12 @@ export default function UserIndexScreen() {
 
   const rows: { label: string; description: string; href: Href; icon: keyof typeof MaterialIcons.glyphMap }[] = [
     {
+      label: 'Memberships & bookings',
+      description: 'View and manage your Square subscriptions',
+      href: routes.user.account(),
+      icon: 'card-membership',
+    },
+    {
       label: 'Profile',
       description: 'Name, email, and avatar',
       href: routes.user.profile(),

@@ -28,6 +28,9 @@ export const paths = {
 		index: "/user",
 		profile: "/user/profile",
 		settings: "/user/settings",
+		account: "/user/account",
+		subscriptions: "/user/account/subscriptions",
+		bookings: "/user/account/bookings",
 	},
 	history: { index: "/home/history" },
 	community: {
@@ -90,6 +93,9 @@ export const routes = {
 		index: () => toHref(paths.user.index),
 		profile: () => toHref(paths.user.profile),
 		settings: () => toHref(paths.user.settings),
+		account: () => toHref(paths.user.account),
+		subscriptions: () => toHref(paths.user.subscriptions),
+		bookings: () => toHref(paths.user.bookings),
 	},
 	history: {
 		index: () => toHref(paths.history.index),

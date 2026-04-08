@@ -273,21 +273,24 @@ export function useCreateSubscriptionCheckout(partnerId: string | undefined) {
   const create = useCallback(async (params: {
     plan_variation_id: string;
     tier?: 'individual' | 'couple' | 'family';
-    customer: {
-      given_name: string;
-      family_name?: string;
-      email_address: string;
-      phone_number?: string;
-    };
     redirect_url?: string;
   }): Promise<{ checkout_url: string } | null> => {
     if (!partnerId) return null;
     setLoading(true);
     setError(null);
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (!token) {
+        setError('Sign in required');
+        return null;
+      }
       const res = await fetch(`${supabaseUrl}/functions/v1/square-subscriptions`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           action: 'create_checkout',
           partner_id: partnerId,

@@ -27,6 +27,17 @@ const SUBSCRIPTION_EVENTS = new Set([
   'subscription.canceled',
 ]);
 
+const CUSTOMER_EVENTS = new Set([
+  'customer.created',
+  'customer.updated',
+]);
+
+const INVOICE_EVENTS = new Set([
+  'invoice.payment_made',
+  'invoice.scheduled_charge_failed',
+  'invoice.updated',
+]);
+
 function mapSquareSubscriptionStatus(status: string | undefined): string {
   switch (status) {
     case 'ACTIVE':
@@ -142,10 +153,56 @@ Deno.serve(async (req) => {
     processed: false,
   });
 
+  // Helper: resolve user_id from a Square customer id for this partner.
+  async function resolveUserId(customerId: string | undefined): Promise<string | null> {
+    if (!customerId || !partnerId) return null;
+    const { data } = await admin
+      .from('square_customers')
+      .select('user_id')
+      .eq('partner_id', partnerId)
+      .eq('square_customer_id', customerId)
+      .maybeSingle();
+    return data?.user_id ?? null;
+  }
+
   // Process event
   try {
+    if (partnerId && CUSTOMER_EVENTS.has(eventType)) {
+      const customer = event.data?.object?.customer as {
+        id?: string;
+        email_address?: string;
+        given_name?: string;
+        family_name?: string;
+        reference_id?: string;
+      } | undefined;
+
+      if (customer?.id) {
+        // Prefer existing user_id mapping; fall back to reference_id (we set this on create).
+        const { data: existing } = await admin
+          .from('square_customers')
+          .select('user_id')
+          .eq('partner_id', partnerId)
+          .eq('square_customer_id', customer.id)
+          .maybeSingle();
+
+        const userId = existing?.user_id ?? customer.reference_id ?? null;
+
+        if (userId) {
+          await admin.from('square_customers').upsert({
+            user_id: userId,
+            partner_id: partnerId,
+            square_customer_id: customer.id,
+            email: customer.email_address ?? null,
+            given_name: customer.given_name ?? null,
+            family_name: customer.family_name ?? null,
+            raw: customer,
+            synced_at: new Date().toISOString(),
+          }, { onConflict: 'partner_id,square_customer_id' });
+        }
+      }
+    }
+
     if (partnerId && SUBSCRIPTION_EVENTS.has(eventType)) {
-      // Upsert the subscription row so admins can see status in real time.
       const sub = event.data?.object?.subscription as {
         id?: string;
         customer_id?: string;
@@ -153,20 +210,69 @@ Deno.serve(async (req) => {
         status?: string;
         start_date?: string;
         canceled_date?: string;
+        charged_through_date?: string;
+        canceled_at_period_end?: boolean;
       } | undefined;
 
       if (sub?.id) {
+        const userId = await resolveUserId(sub.customer_id);
         await admin.from('square_subscriptions').upsert({
           partner_id: partnerId,
+          user_id: userId,
           square_subscription_id: sub.id,
           square_customer_id: sub.customer_id ?? null,
           plan_variation_id: sub.plan_variation_id ?? null,
           status: mapSquareSubscriptionStatus(sub.status),
           started_at: sub.start_date ?? null,
           canceled_at: sub.canceled_date ?? null,
+          current_period_end: sub.charged_through_date ?? null,
+          cancel_at_period_end: sub.canceled_at_period_end ?? false,
           raw: event.data?.object ?? {},
           updated_at: new Date().toISOString(),
         }, { onConflict: 'square_subscription_id' });
+      }
+    }
+
+    if (partnerId && INVOICE_EVENTS.has(eventType)) {
+      const invoice = event.data?.object?.invoice as {
+        subscription_id?: string;
+        next_payment_amount_money?: { amount?: number };
+        scheduled_at?: string;
+      } | undefined;
+      if (invoice?.subscription_id && invoice.scheduled_at) {
+        await admin.from('square_subscriptions')
+          .update({ next_billing_at: invoice.scheduled_at, updated_at: new Date().toISOString() })
+          .eq('square_subscription_id', invoice.subscription_id);
+      }
+    }
+
+    if (partnerId && BOOKING_EVENTS.has(eventType)) {
+      const booking = event.data?.object?.booking as {
+        id?: string;
+        customer_id?: string;
+        start_at?: string;
+        status?: string;
+        appointment_segments?: Array<{
+          service_variation_id?: string;
+          team_member_id?: string;
+        }>;
+      } | undefined;
+      if (booking?.id) {
+        const userId = await resolveUserId(booking.customer_id);
+        const segment = booking.appointment_segments?.[0];
+        await admin.from('square_bookings').upsert({
+          partner_id: partnerId,
+          user_id: userId,
+          square_booking_id: booking.id,
+          square_customer_id: booking.customer_id ?? null,
+          start_at: booking.start_at ?? null,
+          status: booking.status ?? null,
+          service_variation_id: segment?.service_variation_id ?? null,
+          team_member_id: segment?.team_member_id ?? null,
+          raw: event.data?.object ?? {},
+          synced_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'square_booking_id' });
       }
     }
 

@@ -10,10 +10,9 @@ import {
   Pressable,
   ActivityIndicator,
   StyleSheet,
-  Modal,
-  TextInput,
   Linking,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import {
   useTheme,
   fonts,
@@ -29,6 +28,7 @@ import {
   type SquareSubscriptionPlan,
 } from '@/hooks/useSquareBookings';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
+import { useAuth } from '@/lib/auth';
 
 interface SubscriptionsSectionProps {
   partnerId: string;
@@ -63,11 +63,33 @@ function tierDescription(tier: string | undefined): string {
 
 export function SubscriptionsSection({ partnerId }: SubscriptionsSectionProps) {
   const { colors } = useTheme();
+  const router = useRouter();
   const { width } = useHydratedDimensions();
   const columns = width >= breakpoints.desktop ? 3 : width >= breakpoints.tablet ? 2 : 1;
   const styles = useMemo(() => createStyles(colors), [colors]);
   const { plans, loading } = useSquareSubscriptionPlans(partnerId);
-  const [selected, setSelected] = useState<SquareSubscriptionPlan | null>(null);
+  const { user } = useAuth();
+  const { create, loading: checkoutLoading, error: checkoutError } = useCreateSubscriptionCheckout(partnerId);
+  const [pendingPlanId, setPendingPlanId] = useState<string | null>(null);
+
+  async function handleJoin(plan: SquareSubscriptionPlan) {
+    const name = plan.data.subscription_plan_variation_data?.name ?? plan.display_name ?? '';
+    const tier = inferTier(name);
+    if (!user) {
+      const redirect = `/partners?join=${encodeURIComponent(plan.square_id)}`;
+      router.push(`/sign-in?redirect=${encodeURIComponent(redirect)}` as any);
+      return;
+    }
+    setPendingPlanId(plan.square_id);
+    try {
+      const result = await create({ plan_variation_id: plan.square_id, tier });
+      if (result?.checkout_url) {
+        Linking.openURL(result.checkout_url);
+      }
+    } finally {
+      setPendingPlanId(null);
+    }
+  }
 
   if (loading) {
     return (
@@ -111,120 +133,25 @@ export function SubscriptionsSection({ partnerId }: SubscriptionsSectionProps) {
                   {tierDescription(tier) ? (
                     <Text style={styles.desc}>{tierDescription(tier)}</Text>
                   ) : null}
-                  <Pressable style={styles.joinBtn} onPress={() => setSelected(plan)}>
-                    <Text style={styles.joinBtnText}>Join</Text>
+                  <Pressable
+                    style={styles.joinBtn}
+                    onPress={() => handleJoin(plan)}
+                    disabled={checkoutLoading && pendingPlanId === plan.square_id}
+                  >
+                    {checkoutLoading && pendingPlanId === plan.square_id ? (
+                      <ActivityIndicator color={colors.onPrimary} />
+                    ) : (
+                      <Text style={styles.joinBtnText}>{user ? 'Join' : 'Sign in to join'}</Text>
+                    )}
                   </Pressable>
                 </View>
               </View>
             );
           })}
         </View>
+        {checkoutError && <Text style={styles.error}>{checkoutError}</Text>}
       </View>
-
-      {selected && (
-        <SubscriptionCheckoutModal
-          partnerId={partnerId}
-          plan={selected}
-          onClose={() => setSelected(null)}
-        />
-      )}
     </View>
-  );
-}
-
-/* ── Checkout modal ── */
-
-interface ModalProps {
-  partnerId: string;
-  plan: SquareSubscriptionPlan;
-  onClose: () => void;
-}
-
-function SubscriptionCheckoutModal({ partnerId, plan, onClose }: ModalProps) {
-  const { colors } = useTheme();
-  const styles = useMemo(() => createModalStyles(colors), [colors]);
-  const { create, loading, error } = useCreateSubscriptionCheckout(partnerId);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-
-  const planName = plan.data.subscription_plan_variation_data?.name ?? plan.display_name ?? 'Membership';
-  const tier = inferTier(planName);
-
-  async function handleSubmit() {
-    if (!firstName.trim() || !email.trim()) return;
-    const result = await create({
-      plan_variation_id: plan.square_id,
-      tier,
-      customer: {
-        given_name: firstName.trim(),
-        family_name: lastName.trim() || undefined,
-        email_address: email.trim(),
-      },
-    });
-    if (result?.checkout_url) {
-      Linking.openURL(result.checkout_url);
-      onClose();
-    }
-  }
-
-  const canSubmit = firstName.trim().length > 0 && email.trim().length > 0 && !loading;
-
-  return (
-    <Modal transparent animationType="fade" onRequestClose={onClose}>
-      <View style={styles.backdrop}>
-        <View style={styles.panel}>
-          <Text style={styles.title}>Join: {planName}</Text>
-          <Text style={styles.subtitle}>Enter your details to continue to secure checkout.</Text>
-
-          <TextInput
-            style={styles.input}
-            placeholder="First name"
-            placeholderTextColor={colors.neutralVariant}
-            value={firstName}
-            onChangeText={setFirstName}
-            autoComplete="given-name"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Last name (optional)"
-            placeholderTextColor={colors.neutralVariant}
-            value={lastName}
-            onChangeText={setLastName}
-            autoComplete="family-name"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor={colors.neutralVariant}
-            value={email}
-            onChangeText={setEmail}
-            autoComplete="email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-
-          {error && <Text style={styles.error}>{error}</Text>}
-
-          <View style={styles.actions}>
-            <Pressable style={styles.cancelBtn} onPress={onClose} disabled={loading}>
-              <Text style={styles.cancelBtnText}>Cancel</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.submitBtn, !canSubmit && styles.submitBtnDisabled]}
-              onPress={handleSubmit}
-              disabled={!canSubmit}
-            >
-              {loading ? (
-                <ActivityIndicator color={colors.onPrimary} />
-              ) : (
-                <Text style={styles.submitBtnText}>Continue to payment</Text>
-              )}
-            </Pressable>
-          </View>
-        </View>
-      </View>
-    </Modal>
   );
 }
 
@@ -305,79 +232,10 @@ const createStyles = (colors: ThemeColors) =>
       fontSize: fontSize.md,
       color: colors.onPrimary,
     },
-  });
-
-const createModalStyles = (colors: ThemeColors) =>
-  StyleSheet.create({
-    backdrop: {
-      flex: 1,
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: spacing.lg,
-    },
-    panel: {
-      width: '100%' as any,
-      maxWidth: 440,
-      backgroundColor: colors.surface,
-      borderRadius: radii.md,
-      padding: spacing.xl,
-      gap: spacing.md,
-    },
-    title: {
-      fontFamily: fonts.sansBold,
-      fontSize: fontSize.xl,
-      color: colors.neutral,
-    },
-    subtitle: {
-      fontFamily: fonts.sans,
-      fontSize: fontSize.sm,
-      color: colors.neutralVariant,
-    },
-    input: {
-      borderWidth: 1,
-      borderColor: colors.outlineVariant,
-      borderRadius: radii.sm,
-      paddingHorizontal: spacing.md,
-      paddingVertical: spacing.sm + 2,
-      fontFamily: fonts.sans,
-      fontSize: fontSize.md,
-      color: colors.neutral,
-      backgroundColor: colors.surfaceContainer,
-    },
     error: {
       fontFamily: fonts.sans,
       fontSize: fontSize.sm,
       color: colors.error,
-    },
-    actions: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      gap: spacing.sm,
-      marginTop: spacing.sm,
-    },
-    cancelBtn: {
-      paddingVertical: spacing.sm + 2,
-      paddingHorizontal: spacing.lg,
-      borderRadius: radii.sm,
-    },
-    cancelBtnText: {
-      fontFamily: fonts.sansMedium,
-      fontSize: fontSize.md,
-      color: colors.neutralVariant,
-    },
-    submitBtn: {
-      backgroundColor: colors.primary,
-      paddingVertical: spacing.sm + 2,
-      paddingHorizontal: spacing.lg,
-      borderRadius: radii.sm,
-    },
-    submitBtnDisabled: {
-      opacity: 0.5,
-    },
-    submitBtnText: {
-      fontFamily: fonts.sansBold,
-      fontSize: fontSize.md,
-      color: colors.onPrimary,
+      marginTop: spacing.md,
     },
   });

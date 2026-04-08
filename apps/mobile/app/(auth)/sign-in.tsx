@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { supabase } from '@/lib/supabase';
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui';
 
 export default function SignInScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams<{ redirect?: string }>();
   const { user, role, loading } = useAuth();
   const { colors } = useTheme();
 
@@ -21,9 +22,13 @@ export default function SignInScreen() {
   useEffect(() => {
     if (loading) return;
     if (!user) return;
+    if (params.redirect) {
+      router.replace(params.redirect as any);
+      return;
+    }
     if (role === 'super_admin') router.replace('/admin');
     else router.replace('/' as any);
-  }, [loading, role, user, router]);
+  }, [loading, role, user, router, params.redirect]);
 
   async function onSignIn() {
     setError(null);
@@ -86,7 +91,7 @@ export default function SignInScreen() {
         <Button
           label="Create an account"
           variant="ghost"
-          onPress={() => router.replace('/sign-up')}
+          onPress={() => router.replace((params.redirect ? `/sign-up?redirect=${encodeURIComponent(params.redirect)}` : '/sign-up') as any)}
           size="lg"
           disabled={submitting}
         />
