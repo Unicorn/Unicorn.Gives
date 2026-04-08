@@ -9,6 +9,8 @@ import {
   fetchResourceSubpages,
   type ResourcePageRow,
 } from '@/lib/municipal/resourcePages';
+import { fetchRegionLanding, type RegionLandingPage } from '@/lib/municipal/regionLanding';
+import { RegionLandingRenderer } from './RegionLandingRenderer';
 import { useTheme, fonts, fontSize, spacing, letterSpacing, radii, shadows } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
 import { BentoSection } from '@/components/layout/BentoSection';
@@ -37,9 +39,14 @@ export function MunicipalHub() {
   const [stats, setStats] = useState({ minutes: 0, ordinances: 0, contacts: 0, events: 0 });
   const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEvent[]>([]);
   const [resourcePages, setResourcePages] = useState<ResourcePageRow[]>([]);
+  const [landing, setLanding] = useState<RegionLandingPage | null>(null);
+  const [landingChecked, setLandingChecked] = useState(false);
 
   useEffect(() => {
     if (!region) return;
+    fetchRegionLanding(region.id)
+      .then(setLanding)
+      .finally(() => setLandingChecked(true));
     Promise.all([
       supabase.from('minutes').select('*', { count: 'exact', head: true }).eq('region_id', region.id),
       supabase.from('ordinances').select('*', { count: 'exact', head: true }).eq('region_id', region.id),
@@ -65,8 +72,22 @@ export function MunicipalHub() {
     fetchResourceSubpages(region.id).then(setResourcePages);
   }, [region]);
 
-  if (isLoading) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Loading...</Text></View>;
+  if (isLoading || !landingChecked) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Loading...</Text></View>;
   if (!region) return <View style={{ flex: 1, backgroundColor: colors.background }}><Text style={{ padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' }}>Municipality not found</Text></View>;
+
+  // If a published landing page exists for this region, render it in place
+  // of the default hub layout.
+  if (landing && landing.status === 'published') {
+    return (
+      <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: spacing.xxxl + spacing.lg }}>
+        <SeoHead
+          title={region.name}
+          description={landing.hero_subheadline || region.description || `${region.name} community hub.`}
+        />
+        <RegionLandingRenderer page={landing} regionId={region.id} parentId={region.parent_id} />
+      </Wrapper>
+    );
+  }
 
   /* ── Bento grid items ───────────────────────── */
   const hubDescription =

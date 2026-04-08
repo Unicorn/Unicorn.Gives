@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { View, Text, Pressable, TextInput, StyleSheet, ActivityIndicator, Switch } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { AdminPageShell } from '@/components/admin/AdminPageShell';
+import { toHref } from '@/lib/navigation';
 
 interface Region {
   id: string;
@@ -20,6 +22,7 @@ interface Region {
 
 export default function RegionsAdminPage() {
   const { colors } = useTheme();
+  const router = useRouter();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   const [regions, setRegions] = useState<Region[]>([]);
@@ -72,7 +75,9 @@ export default function RegionsAdminPage() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>County</Text>
           <RegionRow region={county} editing={editingId === county.id} editForm={editForm} setEditForm={setEditForm}
-            onEdit={() => startEdit(county)} onSave={saveEdit} onCancel={() => setEditingId(null)} saving={saving} colors={colors} styles={styles} />
+            onEdit={() => startEdit(county)} onSave={saveEdit} onCancel={() => setEditingId(null)}
+            onLanding={() => router.push(toHref(`/admin/regions/${county.id}`) as never)}
+            saving={saving} colors={colors} styles={styles} />
         </View>
       )}
 
@@ -81,16 +86,18 @@ export default function RegionsAdminPage() {
         <Text style={styles.sectionTitle}>Municipalities</Text>
         {children.map((r) => (
           <RegionRow key={r.id} region={r} editing={editingId === r.id} editForm={editForm} setEditForm={setEditForm}
-            onEdit={() => startEdit(r)} onSave={saveEdit} onCancel={() => setEditingId(null)} saving={saving} colors={colors} styles={styles} />
+            onEdit={() => startEdit(r)} onSave={saveEdit} onCancel={() => setEditingId(null)}
+            onLanding={() => router.push(toHref(`/admin/regions/${r.id}`) as never)}
+            saving={saving} colors={colors} styles={styles} />
         ))}
       </View>
     </AdminPageShell>
   );
 }
 
-function RegionRow({ region, editing, editForm, setEditForm, onEdit, onSave, onCancel, saving, colors, styles }: {
+function RegionRow({ region, editing, editForm, setEditForm, onEdit, onSave, onCancel, onLanding, saving, colors, styles }: {
   region: Region; editing: boolean; editForm: Partial<Region>; setEditForm: (f: Partial<Region>) => void;
-  onEdit: () => void; onSave: () => void; onCancel: () => void; saving: boolean; colors: ThemeColors; styles: any;
+  onEdit: () => void; onSave: () => void; onCancel: () => void; onLanding: () => void; saving: boolean; colors: ThemeColors; styles: any;
 }) {
   if (editing) {
     return (
@@ -130,16 +137,22 @@ function RegionRow({ region, editing, editForm, setEditForm, onEdit, onSave, onC
   }
 
   return (
-    <Pressable style={[styles.card, !region.is_active && styles.cardInactive]} onPress={onEdit}>
+    <View style={[styles.card, !region.is_active && styles.cardInactive]}>
       <View style={styles.cardHeader}>
-        <View style={{ flex: 1 }}>
+        <Pressable style={{ flex: 1 }} onPress={onEdit}>
           <Text style={styles.cardName}>{region.name}</Text>
           <Text style={styles.cardMeta}>{region.slug} · {region.type}{!region.is_active ? ' · inactive' : ''}</Text>
           {region.description && <Text style={styles.cardDesc} numberOfLines={1}>{region.description}</Text>}
-        </View>
-        <MaterialIcons name="edit" size={16} color={colors.neutralVariant} />
+        </Pressable>
+        <Pressable onPress={onLanding} style={styles.landingBtn}>
+          <MaterialIcons name="web" size={14} color={colors.primary} />
+          <Text style={styles.landingBtnText}>Landing Page</Text>
+        </Pressable>
+        <Pressable onPress={onEdit}>
+          <MaterialIcons name="edit" size={16} color={colors.neutralVariant} />
+        </Pressable>
       </View>
-    </Pressable>
+    </View>
   );
 }
 
@@ -151,6 +164,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
   card: { backgroundColor: colors.surface, borderRadius: radii.sm, borderWidth: 1, borderColor: colors.outlineVariant, padding: spacing.md, marginBottom: spacing.sm },
   cardInactive: { opacity: 0.5 },
   cardHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  landingBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: spacing.sm, paddingVertical: 6, borderRadius: radii.sm, backgroundColor: colors.primaryContainer },
+  landingBtnText: { fontFamily: fonts.sansMedium, fontSize: 12, color: colors.primary },
   cardName: { fontFamily: fonts.sansBold, fontSize: 15, color: colors.neutral },
   cardMeta: { fontFamily: fonts.sans, fontSize: 12, color: colors.neutralVariant, marginTop: 2 },
   cardDesc: { fontFamily: fonts.sans, fontSize: 13, color: colors.neutralVariant, marginTop: 4 },
