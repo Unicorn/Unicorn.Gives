@@ -12,6 +12,7 @@ import { GallerySection } from './GallerySection';
 import { ContactSection } from './ContactSection';
 import { CustomSection } from './CustomSection';
 import { BookingsSection } from './BookingsSection';
+import { SubscriptionsSection } from './SubscriptionsSection';
 import { useSquareFeatureConfig } from '@/hooks/useSquareBookings';
 
 interface SocialLinks {
@@ -49,7 +50,17 @@ interface LandingPageRendererProps {
   partnerId?: string;
 }
 
-const DEFAULT_ORDER = ['hero', 'about', 'services', 'team', 'testimonials', 'gallery', 'contact'];
+const DEFAULT_ORDER = [
+  'hero',
+  'about',
+  'services',
+  'subscriptions',
+  'bookings',
+  'team',
+  'testimonials',
+  'gallery',
+  'contact',
+];
 
 export function LandingPageRenderer({ data, partnerId }: LandingPageRendererProps) {
   const order = data.section_order?.length ? data.section_order : DEFAULT_ORDER;
@@ -59,11 +70,11 @@ export function LandingPageRenderer({ data, partnerId }: LandingPageRendererProp
   function renderSection(key: string) {
     if (hidden.has(key)) return null;
 
+    let inner: React.ReactNode = null;
     switch (key) {
       case 'hero':
-        return (
+        inner = (
           <HeroSection
-            key={key}
             headline={data.hero_headline}
             subheadline={data.hero_subheadline}
             imageUrl={data.hero_image_url}
@@ -71,27 +82,31 @@ export function LandingPageRenderer({ data, partnerId }: LandingPageRendererProp
             ctaUrl={data.hero_cta_url}
           />
         );
+        break;
       case 'about':
-        return (
+        inner = (
           <AboutSection
-            key={key}
             title={data.about_title}
             body={data.about_body}
             imageUrl={data.about_image_url}
           />
         );
+        break;
       case 'services':
-        return <ServicesGrid key={key} items={data.services ?? []} />;
+        inner = <ServicesGrid items={data.services ?? []} />;
+        break;
       case 'team':
-        return <TeamSection key={key} members={data.team_members ?? []} />;
+        inner = <TeamSection members={data.team_members ?? []} />;
+        break;
       case 'testimonials':
-        return <TestimonialsSection key={key} items={data.testimonials ?? []} />;
+        inner = <TestimonialsSection items={data.testimonials ?? []} />;
+        break;
       case 'gallery':
-        return <GallerySection key={key} images={data.gallery_images ?? []} />;
+        inner = <GallerySection images={data.gallery_images ?? []} />;
+        break;
       case 'contact':
-        return (
+        inner = (
           <ContactSection
-            key={key}
             phone={data.contact_phone}
             email={data.contact_email}
             address={data.contact_address}
@@ -99,9 +114,10 @@ export function LandingPageRenderer({ data, partnerId }: LandingPageRendererProp
             socialLinks={data.social_links}
           />
         );
+        break;
       case 'custom':
-        return (
-          <View key={key}>
+        inner = (
+          <>
             {(data.custom_sections ?? []).map((section, i) => (
               <CustomSection
                 key={`custom-${i}`}
@@ -110,14 +126,26 @@ export function LandingPageRenderer({ data, partnerId }: LandingPageRendererProp
                 imageUrl={section.image_url}
               />
             ))}
-          </View>
+          </>
         );
+        break;
       case 'bookings':
         if (!partnerId || !squareConfig?.bookings_enabled) return null;
-        return <BookingsSection key={key} partnerId={partnerId} />;
+        inner = <BookingsSection partnerId={partnerId} />;
+        break;
+      case 'subscriptions':
+        if (!partnerId || !squareConfig?.subscriptions_enabled) return null;
+        inner = <SubscriptionsSection partnerId={partnerId} />;
+        break;
       default:
         return null;
     }
+
+    return (
+      <View key={key} nativeID={`section-${key}`}>
+        {inner}
+      </View>
+    );
   }
 
   return <View>{order.map(renderSection)}</View>;

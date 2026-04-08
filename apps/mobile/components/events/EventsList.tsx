@@ -45,7 +45,7 @@ export function EventsList({ regionId }: Props) {
 		let query = supabase
 			.from("events")
 			.select(
-				"id, slug, title, description, date, time, location, category, recurring, tags, image_url",
+				"id, slug, title, description, date, time, location, category, recurring, tags, image_url, featured",
 			)
 			.eq("status", "published");
 
@@ -73,7 +73,12 @@ export function EventsList({ regionId }: Props) {
 		? events.filter((e) => e.category === categoryFilter)
 		: events;
 
-	const [featured, ...rest] = filtered;
+	const featuredEvents = categoryFilter
+		? []
+		: filtered.filter((e) => e.featured);
+	const rest = categoryFilter
+		? filtered
+		: filtered.filter((e) => !e.featured);
 
 	const DEFAULT_BADGE = { bg: colors.surfaceContainer, text: colors.neutral };
 
@@ -93,10 +98,10 @@ export function EventsList({ regionId }: Props) {
 						}}
 					/>
 
-					{/* Featured event hero */}
-					{featured && !categoryFilter && (
-						<FeaturedEventCard event={featured} />
-					)}
+					{/* Featured event hero(s) */}
+					{featuredEvents.map((ev) => (
+						<FeaturedEventCard key={ev.id} event={ev} />
+					))}
 
 					{/* Filters */}
 					<View style={styles.section}>
@@ -112,7 +117,7 @@ export function EventsList({ regionId }: Props) {
 							/>
 						)}
 						<Text style={[styles.count, { color: colors.neutralVariant }]}>
-							{categoryFilter ? filtered.length : rest.length} events
+							{filtered.length} events
 						</Text>
 					</View>
 

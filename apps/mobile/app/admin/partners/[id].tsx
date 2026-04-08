@@ -90,6 +90,8 @@ const ALL_SECTIONS = [
   { key: 'hero', label: 'Hero' },
   { key: 'about', label: 'About' },
   { key: 'services', label: 'Services' },
+  { key: 'subscriptions', label: 'Subscriptions' },
+  { key: 'bookings', label: 'Bookings' },
   { key: 'team', label: 'Team' },
   { key: 'testimonials', label: 'Testimonials' },
   { key: 'gallery', label: 'Gallery' },

@@ -21,6 +21,27 @@ const CATALOG_EVENTS = new Set([
   'catalog.version.updated',
 ]);
 
+const SUBSCRIPTION_EVENTS = new Set([
+  'subscription.created',
+  'subscription.updated',
+  'subscription.canceled',
+]);
+
+function mapSquareSubscriptionStatus(status: string | undefined): string {
+  switch (status) {
+    case 'ACTIVE':
+      return 'active';
+    case 'PAUSED':
+      return 'paused';
+    case 'CANCELED':
+      return 'canceled';
+    case 'DEACTIVATED':
+      return 'deactivated';
+    default:
+      return 'pending';
+  }
+}
+
 async function verifySignature(
   body: string,
   signature: string,
@@ -123,12 +144,38 @@ Deno.serve(async (req) => {
 
   // Process event
   try {
+    if (partnerId && SUBSCRIPTION_EVENTS.has(eventType)) {
+      // Upsert the subscription row so admins can see status in real time.
+      const sub = event.data?.object?.subscription as {
+        id?: string;
+        customer_id?: string;
+        plan_variation_id?: string;
+        status?: string;
+        start_date?: string;
+        canceled_date?: string;
+      } | undefined;
+
+      if (sub?.id) {
+        await admin.from('square_subscriptions').upsert({
+          partner_id: partnerId,
+          square_subscription_id: sub.id,
+          square_customer_id: sub.customer_id ?? null,
+          plan_variation_id: sub.plan_variation_id ?? null,
+          status: mapSquareSubscriptionStatus(sub.status),
+          started_at: sub.start_date ?? null,
+          canceled_at: sub.canceled_date ?? null,
+          raw: event.data?.object ?? {},
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'square_subscription_id' });
+      }
+    }
+
     if (partnerId && (BOOKING_EVENTS.has(eventType) || CATALOG_EVENTS.has(eventType))) {
       // Trigger a sync for the affected partner
       // We call the sync endpoint internally using service role
       const features: string[] = [];
       if (BOOKING_EVENTS.has(eventType)) features.push('bookings');
-      if (CATALOG_EVENTS.has(eventType)) features.push('catalog');
+      if (CATALOG_EVENTS.has(eventType)) features.push('catalog', 'subscriptions');
 
       // Internal call to square-sync using service role key
       const syncRes = await fetch(`${supabaseUrl}/functions/v1/square-sync`, {

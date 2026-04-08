@@ -17,31 +17,45 @@ export function AppBreadcrumbBar({ items }: { items: BreadcrumbItem[] }) {
 
   if (!items.length) return null;
 
+  const trailText = items
+    .map((c, i) => (i === 0 ? c.label : ` › ${c.label}`))
+    .join('');
+
   return (
     <View style={[styles.wrap, { backgroundColor: colors.surface, borderBottomColor: colors.outlineVariant }]}>
       <View style={[styles.inner, isTablet && styles.innerTablet, isDesktop && styles.innerDesktop]}>
-        <View style={styles.row}>
-          {items.map((crumb, i) => {
-            const isLast = i === items.length - 1;
-            const itemKey = crumb.href || `trail:${crumb.label}`;
-            return (
-              <View key={itemKey} style={styles.item}>
-                {i > 0 && (
-                  <Text style={[styles.sep, { color: `${colors.neutral}66` }]}>{'>'}</Text>
-                )}
-                {!isLast && crumb.href ? (
-                  <Link href={toHref(crumb.href)} asChild>
-                    <Pressable>
-                      <Text style={[styles.link, { color: colors.primary }]}>{crumb.label}</Text>
-                    </Pressable>
-                  </Link>
-                ) : (
-                  <Text style={[styles.current, { color: colors.neutral }]}>{crumb.label}</Text>
-                )}
-              </View>
-            );
-          })}
-        </View>
+        {isTablet ? (
+          <View style={styles.row}>
+            {items.map((crumb, i) => {
+              const isLast = i === items.length - 1;
+              const itemKey = crumb.href || `trail:${crumb.label}`;
+              return (
+                <View key={itemKey} style={styles.item}>
+                  {i > 0 && (
+                    <Text style={[styles.sep, { color: `${colors.neutral}66` }]}>{'›'}</Text>
+                  )}
+                  {!isLast && crumb.href ? (
+                    <Link href={toHref(crumb.href)} asChild>
+                      <Pressable>
+                        <Text style={[styles.link, { color: colors.primary }]}>{crumb.label}</Text>
+                      </Pressable>
+                    </Link>
+                  ) : (
+                    <Text style={[styles.current, { color: colors.neutral }]}>{crumb.label}</Text>
+                  )}
+                </View>
+              );
+            })}
+          </View>
+        ) : (
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={[styles.mobileTrail, { color: colors.neutral }]}
+          >
+            {trailText}
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -69,8 +83,14 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     flexWrap: 'wrap',
     gap: spacing.xs + 2,
+  },
+  mobileTrail: {
+    fontFamily: fonts.sansMedium,
+    fontSize: fontSize.sm + 1,
+    textAlign: 'center',
   },
   item: {
     flexDirection: 'row',

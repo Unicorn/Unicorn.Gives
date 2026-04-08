@@ -25,15 +25,17 @@ export function QuoteCallout({
         ]}
       >
         <View style={[styles.inner, isCentered && styles.innerCentered]}>
-          <View
-            style={[styles.bar, { backgroundColor: colors.primary }, isCentered && styles.barCentered]}
-          />
+          {isCentered && (
+            <View
+              style={[styles.bar, { backgroundColor: colors.primary }, styles.barCentered]}
+            />
+          )}
           <Text
             style={[
               styles.quote,
               { color: colors.neutral },
               isCentered && styles.quoteCentered,
-              !isCentered && [styles.quoteAside, { borderLeftColor: colors.primary }],
+              !isCentered && styles.quoteAside,
             ]}
           >
             {quote}
@@ -89,8 +91,6 @@ const styles = StyleSheet.create({
   },
   quoteAside: {
     fontSize: fontSize.xl + 2,
-    borderLeftWidth: 3,
-    paddingLeft: spacing.lg,
   },
   attribution: {
     fontFamily: fonts.sansBold,

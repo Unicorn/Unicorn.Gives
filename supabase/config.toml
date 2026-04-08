@@ -16,3 +16,6 @@ verify_jwt = false
 
 [functions.square-bookings]
 verify_jwt = false
+
+[functions.square-subscriptions]
+verify_jwt = false

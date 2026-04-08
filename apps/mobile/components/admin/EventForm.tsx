@@ -59,6 +59,7 @@ export interface EventFormData {
   tags: string[];
   region_id: string;
   partner_id: string;
+  featured: boolean;
 }
 
 export const EMPTY_EVENT: EventFormData = {
@@ -80,6 +81,7 @@ export const EMPTY_EVENT: EventFormData = {
   tags: [],
   region_id: '',
   partner_id: '',
+  featured: false,
 };
 
 interface EventFormProps {
@@ -305,6 +307,14 @@ export function EventForm({
           />
         </FormColumn>
       </FormRow>
+
+      {/* Featured */}
+      <CheckboxField
+        label="Featured"
+        value={data.featured}
+        onValueChange={(v) => set('featured', v)}
+        hint="Highlight this event at the top of the events page"
+      />
 
       {/* Recurring */}
       <CheckboxField

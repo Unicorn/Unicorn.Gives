@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
   /* Sections */
   section: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xxl + spacing.xs,
+    paddingTop: spacing.xxxl + spacing.lg,
     gap: spacing.md,
   },
   sectionHeader: {

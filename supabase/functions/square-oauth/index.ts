@@ -20,10 +20,14 @@ const SCOPES = [
   'APPOINTMENTS_WRITE',
   'ITEMS_READ',
   'ORDERS_READ',
+  'ORDERS_WRITE',
   'MERCHANT_PROFILE_READ',
   'CUSTOMERS_READ',
   'CUSTOMERS_WRITE',
   'GIFTCARDS_READ',
+  'SUBSCRIPTIONS_READ',
+  'SUBSCRIPTIONS_WRITE',
+  'PAYMENTS_WRITE',
 ].join('+');
 
 Deno.serve(async (req) => {
@@ -236,6 +240,7 @@ Deno.serve(async (req) => {
       await admin.from('square_feature_config').delete().eq('partner_id', body.partner_id);
       await admin.from('square_bookings_cache').delete().eq('partner_id', body.partner_id);
       await admin.from('square_catalog_cache').delete().eq('partner_id', body.partner_id);
+      await admin.from('square_subscriptions').delete().eq('partner_id', body.partner_id);
 
       return json({ success: true });
     }

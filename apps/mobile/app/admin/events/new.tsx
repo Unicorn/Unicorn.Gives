@@ -44,6 +44,7 @@ export default function NewEventPage() {
       tags: form.tags.length > 0 ? form.tags : null,
       region_id: form.region_id || null,
       partner_id: form.partner_id || null,
+      featured: form.featured,
       status,
     };
 

@@ -58,6 +58,7 @@ export default function EditEventPage() {
           tags: data.tags ?? [],
           region_id: data.region_id ?? '',
           partner_id: data.partner_id ?? '',
+          featured: data.featured ?? false,
         });
         setStatus(data.status ?? 'draft');
         setLoading(false);
@@ -95,6 +96,7 @@ export default function EditEventPage() {
       tags: form.tags.length > 0 ? form.tags : null,
       region_id: form.region_id || null,
       partner_id: form.partner_id || null,
+      featured: form.featured,
     };
 
     const success = await update(id, payload);

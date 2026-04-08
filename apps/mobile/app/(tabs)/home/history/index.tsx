@@ -59,7 +59,7 @@ const createStyles = (colors: ThemeColors) =>
 	StyleSheet.create({
 		container: { flex: 1 },
 		content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
-		stack: { width: "100%", gap: spacing.xxxl + spacing.sm },
+		stack: { width: "100%", gap: spacing.lg },
 		intro: {
 			fontFamily: fonts.sans,
 			fontSize: fontSize.base,
@@ -70,7 +70,6 @@ const createStyles = (colors: ThemeColors) =>
 			backgroundColor: colors.surface,
 			borderRadius: radii.md,
 			padding: spacing.xl - 2,
-			marginBottom: spacing.lg - 2,
 			...shadows.card,
 			borderLeftWidth: 4,
 			borderLeftColor: colors.primary,

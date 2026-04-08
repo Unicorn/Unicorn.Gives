@@ -1,6 +1,20 @@
 import { useMemo } from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Linking } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Linking, Platform } from 'react-native';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
+
+function handleCtaPress(ctaUrl: string) {
+  // In-page anchor: scroll to the matching element on web; no-op on native.
+  if (ctaUrl.startsWith('#')) {
+    if (Platform.OS === 'web' && typeof document !== 'undefined') {
+      const el = document.getElementById(ctaUrl.slice(1));
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    return;
+  }
+  Linking.openURL(ctaUrl);
+}
 
 interface HeroSectionProps {
   headline?: string | null;
@@ -24,7 +38,13 @@ export function HeroSection({ headline, subheadline, imageUrl, ctaLabel, ctaUrl 
           {headline && <Text style={styles.headline}>{headline}</Text>}
           {subheadline && <Text style={styles.subheadline}>{subheadline}</Text>}
           {ctaLabel && ctaUrl && (
-            <Pressable style={styles.cta} onPress={() => Linking.openURL(ctaUrl)}>
+            <Pressable
+              style={styles.cta}
+              onPress={() => handleCtaPress(ctaUrl)}
+              {...(Platform.OS === 'web' && ctaUrl.startsWith('#')
+                ? ({ accessibilityRole: 'link', href: ctaUrl } as object)
+                : {})}
+            >
               <Text style={styles.ctaText}>{ctaLabel}</Text>
             </Pressable>
           )}
