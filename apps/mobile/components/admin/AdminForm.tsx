@@ -316,7 +316,7 @@ export function FormRow({ children }: { children: React.ReactNode }) {
   return <View style={{ flexDirection: 'row', gap: spacing.lg }}>{children}</View>;
 }
 
-export function FormColumn({ children, flex = 1 }: { children: React.ReactNode; flex?: number }) {
+export function FormColumn({ children, flex = 1 }: { children?: React.ReactNode; flex?: number }) {
   return <View style={{ flex }}>{children}</View>;
 }
 

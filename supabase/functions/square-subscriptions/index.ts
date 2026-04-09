@@ -243,7 +243,7 @@ Deno.serve(async (req) => {
     if (!linkRes.ok) {
       const errText = await linkRes.text();
       console.error('Payment link creation failed:', errText);
-      return json({ error: 'Failed to create checkout link', detail: errText.slice(0, 600) }, 502);
+      return json({ error: 'Failed to create checkout link' }, 502);
     }
 
     const linkData = await linkRes.json() as {
