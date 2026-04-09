@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
 import {
 	CategoryChips,
 	EditorialCard,
 	FeaturedEventCard,
-	HeroFeature,
 	QuoteCallout,
 } from "@/components/widgets";
+import { RegionHeroSection } from "@/components/municipal/sections/RegionHeroSection";
 import { EVENTS_TAB_HERO } from "@/constants/eventsTabContent";
 import { COMMUNITY_SPIRIT_QUOTE } from "@/constants/hornContent";
 import { fonts, spacing, useTheme } from "@/constants/theme";
@@ -16,6 +15,9 @@ import { eventDateBoxFromIso } from "@/lib/events/eventDateFormat";
 import { routes } from "@/lib/navigation";
 import { supabase } from "@/lib/supabase";
 import { EventCardList } from "./EventCardList";
+import { EventGridCard } from "./EventGridCard";
+import { EventsGrid } from "./EventsGrid";
+import { ViewToggle, type ViewMode } from "./ViewToggle";
 import type { EventItem } from "./eventTypes";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -28,8 +30,6 @@ const CATEGORY_LABELS: Record<string, string> = {
 	"the-mane": "The Mane",
 };
 
-// All category badges use neutral styling per design system rules
-
 type EventWithDesc = EventItem & { description?: string | null };
 
 interface Props {
@@ -39,6 +39,7 @@ interface Props {
 export function EventsList({ regionId }: Props) {
 	const [events, setEvents] = useState<EventWithDesc[]>([]);
 	const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+	const [viewMode, setViewMode] = useState<ViewMode>("grid");
 	const { colors } = useTheme();
 
 	useEffect(() => {
@@ -82,32 +83,43 @@ export function EventsList({ regionId }: Props) {
 
 	const DEFAULT_BADGE = { bg: colors.surfaceContainer, text: colors.neutral };
 
-	return (
-		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
-			<Container>
-				<View style={styles.stack}>
-					<HeroFeature
-						eyebrow={EVENTS_TAB_HERO.eyebrow}
-						title={EVENTS_TAB_HERO.title}
-						description={EVENTS_TAB_HERO.description}
-						ctaLabel={EVENTS_TAB_HERO.ctaLabel}
-						ctaHref={routes.partners.index("the-horn")}
-						secondaryCta={{
-							label: EVENTS_TAB_HERO.secondaryCtaLabel,
-							href: routes.community.index(),
-						}}
-					/>
+	const displayEvents = categoryFilter ? filtered : rest;
 
+	return (
+		<Wrapper style={styles.container}>
+			{/* Full-bleed hero */}
+			<RegionHeroSection
+				eyebrow={EVENTS_TAB_HERO.eyebrow}
+				headline={EVENTS_TAB_HERO.headline}
+				headlineAccent={EVENTS_TAB_HERO.headlineAccent}
+				subheadline={EVENTS_TAB_HERO.subheadline}
+				imageUrl={EVENTS_TAB_HERO.imageUrl}
+				primaryCta={{
+					label: EVENTS_TAB_HERO.ctaLabel,
+					url: routes.partners.index("the-horn") as string,
+				}}
+				secondaryCta={{
+					label: EVENTS_TAB_HERO.secondaryCtaLabel,
+					url: routes.community.index() as string,
+				}}
+			/>
+
+			{/* Content — matches landing page section width (1280) */}
+			<View style={styles.section}>
+				<View style={styles.inner}>
 					{/* Featured event hero(s) */}
 					{featuredEvents.map((ev) => (
 						<FeaturedEventCard key={ev.id} event={ev} />
 					))}
 
-					{/* Filters */}
-					<View style={styles.section}>
-						<Text style={[styles.sectionTitle, { color: colors.neutral }]}>
-							Community Calendar
-						</Text>
+					{/* Filters + view toggle */}
+					<View style={styles.filterBlock}>
+						<View style={styles.filterRow}>
+							<Text style={[styles.sectionTitle, { color: colors.neutral }]}>
+								Community Calendar
+							</Text>
+							<ViewToggle mode={viewMode} onToggle={setViewMode} />
+						</View>
 						{chipCategories.length > 1 && (
 							<CategoryChips
 								categories={chipCategories}
@@ -121,28 +133,48 @@ export function EventsList({ regionId }: Props) {
 						</Text>
 					</View>
 
-					{/* Event list — full-width rows */}
-					<EventCardList>
-						{(categoryFilter ? filtered : rest).map((e) => {
-							const badge = DEFAULT_BADGE;
-							return (
-								<EditorialCard
-									key={e.id}
-									title={e.title}
-									description={e.description || undefined}
-									badge={{
-										label: CATEGORY_LABELS[e.category] || e.category,
-										bg: badge.bg,
-										text: badge.text,
-									}}
-									href={routes.community.events.detail(e.slug)}
-									meta={[e.time, e.location].filter(Boolean).join(" · ")}
-									dateBox={eventDateBoxFromIso(e.date)}
-									thumbnailUrl={e.image_url}
-								/>
-							);
-						})}
-					</EventCardList>
+					{/* Grid view */}
+					{viewMode === "grid" ? (
+						<EventsGrid>
+							{displayEvents.map((e) => {
+								const db = eventDateBoxFromIso(e.date);
+								return (
+									<EventGridCard
+										key={e.id}
+										title={e.title}
+										description={e.description || undefined}
+										location={e.location || undefined}
+										imageUrl={e.image_url}
+										dateLabel={`${db.month} ${db.day}`}
+										href={routes.community.events.detail(e.slug)}
+									/>
+								);
+							})}
+						</EventsGrid>
+					) : (
+						/* List view (original layout) */
+						<EventCardList>
+							{displayEvents.map((e) => {
+								const badge = DEFAULT_BADGE;
+								return (
+									<EditorialCard
+										key={e.id}
+										title={e.title}
+										description={e.description || undefined}
+										badge={{
+											label: CATEGORY_LABELS[e.category] || e.category,
+											bg: badge.bg,
+											text: badge.text,
+										}}
+										href={routes.community.events.detail(e.slug)}
+										meta={[e.time, e.location].filter(Boolean).join(" · ")}
+										dateBox={eventDateBoxFromIso(e.date)}
+										thumbnailUrl={e.image_url}
+									/>
+								);
+							})}
+						</EventCardList>
+					)}
 
 					{filtered.length === 0 && (
 						<Text style={[styles.empty, { color: colors.neutralVariant }]}>
@@ -158,16 +190,33 @@ export function EventsList({ regionId }: Props) {
 						/>
 					)}
 				</View>
-			</Container>
+			</View>
 		</Wrapper>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: { flex: 1 },
-	content: { padding: spacing.lg, paddingBottom: 40 },
-	stack: { width: "100%", gap: spacing.xxxl + spacing.sm },
-	section: { gap: 8, zIndex: 1, position: "relative" },
+	/** Matches RegionEventsSection / RegionNewsSection outer padding */
+	section: {
+		paddingVertical: spacing.xxxl + spacing.lg,
+		paddingHorizontal: spacing.lg,
+	},
+	/** Matches landing page inner: maxWidth 1280, centered */
+	inner: {
+		maxWidth: 1280,
+		width: "100%",
+		alignSelf: "center",
+		gap: spacing.xxl,
+	},
+	filterBlock: { gap: 8, zIndex: 1, position: "relative" },
+	filterRow: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		flexWrap: "wrap",
+		gap: spacing.md,
+	},
 	sectionTitle: {
 		fontFamily: fonts.serifItalic,
 		fontSize: 26,

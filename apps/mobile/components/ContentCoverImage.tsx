@@ -11,7 +11,7 @@ import { resolveAbsoluteAssetUrl } from "@/lib/resolveAssetUrl";
 
 const CARD_STRIP_HEIGHT = 140;
 
-export type ContentCoverVariant = "hero" | "card";
+export type ContentCoverVariant = "hero" | "card" | "grid";
 
 export interface ContentCoverImageProps {
 	/** Raw path or URL from CMS / Supabase */
@@ -58,19 +58,30 @@ export function ContentCoverImage({
 						borderColor: colors.outline,
 					},
 				]
-			: [
-					styles.cardFrame,
-					{
-						backgroundColor: colors.surfaceContainer,
-						borderBottomColor: colors.outline,
-					},
-				];
+			: variant === "grid"
+				? [
+						styles.gridFrame,
+						{ backgroundColor: colors.surfaceContainer },
+					]
+				: [
+						styles.cardFrame,
+						{
+							backgroundColor: colors.surfaceContainer,
+							borderBottomColor: colors.outline,
+						},
+					];
 
 	return (
 		<View style={[frameStyle, style]}>
 			<Image
 				source={{ uri }}
-				style={variant === "hero" ? styles.heroImage : styles.cardImage}
+				style={
+					variant === "hero"
+						? styles.heroImage
+						: variant === "grid"
+							? styles.gridImage
+							: styles.cardImage
+				}
 				resizeMode="cover"
 				accessibilityLabel={accessibilityLabel}
 				onError={() => setFailed(true)}
@@ -88,6 +99,16 @@ const styles = StyleSheet.create({
 		overflow: "hidden",
 	},
 	heroImage: {
+		...StyleSheet.absoluteFillObject,
+		width: "100%",
+		height: "100%",
+	},
+	gridFrame: {
+		width: "100%",
+		height: "100%",
+		overflow: "hidden",
+	},
+	gridImage: {
 		...StyleSheet.absoluteFillObject,
 		width: "100%",
 		height: "100%",

@@ -1,22 +1,22 @@
 /**
  * Upcoming events section for a region landing page. Renders a title row
- * with optional "View all" link and a responsive grid of EditorialCards.
+ * with optional "View all" link and a responsive grid of EventGridCards.
  */
 import { StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
+import type { Href } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import {
-  breakpoints,
   fonts,
   fontSize,
   letterSpacing,
   spacing,
   useTheme,
 } from '@/constants/theme';
-import { useHydratedDimensions } from '@/hooks/useHydrated';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
-import { EditorialCard } from '@/components/widgets/EditorialCard';
-import { eventDateBoxFromIso, eventLongDateLabel } from '@/lib/events/eventDateFormat';
+import { EventGridCard } from '@/components/events/EventGridCard';
+import { EventsGrid } from '@/components/events/EventsGrid';
+import { eventDateBoxFromIso } from '@/lib/events/eventDateFormat';
 import { routes } from '@/lib/navigation';
 import type { RegionEventItem } from '@/lib/municipal/regionLanding';
 
@@ -25,6 +25,8 @@ interface RegionEventsSectionProps {
   title?: string;
   subtitle?: string;
   showViewAll?: boolean;
+  /** Override the "View all" destination. Defaults to the global community events route. */
+  viewAllHref?: Href;
 }
 
 export function RegionEventsSection({
@@ -32,12 +34,13 @@ export function RegionEventsSection({
   title = 'Upcoming Events',
   subtitle,
   showViewAll = true,
+  viewAllHref,
 }: RegionEventsSectionProps) {
   const { colors } = useTheme();
-  const { width } = useHydratedDimensions();
-  const isTablet = width >= breakpoints.tablet;
 
   if (!items.length) return null;
+
+  const resolvedHref = viewAllHref ?? routes.community.events.index();
 
   return (
     <View style={styles.section}>
@@ -55,7 +58,7 @@ export function RegionEventsSection({
             ) : null}
           </View>
           {showViewAll ? (
-            <Link href={routes.community.events.index()} asChild>
+            <Link href={resolvedHref} asChild>
               <AnimatedPressable style={StyleSheet.flatten(styles.viewAll)}>
                 <Text style={[styles.viewAllText, { color: colors.primary }]}>
                   View all
@@ -66,25 +69,22 @@ export function RegionEventsSection({
           ) : null}
         </View>
 
-        <View style={[styles.grid, isTablet && styles.gridTablet]}>
-          {items.map((e) => (
-            <View key={e.id} style={[styles.cell, isTablet && styles.cellTablet]}>
-              <EditorialCard
+        <EventsGrid>
+          {items.map((e) => {
+            const db = eventDateBoxFromIso(e.date);
+            return (
+              <EventGridCard
+                key={e.id}
                 title={e.title}
                 description={e.location || e.description || undefined}
+                location={e.location || undefined}
+                imageUrl={e.image_url}
+                dateLabel={`${db.month} ${db.day}`}
                 href={routes.community.events.detail(e.slug)}
-                dateBox={eventDateBoxFromIso(e.date)}
-                thumbnailUrl={e.image_url}
-                meta={eventLongDateLabel(e.date)}
-                badge={{
-                  label: e.category.replace(/-/g, ' '),
-                  bg: colors.surfaceContainer,
-                  text: colors.neutral,
-                }}
               />
-            </View>
-          ))}
-        </View>
+            );
+          })}
+        </EventsGrid>
       </View>
     </View>
   );
@@ -135,18 +135,5 @@ const styles = StyleSheet.create({
   viewAllText: {
     fontFamily: fonts.sansBold,
     fontSize: fontSize.md,
-  },
-  grid: {
-    gap: spacing.md,
-  },
-  gridTablet: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  cell: {},
-  cellTablet: {
-    flexBasis: '48%',
-    flexGrow: 1,
-    minWidth: 280,
   },
 });
