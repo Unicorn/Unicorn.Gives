@@ -5,6 +5,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Container } from '@/components/layout/Container';
 import {
   breakpoints,
   fonts,
@@ -45,11 +46,11 @@ export function RegionNewsSection({
   return (
     <View
       style={[
-        styles.section,
+        styles.sectionBg,
         { backgroundColor: colors.surfaceContainer },
       ]}
     >
-      <View style={styles.inner}>
+      <Container style={styles.content}>
         <View style={styles.header}>
           <View style={{ flex: 1 }}>
             <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>
@@ -107,20 +108,16 @@ export function RegionNewsSection({
             </View>
           )}
         </View>
-      </View>
+      </Container>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  section: {
+  sectionBg: {
     paddingVertical: spacing.xxxl + spacing.lg,
-    paddingHorizontal: spacing.lg,
   },
-  inner: {
-    maxWidth: 1280,
-    width: '100%',
-    alignSelf: 'center',
+  content: {
     gap: spacing.xxl,
   },
   header: {

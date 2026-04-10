@@ -32,6 +32,43 @@ Token file: `apps/mobile/constants/theme.ts`
 - Never hardcode colors — always reference theme tokens
 
 
+## Layout
+
+All pages use `Container` (1280px max-width on tablet+) as the single width constraint. Layout components live in `apps/mobile/components/layout/`.
+
+- **`Wrapper`** — full-width ScrollView, sets page background color
+- **`Container`** — max-width 1280px centered wrapper with horizontal padding; `flush` prop removes padding
+- **`Section`** — vertical/horizontal spacing wrapper for content blocks
+
+### Page composition patterns
+
+```
+// Standard content page
+<Wrapper>
+  <Container>
+    {content}
+  </Container>
+</Wrapper>
+
+// Full-bleed hero + content
+<Wrapper>
+  <RegionHeroSection {...hero} />
+  <Container style={styles.section}>
+    {content}
+  </Container>
+</Wrapper>
+
+// Full-bleed background section (e.g. tinted bg)
+<View style={{ backgroundColor: colors.surfaceContainer }}>
+  <Container>
+    {content}
+  </Container>
+</View>
+```
+
+- Never use manual `maxWidth` values — always use `Container`
+- Full-bleed backgrounds go on an outer View; `Container` constrains the content inside
+
 ## Hosting & Deployment
 
 - **Static site** hosted on **AWS S3 + CloudFront**

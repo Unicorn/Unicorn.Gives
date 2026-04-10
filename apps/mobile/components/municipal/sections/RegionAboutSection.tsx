@@ -4,6 +4,7 @@
  * swapped in later if needed.
  */
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { Container } from '@/components/layout/Container';
 import {
   breakpoints,
   fonts,
@@ -28,11 +29,11 @@ export function RegionAboutSection({ title, body, imageUrl }: RegionAboutSection
   if (!title && !body && !imageUrl) return null;
 
   return (
-    <View style={styles.section}>
+    <Container style={styles.section}>
       <View
         style={[
-          styles.inner,
-          isTablet && imageUrl ? styles.innerTablet : undefined,
+          styles.row,
+          isTablet && imageUrl ? styles.rowTablet : undefined,
         ]}
       >
         <View style={styles.textCol}>
@@ -54,22 +55,18 @@ export function RegionAboutSection({ title, body, imageUrl }: RegionAboutSection
           </View>
         ) : null}
       </View>
-    </View>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
   section: {
     paddingVertical: spacing.xxxl + spacing.lg,
-    paddingHorizontal: spacing.lg,
   },
-  inner: {
-    maxWidth: 1280,
-    width: '100%',
-    alignSelf: 'center',
+  row: {
     gap: spacing.xxl,
   },
-  innerTablet: {
+  rowTablet: {
     flexDirection: 'row',
     alignItems: 'center',
   },

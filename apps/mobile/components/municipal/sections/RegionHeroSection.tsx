@@ -1,10 +1,13 @@
 /**
- * Full-bleed region hero. Background image + dark gradient overlay, eyebrow
- * pill, serif headline with optional italic accent phrase, subheadline, and
- * up to two CTAs. Falls back to a solid heroBar background when no image.
+ * Full-bleed region hero. When a background image is provided the hero renders
+ * a dark overlay with white text. Without an image it uses mode-aware teal
+ * (light bg + dark text in light mode, dark bg + light text in dark mode).
+ *
+ * An optional `featuredImageUrl` renders a right-side image on tablet+.
  */
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
+import { Container } from '@/components/layout/Container';
 import {
   breakpoints,
   fonts,
@@ -23,7 +26,10 @@ interface RegionHeroSectionProps {
   headline?: string | null;
   headlineAccent?: string | null;
   subheadline?: string | null;
+  /** Full-bleed background image with dark overlay. */
   imageUrl?: string | null;
+  /** Right-side featured image, visible on tablet+ only. */
+  featuredImageUrl?: string | null;
   primaryCta?: { label: string; url: string } | null;
   secondaryCta?: { label: string; url: string } | null;
 }
@@ -34,6 +40,7 @@ export function RegionHeroSection({
   headlineAccent,
   subheadline,
   imageUrl,
+  featuredImageUrl,
   primaryCta,
   secondaryCta,
 }: RegionHeroSectionProps) {
@@ -41,85 +48,131 @@ export function RegionHeroSection({
   const { width } = useHydratedDimensions();
   const isTablet = width >= breakpoints.tablet;
 
+  // When a background image is present the overlay makes the hero dark
+  // regardless of theme mode, so we always use white text.
+  const hasImage = !!imageUrl;
+  const textColor = hasImage ? '#fff' : colors.onHeroBackground;
+  const subtextColor = hasImage ? 'rgba(255,255,255,0.9)' : colors.onHeroBackground;
+  const pillBg = hasImage ? 'rgba(255,255,255,0.16)' : `${colors.onHeroBackground}14`;
+  const ctaPrimaryBg = hasImage ? '#fff' : colors.onHeroBackground;
+  const ctaPrimaryText = hasImage ? '#1a1a1a' : colors.heroBackground;
+  const ctaSecondaryBorder = hasImage
+    ? 'rgba(255,255,255,0.5)'
+    : `${colors.onHeroBackground}50`;
+  const bg = hasImage ? colors.heroBar : colors.heroBackground;
+
+  const showFeaturedImage = !!featuredImageUrl && isTablet;
+
   return (
     <View
       style={[
         styles.hero,
-        { backgroundColor: colors.heroBar, minHeight: isTablet ? 520 : 420 },
+        { backgroundColor: bg, minHeight: isTablet ? 520 : 420 },
       ]}
     >
-      {imageUrl ? (
-        <Image
-          source={{ uri: imageUrl }}
-          style={StyleSheet.absoluteFill}
-          resizeMode="cover"
-          accessibilityLabel={headline || 'Region hero image'}
-        />
+      {hasImage ? (
+        <>
+          <Image
+            source={{ uri: imageUrl }}
+            style={StyleSheet.absoluteFill}
+            resizeMode="cover"
+            accessibilityLabel={headline || 'Region hero image'}
+          />
+          <View
+            style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.45)' }]}
+          />
+        </>
       ) : null}
-      <View
-        style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.45)' }]}
-      />
 
-      <View style={[styles.content, isTablet && styles.contentTablet]}>
-        {eyebrow ? (
-          <View style={[styles.eyebrowPill, { backgroundColor: 'rgba(255,255,255,0.16)' }]}>
-            <Text style={[styles.eyebrowText, { color: '#fff' }]}>{eyebrow}</Text>
+      <Container style={styles.containerInner}>
+        <View style={[styles.row, showFeaturedImage && styles.rowTablet]}>
+          {/* Text column */}
+          <View style={[styles.content, isTablet && styles.contentTablet]}>
+            {eyebrow ? (
+              <View style={[styles.eyebrowPill, { backgroundColor: pillBg }]}>
+                <Text style={[styles.eyebrowText, { color: textColor }]}>{eyebrow}</Text>
+              </View>
+            ) : null}
+
+            {headline ? (
+              <Text
+                style={[
+                  styles.headline,
+                  { color: textColor },
+                  isTablet && styles.headlineTablet,
+                ]}
+              >
+                {headline}
+                {headlineAccent ? (
+                  <>
+                    {' '}
+                    <Text style={styles.headlineAccent}>{headlineAccent}</Text>
+                  </>
+                ) : null}
+              </Text>
+            ) : null}
+
+            {subheadline ? (
+              <Text
+                style={[
+                  styles.subheadline,
+                  { color: subtextColor },
+                  isTablet && styles.subheadlineTablet,
+                ]}
+              >
+                {subheadline}
+              </Text>
+            ) : null}
+
+            {(primaryCta || secondaryCta) && (
+              <View style={styles.ctaRow}>
+                {primaryCta ? (
+                  <Link href={toHref(primaryCta.url) as never} asChild>
+                    <AnimatedPressable
+                      variant="button"
+                      style={StyleSheet.flatten([
+                        styles.ctaPrimary,
+                        { backgroundColor: ctaPrimaryBg },
+                      ])}
+                    >
+                      <Text style={[styles.ctaPrimaryText, { color: ctaPrimaryText }]}>
+                        {primaryCta.label}
+                      </Text>
+                    </AnimatedPressable>
+                  </Link>
+                ) : null}
+                {secondaryCta ? (
+                  <Link href={toHref(secondaryCta.url) as never} asChild>
+                    <AnimatedPressable
+                      variant="button"
+                      style={StyleSheet.flatten([
+                        styles.ctaSecondary,
+                        { borderColor: ctaSecondaryBorder },
+                      ])}
+                    >
+                      <Text style={[styles.ctaSecondaryText, { color: textColor }]}>
+                        {secondaryCta.label}
+                      </Text>
+                    </AnimatedPressable>
+                  </Link>
+                ) : null}
+              </View>
+            )}
           </View>
-        ) : null}
 
-        {headline ? (
-          <Text style={[styles.headline, isTablet && styles.headlineTablet]}>
-            {headline}
-            {headlineAccent ? (
-              <>
-                {' '}
-                <Text style={styles.headlineAccent}>{headlineAccent}</Text>
-              </>
-            ) : null}
-          </Text>
-        ) : null}
-
-        {subheadline ? (
-          <Text style={[styles.subheadline, isTablet && styles.subheadlineTablet]}>
-            {subheadline}
-          </Text>
-        ) : null}
-
-        {(primaryCta || secondaryCta) && (
-          <View style={styles.ctaRow}>
-            {primaryCta ? (
-              <Link href={toHref(primaryCta.url) as never} asChild>
-                <AnimatedPressable
-                  variant="button"
-                  style={StyleSheet.flatten([
-                    styles.ctaPrimary,
-                    { backgroundColor: '#fff' },
-                  ])}
-                >
-                  <Text style={[styles.ctaPrimaryText, { color: colors.neutral }]}>
-                    {primaryCta.label}
-                  </Text>
-                </AnimatedPressable>
-              </Link>
-            ) : null}
-            {secondaryCta ? (
-              <Link href={toHref(secondaryCta.url) as never} asChild>
-                <AnimatedPressable
-                  variant="button"
-                  style={StyleSheet.flatten([
-                    styles.ctaSecondary,
-                    { borderColor: 'rgba(255,255,255,0.5)' },
-                  ])}
-                >
-                  <Text style={[styles.ctaSecondaryText, { color: '#fff' }]}>
-                    {secondaryCta.label}
-                  </Text>
-                </AnimatedPressable>
-              </Link>
-            ) : null}
-          </View>
-        )}
-      </View>
+          {/* Featured image (tablet+ only) */}
+          {showFeaturedImage ? (
+            <View style={styles.featuredImageCol}>
+              <Image
+                source={{ uri: featuredImageUrl! }}
+                style={styles.featuredImage}
+                resizeMode="cover"
+                accessibilityLabel={headline || 'Featured image'}
+              />
+            </View>
+          ) : null}
+        </View>
+      </Container>
     </View>
   );
 }
@@ -129,15 +182,25 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
     justifyContent: 'center',
-    paddingHorizontal: spacing.xxl,
     paddingVertical: spacing.xxxl + spacing.xl,
+  },
+  containerInner: {
+    justifyContent: 'center',
+  },
+  row: {
+    // Single column by default
+  },
+  rowTablet: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xxxl,
   },
   content: {
     maxWidth: 720,
     gap: spacing.lg,
+    flex: 1,
   },
   contentTablet: {
-    paddingLeft: spacing.xxxl,
     gap: spacing.xl,
   },
   eyebrowPill: {
@@ -153,7 +216,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   headline: {
-    color: '#fff',
     fontFamily: fonts.serifBold,
     fontSize: 40,
     lineHeight: 44,
@@ -167,7 +229,6 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   subheadline: {
-    color: 'rgba(255,255,255,0.9)',
     fontFamily: fonts.sans,
     fontSize: fontSize.lg,
     lineHeight: 24,
@@ -202,5 +263,15 @@ const styles = StyleSheet.create({
   ctaSecondaryText: {
     fontFamily: fonts.sansBold,
     fontSize: fontSize.md,
+  },
+  featuredImageCol: {
+    flex: 1,
+    maxWidth: 420,
+    borderRadius: radii.lg,
+    overflow: 'hidden',
+  },
+  featuredImage: {
+    width: '100%',
+    height: 360,
   },
 });

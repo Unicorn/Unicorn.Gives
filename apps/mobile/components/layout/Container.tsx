@@ -40,23 +40,26 @@ export function Container({ children, style, flush }: ContainerProps) {
 const styles = StyleSheet.create({
 	base: {
 		width: "100%",
+		paddingHorizontal: 16,
 	},
 	tablet: {
-		maxWidth: 960,
+		maxWidth: 1280,
 		alignSelf: "center",
 		paddingHorizontal: 24,
 	},
 	desktop: {
-		maxWidth: 1100,
+		maxWidth: 1280,
 		alignSelf: "center",
 		paddingHorizontal: 28,
 	},
 	tabletFlush: {
-		maxWidth: 960,
+		maxWidth: 1280,
 		alignSelf: "center",
+		paddingHorizontal: 0,
 	},
 	desktopFlush: {
-		maxWidth: 1100,
+		maxWidth: 1280,
 		alignSelf: "center",
+		paddingHorizontal: 0,
 	},
 });

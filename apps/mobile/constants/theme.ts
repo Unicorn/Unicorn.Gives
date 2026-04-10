@@ -250,6 +250,8 @@ const lightColors = {
   // Special
   heroBar:              gray[800],
   onHeroBar:            gray[50],
+  heroBackground:       teal[50],
+  onHeroBackground:     teal[900],
 } as const;
 
 const darkColors = {
@@ -290,6 +292,8 @@ const darkColors = {
   // Special
   heroBar:              gray[800],
   onHeroBar:            gray[50],
+  heroBackground:       teal[800],
+  onHeroBackground:     '#ffffff',
 } as const;
 
 export type ThemeColors = { [K in keyof typeof lightColors]: string };

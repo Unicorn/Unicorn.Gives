@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
 import {
 	CategoryChips,
@@ -43,12 +44,14 @@ export function EventsList({ regionId }: Props) {
 	const { colors } = useTheme();
 
 	useEffect(() => {
+		const today = new Date().toISOString().split("T")[0];
 		let query = supabase
 			.from("events")
 			.select(
 				"id, slug, title, description, date, time, location, category, recurring, tags, image_url, featured",
 			)
-			.eq("status", "published");
+			.eq("status", "published")
+			.gte("date", today);
 
 		if (regionId) {
 			query = query.eq("region_id", regionId);
@@ -104,9 +107,8 @@ export function EventsList({ regionId }: Props) {
 				}}
 			/>
 
-			{/* Content — matches landing page section width (1280) */}
-			<View style={styles.section}>
-				<View style={styles.inner}>
+			{/* Content */}
+			<Container style={styles.section}>
 					{/* Featured event hero(s) */}
 					{featuredEvents.map((ev) => (
 						<FeaturedEventCard key={ev.id} event={ev} />
@@ -189,24 +191,15 @@ export function EventsList({ regionId }: Props) {
 							attribution={COMMUNITY_SPIRIT_QUOTE.attribution}
 						/>
 					)}
-				</View>
-			</View>
+			</Container>
 		</Wrapper>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: { flex: 1 },
-	/** Matches RegionEventsSection / RegionNewsSection outer padding */
 	section: {
 		paddingVertical: spacing.xxxl + spacing.lg,
-		paddingHorizontal: spacing.lg,
-	},
-	/** Matches landing page inner: maxWidth 1280, centered */
-	inner: {
-		maxWidth: 1280,
-		width: "100%",
-		alignSelf: "center",
 		gap: spacing.xxl,
 	},
 	filterBlock: { gap: 8, zIndex: 1, position: "relative" },
