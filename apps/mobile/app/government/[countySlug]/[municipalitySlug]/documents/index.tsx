@@ -12,6 +12,7 @@ import {
 import { useTheme, fonts, spacing, radii, shadows } from '@/constants/theme';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
+import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { toHref } from '@/lib/navigation/paths';
 import { routes } from '@/lib/navigation';
@@ -72,11 +73,12 @@ export default function MunicipalDocumentsIndexScreen() {
 
   return (
     <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 48 }}>
+      <RegionHeroSection
+        eyebrow="Official Documents"
+        headline={region.name}
+        subheadline="Planning, zoning, and official municipal documents."
+      />
       <Container>
-        <View style={styles.section}>
-          <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>OFFICIAL DOCUMENTS</Text>
-          <Text style={[styles.title, { color: colors.neutral }]}>Planning & Zoning</Text>
-        </View>
         <View style={styles.list}>
           {docs.map((doc) => {
             const icon = iconForMunicipalDoc(doc.kind);
@@ -108,10 +110,7 @@ export default function MunicipalDocumentsIndexScreen() {
 
 const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.xxl },
-  section: { paddingHorizontal: spacing.lg, paddingTop: spacing.xl, gap: 4 },
-  eyebrow: { fontFamily: fonts.sansBold, fontSize: 11, letterSpacing: 1.5 },
-  title: { fontFamily: fonts.serifItalic, fontSize: 28 },
-  list: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg, gap: spacing.md },
+  list: { paddingHorizontal: spacing.lg, paddingTop: spacing.xxl, gap: spacing.md },
   card: {
     flexDirection: 'row',
     alignItems: 'center',

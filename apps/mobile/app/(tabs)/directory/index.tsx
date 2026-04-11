@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, fontSize, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
+import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 interface Partner {
@@ -30,9 +31,13 @@ export default function PartnersDirectory() {
 
   return (
     <Wrapper style={styles.container} contentContainerStyle={styles.content}>
-      <Container>
-      <Text style={styles.heading}>Community Partners</Text>
-      <Text style={styles.subheading}>Organizations serving Clare County and northern Michigan.</Text>
+      <RegionHeroSection
+        eyebrow="Directory"
+        headline="Community"
+        headlineAccent="Partners"
+        subheadline="Organizations serving Clare County and northern Michigan."
+      />
+      <Container style={styles.section}>
       {partners.map(p => (
         <Link key={p.slug} href={routes.partners.index(p.slug)} asChild>
           <AnimatedPressable variant="card" style={styles.card}>
@@ -54,9 +59,8 @@ export default function PartnersDirectory() {
 
 const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
-  heading: { fontFamily: fonts.sansBold, fontSize: fontSize['2xl'], color: colors.neutral, marginBottom: spacing.xs },
-  subheading: { fontFamily: fonts.sans, fontSize: fontSize.base, color: colors.neutralVariant, lineHeight: 22, marginBottom: spacing.lg },
+  content: { paddingBottom: spacing.xxxl + spacing.sm },
+  section: { paddingTop: spacing.xxl },
   card: { flexDirection: 'row', borderRadius: radii.md, padding: spacing.lg, marginBottom: spacing.sm + 2, backgroundColor: colors.surface, ...shadows.card, gap: spacing.lg - 2, alignItems: 'center' },
   avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: colors.neutral, justifyContent: 'center', alignItems: 'center' },
   avatarText: { fontFamily: fonts.sansBold, fontSize: fontSize.xl + 2, color: colors.background },

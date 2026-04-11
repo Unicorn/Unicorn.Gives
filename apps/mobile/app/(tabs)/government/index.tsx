@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
+import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 
 const DEFAULT_COUNTY = 'clare-county';
@@ -49,13 +50,12 @@ export default function GovernmentIndex() {
 
   return (
     <Wrapper style={styles.container} contentContainerStyle={styles.content}>
-      <Container>
-      <View style={styles.header}>
-        <Text style={styles.type}>{county.type.toUpperCase()}</Text>
-        <Text style={styles.name}>{county.name}</Text>
-        {county.description && <Text style={styles.description}>{county.description}</Text>}
-      </View>
-
+      <RegionHeroSection
+        eyebrow={county.type}
+        headline={county.name}
+        subheadline={county.description}
+      />
+      <Container style={styles.section}>
       <Text style={styles.sectionTitle}>Municipalities</Text>
       {municipalities.map((m) => (
         <Link key={m.slug} href={routes.government.municipality(DEFAULT_COUNTY, m.slug)} asChild>
@@ -75,11 +75,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1 },
   content: { paddingBottom: spacing.xxxl + spacing.sm },
   loading: { fontFamily: fonts.sans, padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' },
-  header: { padding: spacing.xl },
-  type: { fontFamily: fonts.sansBold, fontSize: fontSize.xs, color: colors.neutralVariant, letterSpacing: letterSpacing.wide, marginBottom: spacing.xs + 2, textTransform: 'uppercase' as const },
-  name: { fontFamily: fonts.sansBold, fontSize: fontSize['3xl'], color: colors.neutral, marginBottom: spacing.xs + 2 },
-  description: { fontFamily: fonts.sans, fontSize: fontSize.base, color: colors.neutralVariant, lineHeight: 22 },
-  sectionTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.sm + 1, color: colors.neutralVariant, letterSpacing: letterSpacing.wide, paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.sm },
+  section: { paddingTop: spacing.xxl },
+  sectionTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.sm + 1, color: colors.neutralVariant, letterSpacing: letterSpacing.wide, paddingHorizontal: spacing.xl, paddingBottom: spacing.sm },
   row: { marginHorizontal: spacing.lg, marginBottom: spacing.sm, padding: spacing.lg, borderRadius: radii.md, backgroundColor: colors.surface, borderLeftWidth: 3, borderLeftColor: colors.primary, ...shadows.card },
   rowTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.lg, color: colors.neutral },
   rowMeta: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, color: colors.neutralVariant, marginTop: spacing.xs, textTransform: 'capitalize' },

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
+import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
@@ -46,8 +47,13 @@ export function MunicipalMinutesIndex() {
 
   return (
     <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 40 }}>
-      <Container>
-      <View style={{ padding: spacing.lg }}>
+      <RegionHeroSection
+        eyebrow="Meeting Minutes"
+        headline={region?.name}
+        subheadline="Official records from public meetings and hearings."
+      />
+      <Container style={{ paddingTop: spacing.xxl }}>
+      <View style={{ paddingHorizontal: spacing.lg }}>
       <TextInput
         style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: fontSize.base, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
         placeholder="Search minutes..."

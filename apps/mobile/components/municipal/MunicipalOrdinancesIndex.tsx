@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Text, ScrollView, TouchableOpacity, TextInput, View } from 'react-native';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
+import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { Link } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { matchesSearchQuery } from '@/lib/search';
@@ -53,8 +54,13 @@ export function MunicipalOrdinancesIndex() {
 
   return (
     <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 40 }}>
-      <Container>
-      <View style={{ padding: spacing.lg }}>
+      <RegionHeroSection
+        eyebrow="Ordinances"
+        headline={region?.name}
+        subheadline="Local laws and regulations governing the municipality."
+      />
+      <Container style={{ paddingTop: spacing.xxl }}>
+      <View style={{ paddingHorizontal: spacing.lg }}>
       <TextInput
         style={{ borderWidth: 1, borderColor: colors.outline, borderRadius: radii.sm, padding: spacing.md, fontSize: fontSize.base, fontFamily: fonts.sans, backgroundColor: colors.surface, marginBottom: spacing.md, color: colors.neutral }}
         placeholder="Search ordinances..."

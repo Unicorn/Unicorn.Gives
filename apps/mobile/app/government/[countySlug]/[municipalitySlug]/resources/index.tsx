@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Redirect } from 'expo-router';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRegion } from '@/lib/hooks/useRegion';
@@ -13,6 +13,7 @@ import {
 import { useTheme, fonts, spacing, radii } from '@/constants/theme';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
+import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { toHref } from '@/lib/navigation/paths';
 import { routes } from '@/lib/navigation';
@@ -65,20 +66,12 @@ export default function ResourcesIndexScreen() {
 
   return (
     <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 48 }}>
+      <RegionHeroSection
+        eyebrow="Community Resources"
+        headline={landing?.title ?? 'Resources'}
+        subheadline={landing?.description}
+      />
       <Container>
-        <View style={styles.section}>
-          <Text style={[styles.eyebrow, { color: colors.neutralVariant }]}>
-            COMMUNITY RESOURCES
-          </Text>
-          <Text style={[styles.title, { color: colors.neutral }]}>
-            {landing?.title ?? 'Resources'}
-          </Text>
-          {landing?.description ? (
-            <Text style={[styles.subtitle, { color: colors.neutralVariant }]}>
-              {landing.description}
-            </Text>
-          ) : null}
-        </View>
         <View style={styles.list}>
           {subpages.map((page) => {
             const icon = iconForResourcePage(page.slug);
@@ -153,29 +146,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.xxl,
   },
-  section: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xl,
-    gap: 4,
-  },
-  eyebrow: {
-    fontFamily: fonts.sansBold,
-    fontSize: 11,
-    letterSpacing: 1.5,
-  },
-  title: {
-    fontFamily: fonts.serifItalic,
-    fontSize: 28,
-  },
-  subtitle: {
-    fontFamily: fonts.sans,
-    fontSize: 14,
-    lineHeight: 20,
-    marginTop: spacing.xs,
-  },
   list: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.xxl,
     gap: spacing.md,
   },
   card: {

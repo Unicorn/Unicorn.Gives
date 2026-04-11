@@ -3,7 +3,6 @@ import { Link } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import {
 	Alert,
-	Image,
 	Linking,
 	Pressable,
 	StyleSheet,
@@ -16,6 +15,7 @@ import { EventRowLayout } from "@/components/events/EventRowLayout";
 import { BentoSection } from "@/components/layout/BentoSection";
 import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
+import { RegionHeroSection } from "@/components/municipal/sections/RegionHeroSection";
 import { SeoHead } from "@/components/SeoHead";
 import { AnimatedPressable } from "@/components/ui/AnimatedPressable";
 import { BentoGrid, type BentoItem } from "@/components/widgets";
@@ -264,97 +264,21 @@ export default function HomeScreen() {
 				title="Home"
 				description={`${DISCOVER_TAGLINE} ${getDefaultDescription()}`}
 			/>
-			<Container>
-				<View style={styles.hero}>
-					<View
-						style={[
-							styles.heroInner,
-							isTablet && styles.heroInnerTablet,
-							isDesktop && styles.heroInnerDesktop,
-						]}
-					>
-						<View
-							style={[styles.heroLayout, isTablet && styles.heroLayoutTablet]}
-						>
-							<View style={styles.heroText}>
-								<Text style={styles.heroTitle}>
-									<Text
-										style={[
-											styles.heroTitleItalic,
-											isTablet && styles.heroTitleItalicTablet,
-											isDesktop && styles.heroTitleItalicDesktop,
-										]}
-									>
-										Land of the{" "}
-									</Text>
-									<Text
-										style={[
-											styles.heroTitleBold,
-											isTablet && styles.heroTitleBoldTablet,
-											isDesktop && styles.heroTitleBoldDesktop,
-										]}
-									>
-										Unicorns
-									</Text>
-								</Text>
-								<Text
-									style={[
-										styles.heroTagline,
-										isTablet && styles.heroTaglineTablet,
-									]}
-								>
-									{DISCOVER_TAGLINE}
-								</Text>
-								<View
-									style={[
-										styles.heroCtaRow,
-										isDesktop && styles.heroCtaRowDesktop,
-									]}
-								>
-									<Link href={routes.community.index()} asChild>
-										<AnimatedPressable
-											variant="button"
-											style={StyleSheet.flatten([
-												styles.heroCtaPrimary,
-												shadows.button,
-											])}
-										>
-											<Text style={styles.heroCtaPrimaryText}>
-												Get Involved
-											</Text>
-										</AnimatedPressable>
-									</Link>
-									<Link href={routes.history.index()} asChild>
-										<AnimatedPressable
-											variant="button"
-											style={styles.heroCtaOutline}
-										>
-											<Text style={styles.heroCtaOutlineText}>
-												Land &amp; lore
-											</Text>
-										</AnimatedPressable>
-									</Link>
-								</View>
-							</View>
-
-							<View style={styles.heroMedia}>
-								<View style={styles.heroImageBlock}>
-									<Image
-										source={require("../../../assets/images/home-hero.png")}
-										style={[
-											styles.heroImage,
-											isTablet && styles.heroImageTablet,
-											isDesktop && styles.heroImageDesktop,
-										]}
-										resizeMode="cover"
-										accessibilityLabel="Northern Michigan landscape"
-									/>
-								</View>
-							</View>
-						</View>
-					</View>
-				</View>
-
+			<RegionHeroSection
+				eyebrow="Proudly Local"
+				headline="Land of the"
+				headlineAccent="Unicorns"
+				subheadline={DISCOVER_TAGLINE}
+				primaryCta={{
+					label: "Get Involved",
+					url: routes.community.index() as string,
+				}}
+				secondaryCta={{
+					label: "Land & lore",
+					url: routes.history.index() as string,
+				}}
+			/>
+			<Container style={styles.section}>
 				{/* Discover content */}
 				{
 					<View style={panelStyle}>
@@ -693,142 +617,7 @@ const createStyles = (colors: ThemeColors) =>
 	StyleSheet.create({
 		container: { flex: 1 },
 		content: { paddingBottom: spacing.xxxl + spacing.sm },
-		hero: {
-			paddingHorizontal: spacing.xxl,
-			paddingTop: spacing.lg,
-			paddingBottom: spacing.xxl,
-		},
-		heroInner: { width: "100%" },
-		heroInnerTablet: {},
-		heroInnerDesktop: {},
-		heroLayout: {
-			flexDirection: "column",
-		},
-		heroLayoutTablet: {
-			flexDirection: "row",
-			alignItems: "center",
-			gap: spacing.xl,
-		},
-		heroText: {
-			flex: 1,
-		},
-		heroMedia: {
-			flex: 1,
-		},
-		heroPill: {
-			alignSelf: "flex-start",
-			paddingHorizontal: spacing.lg - 2,
-			paddingVertical: spacing.xs + 2,
-			borderRadius: radii.pill,
-			marginBottom: spacing.lg - 2,
-			borderWidth: 1,
-			borderColor: colors.outline,
-		},
-		heroPillText: {
-			fontSize: fontSize.xs,
-			fontFamily: fonts.sansBold,
-			color: colors.primary,
-			letterSpacing: 2,
-			textTransform: "uppercase",
-		},
-		heroTitle: { marginBottom: spacing.sm + 2 },
-		heroTitleItalic: {
-			fontSize: 34,
-			lineHeight: 38,
-			fontFamily: fonts.serifItalic,
-			color: colors.neutral,
-		},
-		heroTitleItalicTablet: { fontSize: 40, lineHeight: 44 },
-		heroTitleItalicDesktop: { fontSize: 44, lineHeight: 48 },
-		heroTitleBold: {
-			fontSize: 34,
-			lineHeight: 38,
-			fontFamily: fonts.serifBold,
-			color: colors.neutral,
-		},
-		heroTitleBoldTablet: { fontSize: 40, lineHeight: 44 },
-		heroTitleBoldDesktop: { fontSize: 44, lineHeight: 48 },
-		heroTagline: {
-			fontSize: fontSize.lg + 1,
-			fontFamily: fonts.sansMedium,
-			color: colors.neutralVariant,
-			marginBottom: spacing.lg,
-		},
-		heroTaglineTablet: { fontSize: fontSize.xl },
-		heroCtaRow: {
-			flexDirection: "row",
-			flexWrap: "wrap",
-			gap: spacing.sm + 2,
-			marginBottom: spacing.xl,
-		},
-		heroCtaRowDesktop: { flexWrap: "nowrap" },
-		heroCtaPrimary: {
-			backgroundColor: colors.primary,
-			paddingHorizontal: spacing.xxl - 2,
-			paddingVertical: spacing.lg - 2,
-			borderRadius: radii.pill,
-			minHeight: 44,
-			justifyContent: "center",
-		},
-		heroCtaPrimaryText: {
-			color: colors.onPrimary,
-			fontFamily: fonts.sansBold,
-			fontSize: fontSize.base,
-		},
-		heroCtaOutline: {
-			borderWidth: 2,
-			borderColor: colors.outline,
-			paddingHorizontal: spacing.xxl - 2,
-			paddingVertical: spacing.md,
-			borderRadius: radii.pill,
-			minHeight: 44,
-			justifyContent: "center",
-		},
-		heroCtaOutlineText: {
-			color: colors.neutral,
-			fontFamily: fonts.sansBold,
-			fontSize: fontSize.base,
-		},
-		heroImageBlock: {
-			borderRadius: radii.lg,
-			overflow: "hidden",
-			position: "relative",
-			...shadows.cardElevated,
-		},
-		heroImage: {
-			width: "100%",
-			height: 220,
-			backgroundColor: colors.surfaceContainer,
-		},
-		heroImageTablet: {
-			height: 260,
-		},
-		heroImageDesktop: {
-			height: 320,
-		},
-		heroQuoteCard: {
-			padding: spacing.lg,
-		},
-		heroQuoteCardOverlay: {
-			position: "absolute",
-			left: spacing.lg,
-			right: spacing.lg,
-			bottom: spacing.lg,
-		},
-		heroQuoteLabel: {
-			fontSize: fontSize.xs - 1,
-			fontFamily: fonts.sansBold,
-			color: colors.neutralVariant,
-			letterSpacing: 1.2,
-			textTransform: "uppercase",
-			marginBottom: spacing.sm,
-		},
-		heroQuoteBody: {
-			fontSize: fontSize.md,
-			fontFamily: fonts.serifItalic,
-			color: colors.neutralVariant,
-			lineHeight: 21,
-		},
+		section: { paddingTop: spacing.xxl },
 		panel: { padding: spacing.xl, paddingTop: spacing.xl },
 		panelTablet: {
 			padding: spacing.xl,

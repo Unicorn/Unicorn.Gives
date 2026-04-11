@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
+import { RegionHeroSection } from "@/components/municipal/sections/RegionHeroSection";
 import {
 	EditorialCard,
 	FeaturedContentCard,
-	HeroFeature,
 } from "@/components/widgets";
 import { NEWS_TAB_HERO } from "@/constants/eventsTabContent";
 import { fonts, spacing, useTheme, type ThemeColors } from "@/constants/theme";
@@ -48,20 +48,21 @@ export default function NewsTab() {
 
 	return (
 		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
-			<Container>
+			<RegionHeroSection
+				eyebrow={NEWS_TAB_HERO.eyebrow}
+				headline={NEWS_TAB_HERO.title}
+				subheadline={NEWS_TAB_HERO.description}
+				primaryCta={{
+					label: NEWS_TAB_HERO.ctaLabel,
+					url: routes.community.events.index() as string,
+				}}
+				secondaryCta={{
+					label: NEWS_TAB_HERO.secondaryCtaLabel,
+					url: routes.partners.index("the-horn") as string,
+				}}
+			/>
+			<Container style={styles.section}>
 				<View style={styles.stack}>
-					<HeroFeature
-						eyebrow={NEWS_TAB_HERO.eyebrow}
-						title={NEWS_TAB_HERO.title}
-						description={NEWS_TAB_HERO.description}
-						ctaLabel={NEWS_TAB_HERO.ctaLabel}
-						ctaHref={routes.community.events.index()}
-						secondaryCta={{
-							label: NEWS_TAB_HERO.secondaryCtaLabel,
-							href: routes.partners.index("the-horn"),
-						}}
-					/>
-
 					{featuredItems.map((n) => (
 						<FeaturedContentCard
 							key={n.id}
@@ -106,7 +107,8 @@ export default function NewsTab() {
 const createStyles = (colors: ThemeColors) =>
 	StyleSheet.create({
 		container: { flex: 1 },
-		content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
+		content: { paddingBottom: spacing.xxxl + spacing.sm },
+		section: { paddingTop: spacing.xxl },
 		stack: { width: "100%", gap: spacing.xxxl + spacing.sm },
 		listSection: { gap: spacing.sm },
 		empty: {

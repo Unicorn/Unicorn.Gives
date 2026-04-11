@@ -6,6 +6,7 @@ import { toHref } from '@/lib/navigation';
 import { useTheme, fonts, fontSize, spacing, radii, shadows, breakpoints, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
+import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
 
@@ -52,12 +53,13 @@ export default function GuidesIndex() {
 
   return (
     <Wrapper style={styles.container} contentContainerStyle={styles.content}>
-      <Container>
-      <Text style={styles.heading}>What do you need help with?</Text>
-      <Text style={styles.subheading}>
-        Step-by-step guides for common civic tasks in Clare County.
-      </Text>
-
+      <RegionHeroSection
+        eyebrow="Civic Guides"
+        headline="What do you need"
+        headlineAccent="help with?"
+        subheadline="Step-by-step guides for common civic tasks in Clare County."
+      />
+      <Container style={styles.section}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chips}>
         <AnimatedPressable
           variant="subtle"
@@ -111,9 +113,8 @@ export default function GuidesIndex() {
 
 const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
-  heading: { fontFamily: fonts.sansBold, fontSize: fontSize['2xl'], color: colors.neutral, marginBottom: spacing.xs },
-  subheading: { fontFamily: fonts.sans, fontSize: fontSize.base, color: colors.neutralVariant, lineHeight: 22, marginBottom: spacing.lg },
+  content: { paddingBottom: spacing.xxxl + spacing.sm },
+  section: { paddingTop: spacing.xxl, gap: spacing.md },
   chips: { marginBottom: spacing.md },
   chip: { paddingHorizontal: spacing.lg - 2, paddingVertical: spacing.xs + 2, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.outline, marginRight: spacing.sm },
   chipActive: { backgroundColor: colors.neutral, borderColor: colors.neutral },

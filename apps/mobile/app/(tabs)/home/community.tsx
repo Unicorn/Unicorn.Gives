@@ -4,10 +4,10 @@ import { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
+import { RegionHeroSection } from "@/components/municipal/sections/RegionHeroSection";
 import { AnimatedPressable } from "@/components/ui/AnimatedPressable";
 import {
 	BentoGrid,
-	HeroFeature,
 	InfoRowGroup,
 	QuoteCallout,
 } from "@/components/widgets";
@@ -27,21 +27,22 @@ export default function CommunityTab() {
 
 	return (
 		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
-			<Container>
+			<RegionHeroSection
+				eyebrow={HORN_HERO.eyebrow}
+				headline="The Community Center:"
+				headlineAccent="The Horn"
+				subheadline={HORN_HERO.description}
+				primaryCta={{
+					label: HORN_HERO.ctaLabel,
+					url: routes.partners.index("the-horn") as string,
+				}}
+				secondaryCta={{
+					label: HORN_HERO.secondaryCtaLabel,
+					url: routes.partners.index("the-horn") as string,
+				}}
+			/>
+			<Container style={styles.section}>
 				<View style={styles.stack}>
-					{/* Hero: The Horn */}
-					<HeroFeature
-						eyebrow={HORN_HERO.eyebrow}
-						title={HORN_HERO.title}
-						description={HORN_HERO.description}
-						ctaLabel={HORN_HERO.ctaLabel}
-						ctaHref={routes.partners.index("the-horn")}
-						secondaryCta={{
-							label: HORN_HERO.secondaryCtaLabel,
-							href: routes.partners.index("the-horn"),
-						}}
-					/>
-
 					{/* Mission Quote */}
 					<QuoteCallout quote={HORN_MISSION} variant="centered" />
 
@@ -108,9 +109,9 @@ const createStyles = (colors: ThemeColors) =>
 	StyleSheet.create({
 		container: { flex: 1 },
 		content: {
-			padding: spacing.lg,
 			paddingBottom: spacing.xxxl + spacing.sm,
 		},
+		section: { paddingTop: spacing.xxl },
 		stack: { width: "100%", gap: spacing.xxxl + spacing.sm },
 		navSection: { gap: spacing.md, marginTop: spacing.lg },
 		navSectionTitle: {

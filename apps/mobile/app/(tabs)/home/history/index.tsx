@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Container } from "@/components/layout/Container";
 import { Wrapper } from "@/components/layout/Wrapper";
+import { RegionHeroSection } from "@/components/municipal/sections/RegionHeroSection";
 import { AnimatedPressable } from "@/components/ui/AnimatedPressable";
-import { HeroFeature } from "@/components/widgets";
 import { HISTORY_TAB_HERO } from "@/constants/homeDiscoverHistory";
 import { fonts, fontSize, letterSpacing, radii, shadows, spacing, useTheme, type ThemeColors } from "@/constants/theme";
 import { getLoreDoc, LORE_ORDER } from "@/lib/lore";
@@ -16,20 +16,21 @@ export default function HistoryTab() {
 
 	return (
 		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
-			<Container>
+			<RegionHeroSection
+				eyebrow={HISTORY_TAB_HERO.eyebrow}
+				headline={HISTORY_TAB_HERO.title}
+				subheadline={HISTORY_TAB_HERO.description}
+				primaryCta={{
+					label: HISTORY_TAB_HERO.ctaLabel,
+					url: routes.history.detail("dogman") as string,
+				}}
+				secondaryCta={{
+					label: HISTORY_TAB_HERO.secondaryCtaLabel,
+					url: routes.history.detail("anishinaabe") as string,
+				}}
+			/>
+			<Container style={styles.section}>
 				<View style={styles.stack}>
-					<HeroFeature
-						eyebrow={HISTORY_TAB_HERO.eyebrow}
-						title={HISTORY_TAB_HERO.title}
-						description={HISTORY_TAB_HERO.description}
-						ctaLabel={HISTORY_TAB_HERO.ctaLabel}
-						ctaHref={routes.history.detail("dogman")}
-						secondaryCta={{
-							label: HISTORY_TAB_HERO.secondaryCtaLabel,
-							href: routes.history.detail("anishinaabe"),
-						}}
-					/>
-
 					<Text style={styles.intro}>
 						Choose a story below to read more — tier zero is folklore and
 						teaching, not legal or scientific authority.
@@ -58,7 +59,8 @@ export default function HistoryTab() {
 const createStyles = (colors: ThemeColors) =>
 	StyleSheet.create({
 		container: { flex: 1 },
-		content: { padding: spacing.lg, paddingBottom: spacing.xxxl + spacing.sm },
+		content: { paddingBottom: spacing.xxxl + spacing.sm },
+		section: { paddingTop: spacing.xxl },
 		stack: { width: "100%", gap: spacing.lg },
 		intro: {
 			fontFamily: fonts.sans,

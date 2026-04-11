@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
+import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { routes } from '@/lib/navigation';
@@ -66,12 +67,12 @@ export default function CountyOverview() {
         title={region.name}
         description={region.description ?? `${region.name} municipalities and local government on UNI Gives.`}
       />
-      <Container>
-        <View style={styles.header}>
-          <Text style={[styles.type, { color: colors.neutralVariant }]}>{region.type.toUpperCase()}</Text>
-          {region.description && <Text style={[styles.description, { color: colors.neutralVariant }]}>{region.description}</Text>}
-        </View>
-
+      <RegionHeroSection
+        eyebrow={region.type}
+        headline={region.name}
+        subheadline={region.description}
+      />
+      <Container style={styles.section}>
         <Text style={[styles.sectionTitle, { color: colors.neutralVariant }]}>Municipalities</Text>
         {children.map((c) => (
           <Link key={c.slug} href={routes.government.municipality(countySlug, c.slug)} asChild>
@@ -90,10 +91,8 @@ const styles = StyleSheet.create({
   page: { flex: 1 },
   content: { paddingBottom: spacing.xxxl + spacing.sm, flexGrow: 1 },
   loading: { fontFamily: fonts.sans, padding: spacing.xxl, textAlign: 'center' },
-  header: { padding: spacing.xl },
-  type: { fontFamily: fonts.sansBold, fontSize: fontSize.xs, letterSpacing: letterSpacing.wide, marginBottom: spacing.xs + 2 },
-  description: { fontFamily: fonts.sans, fontSize: fontSize.base, lineHeight: 22 },
-  sectionTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.sm + 1, letterSpacing: letterSpacing.wide, paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.sm },
+  section: { paddingTop: spacing.xxl },
+  sectionTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.sm + 1, letterSpacing: letterSpacing.wide, paddingHorizontal: spacing.xl, paddingBottom: spacing.sm },
   row: { marginHorizontal: spacing.lg, marginBottom: spacing.sm, padding: spacing.lg, borderRadius: radii.sm, borderWidth: 1 },
   rowTitle: { fontFamily: fonts.sansBold, fontSize: fontSize.lg },
   rowMeta: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, marginTop: spacing.xs, textTransform: 'capitalize' },
