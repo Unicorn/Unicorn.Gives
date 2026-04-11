@@ -45,6 +45,10 @@ export default function NewNewsPage() {
 			impact: form.impact || null,
 			region_id: form.region_id || null,
 			partner_id: form.partner_id || null,
+			department_id: form.department_id || null,
+			is_public_notice: form.is_public_notice,
+			notice_type: form.notice_type || null,
+			expiration_date: form.expiration_date || null,
 			status,
 		};
 

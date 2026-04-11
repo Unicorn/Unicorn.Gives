@@ -44,17 +44,31 @@ const NAV_SECTIONS: NavSection[] = [
       { label: 'News', path: '/admin/news', icon: 'article' },
       { label: 'Guides', path: '/admin/guides', icon: 'menu-book' },
       { label: 'Pages', path: '/admin/pages', icon: 'description' },
+      { label: 'Public Notices', path: '/admin/public-notices', icon: 'campaign' },
     ],
   },
   {
     label: 'Government',
     items: [
+      { label: 'Departments', path: '/admin/departments', icon: 'account-balance' },
+      { label: 'Boards & Commissions', path: '/admin/boards', icon: 'groups' },
+      { label: 'Meetings & Agendas', path: '/admin/meetings', icon: 'event-note' },
       { label: 'Minutes', path: '/admin/minutes', icon: 'gavel' },
       { label: 'Ordinances', path: '/admin/ordinances', icon: 'policy' },
       { label: 'Contacts', path: '/admin/contacts', icon: 'contacts' },
       { label: 'Elections', path: '/admin/elections', icon: 'how-to-vote' },
       { label: 'Municipal Documents', path: '/admin/municipal-documents', icon: 'folder' },
       { label: 'Region Pages', path: '/admin/region-pages', icon: 'map' },
+    ],
+  },
+  {
+    label: 'Services & Resources',
+    items: [
+      { label: 'Services', path: '/admin/services', icon: 'miscellaneous-services' },
+      { label: 'Facilities', path: '/admin/facilities', icon: 'location-city' },
+      { label: 'Forms & Documents', path: '/admin/forms-documents', icon: 'request-page' },
+      { label: 'Job Postings', path: '/admin/job-postings', icon: 'work' },
+      { label: 'FAQs', path: '/admin/faqs', icon: 'help-outline' },
     ],
   },
   {
@@ -69,6 +83,14 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: 'Categories', path: '/admin/categories', icon: 'category' },
       { label: 'Tags', path: '/admin/tags', icon: 'label' },
+      { label: 'Audiences', path: '/admin/audiences', icon: 'people-outline' },
+    ],
+  },
+  {
+    label: 'Site Configuration',
+    items: [
+      { label: 'Quick Links', path: '/admin/quick-links', icon: 'link' },
+      { label: 'Navigation Menus', path: '/admin/nav-menus', icon: 'menu' },
     ],
   },
   {

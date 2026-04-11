@@ -45,7 +45,22 @@ export interface NewsFormData {
 	impact: string;
 	region_id: string;
 	partner_id: string;
+	department_id: string;
+	is_public_notice: boolean;
+	notice_type: string;
+	expiration_date: string;
 }
+
+const NOTICE_TYPE_OPTIONS = [
+	{ label: "None", value: "" },
+	{ label: "Public Hearing", value: "public_hearing" },
+	{ label: "Ordinance Change", value: "ordinance_change" },
+	{ label: "Road Closure", value: "road_closure" },
+	{ label: "Utility", value: "utility" },
+	{ label: "Emergency", value: "emergency" },
+	{ label: "Meeting", value: "meeting" },
+	{ label: "General", value: "general" },
+];
 
 export const EMPTY_NEWS: NewsFormData = {
 	title: "",
@@ -63,6 +78,10 @@ export const EMPTY_NEWS: NewsFormData = {
 	impact: "",
 	region_id: "",
 	partner_id: "",
+	department_id: "",
+	is_public_notice: false,
+	notice_type: "",
+	expiration_date: "",
 };
 
 interface NewsFormProps {
@@ -92,6 +111,9 @@ export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 	const [partners, setPartners] = useState<{ label: string; value: string }[]>(
 		[],
 	);
+	const [departments, setDepartments] = useState<{ label: string; value: string }[]>(
+		[],
+	);
 
 	useEffect(() => {
 		supabase
@@ -110,6 +132,14 @@ export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 			.then(({ data: p }) => {
 				if (p) setPartners(p.map((x) => ({ label: x.name, value: x.id })));
 			});
+
+		supabase
+			.from("departments")
+			.select("id, name")
+			.order("name")
+			.then(({ data: d }) => {
+				if (d) setDepartments(d.map((x) => ({ label: x.name, value: x.id })));
+			});
 	}, []);
 
 	function set<K extends keyof NewsFormData>(key: K, value: NewsFormData[K]) {
@@ -118,6 +148,7 @@ export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 
 	const regionOptions = [{ label: "None", value: "" }, ...regions];
 	const partnerOptions = [{ label: "None", value: "" }, ...partners];
+	const departmentOptions = [{ label: "None", value: "" }, ...departments];
 
 	return (
 		<View style={styles.form}>
@@ -262,6 +293,45 @@ export function NewsForm({ data, onChange, errors = {} }: NewsFormProps) {
 					/>
 				</FormColumn>
 			</FormRow>
+
+			<FormRow>
+				<FormColumn>
+					<SelectField
+						label="Department (optional)"
+						value={data.department_id}
+						onValueChange={(v) => set("department_id", v)}
+						options={departmentOptions}
+					/>
+				</FormColumn>
+				<FormColumn>
+					<CheckboxField
+						label="Public Notice"
+						value={data.is_public_notice}
+						onValueChange={(v) => set("is_public_notice", v)}
+						hint="Flag this article as a public notice"
+					/>
+				</FormColumn>
+			</FormRow>
+
+			{data.is_public_notice && (
+				<FormRow>
+					<FormColumn>
+						<SelectField
+							label="Notice Type"
+							value={data.notice_type}
+							onValueChange={(v) => set("notice_type", v)}
+							options={NOTICE_TYPE_OPTIONS}
+						/>
+					</FormColumn>
+					<FormColumn>
+						<DateField
+							label="Expiration Date"
+							value={data.expiration_date}
+							onChangeText={(v) => set("expiration_date", v)}
+						/>
+					</FormColumn>
+				</FormRow>
+			)}
 		</View>
 	);
 }

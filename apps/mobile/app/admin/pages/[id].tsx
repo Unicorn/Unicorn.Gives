@@ -40,6 +40,12 @@ export default function EditPagePage() {
         nav_title: d.nav_title ?? '',
         hide_from_nav: d.hide_from_nav ?? false,
         display_order: d.display_order ?? 0,
+        department_id: d.department_id ?? '',
+        parent_page_id: d.parent_page_id ?? '',
+        page_type: d.page_type ?? 'standard',
+        redirect_url: d.redirect_url ?? '',
+        audience: d.audience ?? '',
+        template: d.template ?? '',
       });
       setStatus(d.status ?? 'draft');
       setLoading(false);
@@ -65,6 +71,12 @@ export default function EditPagePage() {
       nav_title: form.nav_title || null,
       hide_from_nav: form.hide_from_nav,
       display_order: form.display_order,
+      department_id: form.department_id || null,
+      parent_page_id: form.parent_page_id || null,
+      page_type: form.page_type || 'standard',
+      redirect_url: form.redirect_url || null,
+      audience: form.audience || null,
+      template: form.template || null,
     };
     const success = await update(id, payload);
     if (success && Platform.OS === 'web') window.alert('Page saved successfully.');

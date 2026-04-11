@@ -38,6 +38,15 @@ const VISIBILITY_OPTIONS = [
   { label: 'Both', value: 'both' },
 ];
 
+const EVENT_TYPES = [
+  { label: 'Community', value: 'community' },
+  { label: 'Recreation', value: 'recreation' },
+  { label: 'Government Meeting', value: 'government_meeting' },
+  { label: 'Public Hearing', value: 'public_hearing' },
+  { label: 'Holiday', value: 'holiday' },
+  { label: 'Other', value: 'other' },
+];
+
 /* ── Types ── */
 
 export interface EventFormData {
@@ -60,6 +69,11 @@ export interface EventFormData {
   region_id: string;
   partner_id: string;
   featured: boolean;
+  department_id: string;
+  board_id: string;
+  is_public_meeting: boolean;
+  agenda_url: string;
+  event_type: string;
 }
 
 export const EMPTY_EVENT: EventFormData = {
@@ -82,6 +96,11 @@ export const EMPTY_EVENT: EventFormData = {
   region_id: '',
   partner_id: '',
   featured: false,
+  department_id: '',
+  board_id: '',
+  is_public_meeting: false,
+  agenda_url: '',
+  event_type: 'community',
 };
 
 interface EventFormProps {
@@ -122,9 +141,11 @@ export function EventForm({
     }
   }, [slug]);
 
-  // Region/partner pickers
+  // Region/partner/department/board pickers
   const [regions, setRegions] = useState<{ label: string; value: string }[]>([]);
   const [partners, setPartners] = useState<{ label: string; value: string }[]>([]);
+  const [departments, setDepartments] = useState<{ label: string; value: string }[]>([]);
+  const [boards, setBoards] = useState<{ label: string; value: string }[]>([]);
 
   useEffect(() => {
     supabase
@@ -144,6 +165,14 @@ export function EventForm({
         if (p) setPartners(p.map((x) => ({ label: x.name, value: x.id })));
       });
   }, []);
+
+  useEffect(() => {
+    if (!data.region_id) { setDepartments([]); setBoards([]); return; }
+    supabase.from('departments').select('id, name').eq('region_id', data.region_id).eq('status', 'published').order('name')
+      .then(({ data: d }) => { if (d) setDepartments(d.map((x) => ({ label: x.name, value: x.id }))); });
+    supabase.from('boards_commissions').select('id, name').eq('region_id', data.region_id).eq('status', 'published').order('name')
+      .then(({ data: b }) => { if (b) setBoards(b.map((x) => ({ label: x.name, value: x.id }))); });
+  }, [data.region_id]);
 
   function set<K extends keyof EventFormData>(key: K, value: EventFormData[K]) {
     onChange({ ...data, [key]: value });
@@ -307,6 +336,36 @@ export function EventForm({
           />
         </FormColumn>
       </FormRow>
+
+      {/* Event Type + Government linking */}
+      <FormRow>
+        <FormColumn>
+          <SelectField label="Event Type" value={data.event_type} onValueChange={(v) => set('event_type', v)} options={EVENT_TYPES} />
+        </FormColumn>
+        <FormColumn>
+          <SelectField label="Department" value={data.department_id} onValueChange={(v) => set('department_id', v)} options={departments} placeholder="None" />
+        </FormColumn>
+        <FormColumn>
+          <SelectField label="Board / Commission" value={data.board_id} onValueChange={(v) => set('board_id', v)} options={boards} placeholder="None" />
+        </FormColumn>
+      </FormRow>
+
+      <CheckboxField
+        label="Public Meeting"
+        value={data.is_public_meeting}
+        onValueChange={(v) => set('is_public_meeting', v)}
+        hint="This event is an official public meeting"
+      />
+
+      {data.is_public_meeting && (
+        <TextField
+          label="Agenda URL"
+          value={data.agenda_url}
+          onChangeText={(v) => set('agenda_url', v)}
+          placeholder="https://..."
+          hint="Link to meeting agenda PDF"
+        />
+      )}
 
       {/* Featured */}
       <CheckboxField

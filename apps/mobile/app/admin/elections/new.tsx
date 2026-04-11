@@ -34,6 +34,9 @@ export default function NewElectionPage() {
       type: form.type,
       registration_deadline: form.registration_deadline || null,
       absentee_deadline: form.absentee_deadline || null,
+      filing_deadline: form.filing_deadline || null,
+      sample_ballot_url: form.sample_ballot_url || null,
+      voter_info_url: form.voter_info_url || null,
       region_id: form.region_id || null,
       status,
     };

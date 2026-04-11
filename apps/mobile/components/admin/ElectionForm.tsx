@@ -23,12 +23,16 @@ export interface ElectionFormData {
   type: string;
   registration_deadline: string;
   absentee_deadline: string;
+  filing_deadline: string;
+  sample_ballot_url: string;
+  voter_info_url: string;
   region_id: string;
 }
 
 export const EMPTY_ELECTION: ElectionFormData = {
   title: '', slug: '', description: '', body: '', election_date: '', type: 'general',
-  registration_deadline: '', absentee_deadline: '', region_id: '',
+  registration_deadline: '', absentee_deadline: '', filing_deadline: '',
+  sample_ballot_url: '', voter_info_url: '', region_id: '',
 };
 
 interface ElectionFormProps {
@@ -73,6 +77,14 @@ export function ElectionForm({ data, onChange, errors = {} }: ElectionFormProps)
         <FormColumn><DateField label="Registration Deadline" value={data.registration_deadline} onChangeText={(v) => set('registration_deadline', v)} /></FormColumn>
         <FormColumn><DateField label="Absentee Deadline" value={data.absentee_deadline} onChangeText={(v) => set('absentee_deadline', v)} /></FormColumn>
       </FormRow>
+
+      <FormRow>
+        <FormColumn><DateField label="Filing Deadline" value={data.filing_deadline} onChangeText={(v) => set('filing_deadline', v)} /></FormColumn>
+        <FormColumn />
+      </FormRow>
+
+      <TextField label="Sample Ballot URL" value={data.sample_ballot_url} onChangeText={(v) => set('sample_ballot_url', v)} placeholder="https://..." hint="Link to the sample ballot PDF or page" />
+      <TextField label="Voter Info URL" value={data.voter_info_url} onChangeText={(v) => set('voter_info_url', v)} placeholder="https://..." hint="Link to voter information page" />
 
       <AdminRichEditor label="Election Details" value={data.body} onChange={(v) => set('body', v)} placeholder="Election information, polling locations, candidates..." />
     </View>

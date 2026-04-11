@@ -46,6 +46,9 @@ export default function EditElectionPage() {
           type: data.type ?? 'general',
           registration_deadline: data.registration_deadline ?? '',
           absentee_deadline: data.absentee_deadline ?? '',
+          filing_deadline: data.filing_deadline ?? '',
+          sample_ballot_url: data.sample_ballot_url ?? '',
+          voter_info_url: data.voter_info_url ?? '',
           region_id: data.region_id ?? '',
         });
         setStatus(data.status ?? 'draft');
@@ -74,6 +77,9 @@ export default function EditElectionPage() {
       type: form.type,
       registration_deadline: form.registration_deadline || null,
       absentee_deadline: form.absentee_deadline || null,
+      filing_deadline: form.filing_deadline || null,
+      sample_ballot_url: form.sample_ballot_url || null,
+      voter_info_url: form.voter_info_url || null,
       region_id: form.region_id || null,
     };
 

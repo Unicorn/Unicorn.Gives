@@ -70,6 +70,10 @@ export default function EditNewsPage() {
 					impact: data.impact ?? "",
 					region_id: data.region_id ?? "",
 					partner_id: data.partner_id ?? "",
+					department_id: data.department_id ?? "",
+					is_public_notice: data.is_public_notice ?? false,
+					notice_type: data.notice_type ?? "",
+					expiration_date: data.expiration_date ?? "",
 				});
 				setStatus(data.status ?? "draft");
 				setLoading(false);
@@ -105,6 +109,10 @@ export default function EditNewsPage() {
 			impact: form.impact || null,
 			region_id: form.region_id || null,
 			partner_id: form.partner_id || null,
+			department_id: form.department_id || null,
+			is_public_notice: form.is_public_notice,
+			notice_type: form.notice_type || null,
+			expiration_date: form.expiration_date || null,
 		};
 
 		const success = await update(id, payload);

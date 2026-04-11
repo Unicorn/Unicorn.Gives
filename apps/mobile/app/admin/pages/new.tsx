@@ -33,6 +33,12 @@ export default function NewPagePage() {
       nav_title: form.nav_title || null,
       hide_from_nav: form.hide_from_nav,
       display_order: form.display_order,
+      department_id: form.department_id || null,
+      parent_page_id: form.parent_page_id || null,
+      page_type: form.page_type || 'standard',
+      redirect_url: form.redirect_url || null,
+      audience: form.audience || null,
+      template: form.template || null,
       status,
     };
     if (status === 'published') payload.published_at = new Date().toISOString();
