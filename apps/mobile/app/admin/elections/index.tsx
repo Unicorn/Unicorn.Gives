@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { useAdminQuery } from '@/hooks/useAdminQuery';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
+import { useRegions } from '@/hooks/useRegions';
 import { AdminDataTable, type Column } from '@/components/admin/AdminDataTable';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
@@ -18,7 +19,8 @@ interface ElectionRow {
   election_date: string;
   type: string;
   status: string;
-  registration_deadline: string | null;
+  region_id: string | null;
+  regions: { name: string } | null;
   created_at: string;
 }
 
@@ -41,22 +43,27 @@ export default function ElectionsListPage() {
   const router = useRouter();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const { regionOptions } = useRegions();
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [regionFilter, setRegionFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [sortKey, setSortKey] = useState('election_date');
+  const [sortAsc, setSortAsc] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<ElectionRow | null>(null);
 
   const filters: Record<string, string> = {};
   if (typeFilter) filters.type = typeFilter;
+  if (regionFilter) filters.region_id = regionFilter;
 
   const { data, loading, error, total, pageSize, refresh } = useAdminQuery<ElectionRow>(
     'elections',
     {
-      select: 'id, slug, title, election_date, type, status, registration_deadline, created_at',
-      orderBy: 'election_date',
-      ascending: false,
+      select: 'id, slug, title, election_date, type, status, region_id, regions(name), created_at',
+      orderBy: sortKey,
+      ascending: sortAsc,
       page,
       pageSize: 25,
       filters,
@@ -71,37 +78,40 @@ export default function ElectionsListPage() {
     {
       key: 'title',
       label: 'Title',
-      render: (row) => (
-        <Text style={styles.titleCell} numberOfLines={1}>{row.title}</Text>
-      ),
+      sortKey: 'title',
+      render: (row) => <Text style={styles.titleCell} numberOfLines={1}>{row.title}</Text>,
     },
     {
       key: 'election_date',
       label: 'Election Date',
       width: 120,
+      sortKey: 'election_date',
       render: (row) => (
         <Text style={styles.dateCell}>
           {new Date(row.election_date + 'T00:00:00').toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
+            month: 'short', day: 'numeric', year: 'numeric',
           })}
         </Text>
       ),
     },
     { key: 'type', label: 'Type', width: 100 },
+    {
+      key: 'region_id',
+      label: 'Municipality',
+      width: 150,
+      render: (row) => (
+        <Text style={styles.dateCell} numberOfLines={1}>
+          {row.regions?.name ?? '—'}
+        </Text>
+      ),
+    },
     { key: 'status', label: 'Status', width: 100, isStatus: true },
     {
       key: 'actions',
       label: '',
       width: 40,
       render: (row) => (
-        <Pressable
-          onPress={(e) => {
-            e.stopPropagation();
-            setDeleteTarget(row);
-          }}
-        >
+        <Pressable onPress={(e) => { e.stopPropagation(); setDeleteTarget(row); }}>
           <MaterialIcons name="delete-outline" size={18} color={colors.error} />
         </Pressable>
       ),
@@ -111,9 +121,7 @@ export default function ElectionsListPage() {
   async function handleDelete() {
     if (!deleteTarget) return;
     const success = await remove(deleteTarget.id);
-    if (success) {
-      refresh();
-    }
+    if (success) refresh();
     setDeleteTarget(null);
   }
 
@@ -122,14 +130,9 @@ export default function ElectionsListPage() {
       title="Elections"
       subtitle={`${total} total elections`}
       actions={
-        <AdminButton
-          label="New Election"
-          icon="add"
-          onPress={() => router.push(toHref('/admin/elections/new'))}
-        />
+        <AdminButton label="New Election" icon="add" onPress={() => router.push(toHref('/admin/elections/new'))} />
       }
     >
-      {/* Filters row */}
       <View style={styles.filtersRow}>
         <TextInput
           style={styles.searchInput}
@@ -139,30 +142,22 @@ export default function ElectionsListPage() {
           placeholderTextColor={colors.outlineVariant}
         />
         <View style={styles.selectWrap}>
-          <select
-            value={typeFilter}
-            onChange={(e: any) => { setTypeFilter(e.target.value); setPage(1); }}
-            style={selectStyle(colors)}
-          >
-            {ELECTION_TYPES.map((t) => (
-              <option key={t.value} value={t.value}>{t.label}</option>
-            ))}
+          <select value={typeFilter} onChange={(e: any) => { setTypeFilter(e.target.value); setPage(1); }} style={selectStyle(colors)}>
+            {ELECTION_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
           </select>
         </View>
         <View style={styles.selectWrap}>
-          <select
-            value={statusFilter}
-            onChange={(e: any) => { setStatusFilter(e.target.value); setPage(1); }}
-            style={selectStyle(colors)}
-          >
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s.value} value={s.value}>{s.label}</option>
-            ))}
+          <select value={regionFilter} onChange={(e: any) => { setRegionFilter(e.target.value); setPage(1); }} style={selectStyle(colors)}>
+            {regionOptions.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+          </select>
+        </View>
+        <View style={styles.selectWrap}>
+          <select value={statusFilter} onChange={(e: any) => { setStatusFilter(e.target.value); setPage(1); }} style={selectStyle(colors)}>
+            {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
           </select>
         </View>
       </View>
 
-      {/* Data table */}
       <AdminDataTable
         columns={columns}
         data={data}
@@ -174,9 +169,11 @@ export default function ElectionsListPage() {
         onPageChange={setPage}
         onRowPress={(row) => router.push(toHref(`/admin/elections/${row.id}`))}
         emptyMessage="No elections found"
+        sortKey={sortKey}
+        sortDirection={sortAsc ? 'asc' : 'desc'}
+        onSort={(key, dir) => { setSortKey(key); setSortAsc(dir === 'asc'); setPage(1); }}
       />
 
-      {/* Delete confirmation */}
       <AdminConfirmDialog
         visible={!!deleteTarget}
         title="Delete Election"
@@ -192,55 +189,24 @@ export default function ElectionsListPage() {
 
 function selectStyle(colors: ThemeColors) {
   return {
-    padding: '8px 12px',
-    fontSize: 13,
-    fontFamily: 'inherit',
-    border: 'none',
-    backgroundColor: 'transparent',
-    color: colors.neutral,
-    outline: 'none',
-    cursor: 'pointer',
-    width: '100%',
+    padding: '8px 12px', fontSize: 13, fontFamily: 'inherit', border: 'none',
+    backgroundColor: 'transparent', color: colors.neutral, outline: 'none',
+    cursor: 'pointer', width: '100%',
   };
 }
 
 const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
-    filtersRow: {
-      flexDirection: 'row',
-      gap: spacing.sm,
-      marginBottom: spacing.lg,
-      flexWrap: 'wrap',
-    },
+    filtersRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.lg, flexWrap: 'wrap' },
     searchInput: {
-      flex: 1,
-      minWidth: 200,
-      backgroundColor: colors.surface,
-      borderWidth: 1,
-      borderColor: colors.outline,
-      borderRadius: radii.sm,
-      paddingHorizontal: spacing.md,
-      paddingVertical: 8,
-      fontFamily: fonts.sans,
-      fontSize: 13,
-      color: colors.neutral,
+      flex: 1, minWidth: 200, backgroundColor: colors.surface, borderWidth: 1,
+      borderColor: colors.outline, borderRadius: radii.sm, paddingHorizontal: spacing.md,
+      paddingVertical: 8, fontFamily: fonts.sans, fontSize: 13, color: colors.neutral,
     },
     selectWrap: {
-      backgroundColor: colors.surface,
-      borderWidth: 1,
-      borderColor: colors.outline,
-      borderRadius: radii.sm,
-      overflow: 'hidden',
-      minWidth: 140,
+      backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.outline,
+      borderRadius: radii.sm, overflow: 'hidden', minWidth: 140,
     },
-    titleCell: {
-      fontFamily: fonts.sansMedium,
-      fontSize: 13,
-      color: colors.neutral,
-    },
-    dateCell: {
-      fontFamily: fonts.sans,
-      fontSize: 13,
-      color: colors.neutralVariant,
-    },
+    titleCell: { fontFamily: fonts.sansMedium, fontSize: 13, color: colors.neutral },
+    dateCell: { fontFamily: fonts.sans, fontSize: 13, color: colors.neutralVariant },
   });

@@ -23,6 +23,8 @@ export interface Column<T> {
   render?: (row: T) => React.ReactNode;
   /** Show as status badge */
   isStatus?: boolean;
+  /** Allow sorting by this column (key used for orderBy) */
+  sortKey?: string;
 }
 
 interface AdminDataTableProps<T> {
@@ -41,6 +43,12 @@ interface AdminDataTableProps<T> {
   emptyMessage?: string;
   /** Key extractor, defaults to 'id' */
   keyExtractor?: (row: T) => string;
+  /** Current sort column key */
+  sortKey?: string;
+  /** Current sort direction */
+  sortDirection?: 'asc' | 'desc';
+  /** Called when a sortable header is clicked */
+  onSort?: (key: string, direction: 'asc' | 'desc') => void;
 }
 
 export function AdminDataTable<T extends Record<string, any>>({
@@ -55,11 +63,21 @@ export function AdminDataTable<T extends Record<string, any>>({
   onPageChange,
   emptyMessage = 'No records found',
   keyExtractor = (row) => String(row.id ?? row.slug ?? Math.random()),
+  sortKey,
+  sortDirection,
+  onSort,
 }: AdminDataTableProps<T>) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   const totalPages = Math.ceil(total / pageSize);
+
+  function handleHeaderPress(col: Column<T>) {
+    if (!col.sortKey || !onSort) return;
+    const nextDir =
+      sortKey === col.sortKey && sortDirection === 'asc' ? 'desc' : 'asc';
+    onSort(col.sortKey, nextDir);
+  }
 
   if (loading) {
     return (
@@ -94,14 +112,36 @@ export function AdminDataTable<T extends Record<string, any>>({
         <View style={styles.table}>
           {/* Header */}
           <View style={styles.headerRow}>
-            {columns.map((col) => (
-              <View
-                key={col.key}
-                style={[styles.headerCell, col.width ? { width: col.width } : styles.flexCell]}
-              >
-                <Text style={styles.headerText}>{col.label}</Text>
-              </View>
-            ))}
+            {columns.map((col) => {
+              const isSortable = !!col.sortKey && !!onSort;
+              const isActive = sortKey === col.sortKey;
+              return (
+                <Pressable
+                  key={col.key}
+                  style={[
+                    styles.headerCell,
+                    col.width ? { width: col.width } : styles.flexCell,
+                    isSortable && styles.headerCellSortable,
+                  ]}
+                  onPress={() => isSortable && handleHeaderPress(col)}
+                  disabled={!isSortable}
+                >
+                  <Text style={[styles.headerText, isActive && { color: colors.primary }]}>
+                    {col.label}
+                  </Text>
+                  {isSortable && isActive && (
+                    <MaterialIcons
+                      name={sortDirection === 'asc' ? 'arrow-upward' : 'arrow-downward'}
+                      size={12}
+                      color={colors.primary}
+                    />
+                  )}
+                  {isSortable && !isActive && (
+                    <MaterialIcons name="unfold-more" size={12} color={colors.outlineVariant} />
+                  )}
+                </Pressable>
+              );
+            })}
           </View>
 
           {/* Rows */}
@@ -195,6 +235,12 @@ const createStyles = (colors: ThemeColors) =>
     headerCell: {
       paddingHorizontal: spacing.md,
       paddingVertical: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    headerCellSortable: {
+      cursor: 'pointer' as any,
     },
     headerText: {
       fontFamily: fonts.sansBold,

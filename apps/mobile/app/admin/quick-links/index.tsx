@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { useAdminQuery } from '@/hooks/useAdminQuery';
 import { useAdminMutation } from '@/hooks/useAdminMutation';
+import { useRegions } from '@/hooks/useRegions';
 import { AdminDataTable, type Column } from '@/components/admin/AdminDataTable';
 import { AdminPageShell, AdminButton } from '@/components/admin/AdminPageShell';
 import { AdminConfirmDialog } from '@/components/admin/AdminConfirmDialog';
@@ -20,7 +21,8 @@ interface QuickLinkRow {
   display_order: number;
   status: string;
   is_external: boolean;
-  created_at: string;
+  region_id: string | null;
+  regions: { name: string } | null;
 }
 
 const LINK_GROUPS = [
@@ -31,25 +33,42 @@ const LINK_GROUPS = [
   { label: 'Utility Bar', value: 'utility_bar' },
 ];
 
+const STATUS_OPTIONS = [
+  { label: 'All Status', value: '' },
+  { label: 'Draft', value: 'draft' },
+  { label: 'Published', value: 'published' },
+  { label: 'Archived', value: 'archived' },
+];
+
 export default function QuickLinksListPage() {
   const router = useRouter();
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const { regionOptions } = useRegions();
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [groupFilter, setGroupFilter] = useState('');
+  const [regionFilter, setRegionFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [sortKey, setSortKey] = useState('display_order');
+  const [sortAsc, setSortAsc] = useState(true);
   const [deleteTarget, setDeleteTarget] = useState<QuickLinkRow | null>(null);
+
+  const filters: Record<string, string> = {};
+  if (groupFilter) filters.link_group = groupFilter;
+  if (regionFilter) filters.region_id = regionFilter;
 
   const { data, loading, error, total, pageSize, refresh } = useAdminQuery<QuickLinkRow>(
     'quick_links',
     {
-      select: 'id, slug, title, url, link_group, display_order, status, is_external, created_at',
-      orderBy: 'display_order',
-      ascending: true,
+      select: 'id, slug, title, url, link_group, display_order, status, is_external, region_id, regions(name)',
+      orderBy: sortKey,
+      ascending: sortAsc,
       page,
       pageSize: 50,
-      filters: groupFilter ? { link_group: groupFilter } : {},
+      filters,
+      status: statusFilter || undefined,
       search: search ? { title: search } : {},
     },
   );
@@ -58,43 +77,25 @@ export default function QuickLinksListPage() {
 
   const columns: Column<QuickLinkRow>[] = [
     {
-      key: 'title',
-      label: 'Title',
+      key: 'title', label: 'Title', sortKey: 'title',
       render: (row) => (
         <View style={styles.titleRow}>
           <Text style={styles.titleCell} numberOfLines={1}>{row.title}</Text>
-          {row.is_external && (
-            <MaterialIcons name="open-in-new" size={14} color={colors.outlineVariant} />
-          )}
+          {row.is_external && <MaterialIcons name="open-in-new" size={14} color={colors.outlineVariant} />}
         </View>
       ),
     },
     { key: 'link_group', label: 'Group', width: 130 },
-    { key: 'display_order', label: 'Order', width: 70 },
     {
-      key: 'status',
-      label: 'Status',
-      width: 90,
-      render: (row) => (
-        <Text style={[styles.statusChip,
-          row.status === 'published' && { color: colors.primary },
-          row.status === 'archived' && { color: colors.outlineVariant },
-        ]}>
-          {row.status}
-        </Text>
-      ),
+      key: 'region_id', label: 'Municipality', width: 150,
+      render: (row) => <Text style={styles.metaCell} numberOfLines={1}>{row.regions?.name ?? '—'}</Text>,
     },
+    { key: 'display_order', label: 'Order', width: 70, sortKey: 'display_order' },
+    { key: 'status', label: 'Status', width: 100, isStatus: true },
     {
-      key: 'actions',
-      label: '',
-      width: 40,
+      key: 'actions', label: '', width: 40,
       render: (row) => (
-        <Pressable
-          onPress={(e) => {
-            e.stopPropagation();
-            setDeleteTarget(row);
-          }}
-        >
+        <Pressable onPress={(e) => { e.stopPropagation(); setDeleteTarget(row); }}>
           <MaterialIcons name="delete-outline" size={18} color={colors.error} />
         </Pressable>
       ),
@@ -112,131 +113,68 @@ export default function QuickLinksListPage() {
     <AdminPageShell
       title="Quick Links"
       subtitle={`${total} links`}
-      actions={
-        <AdminButton
-          label="New Quick Link"
-          icon="add"
-          onPress={() => router.push(toHref('/admin/quick-links/new'))}
-        />
-      }
+      actions={<AdminButton label="New Quick Link" icon="add" onPress={() => router.push(toHref('/admin/quick-links/new'))} />}
     >
-      {/* Group tabs */}
-      <View style={styles.tabsRow}>
-        {LINK_GROUPS.map((g) => {
-          const active = groupFilter === g.value;
-          return (
-            <Pressable
-              key={g.value}
-              style={[styles.tab, active && styles.tabActive]}
-              onPress={() => { setGroupFilter(g.value); setPage(1); }}
-            >
-              <Text style={[styles.tabText, active && styles.tabTextActive]}>
-                {g.label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
-
-      {/* Search */}
       <View style={styles.filtersRow}>
-        <TextInput
-          style={styles.searchInput}
-          value={search}
+        <TextInput style={styles.searchInput} value={search}
           onChangeText={(text) => { setSearch(text); setPage(1); }}
-          placeholder="Search quick links..."
-          placeholderTextColor={colors.outlineVariant}
-        />
+          placeholder="Search quick links..." placeholderTextColor={colors.outlineVariant} />
+        <View style={styles.selectWrap}>
+          <select value={groupFilter} onChange={(e: any) => { setGroupFilter(e.target.value); setPage(1); }} style={selectStyle(colors)}>
+            {LINK_GROUPS.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
+          </select>
+        </View>
+        <View style={styles.selectWrap}>
+          <select value={regionFilter} onChange={(e: any) => { setRegionFilter(e.target.value); setPage(1); }} style={selectStyle(colors)}>
+            {regionOptions.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+          </select>
+        </View>
+        <View style={styles.selectWrap}>
+          <select value={statusFilter} onChange={(e: any) => { setStatusFilter(e.target.value); setPage(1); }} style={selectStyle(colors)}>
+            {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+          </select>
+        </View>
       </View>
 
-      {/* Data table */}
       <AdminDataTable
-        columns={columns}
-        data={data}
-        loading={loading}
-        error={error}
-        total={total}
-        page={page}
-        pageSize={pageSize}
-        onPageChange={setPage}
+        columns={columns} data={data} loading={loading} error={error}
+        total={total} page={page} pageSize={pageSize} onPageChange={setPage}
         onRowPress={(row) => router.push(toHref(`/admin/quick-links/${row.id}`))}
         emptyMessage="No quick links found"
+        sortKey={sortKey} sortDirection={sortAsc ? 'asc' : 'desc'}
+        onSort={(key, dir) => { setSortKey(key); setSortAsc(dir === 'asc'); setPage(1); }}
       />
 
-      {/* Delete confirmation */}
       <AdminConfirmDialog
-        visible={!!deleteTarget}
-        title="Delete Quick Link"
+        visible={!!deleteTarget} title="Delete Quick Link"
         message={`Are you sure you want to delete "${deleteTarget?.title}"?`}
-        confirmLabel="Delete"
-        variant="danger"
-        onConfirm={handleDelete}
-        onCancel={() => setDeleteTarget(null)}
+        confirmLabel="Delete" variant="danger" onConfirm={handleDelete} onCancel={() => setDeleteTarget(null)}
       />
     </AdminPageShell>
   );
 }
 
+function selectStyle(colors: ThemeColors) {
+  return {
+    padding: '8px 12px', fontSize: 13, fontFamily: 'inherit', border: 'none',
+    backgroundColor: 'transparent', color: colors.neutral, outline: 'none',
+    cursor: 'pointer', width: '100%',
+  };
+}
+
 const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
-    tabsRow: {
-      flexDirection: 'row',
-      gap: 0,
-      marginBottom: spacing.lg,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.outlineVariant,
-    },
-    tab: {
-      paddingHorizontal: spacing.lg,
-      paddingVertical: spacing.sm + 2,
-      borderBottomWidth: 2,
-      borderBottomColor: 'transparent',
-    },
-    tabActive: {
-      borderBottomColor: colors.primary,
-    },
-    tabText: {
-      fontFamily: fonts.sans,
-      fontSize: 13,
-      color: colors.neutralVariant,
-    },
-    tabTextActive: {
-      fontFamily: fonts.sansMedium,
-      color: colors.primary,
-    },
-    filtersRow: {
-      flexDirection: 'row',
-      gap: spacing.sm,
-      marginBottom: spacing.lg,
-      flexWrap: 'wrap',
-    },
+    filtersRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.lg, flexWrap: 'wrap' },
     searchInput: {
-      flex: 1,
-      minWidth: 200,
-      backgroundColor: colors.surface,
-      borderWidth: 1,
-      borderColor: colors.outline,
-      borderRadius: radii.sm,
-      paddingHorizontal: spacing.md,
-      paddingVertical: 8,
-      fontFamily: fonts.sans,
-      fontSize: 13,
-      color: colors.neutral,
+      flex: 1, minWidth: 200, backgroundColor: colors.surface, borderWidth: 1,
+      borderColor: colors.outline, borderRadius: radii.sm, paddingHorizontal: spacing.md,
+      paddingVertical: 8, fontFamily: fonts.sans, fontSize: 13, color: colors.neutral,
     },
-    titleRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 6,
+    selectWrap: {
+      backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.outline,
+      borderRadius: radii.sm, overflow: 'hidden', minWidth: 140,
     },
-    titleCell: {
-      fontFamily: fonts.sansMedium,
-      fontSize: 13,
-      color: colors.neutral,
-    },
-    statusChip: {
-      fontFamily: fonts.sans,
-      fontSize: 12,
-      color: colors.neutral,
-      textTransform: 'capitalize',
-    },
+    titleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    titleCell: { fontFamily: fonts.sansMedium, fontSize: 13, color: colors.neutral },
+    metaCell: { fontFamily: fonts.sans, fontSize: 13, color: colors.neutralVariant },
   });
