@@ -147,7 +147,7 @@ export function EventsList({ regionId }: Props) {
 										description={e.description || undefined}
 										location={e.location || undefined}
 										imageUrl={e.image_url}
-										dateLabel={`${db.month} ${db.day}`}
+										dateBox={db}
 										href={routes.community.events.detail(e.slug)}
 									/>
 								);

@@ -32,7 +32,7 @@ export function EditorialCard({
   return (
     <Link href={href} asChild>
       <Pressable>
-        <Card>
+        <Card hoverable>
           <ContentCoverImage
             imageUrl={thumbnailUrl}
             variant="card"

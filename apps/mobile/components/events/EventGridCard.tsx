@@ -1,6 +1,7 @@
 /**
- * Vertical event card for grid layouts. Shows a cover image with date badge
- * overlay, location row, title, description, and RSVP / calendar CTAs.
+ * Vertical event card for grid layouts. Shows a cover image (or gradient
+ * fallback) with a calendar-widget date overlay, location row, title,
+ * description, and RSVP / calendar CTAs.
  */
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
@@ -14,6 +15,7 @@ import {
   letterSpacing,
   lineHeight,
   radii,
+  shadows,
   spacing,
   teal,
   useTheme,
@@ -24,10 +26,8 @@ interface EventGridCardProps {
   description?: string;
   location?: string;
   imageUrl?: string | null;
-  dateLabel?: string; // e.g. "Oct 24"
+  dateBox?: { month: string; day: number; year: number };
   href: Href;
-  onRsvp?: () => void;
-  onAddToCalendar?: () => void;
 }
 
 export function EventGridCard({
@@ -35,10 +35,8 @@ export function EventGridCard({
   description,
   location,
   imageUrl,
-  dateLabel,
+  dateBox,
   href,
-  onRsvp,
-  onAddToCalendar,
 }: EventGridCardProps) {
   const { colors } = useTheme();
   const hasImage = imageUrl != null && String(imageUrl).trim() !== '';
@@ -46,14 +44,9 @@ export function EventGridCard({
   return (
     <Link href={href} asChild>
       <Pressable style={styles.pressable}>
-        <Card variant="elevated" style={styles.card}>
+        <Card variant="elevated" hoverable style={styles.card}>
           {/* Cover area — fixed height with image or gradient fallback */}
-          <View
-            style={[
-              styles.imageWrap,
-              !hasImage && styles.gradientFallback,
-            ]}
-          >
+          <View style={styles.imageWrap}>
             {hasImage ? (
               <ContentCoverImage
                 imageUrl={imageUrl}
@@ -62,14 +55,36 @@ export function EventGridCard({
                 style={styles.coverImage}
               />
             ) : (
-              <View style={[StyleSheet.absoluteFill, styles.gradientLayers]}>
-                <View style={[styles.gradientBase, { backgroundColor: colors.heroBar }]} />
-                <View style={[styles.gradientOverlay, { backgroundColor: teal[800] }]} />
+              <View
+                style={[
+                  StyleSheet.absoluteFill,
+                  styles.gradientFallback,
+                  Platform.OS === 'web'
+                    ? { backgroundImage: `linear-gradient(135deg, ${colors.heroBar} 0%, ${teal[800]} 100%)` } as any
+                    : undefined,
+                ]}
+              >
+                {Platform.OS !== 'web' && (
+                  <>
+                    <View style={[styles.gradientBase, { backgroundColor: colors.heroBar }]} />
+                    <View style={[styles.gradientOverlay, { backgroundColor: teal[800] }]} />
+                  </>
+                )}
               </View>
             )}
-            {dateLabel ? (
-              <View style={[styles.dateBadge, { backgroundColor: hasImage ? colors.primary : 'rgba(255,255,255,0.2)' }]}>
-                <Text style={styles.dateBadgeText}>{dateLabel}</Text>
+
+            {/* Calendar widget */}
+            {dateBox ? (
+              <View style={[styles.calendarWidget, { backgroundColor: colors.surface }, shadows.card]}>
+                <Text style={[styles.calMonth, { color: colors.primary }]}>
+                  {dateBox.month}
+                </Text>
+                <Text style={[styles.calDay, { color: colors.neutral }]}>
+                  {dateBox.day}
+                </Text>
+                <Text style={[styles.calYear, { color: colors.neutralVariant }]}>
+                  {dateBox.year}
+                </Text>
               </View>
             ) : null}
           </View>
@@ -105,29 +120,6 @@ export function EventGridCard({
               </Text>
             ) : null}
 
-            {/* CTAs */}
-            <View style={styles.ctaColumn}>
-              <Pressable
-                onPress={(e) => {
-                  e.stopPropagation();
-                  onRsvp?.();
-                }}
-                style={[styles.ctaPrimary, { backgroundColor: colors.primary }]}
-              >
-                <Text style={styles.ctaPrimaryText}>RSVP</Text>
-              </Pressable>
-              <Pressable
-                onPress={(e) => {
-                  e.stopPropagation();
-                  onAddToCalendar?.();
-                }}
-                style={[styles.ctaSecondary, { borderColor: colors.outline }]}
-              >
-                <Text style={[styles.ctaSecondaryText, { color: colors.primary }]}>
-                  Add to Calendar
-                </Text>
-              </Pressable>
-            </View>
           </View>
         </Card>
       </Pressable>
@@ -153,10 +145,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  /* Gradient fallback (no-image) */
   gradientFallback: {
-    // container is already positioned via height
-  },
-  gradientLayers: {
     overflow: 'hidden',
   },
   gradientBase: {
@@ -164,25 +154,41 @@ const styles = StyleSheet.create({
   },
   gradientOverlay: {
     ...StyleSheet.absoluteFillObject,
-    opacity: 0.35,
+    opacity: 0.45,
     ...Platform.select({
       web: { transform: [{ translateX: '30%' as unknown as number }] },
       default: { transform: [{ translateX: 60 }] },
     }),
   },
-  dateBadge: {
+  /* Calendar widget */
+  calendarWidget: {
     position: 'absolute',
     top: spacing.md,
     left: spacing.md,
-    paddingHorizontal: spacing.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 56,
+    borderRadius: radii.sm,
     paddingVertical: spacing.xs,
-    borderRadius: radii.sm - 4,
+    paddingHorizontal: spacing.sm,
   },
-  dateBadgeText: {
-    color: '#ffffff',
+  calMonth: {
     fontFamily: fonts.sansBold,
-    fontSize: fontSize.sm,
+    fontSize: 11,
+    letterSpacing: letterSpacing.wider,
+    textTransform: 'uppercase',
   },
+  calDay: {
+    fontFamily: fonts.serifBold,
+    fontSize: 26,
+    lineHeight: 30,
+    marginVertical: -1,
+  },
+  calYear: {
+    fontFamily: fonts.sans,
+    fontSize: 10,
+  },
+  /* Body */
   body: {
     padding: spacing.xl,
     gap: spacing.md,
@@ -209,30 +215,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: fontSize.md,
     lineHeight: lineHeight.normal,
-  },
-  ctaColumn: {
-    marginTop: 'auto' as any,
-    gap: spacing.sm,
-    paddingTop: spacing.md,
-  },
-  ctaPrimary: {
-    paddingVertical: spacing.md,
-    borderRadius: radii.sm - 4,
-    alignItems: 'center',
-  },
-  ctaPrimaryText: {
-    color: '#ffffff',
-    fontFamily: fonts.sansBold,
-    fontSize: fontSize.md,
-  },
-  ctaSecondary: {
-    paddingVertical: spacing.md,
-    borderRadius: radii.sm - 4,
-    borderWidth: 1,
-    alignItems: 'center',
-  },
-  ctaSecondaryText: {
-    fontFamily: fonts.sansBold,
-    fontSize: fontSize.md,
   },
 });

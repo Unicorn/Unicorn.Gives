@@ -4,11 +4,12 @@ function parseLocalDate(dateStr: string): Date {
 }
 
 /** Month abbreviation + day for event rails (matches EditorialCard / list cards). */
-export function eventDateBoxFromIso(dateStr: string): { month: string; day: number } {
+export function eventDateBoxFromIso(dateStr: string): { month: string; day: number; year: number } {
   const d = parseLocalDate(dateStr);
   return {
     month: d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(),
     day: d.getDate(),
+    year: d.getFullYear(),
   };
 }
 
