@@ -49,6 +49,7 @@ Deno.serve(async (req) => {
     const body = (await req.json().catch(() => ({}))) as {
       game_id?: string;
       age_confirmed?: boolean;
+      reroll?: boolean;
     };
     if (!body.game_id) return json({ error: 'game_id is required' }, 400);
 
@@ -79,7 +80,9 @@ Deno.serve(async (req) => {
 
     const ageConfirmedAt = body.age_confirmed ? new Date().toISOString() : null;
 
-    if (existing && !game.allow_reroll) {
+    // Default path: hand back the player's existing board. Only build a new one
+    // on the first issue, or when the player explicitly rerolls.
+    if (existing && !body.reroll) {
       // Record age confirmation if it wasn't captured before.
       if (ageConfirmedAt && !existing.age_confirmed_at) {
         await admin
@@ -89,6 +92,11 @@ Deno.serve(async (req) => {
         existing.age_confirmed_at = ageConfirmedAt;
       }
       return json({ board: existing, reused: true });
+    }
+
+    // A reroll request on a game that doesn't allow it is rejected.
+    if (existing && body.reroll && !game.allow_reroll) {
+      return json({ error: 'Rerolls are not allowed for this game', board: existing }, 403);
     }
 
     // Load the active square pool.
@@ -129,6 +137,8 @@ Deno.serve(async (req) => {
         cells,
         marked: [],
         highest_tier: null,
+        is_saved: false,
+        saved_at: null,
         age_confirmed_at: ageConfirmedAt ?? existing?.age_confirmed_at ?? null,
       };
 

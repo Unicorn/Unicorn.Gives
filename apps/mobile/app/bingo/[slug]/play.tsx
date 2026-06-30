@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
 import { SeoHead } from '@/components/SeoHead';
 import { RequireAuth } from '@/lib/routeGuards';
 import { BingoGrid } from '@/components/bingo/BingoGrid';
@@ -35,6 +36,7 @@ interface BoardRow {
   cells: BoardCell[];
   marked: number[];
   highest_tier: string | null;
+  is_saved: boolean;
 }
 
 function PlayScreen() {
@@ -50,12 +52,15 @@ function PlayScreen() {
   const [error, setError] = useState<string | null>(null);
   const [showGate, setShowGate] = useState(false);
   const [issuing, setIssuing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [showRerollConfirm, setShowRerollConfirm] = useState(false);
 
   const issueBoard = useCallback(
-    async (gameRow: GameInfo, ageConfirmed: boolean) => {
+    async (gameRow: GameInfo, ageConfirmed: boolean, reroll = false) => {
       setIssuing(true);
+      setError(null);
       const { data, error: fnErr } = await supabase.functions.invoke('bingo-issue-board', {
-        body: { game_id: gameRow.id, age_confirmed: ageConfirmed },
+        body: { game_id: gameRow.id, age_confirmed: ageConfirmed, reroll },
       });
       setIssuing(false);
       if (fnErr || !data?.board) {
@@ -146,9 +151,31 @@ function PlayScreen() {
     await issueBoard(game, true);
   }
 
-  async function reroll() {
+  function requestReroll() {
+    // Warn before discarding a saved board or one with marked progress.
+    if (marked.length > 0 || board?.is_saved) {
+      setShowRerollConfirm(true);
+    } else {
+      void doReroll();
+    }
+  }
+
+  async function doReroll() {
+    setShowRerollConfirm(false);
     if (!game) return;
-    await issueBoard(game, true);
+    await issueBoard(game, true, true);
+  }
+
+  async function saveBoard() {
+    if (!board) return;
+    setSaving(true);
+    const savedAt = new Date().toISOString();
+    const { error: saveErr } = await supabase
+      .from('bingo_boards')
+      .update({ is_saved: true, saved_at: savedAt })
+      .eq('id', board.id);
+    setSaving(false);
+    if (!saveErr) setBoard({ ...board, is_saved: true });
   }
 
   async function share() {
@@ -188,7 +215,17 @@ function PlayScreen() {
         {game ? (
           <View style={styles.header}>
             <Text style={styles.title}>{game.title}</Text>
-            {board ? <Text style={styles.code}>Board {board.board_code}</Text> : null}
+            {board ? (
+              <View style={styles.codeRow}>
+                <Text style={styles.code}>Board {board.board_code}</Text>
+                {board.is_saved ? (
+                  <View style={styles.savedChip}>
+                    <MaterialIcons name="bookmark" size={12} color={colors.primary} />
+                    <Text style={styles.savedChipText}>Saved</Text>
+                  </View>
+                ) : null}
+              </View>
+            ) : null}
           </View>
         ) : null}
 
@@ -220,6 +257,9 @@ function PlayScreen() {
 
         {game && board ? (
           <View style={styles.actions}>
+            {!board.is_saved ? (
+              <Button label={saving ? 'Saving…' : 'Save this board'} variant="primary" onPress={saveBoard} disabled={saving} loading={saving} />
+            ) : null}
             <Button label="Share" variant="secondary" onPress={share} />
             {Platform.OS === 'web' ? <Button label="Print" variant="secondary" onPress={print} /> : null}
             <Button
@@ -227,7 +267,9 @@ function PlayScreen() {
               variant="secondary"
               onPress={() => router.push(toHref(`/bingo/${game.slug}/about`))}
             />
-            {game.allow_reroll ? <Button label="New board" variant="secondary" onPress={reroll} /> : null}
+            {game.allow_reroll ? (
+              <Button label="New board" variant="secondary" onPress={requestReroll} disabled={issuing} />
+            ) : null}
           </View>
         ) : null}
 
@@ -245,6 +287,26 @@ function PlayScreen() {
           onDecline={() => router.replace(toHref(`/bingo/${game.slug}`))}
         />
       ) : null}
+
+      <Modal
+        visible={showRerollConfirm}
+        onClose={() => setShowRerollConfirm(false)}
+        title="Start a new board?"
+        icon="casino"
+        iconColor={colors.error}
+        maxWidth={420}
+        actions={
+          <>
+            <Button label="Keep this board" variant="secondary" onPress={() => setShowRerollConfirm(false)} />
+            <Button label="New board" variant="primary" onPress={doReroll} />
+          </>
+        }
+      >
+        <Text style={styles.confirmText}>
+          A new board comes with fresh squares and clears your current progress
+          {board?.is_saved ? ', including your saved board' : ''}. This can’t be undone.
+        </Text>
+      </Modal>
     </Wrapper>
   );
 }
@@ -263,7 +325,19 @@ const createStyles = (colors: ThemeColors) =>
     section: { paddingVertical: spacing.xxl, gap: spacing.lg, maxWidth: 640, width: '100%', alignSelf: 'center' },
     header: { gap: spacing.xs },
     title: { fontFamily: fonts.serifBold, fontSize: fontSize['2xl'], color: colors.neutral },
+    codeRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
     code: { fontFamily: 'monospace', fontSize: fontSize.sm, color: colors.neutralVariant },
+    savedChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 3,
+      backgroundColor: colors.primaryContainer,
+      borderRadius: radii.pill,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 2,
+    },
+    savedChipText: { fontFamily: fonts.sansMedium, fontSize: fontSize.sm - 1, color: colors.primary },
+    confirmText: { fontFamily: fonts.sans, fontSize: fontSize.md, color: colors.neutral, lineHeight: 22 },
     winBanner: {
       flexDirection: 'row',
       alignItems: 'center',

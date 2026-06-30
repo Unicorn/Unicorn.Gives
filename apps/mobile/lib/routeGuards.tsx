@@ -1,10 +1,21 @@
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 
 import { useAuth } from './auth';
 import { useTheme, fonts } from '@/constants/theme';
+
+/**
+ * Build a /sign-in href that returns the user to where they were. Skips auth
+ * pages so we never loop back to the login screen.
+ */
+function signInHref(pathname: string | null): string {
+  if (pathname && !pathname.startsWith('/sign-in') && !pathname.startsWith('/sign-up')) {
+    return `/sign-in?redirect=${encodeURIComponent(pathname)}`;
+  }
+  return '/sign-in';
+}
 
 function LoadingView() {
   const { colors } = useTheme();
@@ -18,11 +29,12 @@ function LoadingView() {
 
 export function RequireAuth({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (!loading && !user) router.replace('/sign-in');
-  }, [loading, user, router]);
+    if (!loading && !user) router.replace(signInHref(pathname) as any);
+  }, [loading, user, router, pathname]);
 
   if (loading) return <LoadingView />;
   if (!user) return null;
@@ -31,19 +43,20 @@ export function RequireAuth({ children }: { children: ReactNode }) {
 
 export function RequireAdmin({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, role, loading } = useAuth();
   const { colors } = useTheme();
 
   useEffect(() => {
     if (loading) return;
     if (!user) {
-      router.replace('/sign-in');
+      router.replace(signInHref(pathname) as any);
       return;
     }
     if (role !== 'super_admin') {
       router.replace('/' as any); // safe fallback; admin-only in this phase
     }
-  }, [loading, role, user, router]);
+  }, [loading, role, user, router, pathname]);
 
   if (loading) return <LoadingView />;
 
