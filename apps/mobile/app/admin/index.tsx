@@ -46,6 +46,7 @@ const CONTENT_TABLES = [
   { table: 'municipal_documents', label: 'Documents', icon: 'folder' as const, path: '/admin/municipal-documents' },
   { table: 'region_pages', label: 'Region Pages', icon: 'map' as const, path: '/admin/region-pages' },
   { table: 'partner_pages', label: 'Partner Pages', icon: 'handshake' as const, path: '/admin/partner-pages' },
+  { table: 'bingo_games', label: 'Bingo Games', icon: 'grid-view' as const, path: '/admin/bingo-games' },
 ];
 
 export default function AdminDashboard() {

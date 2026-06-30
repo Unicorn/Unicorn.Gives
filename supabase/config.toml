@@ -25,3 +25,6 @@ verify_jwt = false
 
 [functions.square-reconcile]
 verify_jwt = false
+
+[functions.bingo-issue-board]
+verify_jwt = false

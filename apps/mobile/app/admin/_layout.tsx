@@ -79,6 +79,12 @@ const NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
+    label: 'Games',
+    items: [
+      { label: 'Bingo Games', path: '/admin/bingo-games', icon: 'grid-view' },
+    ],
+  },
+  {
     label: 'Taxonomy',
     items: [
       { label: 'Categories', path: '/admin/categories', icon: 'category' },

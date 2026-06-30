@@ -146,6 +146,7 @@ function RootLayoutNav() {
           <Drawer.Screen name="(tabs)" options={{ title: 'Land of the Unicorns', headerShown: false }} />
           {/* Deep-link routes — hidden from drawer, pushed onto tab stacks */}
           <Drawer.Screen name="government" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
+          <Drawer.Screen name="bingo" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
           <Drawer.Screen name="partners" options={{ headerShown: false, drawerItemStyle: { display: 'none' } }} />
           <Drawer.Screen name="(auth)" options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
           <Drawer.Screen name="user" options={{ drawerItemStyle: { display: 'none' } }} />
