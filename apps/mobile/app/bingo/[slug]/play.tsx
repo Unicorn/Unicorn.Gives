@@ -181,8 +181,8 @@ function PlayScreen() {
   async function share() {
     if (!game || !board) return;
     const origin = Platform.OS === 'web' && typeof window !== 'undefined' ? window.location.origin : 'https://unicorn.gives';
-    const url = `${origin}/bingo/${game.slug}`;
-    const message = `My ${game.title} board: ${board.board_code} — ${url}`;
+    const url = `${origin}/bingo/board/${board.board_code}`;
+    const message = `My ${game.title} board ${board.board_code} — ${url}`;
     if (Platform.OS === 'web') {
       const nav = typeof navigator !== 'undefined' ? navigator : undefined;
       if (nav?.share) {
