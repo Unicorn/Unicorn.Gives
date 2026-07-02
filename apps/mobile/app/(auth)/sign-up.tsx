@@ -1,36 +1,69 @@
-import { useState, useMemo } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { useEffect, useState, useMemo } from 'react';
+import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/auth';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { Button } from '@/components/ui';
+
+/** Turn a redirect path into an absolute URL for the confirmation email link. */
+function absoluteUrl(path: string): string {
+  const origin =
+    Platform.OS === 'web' && typeof window !== 'undefined'
+      ? window.location.origin
+      : 'https://unicorn.gives';
+  if (!path) return origin;
+  return path.startsWith('http') ? path : `${origin}${path.startsWith('/') ? '' : '/'}${path}`;
+}
 
 export default function SignUpScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ redirect?: string }>();
+  const { user, role, loading } = useAuth();
   const { colors } = useTheme();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [sentTo, setSentTo] = useState<string | null>(null);
+
+  const destination = params.redirect || (role === 'super_admin' ? '/admin' : '/');
+
+  // If a session already exists (e.g. email confirmation was not required, or
+  // the user is already signed in), go straight to the destination.
+  useEffect(() => {
+    if (loading || !user) return;
+    router.replace(destination as any);
+  }, [loading, user, destination, router]);
 
   async function onSignUp() {
     setError(null);
+    if (!email.trim() || !password) {
+      setError('Enter an email and password.');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await supabase.auth.signUp({
         email: email.trim(),
         password,
+        options: { emailRedirectTo: absoluteUrl(params.redirect || '/') },
       });
 
       if (res.error) throw res.error;
-      const next = params.redirect
-        ? `/sign-in?redirect=${encodeURIComponent(params.redirect)}`
-        : '/sign-in';
-      router.replace(next as any);
+
+      // Confirmation off → session is live now; the effect above redirects.
+      // Confirmation on → no session yet; tell the user to check their email.
+      if (!res.data.session) {
+        setSentTo(email.trim());
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Sign-up failed.');
     } finally {
@@ -39,6 +72,36 @@ export default function SignUpScreen() {
   }
 
   const styles = useMemo(() => createStyles(colors), [colors]);
+
+  if (sentTo) {
+    return (
+      <View style={styles.page}>
+        <View style={styles.form}>
+          <View style={styles.header}>
+            <MaterialIcons name="mark-email-unread" size={32} color={colors.primary} />
+            <Text style={styles.brand}>UNI Gives</Text>
+          </View>
+          <Text style={styles.title}>Check your email</Text>
+          <Text style={styles.body}>
+            We sent a confirmation link to <Text style={styles.bodyStrong}>{sentTo}</Text>. Open it to
+            finish creating your account — it’ll bring you right back to where you left off.
+          </Text>
+          <Button
+            label="Back to sign-in"
+            variant="ghost"
+            size="lg"
+            onPress={() =>
+              router.replace(
+                (params.redirect
+                  ? `/sign-in?redirect=${encodeURIComponent(params.redirect)}`
+                  : '/sign-in') as any,
+              )
+            }
+          />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.page}>
@@ -122,6 +185,17 @@ const createStyles = (colors: ThemeColors) =>
       lineHeight: 36,
       color: colors.neutral,
       marginBottom: spacing.sm,
+    },
+    body: {
+      fontFamily: fonts.sans,
+      fontSize: fontSize.lg,
+      lineHeight: 26,
+      color: colors.neutralVariant,
+      marginBottom: spacing.sm,
+    },
+    bodyStrong: {
+      fontFamily: fonts.sansBold,
+      color: colors.neutral,
     },
     input: {
       backgroundColor: colors.surface,
