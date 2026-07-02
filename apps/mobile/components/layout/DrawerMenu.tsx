@@ -79,6 +79,7 @@ export function DrawerMenu({ drawerNavigation }: { drawerNavigation: { dispatch:
         <NavItem label="Guides" active={pathname.startsWith('/guides')} onPress={() => navigate(toHref('/guides'))} colors={colors} />
         <NavItem label="Government" active={pathname.startsWith('/government')} onPress={() => navigate(toHref('/government'))} colors={colors} />
         <NavItem label="Directory" active={pathname.startsWith('/directory')} onPress={() => navigate(toHref('/directory'))} colors={colors} />
+        <NavItem label="Bingo" active={pathname.startsWith('/bingo')} onPress={() => navigate(toHref('/bingo'))} colors={colors} />
 
         <SectionHeader label="QUICK ACCESS" colors={colors} />
         {regions.map((r) => (
