@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
+import { isSafeRedirect } from '@/lib/authRedirect';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { Button } from '@/components/ui';
 
@@ -30,7 +31,9 @@ export default function SignUpScreen() {
   const [submitting, setSubmitting] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
 
-  const destination = params.redirect || (role === 'super_admin' ? '/admin' : '/');
+  // Only honor a safe, in-app redirect target (never an auth page → no loop).
+  const redirect = isSafeRedirect(params.redirect) ? params.redirect : null;
+  const destination = redirect || (role === 'super_admin' ? '/admin' : '/');
 
   // If a session already exists (e.g. email confirmation was not required, or
   // the user is already signed in), go straight to the destination.
@@ -54,7 +57,7 @@ export default function SignUpScreen() {
       const res = await supabase.auth.signUp({
         email: email.trim(),
         password,
-        options: { emailRedirectTo: absoluteUrl(params.redirect || '/') },
+        options: { emailRedirectTo: absoluteUrl(redirect || '/') },
       });
 
       if (res.error) throw res.error;
@@ -92,8 +95,8 @@ export default function SignUpScreen() {
             size="lg"
             onPress={() =>
               router.replace(
-                (params.redirect
-                  ? `/sign-in?redirect=${encodeURIComponent(params.redirect)}`
+                (redirect
+                  ? `/sign-in?redirect=${encodeURIComponent(redirect)}`
                   : '/sign-in') as any,
               )
             }
@@ -145,7 +148,7 @@ export default function SignUpScreen() {
         <Button
           label="Back to sign-in"
           variant="ghost"
-          onPress={() => router.replace((params.redirect ? `/sign-in?redirect=${encodeURIComponent(params.redirect)}` : '/sign-in') as any)}
+          onPress={() => router.replace((redirect ? `/sign-in?redirect=${encodeURIComponent(redirect)}` : '/sign-in') as any)}
           size="lg"
           disabled={submitting}
         />

@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
+import { isSafeRedirect } from '@/lib/authRedirect';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { Button } from '@/components/ui';
 
@@ -14,6 +15,9 @@ export default function SignInScreen() {
   const { user, role, loading } = useAuth();
   const { colors } = useTheme();
 
+  // Only honor a safe, in-app redirect target (never an auth page → no loop).
+  const redirect = isSafeRedirect(params.redirect) ? params.redirect : null;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -22,13 +26,13 @@ export default function SignInScreen() {
   useEffect(() => {
     if (loading) return;
     if (!user) return;
-    if (params.redirect) {
-      router.replace(params.redirect as any);
+    if (redirect) {
+      router.replace(redirect as any);
       return;
     }
     if (role === 'super_admin') router.replace('/admin');
     else router.replace('/' as any);
-  }, [loading, role, user, router, params.redirect]);
+  }, [loading, role, user, router, redirect]);
 
   async function onSignIn() {
     setError(null);
@@ -91,7 +95,7 @@ export default function SignInScreen() {
         <Button
           label="Create an account"
           variant="ghost"
-          onPress={() => router.replace((params.redirect ? `/sign-up?redirect=${encodeURIComponent(params.redirect)}` : '/sign-up') as any)}
+          onPress={() => router.replace((redirect ? `/sign-up?redirect=${encodeURIComponent(redirect)}` : '/sign-up') as any)}
           size="lg"
           disabled={submitting}
         />
