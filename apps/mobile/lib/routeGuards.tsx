@@ -4,18 +4,8 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { usePathname, useRouter } from 'expo-router';
 
 import { useAuth } from './auth';
+import { signInHref } from './authRedirect';
 import { useTheme, fonts } from '@/constants/theme';
-
-/**
- * Build a /sign-in href that returns the user to where they were. Skips auth
- * pages so we never loop back to the login screen.
- */
-function signInHref(pathname: string | null): string {
-  if (pathname && !pathname.startsWith('/sign-in') && !pathname.startsWith('/sign-up')) {
-    return `/sign-in?redirect=${encodeURIComponent(pathname)}`;
-  }
-  return '/sign-in';
-}
 
 function LoadingView() {
   const { colors } = useTheme();
