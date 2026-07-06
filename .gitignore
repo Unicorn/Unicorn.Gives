@@ -58,3 +58,5 @@ coverage-report.txt
 .cursor/
 .expo/
 supabase/.branches/
+# Cloned reference repos for auditing - never commit
+reference/
