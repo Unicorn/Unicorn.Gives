@@ -21,22 +21,24 @@ re-run.
 ## 2. Project v2 board (needs a one-time scope grant)
 
 ```bash
-gh auth refresh -s project,read:project                                   # one-time
-OWNER=Unicorn REPO=Unicorn/Unicorn.Gives bash scripts/cyc/bootstrap-github-project.sh
+gh auth refresh -s project,read:project                                    # one-time
+OWNER=Unicorn REPO=Unicorn/Unicorn.Gives python3 scripts/cyc/bootstrap-github-project.py
 ```
 
-Creates the **CYC Platform Delivery** project, adds `Story Points` (number) and `Posture`
-(single-select) fields, links the repo (new issues auto-add), and imports all current CYC
-issues.
+Applied: created **CYC Platform Delivery** (org project #8), added `Story Points` (number),
+`Posture` (single-select), and `Sprint` (iteration) fields, set `Status` to
+`Backlog / Ready / In Progress / In Review / Blocked / Done`, linked the repo (new issues
+auto-add), imported all 57 issues, and back-filled **Story Points** (from each issue body),
+**Posture** (from the `posture:*` label), and `Status = Backlog` on every item. Idempotent:
+re-run to re-sync after adding issues.
 
-### Finish in the UI (not reliably API-creatable)
+### Finish in the UI (iteration config + views are not API-creatable)
 
-1. **Sprint** - add an *Iteration* field named `Sprint`, **1-week** duration.
-2. **Status** - extend the default field to `Backlog / Ready / In Progress / In Review / Blocked / Done`.
-3. **Views** -
-   - *Current Sprint* - Board by Status, filtered to the active Sprint.
-   - *Sprint Planning* - Table grouped by Sprint (shows Points capacity).
-   - *Epic Breakdown* - Board grouped by parent issue (epic).
-   - *Roadmap* - Roadmap layout by Milestone.
-   - *Decisions* - Table filtered to `label:type:decision`.
-4. Set **Story Points** / **Posture** per item (bulk-edit in the table view; points are in each issue body).
+1. **Sprint** - open the Sprint field settings, set duration to **1 week**, and generate
+   iterations (~12 ahead). The field already exists; it just needs a duration.
+2. **Views** (New view -> configure -> Save):
+   - *Current Sprint* - Board, group by **Status**, filter to the current **Sprint**.
+   - *Sprint Planning* - Table, group by **Sprint**, show **Story Points** (capacity).
+   - *Epic Breakdown* - Board, group by **Parent issue**.
+   - *Roadmap* - Roadmap layout, marker/field = **Milestone**.
+   - *Decisions* - Table, filter `label:type:decision`.
