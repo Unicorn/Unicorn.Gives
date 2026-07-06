@@ -80,6 +80,8 @@ EPICS = {
  "NTF": ("E-NTF Notifications", "pillar:notifications", P1, "Reuse Scaffald"),
  "MNT": ("E-MNT Mentoring & Referrals", "pillar:mentoring", P2, "Build (greenfield)"),
  "GAM": ("E-GAM Gamification", "pillar:gamification", P2, "Build (reusable pkg)"),
+ "ACA": ("E-ACA Academic Data Integration (Clever/Infinite Campus, waiver-based)", "pillar:mentoring", P3, "Leverage (E&L WBL bridge) - R&D"),
+ "CTV": ("E-CTV Ethical Attendance via CCTV/AI (jurisdiction-gated)", "pillar:attendance", P3, "Build - R&D, jurisdiction-gated"),
 }
 
 # ---------------------------------------------------------------- DECISIONS
