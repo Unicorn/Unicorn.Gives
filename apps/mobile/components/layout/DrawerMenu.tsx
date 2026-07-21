@@ -3,6 +3,7 @@ import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useRouter, usePathname, type Href } from 'expo-router';
 import { DrawerActions, type NavigationHelpers, type ParamListBase } from '@react-navigation/native';
 import { useAuth } from '@/lib/auth';
+import { useFeatureModules } from '@/lib/featureModules';
 import {
   isPathActive,
   routes,
@@ -30,21 +31,26 @@ export function DrawerMenu({ drawerNavigation }: { drawerNavigation: { dispatch:
   const [regions, setRegions] = useState<Region[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const { colors } = useTheme();
+  const { flags } = useFeatureModules();
 
   useEffect(() => {
-    supabase
-      .from('regions')
-      .select('slug, name, type')
-      .eq('is_active', true)
-      .order('display_order')
-      .then(({ data }) => { if (data) setRegions(data); });
+    if (flags.municipal) {
+      supabase
+        .from('regions')
+        .select('slug, name, type')
+        .eq('is_active', true)
+        .order('display_order')
+        .then(({ data }) => { if (data) setRegions(data); });
+    }
 
-    supabase
-      .from('partners')
-      .select('slug, name')
-      .eq('is_active', true)
-      .then(({ data }) => { if (data) setPartners(data); });
-  }, []);
+    if (flags.directory) {
+      supabase
+        .from('partners')
+        .select('slug, name')
+        .eq('is_active', true)
+        .then(({ data }) => { if (data) setPartners(data); });
+    }
+  }, [flags.municipal, flags.directory]);
 
   function navigate(target: Href) {
     drawerNavigation.dispatch(DrawerActions.closeDrawer());
@@ -76,16 +82,26 @@ export function DrawerMenu({ drawerNavigation }: { drawerNavigation: { dispatch:
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
         <NavItem label="Home" active={pathname === '/' || pathname.startsWith('/home')} onPress={() => navigate(routes.home())} colors={colors} />
-        <NavItem label="Guides" active={pathname.startsWith('/guides')} onPress={() => navigate(toHref('/guides'))} colors={colors} />
-        <NavItem label="Government" active={pathname.startsWith('/government')} onPress={() => navigate(toHref('/government'))} colors={colors} />
-        <NavItem label="Directory" active={pathname.startsWith('/directory')} onPress={() => navigate(toHref('/directory'))} colors={colors} />
-        <NavItem label="Bingo" active={pathname.startsWith('/bingo')} onPress={() => navigate(toHref('/bingo'))} colors={colors} />
+        {flags.community && (
+          <NavItem label="Guides" active={pathname.startsWith('/guides')} onPress={() => navigate(toHref('/guides'))} colors={colors} />
+        )}
+        {flags.municipal && (
+          <NavItem label="Government" active={pathname.startsWith('/government')} onPress={() => navigate(toHref('/government'))} colors={colors} />
+        )}
+        {flags.directory && (
+          <NavItem label="Directory" active={pathname.startsWith('/directory')} onPress={() => navigate(toHref('/directory'))} colors={colors} />
+        )}
+        {flags.games && (
+          <NavItem label="Bingo" active={pathname.startsWith('/bingo')} onPress={() => navigate(toHref('/bingo'))} colors={colors} />
+        )}
 
-        <SectionHeader label="QUICK ACCESS" colors={colors} />
-        {regions.map((r) => (
+        {(flags.municipal || flags.directory) && (
+          <SectionHeader label="QUICK ACCESS" colors={colors} />
+        )}
+        {flags.municipal && regions.map((r) => (
           <NavItem key={r.slug} label={r.name} sublabel={r.type} active={isActiveHref(governmentHref(r))} onPress={() => navigate(governmentHref(r))} colors={colors} />
         ))}
-        {partners.map((p) => (
+        {flags.directory && partners.map((p) => (
           <NavItem key={p.slug} label={p.name} active={isActiveHref(routes.partners.index(p.slug))} onPress={() => navigate(routes.partners.index(p.slug))} colors={colors} />
         ))}
       </ScrollView>

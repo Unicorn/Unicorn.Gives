@@ -2,6 +2,7 @@ import { View } from 'react-native';
 import { Stack, usePathname } from 'expo-router';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { SubTabs, type SubTabItem } from '@/components/layout/SubTabs';
+import { RequireModule } from '@/lib/routeGuards';
 import { toHref } from '@/lib/navigation';
 import { useTheme } from '@/constants/theme';
 
@@ -16,10 +17,12 @@ export default function DirectoryLayout() {
   const isDetail = pathname !== '/directory' && pathname !== '/directory/contacts' && pathname.startsWith('/directory/');
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
-      <AppHeader showBack={isDetail} />
-      {!isDetail && <SubTabs tabs={DIR_TABS} />}
-      <Stack screenOptions={{ headerShown: false }} />
-    </View>
+    <RequireModule module="directory">
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <AppHeader showBack={isDetail} />
+        {!isDetail && <SubTabs tabs={DIR_TABS} />}
+        <Stack screenOptions={{ headerShown: false }} />
+      </View>
+    </RequireModule>
   );
 }

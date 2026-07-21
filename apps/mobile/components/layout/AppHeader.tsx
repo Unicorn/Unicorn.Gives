@@ -10,6 +10,8 @@ import {
 import { Link, useRouter, usePathname } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
+import { useFeatureModules } from '@/lib/featureModules';
+import type { ModuleKey } from '@/constants/featureModules';
 import { toHref } from '@/lib/navigation';
 import { breakpoints, useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
@@ -25,11 +27,11 @@ interface AppHeaderProps {
   title?: string;
 }
 
-const NAV_LINKS = [
+const NAV_LINKS: { label: string; href: string; module?: ModuleKey }[] = [
   { label: 'Home', href: '/home' },
-  { label: 'Guides', href: '/guides' },
-  { label: 'Government', href: '/government' },
-  { label: 'Directory', href: '/directory' },
+  { label: 'Guides', href: '/guides', module: 'community' },
+  { label: 'Government', href: '/government', module: 'municipal' },
+  { label: 'Directory', href: '/directory', module: 'directory' },
 ];
 
 function isUserScopedPath(pathname: string) {
@@ -45,6 +47,8 @@ export function AppHeader({ showBack = false }: AppHeaderProps) {
   const isDesktop = width >= breakpoints.desktop;
   const [menuOpen, setMenuOpen] = useState(false);
   const { colors, isDark } = useTheme();
+  const { flags } = useFeatureModules();
+  const visibleLinks = NAV_LINKS.filter((link) => !link.module || flags[link.module]);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
@@ -71,7 +75,7 @@ export function AppHeader({ showBack = false }: AppHeaderProps) {
         <View style={styles.centerZone}>
           {isDesktop && (
             <View style={styles.desktopNav}>
-              {NAV_LINKS.map((link) => {
+              {visibleLinks.map((link) => {
                 const active =
                   pathname === link.href ||
                   pathname.startsWith(link.href + '/');

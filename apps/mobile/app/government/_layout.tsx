@@ -1,4 +1,10 @@
 import { Stack } from 'expo-router';
+import { RequireModule } from '@/lib/routeGuards';
+
 export default function GovernmentRootLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <RequireModule module="municipal">
+      <Stack screenOptions={{ headerShown: false }} />
+    </RequireModule>
+  );
 }

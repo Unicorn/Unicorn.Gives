@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router';
 import { Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { breakpoints, useTheme } from '@/constants/theme';
+import { useFeatureModules } from '@/lib/featureModules';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 const TAB_ICONS: Record<string, keyof typeof MaterialIcons.glyphMap> = {
@@ -25,6 +26,7 @@ export default function TabLayout() {
   const { width } = useHydratedDimensions();
   const isDesktop = width >= breakpoints.desktop;
   const { colors } = useTheme();
+  const { flags } = useFeatureModules();
 
   return (
     <Tabs
@@ -63,6 +65,7 @@ export default function TabLayout() {
         name="guides"
         options={{
           title: 'Guides',
+          href: flags.community ? '/guides' : null,
           tabBarIcon: ({ focused, color }) => <TabIcon label="Guides" focused={focused} color={color} />,
         }}
       />
@@ -70,6 +73,7 @@ export default function TabLayout() {
         name="government"
         options={{
           title: 'Government',
+          href: flags.municipal ? '/government' : null,
           tabBarIcon: ({ focused, color }) => <TabIcon label="Government" focused={focused} color={color} />,
         }}
       />
@@ -77,6 +81,7 @@ export default function TabLayout() {
         name="directory"
         options={{
           title: 'Directory',
+          href: flags.directory ? '/directory' : null,
           tabBarIcon: ({ focused, color }) => <TabIcon label="Directory" focused={focused} color={color} />,
         }}
       />
