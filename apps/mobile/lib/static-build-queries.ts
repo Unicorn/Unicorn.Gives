@@ -17,6 +17,13 @@ async function getPartnerStaticTabParams() {
 }
 import { paths, routes, hrefToPathString } from '@/lib/navigation';
 import { escapeXml } from '@/lib/seo';
+import {
+  DEFAULT_MODULE_FLAGS,
+  SITE_SETTINGS_KEY,
+  moduleForPublicPath,
+  normalizeFlags,
+  type ModuleFlags,
+} from '@/constants/featureModules';
 
 function getBuildTimeClient(): SupabaseClient | null {
   const url = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
@@ -463,7 +470,30 @@ export async function collectPublicPathsForSitemap(): Promise<string[]> {
     add(hrefToPathString(routes.partners.tab(partnerSlug, tab)));
   }
 
-  return [...seen].sort();
+  // Drop paths belonging to disabled feature modules. Flags are runtime DB
+  // state, so this is a build-time snapshot — a deployment that toggles a
+  // module should rebuild to refresh the sitemap.
+  const flags = await fetchFeatureModuleFlags();
+  return [...seen]
+    .filter((p) => {
+      const mod = moduleForPublicPath(p);
+      return mod === null || flags[mod];
+    })
+    .sort();
+}
+
+async function fetchFeatureModuleFlags(): Promise<ModuleFlags> {
+  const sb = getBuildTimeClient();
+  if (!sb) return DEFAULT_MODULE_FLAGS;
+
+  const { data, error } = await sb
+    .from('site_settings')
+    .select('value')
+    .eq('key', SITE_SETTINGS_KEY)
+    .maybeSingle();
+
+  if (error || !data) return DEFAULT_MODULE_FLAGS;
+  return normalizeFlags(data.value);
 }
 
 export function buildSitemapXml(absoluteUrls: string[]): string {

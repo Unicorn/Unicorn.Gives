@@ -100,7 +100,26 @@ export const ADMIN_PATH_MODULES: Record<string, ModuleKey> = {
 };
 
 export function moduleForAdminPath(pathname: string): ModuleKey | null {
-  for (const [prefix, mod] of Object.entries(ADMIN_PATH_MODULES)) {
+  return matchPathPrefix(pathname, ADMIN_PATH_MODULES);
+}
+
+/** Public route prefixes owned by a module (used for sitemap filtering). */
+export const PUBLIC_PATH_MODULES: Record<string, ModuleKey> = {
+  '/government': 'municipal',
+  '/guides': 'community',
+  '/home/events': 'community',
+  '/home/news': 'community',
+  '/directory': 'directory',
+  '/partners': 'directory',
+  '/bingo': 'games',
+};
+
+export function moduleForPublicPath(pathname: string): ModuleKey | null {
+  return matchPathPrefix(pathname, PUBLIC_PATH_MODULES);
+}
+
+function matchPathPrefix(pathname: string, map: Record<string, ModuleKey>): ModuleKey | null {
+  for (const [prefix, mod] of Object.entries(map)) {
     // `prefix + '/'` so /admin/partner-pages never matches the /admin/partners prefix
     if (pathname === prefix || pathname.startsWith(prefix + '/')) return mod;
   }
