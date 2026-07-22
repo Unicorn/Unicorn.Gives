@@ -5,6 +5,8 @@ import { usePathname, useRouter } from 'expo-router';
 
 import { useAuth } from './auth';
 import { signInHref } from './authRedirect';
+import { useFeatureModules } from './featureModules';
+import type { ModuleKey } from '@/constants/featureModules';
 import { useTheme, fonts } from '@/constants/theme';
 
 function LoadingView() {
@@ -60,6 +62,22 @@ export function RequireAdmin({ children }: { children: ReactNode }) {
     );
   }
 
+  return <>{children}</>;
+}
+
+export function RequireModule({ module, children }: { module: ModuleKey; children: ReactNode }) {
+  const router = useRouter();
+  const { flags, loaded } = useFeatureModules();
+  const enabled = flags[module];
+
+  useEffect(() => {
+    if (loaded && !enabled) router.replace('/' as any);
+  }, [loaded, enabled, router]);
+
+  // Cached/default-enabled renders optimistically (matches nav); a cached-off
+  // value holds on the loader until the server confirms, then redirects.
+  if (!loaded && !enabled) return <LoadingView />;
+  if (!enabled) return null;
   return <>{children}</>;
 }
 

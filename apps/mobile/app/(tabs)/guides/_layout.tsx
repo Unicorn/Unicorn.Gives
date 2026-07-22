@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 import { Stack, usePathname } from 'expo-router';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { RequireModule } from '@/lib/routeGuards';
 import { useTheme } from '@/constants/theme';
 
 export default function GuidesLayout() {
@@ -9,9 +10,11 @@ export default function GuidesLayout() {
   const isDetail = pathname !== '/guides' && pathname.startsWith('/guides/');
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
-      <AppHeader showBack={isDetail} />
-      <Stack screenOptions={{ headerShown: false }} />
-    </View>
+    <RequireModule module="community">
+      <View style={{ flex: 1, backgroundColor: colors.background }}>
+        <AppHeader showBack={isDetail} />
+        <Stack screenOptions={{ headerShown: false }} />
+      </View>
+    </RequireModule>
   );
 }

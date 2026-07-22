@@ -19,6 +19,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthProvider } from '@/lib/auth';
+import { FeatureModulesProvider } from '@/lib/featureModules';
 import { DrawerMenu } from '@/components/layout/DrawerMenu';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { ThemeOverrideContext } from '@/constants/theme';
@@ -130,6 +131,7 @@ function RootLayoutNav() {
 
   return (
     <AuthProvider>
+      <FeatureModulesProvider>
       <ThemeOverrideContext.Provider value={themeOverride}>
       <ThemePreferenceProvider value={themePreferenceValue}>
       <ThemeToggleContext.Provider value={toggleTheme}>
@@ -158,6 +160,7 @@ function RootLayoutNav() {
       </ThemeToggleContext.Provider>
       </ThemePreferenceProvider>
       </ThemeOverrideContext.Provider>
+      </FeatureModulesProvider>
     </AuthProvider>
   );
 }

@@ -5,7 +5,8 @@
  * - Only `super_admin` role can access `/admin/*`
  * - Enforced by `RequireAdmin` guard
  */
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import type { ReactNode } from 'react';
 import {
   View,
   Text,
@@ -19,6 +20,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { RequireAdmin } from '@/lib/routeGuards';
 import { useAuth } from '@/lib/auth';
+import { useFeatureModules } from '@/lib/featureModules';
+import { moduleForAdminPath, type ModuleKey } from '@/constants/featureModules';
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
@@ -27,7 +30,7 @@ import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 interface NavSection {
   label: string;
-  items: { label: string; path: string; icon: keyof typeof MaterialIcons.glyphMap }[];
+  items: { label: string; path: string; icon: keyof typeof MaterialIcons.glyphMap; module?: ModuleKey }[];
 }
 
 const NAV_SECTIONS: NavSection[] = [
@@ -40,49 +43,49 @@ const NAV_SECTIONS: NavSection[] = [
   {
     label: 'Content',
     items: [
-      { label: 'Events', path: '/admin/events', icon: 'event' },
-      { label: 'News', path: '/admin/news', icon: 'article' },
-      { label: 'Guides', path: '/admin/guides', icon: 'menu-book' },
+      { label: 'Events', path: '/admin/events', icon: 'event', module: 'community' },
+      { label: 'News', path: '/admin/news', icon: 'article', module: 'community' },
+      { label: 'Guides', path: '/admin/guides', icon: 'menu-book', module: 'community' },
       { label: 'Pages', path: '/admin/pages', icon: 'description' },
-      { label: 'Public Notices', path: '/admin/public-notices', icon: 'campaign' },
+      { label: 'Public Notices', path: '/admin/public-notices', icon: 'campaign', module: 'municipal' },
     ],
   },
   {
     label: 'Government',
     items: [
-      { label: 'Departments', path: '/admin/departments', icon: 'account-balance' },
-      { label: 'Boards & Commissions', path: '/admin/boards', icon: 'groups' },
-      { label: 'Meetings & Agendas', path: '/admin/meetings', icon: 'event-note' },
-      { label: 'Minutes', path: '/admin/minutes', icon: 'gavel' },
-      { label: 'Ordinances', path: '/admin/ordinances', icon: 'policy' },
-      { label: 'Contacts', path: '/admin/contacts', icon: 'contacts' },
-      { label: 'Elections', path: '/admin/elections', icon: 'how-to-vote' },
-      { label: 'Municipal Documents', path: '/admin/municipal-documents', icon: 'folder' },
-      { label: 'Region Pages', path: '/admin/region-pages', icon: 'map' },
+      { label: 'Departments', path: '/admin/departments', icon: 'account-balance', module: 'municipal' },
+      { label: 'Boards & Commissions', path: '/admin/boards', icon: 'groups', module: 'municipal' },
+      { label: 'Meetings & Agendas', path: '/admin/meetings', icon: 'event-note', module: 'municipal' },
+      { label: 'Minutes', path: '/admin/minutes', icon: 'gavel', module: 'municipal' },
+      { label: 'Ordinances', path: '/admin/ordinances', icon: 'policy', module: 'municipal' },
+      { label: 'Contacts', path: '/admin/contacts', icon: 'contacts', module: 'municipal' },
+      { label: 'Elections', path: '/admin/elections', icon: 'how-to-vote', module: 'municipal' },
+      { label: 'Municipal Documents', path: '/admin/municipal-documents', icon: 'folder', module: 'municipal' },
+      { label: 'Region Pages', path: '/admin/region-pages', icon: 'map', module: 'municipal' },
     ],
   },
   {
     label: 'Services & Resources',
     items: [
-      { label: 'Services', path: '/admin/services', icon: 'miscellaneous-services' },
-      { label: 'Facilities', path: '/admin/facilities', icon: 'location-city' },
-      { label: 'Forms & Documents', path: '/admin/forms-documents', icon: 'request-page' },
-      { label: 'Job Postings', path: '/admin/job-postings', icon: 'work' },
-      { label: 'FAQs', path: '/admin/faqs', icon: 'help-outline' },
+      { label: 'Services', path: '/admin/services', icon: 'miscellaneous-services', module: 'municipal' },
+      { label: 'Facilities', path: '/admin/facilities', icon: 'location-city', module: 'municipal' },
+      { label: 'Forms & Documents', path: '/admin/forms-documents', icon: 'request-page', module: 'municipal' },
+      { label: 'Job Postings', path: '/admin/job-postings', icon: 'work', module: 'municipal' },
+      { label: 'FAQs', path: '/admin/faqs', icon: 'help-outline', module: 'municipal' },
     ],
   },
   {
     label: 'Partners',
     items: [
-      { label: 'Partners', path: '/admin/partners', icon: 'store' },
-      { label: 'Partner Pages', path: '/admin/partner-pages', icon: 'handshake' },
+      { label: 'Partners', path: '/admin/partners', icon: 'store', module: 'directory' },
+      { label: 'Partner Pages', path: '/admin/partner-pages', icon: 'handshake', module: 'directory' },
     ],
   },
   {
     label: 'Games',
     items: [
-      { label: 'Bingo Games', path: '/admin/bingo-games', icon: 'grid-view' },
-      { label: 'Bingo Boards', path: '/admin/bingo-boards', icon: 'dashboard-customize' },
+      { label: 'Bingo Games', path: '/admin/bingo-games', icon: 'grid-view', module: 'games' },
+      { label: 'Bingo Boards', path: '/admin/bingo-boards', icon: 'dashboard-customize', module: 'games' },
     ],
   },
   {
@@ -106,6 +109,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: 'Regions', path: '/admin/regions', icon: 'place' },
       { label: 'Users', path: '/admin/users', icon: 'people' },
       { label: 'Media Library', path: '/admin/media', icon: 'perm-media' },
+      { label: 'Feature Modules', path: '/admin/settings/modules', icon: 'extension' },
       { label: 'Site Settings', path: '/admin/settings', icon: 'settings' },
       { label: 'Audit Log', path: '/admin/audit-log', icon: 'history' },
     ],
@@ -115,9 +119,27 @@ const NAV_SECTIONS: NavSection[] = [
 export default function AdminLayout() {
   return (
     <RequireAdmin>
-      <AdminShell />
+      <RequireAdminModules>
+        <AdminShell />
+      </RequireAdminModules>
     </RequireAdmin>
   );
+}
+
+/** Redirects to the admin dashboard when the current path belongs to a disabled module. */
+function RequireAdminModules({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { flags, loaded } = useFeatureModules();
+  const mod = moduleForAdminPath(pathname);
+  const blocked = mod !== null && !flags[mod];
+
+  useEffect(() => {
+    if (loaded && blocked) router.replace(toHref('/admin'));
+  }, [loaded, blocked, router]);
+
+  if (blocked) return null;
+  return <>{children}</>;
 }
 
 function AdminShell() {
@@ -160,6 +182,15 @@ function AdminSidebar({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { flags } = useFeatureModules();
+
+  const visibleSections = useMemo(
+    () =>
+      NAV_SECTIONS
+        .map((s) => ({ ...s, items: s.items.filter((i) => !i.module || flags[i.module]) }))
+        .filter((s) => s.items.length > 0),
+    [flags],
+  );
 
   return (
     <View style={styles.sidebarInner}>
@@ -173,13 +204,13 @@ function AdminSidebar({
       </Pressable>
 
       <ScrollView style={styles.sidebarScroll} showsVerticalScrollIndicator={false}>
-        {NAV_SECTIONS.map((section) => (
+        {visibleSections.map((section) => (
           <View key={section.label} style={styles.navSection}>
             <Text style={styles.navSectionLabel}>{section.label}</Text>
             {section.items.map((item) => {
               const active =
-                item.path === '/admin'
-                  ? pathname === '/admin'
+                item.path === '/admin' || item.path === '/admin/settings'
+                  ? pathname === item.path
                   : pathname.startsWith(item.path);
               return (
                 <Pressable

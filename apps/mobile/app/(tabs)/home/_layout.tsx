@@ -4,14 +4,16 @@ import { View } from "react-native";
 import { AppHeader, AppBreadcrumbBar, type BreadcrumbItem } from "@/components/layout/AppHeader";
 import { type SubTabItem, SubTabs } from "@/components/layout/SubTabs";
 import { useTheme } from "@/constants/theme";
+import type { ModuleKey } from "@/constants/featureModules";
+import { useFeatureModules } from "@/lib/featureModules";
 import { paths, toHref } from "@/lib/navigation";
 
-const HOME_TABS: SubTabItem[] = [
+const HOME_TABS: (SubTabItem & { module?: ModuleKey })[] = [
 	{ label: "Discover", href: toHref(paths.homeDiscover) },
 	{ label: "Community", href: toHref(paths.community.index) },
 	{ label: "History", href: toHref(paths.history.index) },
-	{ label: "Events", href: toHref(paths.community.events) },
-	{ label: "News", href: toHref(paths.community.news) },
+	{ label: "Events", href: toHref(paths.community.events), module: "community" },
+	{ label: "News", href: toHref(paths.community.news), module: "community" },
 ];
 
 function humanizeSlugSegment(segment: string): string {
@@ -64,13 +66,18 @@ function shouldShowHomeSubTabs(pathname: string): boolean {
 export default function HomeLayout() {
 	const pathname = usePathname();
 	const { colors } = useTheme();
+	const { flags } = useFeatureModules();
 	const breadcrumb = useMemo(() => homeDetailBreadcrumb(pathname), [pathname]);
 	const showSubTabs = shouldShowHomeSubTabs(pathname);
+	const visibleTabs = useMemo(
+		() => HOME_TABS.filter((t) => !t.module || flags[t.module]).map(({ module, ...tab }) => tab),
+		[flags],
+	);
 
 	return (
 		<View style={{ flex: 1, backgroundColor: colors.background }}>
 			<AppHeader />
-			{showSubTabs && <SubTabs tabs={HOME_TABS} />}
+			{showSubTabs && <SubTabs tabs={visibleTabs} />}
 			{breadcrumb && breadcrumb.length > 0 && <AppBreadcrumbBar items={breadcrumb} />}
 			<Stack screenOptions={{ headerShown: false }} />
 		</View>
