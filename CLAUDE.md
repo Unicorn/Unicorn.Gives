@@ -84,8 +84,21 @@ All pages use `Container` (1280px max-width on tablet+) as the single width cons
 
 ### Build & deploy workflow
 
+**Prerequisites (fresh clone or worktree):**
+
 ```bash
-# 1. Build (generates sitemap + Expo web export)
+# 1. Init the packages/ui submodule (pnpm install fails with instructions if skipped)
+git submodule update --init
+
+# 2. Install
+pnpm install
+```
+
+- Worktrees do not carry untracked files: `.env`, `apps/mobile/.env`, and `apps/mobile/.env.production.local` must be copied from the main checkout. Without Supabase env vars the build still succeeds, but the sitemap silently drops all DB-backed URLs (government/home/guides) — **never deploy a build made without them**.
+- `mobile:build` runs three steps (see `apps/mobile/project.json`): `generate-partner-static.ts` (regenerates the committed `apps/mobile/lib/partner-static-data.json` from the seed migration) → `generate-sitemap.ts` (regenerates the committed `apps/mobile/public/sitemap.xml`) → `expo export`. If a build leaves those committed files dirty with real changes, commit them; if the changes are due to missing env vars, revert them.
+
+```bash
+# 1. Build (generates partner static params + sitemap + Expo web export)
 pnpm nx run mobile:build
 
 # 2. Deploy to S3 (source env for AWS creds)
