@@ -4,6 +4,12 @@
 
 Expo Router React Native app (monorepo at `apps/mobile/`). File-based routing, custom StyleSheet styling (no Tailwind/NativeWind), TypeScript strict mode.
 
+## Workspace & Submodules
+
+- `packages/ui` (`@scaffald/ui`) is a **git submodule** (github.com/Scaffald/ui). Fresh clones and worktrees must run `git submodule update --init` before `pnpm install` — `.pnpmfile.cjs` fails the install with instructions if the submodule is empty.
+- The `catalog:` entries in the root `pnpm-workspace.yaml` must stay in sync with `packages/ui/pnpm-workspace.yaml` (the copy used when that repo runs standalone).
+- `apps/mobile/lib/partner-static-data.json` is generated from the seed migration by `apps/mobile/scripts/generate-partner-static.ts` (first step of `mobile:build`) and committed. App code must not read files with `fs` at render time — it breaks either native bundling or static web export.
+
 ## Design System
 
 **Read `DESIGN_SYSTEM.md` before creating or modifying any UI component.**
