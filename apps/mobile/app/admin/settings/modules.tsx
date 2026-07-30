@@ -9,6 +9,7 @@ import {
   FEATURE_MODULES,
   MODULE_KEYS,
   SITE_SETTINGS_KEY,
+  normalizeFlags,
   type ModuleFlags,
   type ModuleKey,
 } from '@/constants/featureModules';
@@ -27,10 +28,17 @@ export default function FeatureModulesAdminPage() {
   const flags = draft ?? liveFlags;
 
   async function toggle(key: ModuleKey, value: boolean) {
-    const next = { ...flags, [key]: value };
-    setDraft(next);
+    setDraft({ ...flags, [key]: value });
     setSaving(true);
     setError(null);
+    // Merge onto the server's current value so a concurrent edit to another
+    // module isn't clobbered by this whole-object write.
+    const { data: current } = await supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', SITE_SETTINGS_KEY)
+      .maybeSingle();
+    const next = { ...normalizeFlags(current?.value), [key]: value };
     const { error: saveError } = await supabase.from('site_settings').upsert({
       key: SITE_SETTINGS_KEY,
       value: next,

@@ -9,7 +9,7 @@ import { useFeatureModules } from './featureModules';
 import type { ModuleKey } from '@/constants/featureModules';
 import { useTheme, fonts } from '@/constants/theme';
 
-function LoadingView() {
+export function LoadingView() {
   const { colors } = useTheme();
   return (
     <View style={[styles.center, { backgroundColor: colors.background }]}>

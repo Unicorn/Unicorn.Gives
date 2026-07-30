@@ -18,7 +18,7 @@ import {
 import { Slot, useRouter, usePathname } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { RequireAdmin } from '@/lib/routeGuards';
+import { LoadingView, RequireAdmin } from '@/lib/routeGuards';
 import { useAuth } from '@/lib/auth';
 import { useFeatureModules } from '@/lib/featureModules';
 import { moduleForAdminPath, type ModuleKey } from '@/constants/featureModules';
@@ -138,7 +138,7 @@ function RequireAdminModules({ children }: { children: ReactNode }) {
     if (loaded && blocked) router.replace(toHref('/admin'));
   }, [loaded, blocked, router]);
 
-  if (blocked) return null;
+  if (blocked) return loaded ? null : <LoadingView />;
   return <>{children}</>;
 }
 
