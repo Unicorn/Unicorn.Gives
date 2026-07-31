@@ -11,7 +11,7 @@
   "devDependencies": {
     "@nx/expo": "^22.6.1",
     "@nx/workspace": "^22.6.1",
-    "nx": "^22.6.1"
+    "nx": "^22.7.2"
   },
   "dependencies": {
     "marked": "^17.0.5",
