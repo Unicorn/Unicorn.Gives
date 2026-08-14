@@ -131,7 +131,7 @@ export function LandingPageRenderer({ data, partnerId }: LandingPageRendererProp
         break;
       case 'bookings':
         if (!partnerId || !squareConfig?.bookings_enabled) return null;
-        inner = <BookingsSection partnerId={partnerId} />;
+        inner = <BookingsSection partnerId={partnerId} contactPhone={data.contact_phone} />;
         break;
       case 'subscriptions':
         if (!partnerId || !squareConfig?.subscriptions_enabled) return null;

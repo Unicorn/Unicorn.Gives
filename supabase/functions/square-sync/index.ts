@@ -11,7 +11,7 @@
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
-import { getDecryptedToken, squareFetch } from '../_shared/square.ts';
+import { getValidAccessToken, squareFetch } from '../_shared/square.ts';
 
 type SyncRequest = {
   partner_id: string;
@@ -64,23 +64,14 @@ Deno.serve(async (req) => {
 
   const admin = createClient(supabaseUrl, serviceKey);
 
-  // Get connection
-  const { data: conn } = await admin
-    .from('square_connections')
-    .select('*')
-    .eq('partner_id', body.partner_id)
-    .single();
-
-  if (!conn) return json({ error: 'No Square connection for this partner' }, 404);
-
-  let accessToken: string;
-  try {
-    accessToken = await getDecryptedToken(conn.access_token);
-  } catch (e) {
-    console.error('Token decryption failed:', e);
-    return json({ error: 'Failed to decrypt Square token. Try disconnecting and reconnecting Square.' }, 500);
+  // Refreshes the token in place if it has expired or is about to.
+  const creds = await getValidAccessToken(admin, body.partner_id);
+  if (!creds) {
+    return json({
+      error: 'No usable Square connection for this partner. Try disconnecting and reconnecting Square.',
+    }, 404);
   }
-  const locationId = conn.location_id;
+  const { accessToken, locationId } = creds;
 
   const results: Record<string, { synced: number; errors: string[] }> = {};
 

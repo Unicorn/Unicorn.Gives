@@ -11,7 +11,7 @@
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
-import { getDecryptedToken, squareFetch } from '../_shared/square.ts';
+import { getValidAccessToken, squareErrorCode, squareFetch } from '../_shared/square.ts';
 
 const rateState = new Map<string, number>();
 const RATE_LIMIT_MS = 500; // 2 req/sec per IP
@@ -29,6 +29,7 @@ type CreateBookingRequest = {
   action: 'create_booking';
   partner_id: string;
   service_variation_id: string;
+  service_variation_version?: number;
   team_member_id?: string;
   start_at: string;
   customer: {
@@ -74,17 +75,6 @@ Deno.serve(async (req) => {
 
   const admin = createClient(supabaseUrl, serviceKey);
 
-  // Get connection for the partner
-  const { data: conn } = await admin
-    .from('square_connections')
-    .select('access_token, location_id')
-    .eq('partner_id', body.partner_id)
-    .single();
-
-  if (!conn || !conn.location_id) {
-    return json({ error: 'No Square connection for this partner' }, 404);
-  }
-
   // Verify bookings are enabled
   const { data: config } = await admin
     .from('square_feature_config')
@@ -96,8 +86,12 @@ Deno.serve(async (req) => {
     return json({ error: 'Bookings not enabled for this partner' }, 403);
   }
 
-  const accessToken = await getDecryptedToken(conn.access_token);
-  const locationId = conn.location_id;
+  // Refreshes the token in place if it has expired or is about to.
+  const creds = await getValidAccessToken(admin, body.partner_id);
+  if (!creds || !creds.locationId) {
+    return json({ error: 'No Square connection for this partner' }, 404);
+  }
+  const { accessToken, locationId } = creds;
 
   try {
     if (body.action === 'search_availability') {
@@ -124,8 +118,8 @@ Deno.serve(async (req) => {
 
       if (!res.ok) {
         const errText = await res.text();
-        console.error('Availability search failed:', errText);
-        return json({ error: 'Failed to search availability' }, 502);
+        console.error('Availability search failed:', res.status, errText);
+        return json({ error: 'Failed to search availability', square_status: res.status, square_error: squareErrorCode(errText) }, 502);
       }
 
       const data = await res.json();
@@ -153,7 +147,16 @@ Deno.serve(async (req) => {
         customerId = customerData.customer?.id;
       }
 
-      // Create the booking
+      // Square requires a concrete team_member_id and the catalog version the
+      // slot was quoted against. Both come from the availability response the
+      // customer picked, so the client echoes them back here.
+      if (!body.team_member_id) {
+        return json({ error: 'A staff member is required to create a booking' }, 400);
+      }
+      if (body.service_variation_version == null) {
+        return json({ error: 'Missing service_variation_version' }, 400);
+      }
+
       const bookingBody = {
         idempotency_key: crypto.randomUUID(),
         booking: {
@@ -163,8 +166,8 @@ Deno.serve(async (req) => {
           start_at: body.start_at,
           appointment_segments: [{
             service_variation_id: body.service_variation_id,
-            service_variation_version: 0, // Square may require this
-            ...(body.team_member_id ? { team_member_id: body.team_member_id } : { any_team_member: true }),
+            service_variation_version: body.service_variation_version,
+            team_member_id: body.team_member_id,
           }],
         },
       };
@@ -176,8 +179,8 @@ Deno.serve(async (req) => {
 
       if (!res.ok) {
         const errText = await res.text();
-        console.error('Create booking failed:', errText);
-        return json({ error: 'Failed to create booking' }, 502);
+        console.error('Create booking failed:', res.status, errText);
+        return json({ error: 'Failed to create booking', square_status: res.status, square_error: squareErrorCode(errText) }, 502);
       }
 
       const data = await res.json();

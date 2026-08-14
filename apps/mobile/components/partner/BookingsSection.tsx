@@ -5,7 +5,7 @@
  * Square remains the source of truth — all controls operate on cached data.
  */
 import { useMemo, useState } from 'react';
-import { View, Text, Pressable, ActivityIndicator, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Pressable, ActivityIndicator, TextInput, ScrollView, StyleSheet, Linking } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, fontSize, spacing, radii, breakpoints, type ThemeColors } from '@/constants/theme';
 import { useSquareServices, type SquareService, type SquareCategory } from '@/hooks/useSquareBookings';
@@ -14,6 +14,22 @@ import { BookingFlow } from './BookingFlow';
 
 interface BookingsSectionProps {
   partnerId: string;
+  /** Shown as a fallback on services Square can't book online. */
+  contactPhone?: string | null;
+}
+
+/**
+ * A variation is genuinely bookable only when it is flagged for booking AND has
+ * at least one team member assigned — Square returns BAD_REQUEST on an
+ * availability search for an unstaffed variation, so offering "Book" on one
+ * guarantees a dead end.
+ */
+function isBookable(s: SquareService): boolean {
+  return (s.data.item_data?.variations ?? []).some(
+    (v) =>
+      v.item_variation_data?.available_for_booking === true &&
+      (v.item_variation_data?.team_member_ids?.length ?? 0) > 0,
+  );
 }
 
 type SortKey = 'default' | 'name' | 'price-asc' | 'price-desc' | 'duration-asc' | 'duration-desc';
@@ -62,14 +78,16 @@ function getServiceCategoryIds(s: SquareService): string[] {
   return Array.from(ids);
 }
 
-export function BookingsSection({ partnerId }: BookingsSectionProps) {
+export function BookingsSection({ partnerId, contactPhone }: BookingsSectionProps) {
   const { colors } = useTheme();
   const { width } = useHydratedDimensions();
   const columns = width >= breakpoints.desktop ? 3 : width >= breakpoints.tablet ? 2 : 1;
   const styles = useMemo(() => createStyles(colors), [colors]);
   const { services: allServices, teamMembers, categories, loading } = useSquareServices(partnerId);
-  // Only show services that have at least one variation bookable online (Square's
-  // per-variation `available_for_booking` flag). Square remains source of truth.
+  // Keep every service Square marks bookable so the menu stays complete, but
+  // remember which ones can actually be booked online. Square remains source of
+  // truth — assigning staff to a service in Square makes it bookable here with
+  // no code change.
   const services = useMemo(
     () =>
       allServices.filter((s) =>
@@ -203,9 +221,23 @@ export function BookingsSection({ partnerId }: BookingsSectionProps) {
               </Text>
             )}
           </View>
-          <Pressable style={styles.bookBtn} onPress={() => setSelectedService(service)}>
-            <Text style={styles.bookBtnText}>Book</Text>
-          </Pressable>
+          {isBookable(service) ? (
+            <Pressable style={styles.bookBtn} onPress={() => setSelectedService(service)}>
+              <Text style={styles.bookBtnText}>Book</Text>
+            </Pressable>
+          ) : contactPhone ? (
+            <Pressable
+              style={styles.callBtn}
+              onPress={() => Linking.openURL(`tel:${contactPhone.replace(/[^\d+]/g, '')}`)}
+            >
+              <MaterialIcons name="phone" size={16} color={colors.primary} />
+              <Text style={styles.callBtnText}>Call to book</Text>
+            </Pressable>
+          ) : (
+            <View style={styles.callBtn}>
+              <Text style={styles.callBtnText}>Call to book</Text>
+            </View>
+          )}
         </View>
       </View>
     );
@@ -539,5 +571,20 @@ const createStyles = (colors: ThemeColors) =>
       fontFamily: fonts.sansMedium,
       fontSize: fontSize.md,
       color: colors.onPrimary,
+    },
+    callBtn: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: spacing.xs,
+      paddingVertical: spacing.sm + 2,
+      borderRadius: radii.sm,
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    callBtnText: {
+      fontFamily: fonts.sansMedium,
+      fontSize: fontSize.md,
+      color: colors.primary,
     },
   });

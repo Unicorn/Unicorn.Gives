@@ -11,7 +11,7 @@
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
-import { getDecryptedToken, squareFetch } from '../_shared/square.ts';
+import { getValidAccessToken, squareFetch } from '../_shared/square.ts';
 
 const rateState = new Map<string, number>();
 const RATE_LIMIT_MS = 500;
@@ -119,18 +119,12 @@ Deno.serve(async (req) => {
     const [givenName, ...rest] = displayName.split(/\s+/);
     const familyName = rest.join(' ');
 
-    const { data: conn } = await admin
-      .from('square_connections')
-      .select('access_token, location_id, merchant_id')
-      .eq('partner_id', body.partner_id)
-      .single();
-
-    if (!conn || !conn.location_id) {
+    // Refreshes the token in place if it has expired or is about to.
+    const creds = await getValidAccessToken(admin, body.partner_id);
+    if (!creds || !creds.locationId) {
       return json({ error: 'No Square connection for this partner' }, 404);
     }
-
-    const accessToken = await getDecryptedToken(conn.access_token);
-    const locationId = conn.location_id;
+    const { accessToken, locationId } = creds;
 
     // Look up the plan variation to extract the first-phase price.
     const { data: planRow } = await admin

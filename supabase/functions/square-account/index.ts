@@ -17,7 +17,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import {
-  getDecryptedToken,
+  getValidAccessToken,
   retrieveCustomer,
   searchBookings,
   searchSubscriptions,
@@ -108,12 +108,14 @@ Deno.serve(async (req) => {
       for (const cust of customers ?? []) {
         const { data: conn } = await admin
           .from('square_connections')
-          .select('access_token, location_id')
+          .select('location_id')
           .eq('partner_id', cust.partner_id)
           .single();
         if (!conn?.location_id) continue;
 
-        const token = await getDecryptedToken(conn.access_token);
+        const creds = await getValidAccessToken(admin, cust.partner_id);
+        if (!creds) continue;
+        const token = creds.accessToken;
 
         const freshCustomer = await retrieveCustomer(token, cust.square_customer_id);
         if (freshCustomer) {
@@ -206,12 +208,14 @@ Deno.serve(async (req) => {
 
       const { data: conn } = await admin
         .from('square_connections')
-        .select('access_token')
+        .select('partner_id')
         .eq('partner_id', row.partner_id)
         .single();
       if (!conn) return json({ error: 'Partner connection missing' }, 404);
 
-      const token = await getDecryptedToken(conn.access_token);
+      const creds = await getValidAccessToken(admin, row.partner_id);
+      if (!creds) return json({ error: 'Partner connection missing' }, 404);
+      const token = creds.accessToken;
       const verb = body.action === 'pause_subscription'
         ? 'pause'
         : body.action === 'resume_subscription'
@@ -250,12 +254,14 @@ Deno.serve(async (req) => {
 
       const { data: conn } = await admin
         .from('square_connections')
-        .select('access_token')
+        .select('partner_id')
         .eq('partner_id', body.partner_id)
         .single();
       if (!conn) return json({ error: 'Partner connection missing' }, 404);
 
-      const token = await getDecryptedToken(conn.access_token);
+      const creds = await getValidAccessToken(admin, body.partner_id);
+      if (!creds) return json({ error: 'Partner connection missing' }, 404);
+      const token = creds.accessToken;
       const siteUrl = Deno.env.get('SITE_URL') ?? 'https://unicorn.gives';
 
       // Square Checkout "save card" flow via payment link with a zero-dollar
