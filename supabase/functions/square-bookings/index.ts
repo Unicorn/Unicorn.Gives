@@ -139,13 +139,20 @@ Deno.serve(async (req) => {
         }),
       });
 
-      let customerId: string | undefined;
-      if (customerRes.ok) {
-        const customerData = await customerRes.json() as {
-          customer?: { id: string };
-        };
-        customerId = customerData.customer?.id;
+      // Square requires customer_id on a booking, so a failure here is fatal —
+      // swallowing it would send a booking Square is guaranteed to reject.
+      if (!customerRes.ok) {
+        const errText = await customerRes.text();
+        console.error('Create customer failed:', customerRes.status, errText);
+        return json({
+          error: 'Failed to create booking',
+          stage: 'create_customer',
+          square_status: customerRes.status,
+          square_error: squareErrorCode(errText),
+        }, 502);
       }
+      const customerData = await customerRes.json() as { customer?: { id: string } };
+      const customerId = customerData.customer?.id;
 
       // Square requires a concrete team_member_id and the catalog version the
       // slot was quoted against. Both come from the availability response the
@@ -180,7 +187,7 @@ Deno.serve(async (req) => {
       if (!res.ok) {
         const errText = await res.text();
         console.error('Create booking failed:', res.status, errText);
-        return json({ error: 'Failed to create booking', square_status: res.status, square_error: squareErrorCode(errText) }, 502);
+        return json({ error: 'Failed to create booking', stage: 'create_booking', square_status: res.status, square_error: squareErrorCode(errText) }, 502);
       }
 
       const data = await res.json();

@@ -160,6 +160,24 @@ export function squareErrorCode(errText: string): string {
 }
 
 /**
+ * Square's human-readable error detail. Temporarily surfaced to callers while
+ * diagnosing booking creation; keep it out of long-lived public responses since
+ * Square can echo request values here.
+ */
+export function squareErrorDetail(errText: string): string {
+  try {
+    const parsed = JSON.parse(errText) as {
+      errors?: Array<{ detail?: string; field?: string }>;
+    };
+    return (parsed.errors ?? [])
+      .map((e) => [e.field, e.detail].filter(Boolean).join(': '))
+      .join(' | ') || 'no detail';
+  } catch {
+    return 'unparseable';
+  }
+}
+
+/**
  * Make an authenticated request to the Square API.
  */
 export async function squareFetch(
