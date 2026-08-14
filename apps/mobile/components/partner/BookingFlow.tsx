@@ -18,6 +18,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Modal,
+  Linking,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
@@ -36,6 +37,8 @@ interface BookingFlowProps {
   partnerId: string;
   service: SquareService;
   teamMembers: SquareTeamMember[];
+  /** Offered as a fallback when Square refuses the booking. */
+  contactPhone?: string | null;
   onClose: () => void;
 }
 
@@ -62,7 +65,7 @@ function formatTime(isoString: string): string {
   });
 }
 
-export function BookingFlow({ partnerId, service, teamMembers, onClose }: BookingFlowProps) {
+export function BookingFlow({ partnerId, service, teamMembers, contactPhone, onClose }: BookingFlowProps) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -344,7 +347,31 @@ export function BookingFlow({ partnerId, service, teamMembers, onClose }: Bookin
                   {customer.phone_number && <SummaryRow label="Phone" value={customer.phone_number} colors={colors} styles={styles} />}
                 </View>
 
-                {bookingError && <Text style={styles.errorText}>{bookingError}</Text>}
+                {bookingError && (
+                  <View style={styles.submitError}>
+                    <Text style={styles.errorText}>
+                      We couldn&apos;t complete this booking online.
+                    </Text>
+                    {contactPhone ? (
+                      <>
+                        <Text style={styles.submitErrorBody}>
+                          Nothing has been scheduled. Call us and we&apos;ll get you booked in.
+                        </Text>
+                        <Pressable
+                          style={styles.callFallbackBtn}
+                          onPress={() => Linking.openURL(`tel:${contactPhone.replace(/[^\d+]/g, '')}`)}
+                        >
+                          <MaterialIcons name="phone" size={16} color={colors.onPrimary} />
+                          <Text style={styles.callFallbackText}>{contactPhone}</Text>
+                        </Pressable>
+                      </>
+                    ) : (
+                      <Text style={styles.submitErrorBody}>
+                        Nothing has been scheduled. Please call the salon to book.
+                      </Text>
+                    )}
+                  </View>
+                )}
 
                 <Pressable
                   style={styles.primaryBtn}
@@ -546,6 +573,32 @@ const createStyles = (colors: ThemeColors) =>
       color: colors.neutralVariant,
       textAlign: 'center',
       lineHeight: 20,
+    },
+    submitError: {
+      gap: spacing.sm,
+      alignItems: 'center',
+      paddingVertical: spacing.md,
+    },
+    submitErrorBody: {
+      fontFamily: fonts.sans,
+      fontSize: fontSize.sm,
+      color: colors.neutralVariant,
+      textAlign: 'center',
+      lineHeight: 20,
+    },
+    callFallbackBtn: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      backgroundColor: colors.primary,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm + 2,
+      borderRadius: radii.sm,
+    },
+    callFallbackText: {
+      fontFamily: fonts.sansBold,
+      fontSize: fontSize.md,
+      color: colors.onPrimary,
     },
     retryBtn: {
       flexDirection: 'row',

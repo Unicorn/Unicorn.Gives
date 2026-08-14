@@ -362,6 +362,7 @@ export function BookingsSection({ partnerId, contactPhone }: BookingsSectionProp
           partnerId={partnerId}
           service={selectedService}
           teamMembers={teamMembers}
+          contactPhone={contactPhone}
           onClose={() => setSelectedService(null)}
         />
       )}
