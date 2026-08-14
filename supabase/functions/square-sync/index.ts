@@ -261,11 +261,38 @@ Deno.serve(async (req) => {
           bookingsResult.synced++;
         }
       } else {
-        // Booking profile is optional — some locations don't have it
-        const status = profileRes.status;
-        if (status !== 404) {
-          bookingsResult.errors.push(`Booking profile: ${status}`);
+        // A 404 here is not benign: it means this location has no booking
+        // profile, so there is no hosted Square booking site to fall back to.
+        // Report it rather than swallowing it.
+        bookingsResult.errors.push(
+          profileRes.status === 404
+            ? 'Location booking profile: not found (online booking may be disabled for this location)'
+            : `Location booking profile: ${profileRes.status}`,
+        );
+      }
+
+      // 3b. Business-level booking profile — tells us whether the seller has
+      // online booking switched on at all, which decides whether linking out to
+      // Square's hosted booking site is even possible.
+      const bizRes = await squareFetch('/v2/bookings/business-booking-profile', accessToken);
+      if (bizRes.ok) {
+        const bizData = await bizRes.json() as {
+          business_booking_profile?: Record<string, unknown>;
+        };
+        if (bizData.business_booking_profile) {
+          await admin.from('square_bookings_cache').upsert({
+            partner_id: body.partner_id,
+            data_type: 'business_booking_profile',
+            square_id: String(bizData.business_booking_profile.seller_id ?? 'business'),
+            data: bizData.business_booking_profile,
+            display_name: 'Business Booking Profile',
+            is_active: true,
+            synced_at: new Date().toISOString(),
+          }, { onConflict: 'partner_id,data_type,square_id' });
+          bookingsResult.synced++;
         }
+      } else {
+        bookingsResult.errors.push(`Business booking profile: ${bizRes.status}`);
       }
     } catch (e) {
       bookingsResult.errors.push(e instanceof Error ? e.message : 'Unknown error');
