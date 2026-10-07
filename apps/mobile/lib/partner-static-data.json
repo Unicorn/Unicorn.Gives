@@ -1,0 +1,22 @@
+{
+  "partners": [
+    {
+      "partnerSlug": "the-horn",
+      "tabSlugs": [
+        "about",
+        "events",
+        "membership",
+        "hours"
+      ]
+    },
+    {
+      "partnerSlug": "the-mane",
+      "tabSlugs": [
+        "about",
+        "services",
+        "book",
+        "hours"
+      ]
+    }
+  ]
+}

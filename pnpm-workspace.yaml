@@ -1,3 +1,13 @@
 packages:
   - "apps/*"
+  - "packages/*"
 
+# Catalog entries required by packages/ui (@scaffald/ui), which declares
+# deps with the "catalog:" protocol. Keep in sync with
+# packages/ui/pnpm-workspace.yaml (used when that repo runs standalone).
+catalog:
+  "@biomejs/biome": ~2.3.14
+  "@react-native-async-storage/async-storage": 2.2.0
+  react-dropzone: ~14.3.8
+  react-dom: ^19.2.0
+  typescript: ~5.9.3
