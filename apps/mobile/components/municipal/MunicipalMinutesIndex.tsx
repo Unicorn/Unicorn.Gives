@@ -11,6 +11,13 @@ import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 import { useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
 import { getStaticMinutesList } from '@/lib/government-snapshot';
 
+/**
+ * Lincoln Township alone has 139 sets of minutes going back to 2014. Rendering
+ * them all produced a 284KB page and an unusable scroll; this shows a window
+ * and lets the reader ask for more.
+ */
+const PAGE_SIZE = 25;
+
 interface MinutesSummary {
   id: string;
   slug: string;
@@ -31,6 +38,17 @@ export function MunicipalMinutesIndex() {
   );
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  // A new search or filter should start from the top of its own result set.
+  // Adjusted during render rather than in an effect: React applies it before
+  // committing, so the list never paints a stale window first.
+  const filterKey = `${search}|${typeFilter ?? ''}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setVisibleCount(PAGE_SIZE);
+  }
 
   useEffect(() => {
     if (!region) return;
@@ -48,6 +66,8 @@ export function MunicipalMinutesIndex() {
     if (!matchesSearchQuery(search, [m.title, m.meeting_type, m.date, m.body])) return false;
     return true;
   });
+  const visible = filtered.slice(0, visibleCount);
+  const remaining = filtered.length - visible.length;
 
   return (
     <Wrapper style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 40 }}>
@@ -77,8 +97,14 @@ export function MunicipalMinutesIndex() {
           ))}
         </ScrollView>
       )}
-      <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: spacing.md }}>{filtered.length} minutes</Text>
-      {filtered.map(m => (
+      <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: spacing.md }}>
+        {filtered.length === 0
+          ? 'No minutes match your search.'
+          : remaining > 0
+            ? `Showing ${visible.length} of ${filtered.length} minutes`
+            : `${filtered.length} minutes`}
+      </Text>
+      {visible.map(m => (
         <Link key={m.id} href={`${basePath}/minutes/${m.slug}` as any} asChild>
           <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: colors.surface, borderRadius: radii.sm, padding: 14, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.outline }}>
             <View style={{ flex: 1 }}>
@@ -94,6 +120,24 @@ export function MunicipalMinutesIndex() {
           </TouchableOpacity>
         </Link>
       ))}
+      {remaining > 0 && (
+        <TouchableOpacity
+          onPress={() => setVisibleCount((n) => n + PAGE_SIZE)}
+          style={{
+            alignSelf: 'center',
+            marginTop: spacing.md,
+            paddingHorizontal: spacing.xl,
+            paddingVertical: spacing.sm + 2,
+            borderRadius: radii.sm,
+            borderWidth: 1,
+            borderColor: colors.primary,
+          }}
+        >
+          <Text style={{ fontSize: fontSize.md, fontFamily: fonts.sansMedium, color: colors.primary }}>
+            {`Show ${Math.min(PAGE_SIZE, remaining)} more`}
+          </Text>
+        </TouchableOpacity>
+      )}
       </View>
       </Container>
     </Wrapper>
