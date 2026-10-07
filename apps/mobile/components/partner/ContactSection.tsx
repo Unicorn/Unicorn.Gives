@@ -3,6 +3,7 @@ import { View, Text, Pressable, Linking, Platform, StyleSheet } from 'react-nati
 import { MaterialIcons } from '@expo/vector-icons';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useTheme, fonts, fontSize, spacing, radii, teal, type ThemeColors } from '@/constants/theme';
+import { SectionHeading } from './SectionHeading';
 
 interface SocialLinks {
   facebook?: string;
@@ -30,7 +31,7 @@ export function ContactSection({ phone, email, address, hours, socialLinks }: Co
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
-        <Text style={styles.heading}>Get in Touch</Text>
+        <SectionHeading title="Get in Touch" />
         <View style={styles.grid}>
           {/* Contact info */}
           {hasContact && (
@@ -140,12 +141,6 @@ const createStyles = (colors: ThemeColors) =>
       maxWidth: 1000,
       alignSelf: 'center',
       width: '100%' as any,
-    },
-    heading: {
-      fontFamily: fonts.sansBold,
-      fontSize: 32,
-      color: colors.neutral,
-      marginBottom: spacing.xxl,
     },
     grid: {
       flexDirection: 'row',

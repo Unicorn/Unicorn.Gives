@@ -1,6 +1,16 @@
 import { useMemo } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Linking, Platform } from 'react-native';
-import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
+import {
+  useTheme,
+  fonts,
+  fontSize,
+  spacing,
+  radii,
+  letterSpacing,
+  breakpoints,
+  type ThemeColors,
+} from '@/constants/theme';
+import { useHydratedDimensions } from '@/hooks/useHydrated';
 
 function handleCtaPress(ctaUrl: string) {
   // In-page anchor: scroll to the matching element on web; no-op on native.
@@ -26,6 +36,8 @@ interface HeroSectionProps {
 
 export function HeroSection({ headline, subheadline, imageUrl, ctaLabel, ctaUrl }: HeroSectionProps) {
   const { colors } = useTheme();
+  const { width } = useHydratedDimensions();
+  const compact = width > 0 && width < breakpoints.tablet;
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   if (!headline && !subheadline && !imageUrl) return null;
@@ -35,7 +47,9 @@ export function HeroSection({ headline, subheadline, imageUrl, ctaLabel, ctaUrl 
       <View style={styles.inner}>
         {/* Text column */}
         <View style={styles.textCol}>
-          {headline && <Text style={styles.headline}>{headline}</Text>}
+          {headline && (
+            <Text style={[styles.headline, compact && styles.headlineCompact]}>{headline}</Text>
+          )}
           {subheadline && <Text style={styles.subheadline}>{subheadline}</Text>}
           {ctaLabel && ctaUrl && (
             <Pressable
@@ -55,7 +69,7 @@ export function HeroSection({ headline, subheadline, imageUrl, ctaLabel, ctaUrl 
           <View style={styles.imageCol}>
             <Image
               source={{ uri: imageUrl }}
-              style={styles.heroImage}
+              style={[styles.heroImage, compact && styles.heroImageCompact]}
               resizeMode="contain"
             />
           </View>
@@ -70,7 +84,7 @@ const createStyles = (colors: ThemeColors) =>
     container: {
       backgroundColor: colors.surface,
       paddingHorizontal: spacing.xl,
-      paddingVertical: spacing.xxxl + 16,
+      paddingVertical: spacing.xxxl * 2.5,
     },
     inner: {
       maxWidth: 1000,
@@ -82,14 +96,21 @@ const createStyles = (colors: ThemeColors) =>
       gap: spacing.xxxl,
     },
     textCol: {
-      flex: 1,
+      // Gives the words more of the row than the image.
+      flex: 1.25,
       minWidth: 280,
       gap: spacing.lg,
     },
     headline: {
-      fontFamily: fonts.sansBold,
-      fontSize: 36,
+      // The brand's display voice: Newsreader, set large and tracked in.
+      fontFamily: fonts.serifBold,
+      fontSize: 60,
+      lineHeight: 64,
+      letterSpacing: letterSpacing.display,
       color: colors.neutral,
+    },
+    headlineCompact: {
+      fontSize: 40,
       lineHeight: 44,
     },
     subheadline: {
@@ -97,6 +118,8 @@ const createStyles = (colors: ThemeColors) =>
       fontSize: fontSize.xl,
       color: colors.neutralVariant,
       lineHeight: 28,
+      // Holds the line length inside a readable measure on wide screens.
+      maxWidth: 480,
     },
     cta: {
       backgroundColor: colors.primary,
@@ -121,5 +144,10 @@ const createStyles = (colors: ThemeColors) =>
       aspectRatio: 1,
       maxWidth: 420,
       maxHeight: 420,
+    },
+    heroImageCompact: {
+      // At phone width a square image otherwise fills the viewport and pushes
+      // the first real content below the fold.
+      maxHeight: 240,
     },
   });

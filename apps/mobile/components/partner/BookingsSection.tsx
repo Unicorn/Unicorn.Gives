@@ -11,6 +11,7 @@ import { useTheme, fonts, fontSize, spacing, radii, breakpoints, type ThemeColor
 import { useSquareServices, type SquareService, type SquareCategory } from '@/hooks/useSquareBookings';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
 import { BookingFlow } from './BookingFlow';
+import { SectionHeading } from './SectionHeading';
 
 interface BookingsSectionProps {
   partnerId: string;
@@ -258,8 +259,7 @@ export function BookingsSection({ partnerId, contactPhone }: BookingsSectionProp
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
-        <Text style={styles.heading}>Book an Appointment</Text>
-        <Text style={styles.subheading}>Select a service to get started</Text>
+        <SectionHeading title="Book an Appointment" lede="Choose a service and we'll show you the next available times." />
 
         {/* Toolbar: search + sort + group toggle */}
         <View style={styles.toolbar}>
@@ -382,18 +382,6 @@ const createStyles = (colors: ThemeColors) =>
       alignSelf: 'center',
       width: '100%' as any,
     },
-    heading: {
-      fontFamily: fonts.sansBold,
-      fontSize: 32,
-      color: colors.neutral,
-      marginBottom: spacing.xs,
-    },
-    subheading: {
-      fontFamily: fonts.sans,
-      fontSize: fontSize.md,
-      color: colors.neutralVariant,
-      marginBottom: spacing.lg,
-    },
     toolbar: {
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -482,8 +470,8 @@ const createStyles = (colors: ThemeColors) =>
       marginBottom: spacing.sm,
     },
     groupHeading: {
-      fontFamily: fonts.sansBold,
-      fontSize: fontSize.lg,
+      fontFamily: fonts.serifBold,
+      fontSize: fontSize.xl,
       color: colors.neutral,
     },
     groupCountBadge: {
@@ -530,8 +518,9 @@ const createStyles = (colors: ThemeColors) =>
       flex: 1,
     },
     serviceName: {
-      fontFamily: fonts.sansBold,
-      fontSize: fontSize.lg,
+      fontFamily: fonts.serifBold,
+      fontSize: fontSize['2xl'],
+      lineHeight: 28,
       color: colors.neutral,
     },
     serviceMeta: {
@@ -553,7 +542,8 @@ const createStyles = (colors: ThemeColors) =>
     priceText: {
       fontFamily: fonts.sansBold,
       fontSize: fontSize.md,
-      color: colors.primary,
+      // Neutral, not teal: a price is not an interactive element.
+      color: colors.neutral,
     },
     serviceDesc: {
       fontFamily: fonts.sans,

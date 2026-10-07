@@ -63,6 +63,9 @@ export const fontSize = {
 // ---------------------------------------------------------------------------
 
 export const letterSpacing = {
+  // Display tracking is negative: large serif settings read loose at default
+  // spacing. Stays well inside the -0.04em floor at the sizes we set.
+  display: -0.8,
   tight: 0.25,
   normal: 0.5,
   wide: 1,
