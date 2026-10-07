@@ -7,6 +7,7 @@ import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 import { useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
+import { getStaticContacts } from '@/lib/government-snapshot';
 
 interface Contact {
   id: string;
@@ -23,7 +24,10 @@ export function MunicipalContactsIndex() {
   const { colors } = useTheme();
   const { municipalitySlug } = useMunicipalRoute();
   const { region } = useRegion(municipalitySlug);
-  const [contacts, setContacts] = useState<Contact[]>([]);
+  // Seeded from the build-time snapshot.
+  const [contacts, setContacts] = useState<Contact[]>(() =>
+    getStaticContacts<Contact>(region?.id),
+  );
   const [deptFilter, setDeptFilter] = useState<string | null>(null);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabase';
+import { getStaticRegion } from '../government-snapshot';
 
 interface Region {
   id: string;
@@ -12,8 +13,12 @@ interface Region {
 }
 
 export function useRegion(slug: string | undefined) {
-  const [region, setRegion] = useState<Region | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Seeded from the build-time snapshot so `/government` routes render
+  // server-side; both the server and the client's first render read the same
+  // bundled JSON, which keeps hydration deterministic.
+  const seed = getStaticRegion<Region>(slug);
+  const [region, setRegion] = useState<Region | null>(seed);
+  const [isLoading, setIsLoading] = useState(seed === null);
 
   useEffect(() => {
     if (!slug) return;
