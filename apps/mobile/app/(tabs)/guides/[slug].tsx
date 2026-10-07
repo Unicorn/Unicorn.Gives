@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
-import { useTheme, fonts, fontSize, spacing, radii, shadows, type ThemeColors } from '@/constants/theme';
+import { useTheme, fonts, fontSize, spacing, radii, shadows, letterSpacing, type ThemeColors } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { SeoHead } from '@/components/SeoHead';
 import { Container } from '@/components/layout/Container';
@@ -133,8 +133,17 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
   loading: { fontFamily: fonts.sans, padding: spacing.xxl, color: colors.neutralVariant, textAlign: 'center' },
   header: { marginBottom: spacing.xxl },
   icon: { fontSize: 36, marginBottom: spacing.sm },
-  title: { fontFamily: fonts.sansBold, fontSize: fontSize['3xl'], color: colors.neutral, marginBottom: spacing.sm },
-  desc: { fontFamily: fonts.sans, fontSize: fontSize.lg, color: colors.neutral, lineHeight: 24, marginBottom: spacing.sm },
+  title: {
+    fontFamily: fonts.serifBold,
+    fontSize: 38,
+    lineHeight: 44,
+    letterSpacing: letterSpacing.display,
+    color: colors.neutral,
+    marginBottom: spacing.sm,
+  },
+  // Matches the reading column the body uses, so the header does not run wider
+  // than the text it introduces.
+  desc: { fontFamily: fonts.sans, fontSize: fontSize.lg, color: colors.neutral, lineHeight: 24, marginBottom: spacing.sm, maxWidth: 660 },
   meta: { fontFamily: fonts.sans, fontSize: fontSize.sm + 1, color: colors.neutralVariant, textTransform: 'capitalize' },
   verified: { fontFamily: fonts.sans, fontSize: fontSize.sm, color: colors.neutralVariant, marginTop: spacing.xs },
   section: { marginTop: spacing.xxl },

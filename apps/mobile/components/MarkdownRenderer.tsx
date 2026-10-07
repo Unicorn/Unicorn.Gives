@@ -1,9 +1,16 @@
 import { useRouter } from "expo-router";
 import { useCallback } from "react";
 import { Linking, Platform, Text, View } from "react-native";
-import { fonts, spacing, useTheme } from "@/constants/theme";
+import { fonts, letterSpacing, spacing, useTheme } from "@/constants/theme";
 import { contentPathToAppHref, toHref } from "@/lib/navigation";
 import { detectContentFormat } from "@/lib/contentFormat";
+
+/**
+ * Long-form content is capped to a readable column. Body text here was running
+ * the full container width — measured at ~124 characters per line on a meeting
+ * minutes page, against a 65–75 character target. At 15px this lands around 68.
+ */
+const READING_MEASURE = 660;
 
 /**
  * Lightweight content renderer. Handles both markdown (legacy seeded content)
@@ -23,7 +30,7 @@ export function MarkdownRenderer({ content }: { content: string }) {
 	if (detectContentFormat(content) === "html") {
 		if (Platform.OS === "web") {
 			return (
-				<View style={{ gap: spacing.md }}>
+				<View style={{ gap: spacing.md, maxWidth: READING_MEASURE, width: "100%" as any }}>
 					<div
 						className="cms-html-content"
 						// biome-ignore lint/security/noDangerouslySetInnerHtml: admin-authored HTML content
@@ -36,19 +43,29 @@ export function MarkdownRenderer({ content }: { content: string }) {
 						}}
 					/>
 					<style>{`
-						.cms-html-content h1 { font-size: 28px; font-weight: 700; margin: 8px 0 4px; }
-						.cms-html-content h2 { font-size: 22px; font-weight: 700; margin: 8px 0 4px; color: ${colors.neutral}; }
-						.cms-html-content h3 { font-size: 18px; font-weight: 700; margin: 8px 0 4px; color: ${colors.primary}; }
-						.cms-html-content h4 { font-size: 16px; font-weight: 700; margin: 4px 0; }
+						/* More space above a heading than below it, so a heading groups with
+						   the text it introduces rather than floating between blocks. */
+						.cms-html-content h1 { font-family: Newsreader_700Bold, Georgia, serif; font-size: 30px; line-height: 1.2; margin: 32px 0 10px; letter-spacing: -0.5px; }
+						.cms-html-content h2 { font-family: Newsreader_700Bold, Georgia, serif; font-size: 24px; line-height: 1.25; margin: 28px 0 8px; letter-spacing: -0.4px; color: ${colors.neutral}; }
+						.cms-html-content h3 { font-size: 18px; font-weight: 700; margin: 24px 0 6px; color: ${colors.neutral}; }
+						.cms-html-content h4 { font-size: 16px; font-weight: 700; margin: 20px 0 4px; }
+						.cms-html-content > *:first-child { margin-top: 0; }
 						.cms-html-content p { margin: 0 0 12px; }
 						.cms-html-content ul, .cms-html-content ol { padding-left: 24px; margin: 0 0 12px; }
 						.cms-html-content li { margin-bottom: 4px; }
 						.cms-html-content a { color: ${colors.primary}; text-decoration: underline; }
-						.cms-html-content blockquote { border-left: 3px solid ${colors.outline}; padding-left: 16px; margin: 8px 0; color: ${colors.neutralVariant}; }
+						.cms-html-content blockquote { border-left: 1px solid ${colors.outline}; padding-left: 20px; margin: 16px 0; color: ${colors.neutralVariant}; font-style: italic; }
 						.cms-html-content pre { background: ${colors.surfaceContainer}; padding: 12px; border-radius: 8px; overflow-x: auto; font-size: 13px; }
 						.cms-html-content code { background: ${colors.surfaceContainer}; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
 						.cms-html-content hr { border: none; border-top: 1px solid ${colors.outline}; margin: 12px 0; }
 						.cms-html-content img { max-width: 100%; border-radius: 8px; }
+						/* Tables had no rules at all, so columns collided — the dog licence
+						   fee table was unreadable. */
+						.cms-html-content table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+						.cms-html-content th, .cms-html-content td { padding: 8px 12px; text-align: left; border-bottom: 1px solid ${colors.outlineVariant}; vertical-align: top; }
+						.cms-html-content th { font-weight: 700; color: ${colors.neutral}; border-bottom-color: ${colors.outline}; white-space: nowrap; }
+						.cms-html-content td:not(:first-child), .cms-html-content th:not(:first-child) { font-variant-numeric: tabular-nums; }
+						.cms-html-content tr:last-child td { border-bottom: none; }
 						.cms-html-content strong { font-weight: 700; }
 						.cms-html-content em { font-style: italic; }
 					`}</style>
@@ -59,7 +76,7 @@ export function MarkdownRenderer({ content }: { content: string }) {
 		// Native fallback: strip HTML tags and render as plain text
 		const plainText = content.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").trim();
 		return (
-			<View style={{ gap: spacing.md }}>
+			<View style={{ gap: spacing.md, maxWidth: READING_MEASURE }}>
 				<Text style={{ fontSize: 15, fontFamily: fonts.sans, lineHeight: 24, color: colors.neutral }}>
 					{plainText}
 				</Text>
@@ -101,7 +118,7 @@ export function MarkdownRenderer({ content }: { content: string }) {
 	const blocks = content.split("\n\n");
 
 	return (
-		<View style={{ gap: spacing.md }}>
+		<View style={{ gap: spacing.md, maxWidth: READING_MEASURE, width: "100%" as any }}>
 			{blocks.map((block) => (
 				<Block
 					key={stableKey(block)}
@@ -133,8 +150,9 @@ function Block({
 				style={{
 					fontSize: 18,
 					fontFamily: fonts.sansBold,
-					color: colors.primary,
-					marginTop: spacing.xs,
+					// Neutral, not teal: a heading is not an interactive element.
+					color: colors.neutral,
+					marginTop: spacing.lg,
 				}}
 			>
 				{renderInline(h3[1], colors, onPressLink)}
@@ -145,10 +163,14 @@ function Block({
 		return (
 			<Text
 				style={{
-					fontSize: 22,
-					fontFamily: fonts.sansBold,
+					fontSize: 24,
+					lineHeight: 30,
+					fontFamily: fonts.serifBold,
+					letterSpacing: letterSpacing.display,
 					color: colors.neutral,
-					marginTop: spacing.sm,
+					// More space above a heading than below it; the parent View
+					// supplies the smaller gap underneath.
+					marginTop: spacing.xl,
 				}}
 			>
 				{renderInline(h2[1], colors, onPressLink)}
@@ -159,10 +181,12 @@ function Block({
 		return (
 			<Text
 				style={{
-					fontSize: 28,
-					fontFamily: fonts.sansBold,
+					fontSize: 30,
+					lineHeight: 36,
+					fontFamily: fonts.serifBold,
+					letterSpacing: letterSpacing.display,
 					color: colors.neutral,
-					marginTop: spacing.sm,
+					marginTop: spacing.xxl,
 				}}
 			>
 				{renderInline(h1[1], colors, onPressLink)}
