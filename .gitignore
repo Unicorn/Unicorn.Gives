@@ -60,3 +60,6 @@ coverage-report.txt
 supabase/.branches/
 # Cloned reference repos for auditing - never commit
 reference/
+
+# Generated at build time by scripts/generate-route-meta.ts (derived from live Supabase data)
+apps/mobile/lib/route-meta-data.json

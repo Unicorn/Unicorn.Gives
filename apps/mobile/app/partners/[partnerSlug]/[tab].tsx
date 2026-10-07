@@ -28,11 +28,17 @@ interface PartnerPage {
   body: string;
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(
+  props: { params?: Record<string, string | string[]> } = {},
+) {
   const fromDb = await fetchPartnerTabParams();
-  if (fromDb.length > 0) return fromDb;
-  const { getPartnerStaticTabParams } = await import('@/lib/partner-static-from-seed');
-  return getPartnerStaticTabParams();
+  const all =
+    fromDb.length > 0
+      ? fromDb
+      : (await import('@/lib/partner-static-from-seed')).getPartnerStaticTabParams();
+  // Without this each partner would also get every other partner's tabs.
+  const slug = typeof props.params?.partnerSlug === 'string' ? props.params.partnerSlug : undefined;
+  return slug ? all.filter((p) => p.partnerSlug === slug) : all;
 }
 
 export default function PartnerTab() {

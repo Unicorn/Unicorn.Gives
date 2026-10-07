@@ -11,10 +11,12 @@ import {
 import { ResourcePageContent } from '@/components/municipal/ResourcePageContent';
 import { useTheme, spacing } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
-import { fetchResourcePagesStaticParams } from '@/lib/static-build-queries';
+import { fetchResourcePagesStaticParams, scopeToParent } from '@/lib/static-build-queries';
 
-export async function generateStaticParams() {
-  return fetchResourcePagesStaticParams();
+export async function generateStaticParams(
+  props: { params?: Record<string, string | string[]> } = {},
+) {
+  return scopeToParent(await fetchResourcePagesStaticParams(), props.params);
 }
 
 export default function ResourceDetailScreen() {

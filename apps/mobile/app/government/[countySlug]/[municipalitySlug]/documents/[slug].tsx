@@ -10,10 +10,12 @@ import {
   type MunicipalDocumentRow,
 } from '@/lib/municipal/municipalDocuments';
 import { useTheme, spacing } from '@/constants/theme';
-import { fetchMunicipalDocumentsStaticParams } from '@/lib/static-build-queries';
+import { fetchMunicipalDocumentsStaticParams, scopeToParent } from '@/lib/static-build-queries';
 
-export async function generateStaticParams() {
-  return fetchMunicipalDocumentsStaticParams();
+export async function generateStaticParams(
+  props: { params?: Record<string, string | string[]> } = {},
+) {
+  return scopeToParent(await fetchMunicipalDocumentsStaticParams(), props.params);
 }
 
 export default function MunicipalDocumentDetailScreen() {

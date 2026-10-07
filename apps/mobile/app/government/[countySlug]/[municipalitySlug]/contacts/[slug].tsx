@@ -3,10 +3,12 @@ import { useLocalSearchParams } from 'expo-router';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { useTheme, spacing } from '@/constants/theme';
-import { fetchContactsStaticParams } from '@/lib/static-build-queries';
+import { fetchContactsStaticParams, scopeToParent } from '@/lib/static-build-queries';
 
-export async function generateStaticParams() {
-  return fetchContactsStaticParams();
+export async function generateStaticParams(
+  props: { params?: Record<string, string | string[]> } = {},
+) {
+  return scopeToParent(await fetchContactsStaticParams(), props.params);
 }
 
 export default function ContactDetail() {

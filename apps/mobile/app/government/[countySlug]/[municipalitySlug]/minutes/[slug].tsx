@@ -1,8 +1,10 @@
 import { MunicipalMinutesDetail } from '@/components/municipal/MunicipalMinutesDetail';
-import { fetchMinutesStaticParams } from '@/lib/static-build-queries';
+import { fetchMinutesStaticParams, scopeToParent } from '@/lib/static-build-queries';
 
-export async function generateStaticParams() {
-  return fetchMinutesStaticParams();
+export async function generateStaticParams(
+  props: { params?: Record<string, string | string[]> } = {},
+) {
+  return scopeToParent(await fetchMinutesStaticParams(), props.params);
 }
 
 export default function Screen() {
