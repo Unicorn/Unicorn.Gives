@@ -38,8 +38,11 @@ function main() {
   for (const file of walk(distDir)) {
     if (!file.endsWith(`${'/'}index.html`) && !file.endsWith('\\index.html')) continue;
     // dist/partners/the-mane/index.html -> dist/partners/the-mane.html
-    const flat = `${dirname(file)}.html`;
-    if (flat === join(distDir, '.html')) continue; // root index stays as-is
+    const parent = dirname(file);
+    // The root index has no parent route; aliasing it would write dist.html
+    // *outside* the output directory.
+    if (parent === distDir) continue;
+    const flat = `${parent}.html`;
     if (existsSync(flat)) continue;
     copyFileSync(file, flat);
     created++;

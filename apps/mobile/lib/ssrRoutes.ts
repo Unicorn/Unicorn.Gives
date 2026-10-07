@@ -10,6 +10,16 @@
  */
 const SSR_SAFE_PREFIXES = ['/partners'];
 
+/**
+ * Routes under the `(tabs)` group cannot be added here. Seeding them is not
+ * enough: the Tabs navigator itself renders differently on the server than on
+ * the client's first render, so `/guides` and `/home/news` still threw React
+ * #418 with fully seeded data, while `/partners` and `/styleguide` — both
+ * outside `(tabs)` — hydrated cleanly. Verified against production builds on
+ * 2026-10-07. Top-level routes such as `/government` are not affected by this
+ * and remain candidates once seeded.
+ */
+
 export function isSsrSafeRoute(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
   return SSR_SAFE_PREFIXES.some(
