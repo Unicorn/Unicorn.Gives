@@ -9,6 +9,7 @@ import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 import { useTheme, fonts, fontSize, spacing, letterSpacing, radii } from '@/constants/theme';
+import { getStaticOrdinancesList } from '@/lib/government-snapshot';
 
 interface Ordinance {
   id: string;
@@ -29,7 +30,10 @@ export function MunicipalOrdinancesIndex() {
   const { colors } = useTheme();
   const { municipalitySlug, basePath } = useMunicipalRoute();
   const { region } = useRegion(municipalitySlug);
-  const [items, setItems] = useState<Ordinance[]>([]);
+  // Seeded from the build-time snapshot.
+  const [items, setItems] = useState<Ordinance[]>(() =>
+    getStaticOrdinancesList<Ordinance>(region?.id),
+  );
   const [filter, setFilter] = useState<string | null>(null);
   const [search, setSearch] = useState('');
 

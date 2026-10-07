@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 import { useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
+import { getStaticOrdinance } from '@/lib/government-snapshot';
 
 interface Ordinance {
   title: string;
@@ -25,7 +26,10 @@ export function MunicipalOrdinancesDetail() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { municipalitySlug } = useMunicipalRoute();
   const { region } = useRegion(municipalitySlug);
-  const [item, setItem] = useState<Ordinance | null>(null);
+  // Seeded from the build-time snapshot.
+  const [item, setItem] = useState<Ordinance | null>(() =>
+    getStaticOrdinance<Ordinance>(region?.id, slug),
+  );
 
   useEffect(() => {
     if (!region || !slug) return;

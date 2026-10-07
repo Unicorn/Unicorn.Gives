@@ -22,6 +22,12 @@ import { EditorialCard } from '@/components/widgets/EditorialCard';
 import { EventCardList } from '@/components/events/EventCardList';
 import { eventDateBoxFromIso, eventLongDateLabel } from '@/lib/events/eventDateFormat';
 import { toHref } from '@/lib/navigation/paths';
+import {
+  getStaticRegionLanding,
+  getStaticRegionStats,
+  getStaticResourcePages,
+  hasStaticRegionBundle,
+} from '@/lib/government-snapshot';
 
 interface UpcomingEvent {
   id: string;
@@ -36,11 +42,21 @@ export function MunicipalHub() {
   const { colors } = useTheme();
   const { municipalitySlug, basePath } = useMunicipalRoute();
   const { region, isLoading } = useRegion(municipalitySlug);
-  const [stats, setStats] = useState({ minutes: 0, ordinances: 0, contacts: 0, events: 0 });
+  // Seeded from the build-time snapshot so this hub renders server-side.
+  // `upcomingEvents` is deliberately not seeded: its query filters on
+  // `new Date()`, so a build-time result would disagree with the client on any
+  // later day. It stays empty on the first render and fills in on mount.
+  const seededRegionId = region?.id;
+  const seeded = hasStaticRegionBundle(seededRegionId);
+  const [stats, setStats] = useState(() => getStaticRegionStats(seededRegionId));
   const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEvent[]>([]);
-  const [resourcePages, setResourcePages] = useState<ResourcePageRow[]>([]);
-  const [landing, setLanding] = useState<RegionLandingPage | null>(null);
-  const [landingChecked, setLandingChecked] = useState(false);
+  const [resourcePages, setResourcePages] = useState<ResourcePageRow[]>(() =>
+    getStaticResourcePages<ResourcePageRow>(seededRegionId),
+  );
+  const [landing, setLanding] = useState<RegionLandingPage | null>(() =>
+    getStaticRegionLanding<RegionLandingPage>(seededRegionId),
+  );
+  const [landingChecked, setLandingChecked] = useState(seeded);
 
   useEffect(() => {
     if (!region) return;

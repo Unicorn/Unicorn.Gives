@@ -8,7 +8,7 @@
  * in step with the seeding work and verify against a production build — dev
  * builds do not reproduce hydration failures.
  */
-const SSR_SAFE_PREFIXES = ['/partners'];
+const SSR_SAFE_PREFIXES = ['/partners', '/government'];
 
 /**
  * Routes under the `(tabs)` group cannot be added here. Seeding them is not

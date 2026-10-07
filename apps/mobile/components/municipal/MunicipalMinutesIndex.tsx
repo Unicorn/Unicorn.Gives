@@ -9,6 +9,7 @@ import { matchesSearchQuery } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 import { useTheme, fonts, fontSize, spacing, radii } from '@/constants/theme';
+import { getStaticMinutesList } from '@/lib/government-snapshot';
 
 interface MinutesSummary {
   id: string;
@@ -24,7 +25,10 @@ export function MunicipalMinutesIndex() {
   const { colors } = useTheme();
   const { municipalitySlug, basePath } = useMunicipalRoute();
   const { region } = useRegion(municipalitySlug);
-  const [minutes, setMinutes] = useState<MinutesSummary[]>([]);
+  // Seeded from the build-time snapshot (without bodies — see the generator).
+  const [minutes, setMinutes] = useState<MinutesSummary[]>(() =>
+    getStaticMinutesList<MinutesSummary>(region?.id),
+  );
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
 
