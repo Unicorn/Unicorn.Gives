@@ -146,12 +146,12 @@
         },
         "section_order": [
           "hero",
-          "contact",
           "about",
           "services",
           "bookings",
           "team",
-          "subscriptions"
+          "subscriptions",
+          "contact"
         ],
         "hidden_sections": [
           "testimonials",
@@ -161,7 +161,7 @@
         "custom_sections": [],
         "author_id": null,
         "created_at": "2026-04-06T11:45:38.682862+00:00",
-        "updated_at": "2026-04-08T14:02:41.945135+00:00",
+        "updated_at": "2026-10-07T12:08:56.464213+00:00",
         "published_at": "2026-04-06T11:45:38.682862+00:00"
       }
     },
