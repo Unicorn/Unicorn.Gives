@@ -16,7 +16,7 @@
       "executor": "nx:run-commands",
       "cache": false,
       "options": {
-        "command": "pnpm exec tsx scripts/generate-partner-static.ts && pnpm exec tsx scripts/generate-partner-content.ts && pnpm exec tsx scripts/generate-government-snapshot.ts && pnpm exec tsx scripts/generate-route-meta.ts && pnpm exec tsx scripts/generate-sitemap.ts && pnpm exec expo export --platform web && pnpm exec tsx scripts/normalize-static-routes.ts && pnpm exec tsx scripts/inject-static-meta.ts",
+        "command": "pnpm exec tsx scripts/generate-partner-static.ts && pnpm exec tsx scripts/generate-partner-content.ts && pnpm exec tsx scripts/generate-government-snapshot.ts && pnpm exec tsx scripts/generate-route-meta.ts && pnpm exec tsx scripts/generate-sitemap.ts && pnpm exec expo export --platform web && pnpm exec tsx scripts/normalize-static-routes.ts && pnpm exec tsx scripts/inject-static-meta.ts && pnpm exec tsx scripts/verify-static-output.ts",
         "cwd": "apps/mobile"
       }
     },
@@ -24,6 +24,14 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "pnpm exec vitest run",
+        "cwd": "apps/mobile"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "pnpm exec tsc --noEmit -p tsconfig.json",
         "cwd": "apps/mobile"
       }
     }

@@ -102,8 +102,8 @@ export function ContactForm({ data, onChange, errors = {} }: ContactFormProps) {
       <TextField label="Bio" value={data.bio} onChangeText={(v) => set('bio', v)} placeholder="Brief biography" multiline numberOfLines={4} />
 
       <FormRow>
-        <FormColumn><DateField label="Term Start" value={data.term_start} onValueChange={(v) => set('term_start', v)} /></FormColumn>
-        <FormColumn><DateField label="Term End" value={data.term_end} onValueChange={(v) => set('term_end', v)} /></FormColumn>
+        <FormColumn><DateField label="Term Start" value={data.term_start} onChangeText={(v) => set('term_start', v)} /></FormColumn>
+        <FormColumn><DateField label="Term End" value={data.term_end} onChangeText={(v) => set('term_end', v)} /></FormColumn>
       </FormRow>
 
       <CheckboxField label="Department Head" value={data.is_department_head} onValueChange={(v) => set('is_department_head', v)} hint="This person is the head of their department" />

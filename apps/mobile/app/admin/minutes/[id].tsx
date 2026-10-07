@@ -40,6 +40,9 @@ export default function EditMinutesPage() {
           return;
         }
         setForm({
+          // Spread the defaults so a column the query does not return cannot
+          // silently blank a field on save.
+          ...EMPTY_MINUTES,
           title: data.title ?? '',
           slug: data.slug ?? '',
           date: data.date ?? '',
@@ -51,6 +54,10 @@ export default function EditMinutesPage() {
           attendees_absent: data.attendees_absent ?? [],
           attendees_also_present: data.attendees_also_present ?? [],
           region_id: data.region_id ?? '',
+          meeting_id: data.meeting_id ?? '',
+          board_id: data.board_id ?? '',
+          approval_date: data.approval_date ?? '',
+          approval_status: data.approval_status ?? 'pending',
         });
         setStatus(data.status ?? 'draft');
         setLoading(false);

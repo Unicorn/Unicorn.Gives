@@ -123,7 +123,6 @@ async function main() {
     '/government': { title: 'Government', description: 'Township, city, village and county government information.' },
     '/directory': { title: 'Directory', description: 'Local business and community directory.' },
     '/directory/contacts': { title: 'Contacts' },
-    '/partners': { title: 'Partners' },
     '/bingo': { title: 'Bingo' },
     '/home/news': { title: 'News' },
     '/home/events': { title: 'Events' },

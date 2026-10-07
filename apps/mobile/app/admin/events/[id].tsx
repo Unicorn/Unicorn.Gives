@@ -40,6 +40,9 @@ export default function EditEventPage() {
           return;
         }
         setForm({
+          // Spread the defaults so a column the query does not return cannot
+          // silently blank a field on save.
+          ...EMPTY_EVENT,
           title: data.title ?? '',
           slug: data.slug ?? '',
           description: data.description ?? '',
@@ -59,6 +62,11 @@ export default function EditEventPage() {
           region_id: data.region_id ?? '',
           partner_id: data.partner_id ?? '',
           featured: data.featured ?? false,
+          department_id: data.department_id ?? '',
+          board_id: data.board_id ?? '',
+          is_public_meeting: data.is_public_meeting ?? false,
+          agenda_url: data.agenda_url ?? '',
+          event_type: data.event_type ?? 'community',
         });
         setStatus(data.status ?? 'draft');
         setLoading(false);

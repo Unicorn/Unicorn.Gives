@@ -21,3 +21,74 @@ jobs:
 
       - name: Verify content vs seed SQL
         run: node scripts/verify-seed-coverage.mjs
+
+  typecheck-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup pnpm
+        run: corepack enable && corepack prepare pnpm@10.23.0 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The whole app typechecks clean; a regression here is a real defect.
+      # Three live bugs were found the first time this was enforced: date
+      # fields that silently dropped their handler, admin edit forms that
+      # blanked unlisted columns on save, and event cards missing their date box.
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit -p apps/mobile/tsconfig.json
+
+      - name: Unit tests
+        run: pnpm exec nx run mobile:test
+
+  lint-changed:
+    runs-on: ubuntu-latest
+    # Only the files a change touches are linted, and only with `biome lint`
+    # (correctness rules) rather than `biome check`. `check` also applies
+    # formatting and import-ordering assists, which this repo has no config or
+    # convention for — enforcing them would reformat every legacy file a change
+    # happens to touch and bury the actual diff.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup pnpm
+        run: corepack enable && corepack prepare pnpm@10.23.0 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint changed files
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            echo "No base commit to diff against; skipping."
+            exit 0
+          fi
+          FILES=$(git diff --name-only --diff-filter=ACMR "$BASE" HEAD -- '*.ts' '*.tsx' | tr '\n' ' ')
+          if [ -z "$FILES" ]; then
+            echo "No TypeScript files changed."
+            exit 0
+          fi
+          echo "Linting: $FILES"
+          pnpm exec biome lint $FILES
