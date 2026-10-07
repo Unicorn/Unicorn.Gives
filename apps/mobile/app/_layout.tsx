@@ -18,17 +18,19 @@ import { Platform } from 'react-native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { usePathname } from 'expo-router';
 import { AuthProvider } from '@/lib/auth';
 import { FeatureModulesProvider } from '@/lib/featureModules';
 import { DrawerMenu } from '@/components/layout/DrawerMenu';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { ThemeOverrideContext } from '@/constants/theme';
 import { ThemeToggleContext } from '@/lib/themeToggle';
-import { useIsHydrated } from '@/hooks/useHydrated';
 import {
   ThemePreferenceProvider,
   type ThemePreference,
 } from '@/lib/themePreference';
+import { useIsHydrated } from '@/hooks/useHydrated';
+import { isSsrSafeRoute } from '@/lib/ssrRoutes';
 
 const THEME_STORAGE_KEY = '@uni-gives/theme-preference';
 
@@ -70,20 +72,19 @@ export default function RootLayout() {
 }
 
 /**
- * On web with static export, the server-rendered HTML will never match the
- * client's first render (Drawer, Tabs, gesture handlers, auth state all
- * differ). React 19 treats hydration mismatches as fatal errors that can
- * crash the app before useEffect data-fetches ever run.
+ * Most routes fetch their content in `useEffect`, so the server renders a
+ * loading state the client cannot reproduce — React 19 treats that mismatch as
+ * fatal (#418). Rendering nothing until hydrated keeps those routes safe.
  *
- * Fix: render nothing during the hydration pass (matching the server's
- * pre-rendered empty root), then mount the real app after hydration.
+ * Routes listed in `isSsrSafeRoute` seed their first render from a build-time
+ * snapshot, so server and client agree and the tree can render during the
+ * hydration pass — which is what puts real content in the exported HTML.
  */
 function HydrationGate() {
   const hydrated = useIsHydrated();
+  const pathname = usePathname();
 
-  if (!hydrated) {
-    // Return a minimal placeholder that matches the server-rendered shell.
-    // This prevents a structural mismatch during hydration.
+  if (!hydrated && !isSsrSafeRoute(pathname)) {
     return null;
   }
 

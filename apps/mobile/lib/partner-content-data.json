@@ -1,0 +1,269 @@
+{
+  "partners": {
+    "the-mane": {
+      "partner": {
+        "id": "e7ce62c9-6e86-47ff-8a65-a0d874f75b47",
+        "slug": "the-mane",
+        "name": "The Mane",
+        "description": "Salon and community space",
+        "tabs": [
+          {
+            "slug": "about",
+            "label": "About",
+            "order": 0
+          },
+          {
+            "slug": "services",
+            "label": "Services",
+            "order": 1
+          },
+          {
+            "slug": "book",
+            "label": "Book Appointment",
+            "order": 2
+          },
+          {
+            "slug": "hours",
+            "label": "Hours & Contact",
+            "order": 3
+          }
+        ],
+        "partner_type_id": "a6801280-4949-44e9-980f-670615f0c225"
+      },
+      "landingPage": {
+        "id": "cae0f149-d1cd-4b7e-a4b0-e69c718f6275",
+        "partner_id": "e7ce62c9-6e86-47ff-8a65-a0d874f75b47",
+        "status": "published",
+        "hero_headline": "The Mane",
+        "hero_subheadline": "Hair & Nail Salon established in 2005 as a full-service salon in Lake George, MI",
+        "hero_image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/media/partners/the-mane/hero/the-mane-logo.svg",
+        "hero_cta_label": "Schedule an Appointment",
+        "hero_cta_url": "#section-bookings",
+        "about_title": "Our Story",
+        "about_body": "The Mane, formerly Expressions Hair Studio, was established in 2005 as a full-service salon. Positioned in the heart of Lake George, Michigan, the salon was owned and operated by Holly Abbott from June 2005 to August 2018. Hanna (Sprague) Unicorn of Farwell, Michigan acquired Expressions Hair Studio in the fall of 2018 and later rebranded to \"The Mane\" in 2021. The Mane remains a full-service salon.\n\nWe use trusted, professional-grade brands including All-Nutrient, Sukesha, and I.N.O. — products chosen for their quality ingredients and results.",
+        "about_image_url": null,
+        "services": [
+          {
+            "price": "$30",
+            "title": "Scissor Cut",
+            "description": "Precision haircut tailored to your unique features and style."
+          },
+          {
+            "price": "$20",
+            "title": "Clipper Cut",
+            "description": "Clean, short hairstyle that is easy to maintain and style."
+          },
+          {
+            "price": "$15",
+            "title": "Buzz Cut",
+            "description": "Short, low-maintenance cut close to the scalp using electric clippers."
+          },
+          {
+            "price": "$10",
+            "title": "Beard Trim",
+            "description": "Trimming and shaping for a neat, well-groomed appearance."
+          },
+          {
+            "price": "$80+",
+            "title": "Full Highlights",
+            "description": "Add dimension and depth with the latest highlighting techniques."
+          },
+          {
+            "price": "$60+",
+            "title": "All-Over Color",
+            "description": "Single color applied from roots to ends for a seamless look."
+          },
+          {
+            "price": "$55+",
+            "title": "Root Touch Up",
+            "description": "Seamless root color matching for a natural-looking result."
+          },
+          {
+            "price": "$65+",
+            "title": "Perm",
+            "description": "Beautiful, voluminous curls that enhance your natural features."
+          },
+          {
+            "price": "$50+",
+            "title": "Up-Do",
+            "description": "Glamorous styling for weddings, proms, and special events."
+          },
+          {
+            "price": "$45",
+            "title": "Acrylic Extensions",
+            "description": "Acrylic application with tip to add length, includes polish."
+          },
+          {
+            "price": "$49",
+            "title": "Hard Gel Extensions",
+            "description": "Hard gel with tip, includes gel polish and cuticle oil."
+          },
+          {
+            "price": "$20",
+            "title": "Basic Manicure",
+            "description": "Trim, shape, buff, cuticle care, and polish."
+          },
+          {
+            "price": "$35",
+            "title": "Basic Pedicure",
+            "description": "Trim, shape, buff, cuticle care, lotion and polish."
+          },
+          {
+            "price": "$45",
+            "title": "Spa Pedicure",
+            "description": "Full soak, exfoliation, massage, foot masque, and polish."
+          }
+        ],
+        "team_members": [
+          {
+            "bio": "Licensed in 2016 from MJ Murphy Beauty College in Clare, MI, Hanna brings expertise and a commitment to meaningful client connections. Her passion goes beyond aesthetics — creating personalized experiences that resonate with each client.",
+            "name": "Hanna Unicorn",
+            "role": "Owner & Stylist",
+            "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/media/partners/the-mane/team/hanna-portrait.png"
+          },
+          {
+            "bio": "Licensed in 2023 from MJ Murphy Beauty College in Mt Pleasant, MI. Eileen combines creativity and detail-oriented skills to provide nails that clients adore. She takes pride in building beautiful nails and meaningful community connections.",
+            "name": "Hannah \"Eileen\" Herd",
+            "role": "Nail Technician",
+            "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/media/partners/the-mane/team/eileen-portrait.png"
+          },
+          {
+            "bio": "Licensed in 2022 from Protege Academy in Mt. Pleasant, MI. Katelynn brings a fresh perspective to hairstyling with a passion for creating unique, personalized colors that leave clients feeling their best.",
+            "name": "Katie McComber",
+            "role": "Stylist",
+            "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/media/partners/the-mane/team/katelynn-portrait.png"
+          }
+        ],
+        "testimonials": [],
+        "gallery_images": [],
+        "contact_phone": "(989) 588-6988",
+        "contact_email": "hanna@unicorn.love",
+        "contact_address": "300 Lake George St, Lake George, MI 48633",
+        "contact_hours": null,
+        "social_links": {
+          "facebook": "https://facebook.com/TheManeSalonLG",
+          "instagram": "https://instagram.com/the_mane_salon"
+        },
+        "section_order": [
+          "hero",
+          "contact",
+          "about",
+          "services",
+          "bookings",
+          "team",
+          "subscriptions"
+        ],
+        "hidden_sections": [
+          "testimonials",
+          "gallery",
+          "services"
+        ],
+        "custom_sections": [],
+        "author_id": null,
+        "created_at": "2026-04-06T11:45:38.682862+00:00",
+        "updated_at": "2026-04-08T14:02:41.945135+00:00",
+        "published_at": "2026-04-06T11:45:38.682862+00:00"
+      }
+    },
+    "the-horn": {
+      "partner": {
+        "id": "edb9d068-74d5-4391-b919-29be35ba503f",
+        "slug": "the-horn",
+        "name": "The Horn",
+        "description": "Community center serving Lincoln Township and surrounding areas",
+        "tabs": [
+          {
+            "slug": "about",
+            "label": "About",
+            "order": 0
+          },
+          {
+            "slug": "events",
+            "label": "Events",
+            "order": 1
+          },
+          {
+            "slug": "membership",
+            "label": "Membership",
+            "order": 2
+          },
+          {
+            "slug": "hours",
+            "label": "Hours & Contact",
+            "order": 3
+          }
+        ],
+        "partner_type_id": "46a44e8f-d3b3-4136-b2c7-c7173554bffe"
+      },
+      "landingPage": {
+        "id": "f16c2848-dfd2-4926-b465-a50e07270562",
+        "partner_id": "edb9d068-74d5-4391-b919-29be35ba503f",
+        "status": "published",
+        "hero_headline": "The Horn",
+        "hero_subheadline": "A nonprofit community space designed to bring people together. Housed in the historic former Lake George Grocery building in Lake George, MI.",
+        "hero_image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/media/partners/the-horn/hero/horn-logo.png",
+        "hero_cta_label": "Join the Community",
+        "hero_cta_url": "https://square.link/u/liQwjPlT",
+        "about_title": "Our Story",
+        "about_body": "The building was purchased in 2021 and underwent extensive renovation to transform it from the old Lake George Grocery into a welcoming community space. The Horn soft launched in 2022 with a simple goal: give people a place where they belong.\n\nThe renovation preserved the character of this historic village building while creating a flexible space for socializing, events, and community connection.\n\nOur mission is to foster a resilient, connected Northern community by providing a safe, upscale, and inclusive haven for collaboration and leisure.",
+        "about_image_url": null,
+        "services": [
+          {
+            "icon": "vpn-key",
+            "title": "Members-Only Club",
+            "description": "24/7 access to a private community space with games, Wi-Fi, kitchen, and more."
+          },
+          {
+            "icon": "weekend",
+            "title": "VIP Lounge",
+            "description": "An adults-only space for members who want to BYOB and smoke indoors."
+          },
+          {
+            "icon": "groups",
+            "title": "Community Gathering Space",
+            "description": "A welcoming place to connect with neighbors and friends during public hours."
+          },
+          {
+            "icon": "celebration",
+            "title": "Events & Entertainment",
+            "description": "Game nights, bonfire nights, potlucks, and community programming year-round with discounted member rates."
+          },
+          {
+            "icon": "nightlight-round",
+            "title": "Late-Night Safe Hangout",
+            "description": "A comfortable place to hang out when everywhere else is closed. No bar scene, no pressure — just good company."
+          },
+          {
+            "icon": "wifi",
+            "title": "Free Wi-Fi & Work Space",
+            "description": "Reliable Wi-Fi and a comfortable setup for remote work and projects."
+          }
+        ],
+        "team_members": [],
+        "testimonials": [],
+        "gallery_images": [],
+        "contact_phone": null,
+        "contact_email": null,
+        "contact_address": "304 Lake George St, Lake, MI 48632",
+        "contact_hours": "**Public Welcome:** 10 AM – 2 PM Daily\n\n**Member Access:** 24/7, 365 days a year",
+        "social_links": {},
+        "section_order": [
+          "hero",
+          "contact",
+          "about",
+          "services"
+        ],
+        "hidden_sections": [
+          "team",
+          "testimonials",
+          "gallery"
+        ],
+        "custom_sections": [],
+        "author_id": null,
+        "created_at": "2026-04-06T12:15:07.205429+00:00",
+        "updated_at": "2026-04-08T14:02:58.005186+00:00",
+        "published_at": "2026-04-06T12:15:07.205429+00:00"
+      }
+    }
+  }
+}
