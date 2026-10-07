@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Linking } from 'react-native';
 import { Container } from '@/components/layout/Container';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
@@ -17,6 +17,14 @@ import { getStaticContacts } from '@/lib/government-snapshot';
  * currently find by scrolling.
  */
 const PAGE_SIZE = 25;
+
+/**
+ * How many department chips to show before collapsing the rest. These
+ * municipalities list 20+ departments and most hold a single contact, so the
+ * full set wrapped to 20 rows on a phone and buried the contacts themselves.
+ * Chips are ordered by size, so the first few are the ones worth clicking.
+ */
+const VISIBLE_DEPTS = 6;
 
 interface Contact {
   id: string;
@@ -40,6 +48,7 @@ export function MunicipalContactsIndex() {
   const [deptFilter, setDeptFilter] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [showAllDepts, setShowAllDepts] = useState(false);
 
   // A new search or filter starts from the top of its own result set. Adjusted
   // during render rather than in an effect so the list never paints a stale
@@ -62,7 +71,21 @@ export function MunicipalContactsIndex() {
       .then(({ data }) => { if (data) setContacts(data); });
   }, [region]);
 
-  const depts = [...new Set(contacts.map(c => c.department))];
+  // Ordered by how many contacts each holds. Most departments here have a
+  // single person, so alphabetical order buried the few filters worth using.
+  // The count is shown so a chip says what it will actually yield.
+  const deptCounts = contacts.reduce<Record<string, number>>((acc, c) => {
+    if (c.department) acc[c.department] = (acc[c.department] ?? 0) + 1;
+    return acc;
+  }, {});
+  const depts = Object.keys(deptCounts).sort(
+    (a, b) => deptCounts[b] - deptCounts[a] || a.localeCompare(b),
+  );
+  // A selected department stays visible even when it sits in the collapsed tail.
+  const shownDepts = showAllDepts
+    ? depts
+    : [...new Set([...depts.slice(0, VISIBLE_DEPTS), ...(deptFilter ? [deptFilter] : [])])];
+  const hiddenDeptCount = depts.length - shownDepts.length;
   const filtered = contacts.filter(c => {
     if (deptFilter && c.department !== deptFilter) return false;
     return matchesSearchQuery(search, [c.name, c.role, c.department, c.email]);
@@ -87,16 +110,40 @@ export function MunicipalContactsIndex() {
         placeholderTextColor={colors.neutralVariant}
       />
       {depts.length > 1 && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: spacing.md }}>
-          <TouchableOpacity style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: !deptFilter ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: !deptFilter ? colors.heroBar : colors.surface }} onPress={() => setDeptFilter(null)}>
-            <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: !deptFilter ? colors.onHeroBar : colors.neutral }}>{`All`}</Text>
+        // Wraps rather than scrolling sideways: with 20+ departments a
+        // horizontal strip hid most of the options off-screen with no
+        // affordance that they were there.
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, marginBottom: spacing.md }}>
+          <TouchableOpacity
+            style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: !deptFilter ? colors.heroBar : colors.outline, backgroundColor: !deptFilter ? colors.heroBar : colors.surface }}
+            onPress={() => setDeptFilter(null)}
+          >
+            <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: !deptFilter ? colors.onHeroBar : colors.neutral }}>
+              {`All (${contacts.length})`}
+            </Text>
           </TouchableOpacity>
-          {depts.map(d => (
-            <TouchableOpacity key={d} style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: deptFilter === d ? colors.heroBar : colors.outline, marginRight: spacing.sm, backgroundColor: deptFilter === d ? colors.heroBar : colors.surface }} onPress={() => setDeptFilter(deptFilter === d ? null : d)}>
-              <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: deptFilter === d ? colors.onHeroBar : colors.neutral }}>{d}</Text>
+          {shownDepts.map(d => (
+            <TouchableOpacity
+              key={d}
+              style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: deptFilter === d ? colors.heroBar : colors.outline, backgroundColor: deptFilter === d ? colors.heroBar : colors.surface }}
+              onPress={() => setDeptFilter(deptFilter === d ? null : d)}
+            >
+              <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: deptFilter === d ? colors.onHeroBar : colors.neutral }}>
+                {`${d} (${deptCounts[d]})`}
+              </Text>
             </TouchableOpacity>
           ))}
-        </ScrollView>
+          {(hiddenDeptCount > 0 || showAllDepts) && (
+            <TouchableOpacity
+              style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.outline, backgroundColor: colors.surface }}
+              onPress={() => setShowAllDepts((v) => !v)}
+            >
+              <Text style={{ fontSize: 13, fontFamily: fonts.sansMedium, color: colors.primary }}>
+                {showAllDepts ? 'Show fewer' : `+${hiddenDeptCount} more`}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
       )}
       <Text style={{ fontSize: 13, fontFamily: fonts.sans, color: colors.neutralVariant, marginBottom: spacing.md }}>
         {filtered.length === 0
