@@ -13,6 +13,7 @@ import { useTheme, spacing } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
 import { getDefaultDescription } from '@/lib/seo';
 import { fetchPartnerSlugParams } from '@/lib/static-build-queries';
+import { getStaticPartner } from '@/lib/partner-content-static';
 
 type PartnerTab = { label: string; slug: string; order: number };
 
@@ -42,10 +43,18 @@ export async function generateStaticParams() {
 export default function PartnerLanding() {
   const { colors } = useTheme();
   const { partnerSlug } = useLocalSearchParams<{ partnerSlug: string }>();
-  const [partner, setPartner] = useState<Partner | null>(null);
+  // Seeded from the build-time snapshot so the static export renders real
+  // content. Server and client first render read the same bundled JSON, so the
+  // first render is deterministic and hydration has nothing to disagree about.
+  const seed = getStaticPartner(partnerSlug);
+  const [partner, setPartner] = useState<Partner | null>(
+    (seed?.partner as Partner | undefined) ?? null,
+  );
   const [defaultTabs, setDefaultTabs] = useState<PartnerTab[]>([]);
   const [firstPage, setFirstPage] = useState<PartnerPage | null>(null);
-  const [landingPage, setLandingPage] = useState<Record<string, unknown> | null>(null);
+  const [landingPage, setLandingPage] = useState<Record<string, unknown> | null>(
+    seed?.landingPage ?? null,
+  );
 
   useEffect(() => {
     if (!partnerSlug) return;
