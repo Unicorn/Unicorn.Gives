@@ -20,7 +20,12 @@ const metaPath = join(__dirname, '..', 'lib', 'route-meta-data.json');
 const SITE_URL = (process.env.EXPO_PUBLIC_SITE_URL ?? 'https://unicorn.gives').replace(/\/$/, '');
 const SITE_NAME = 'UNI Gives';
 
-type RouteMeta = { title: string; description?: string; image?: string | null };
+type RouteMeta = {
+  title: string;
+  description?: string;
+  image?: string | null;
+  jsonLd?: Record<string, unknown>;
+};
 
 function esc(s: string): string {
   return s
@@ -91,6 +96,11 @@ function headBlock(route: string, meta: RouteMeta): string {
       `<meta property="og:image" content="${esc(img)}"/>`,
       `<meta name="twitter:image" content="${esc(img)}"/>`,
     );
+  }
+  if (meta.jsonLd) {
+    // `<` is escaped so a stray "</script>" in the data cannot close the tag.
+    const json = JSON.stringify(meta.jsonLd).replace(/</g, '\\u003c');
+    parts.push(`<script type="application/ld+json">${json}</script>`);
   }
   return `<!--static-meta-->${parts.join('')}<!--/static-meta-->`;
 }

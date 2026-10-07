@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
+import { SectionHeading } from './SectionHeading';
 
 interface AboutSectionProps {
   title?: string | null;
@@ -21,14 +22,14 @@ export function AboutSection({ title, body, imageUrl }: AboutSectionProps) {
         {imageUrl ? (
           <View style={styles.twoCol}>
             <View style={styles.textCol}>
-              {title && <Text style={styles.title}>{title}</Text>}
+              {title ? <SectionHeading title={title} /> : null}
               {body && <MarkdownRenderer content={body} />}
             </View>
             <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
           </View>
         ) : (
           <>
-            {title && <Text style={styles.title}>{title}</Text>}
+            {title ? <SectionHeading title={title} /> : null}
             {body && <MarkdownRenderer content={body} />}
           </>
         )}
@@ -47,13 +48,6 @@ const createStyles = (colors: ThemeColors) =>
       maxWidth: 1000,
       alignSelf: 'center',
       width: '100%' as any,
-    },
-    title: {
-      fontFamily: fonts.sansBold,
-      fontSize: 32,
-      color: colors.neutral,
-      marginBottom: spacing.xl,
-      lineHeight: 40,
     },
     twoCol: {
       flexDirection: 'row',

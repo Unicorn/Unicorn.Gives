@@ -24,11 +24,14 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outputPath = join(__dirname, '..', 'lib', 'route-meta-data.json');
+const SITE_URL = (process.env.EXPO_PUBLIC_SITE_URL ?? 'https://unicorn.gives').replace(/\/$/, '');
 
 export type RouteMeta = {
   title: string;
   description?: string;
   image?: string | null;
+  /** Emitted as a ld+json script by inject-static-meta.ts. */
+  jsonLd?: Record<string, unknown>;
 };
 
 function clean(s: unknown, max = 300): string | undefined {
@@ -48,6 +51,52 @@ function clean(s: unknown, max = 300): string | undefined {
 function withParent(title: string, parentName: string): string {
   const t = title.trim();
   return t.toLowerCase().includes(parentName.toLowerCase()) ? t : `${t} · ${parentName}`;
+}
+
+/**
+ * LocalBusiness structured data built strictly from stored fields — nothing is
+ * inferred or invented. `LocalBusiness` rather than a narrower type such as
+ * HairSalon because partners differ and nothing in the data says which is which.
+ */
+function localBusinessJsonLd(
+  slug: string,
+  name: string,
+  lp: Record<string, unknown> | undefined,
+): Record<string, unknown> | undefined {
+  if (!lp) return undefined;
+  const phone = clean(lp.contact_phone, 40);
+  const email = clean(lp.contact_email, 120);
+  const address = clean(lp.contact_address, 200);
+  const social = (lp.social_links ?? {}) as Record<string, string>;
+  const sameAs = [social.facebook, social.instagram, social.twitter, social.website].filter(
+    (u): u is string => typeof u === 'string' && /^https?:\/\//.test(u),
+  );
+
+  const node: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name,
+    url: `${SITE_URL}/partners/${slug}`,
+  };
+  if (phone) node.telephone = phone;
+  if (email) node.email = email;
+  if (lp.hero_image_url) node.image = lp.hero_image_url;
+  if (sameAs.length) node.sameAs = sameAs;
+  if (address) {
+    // "300 Lake George St, Lake George, MI 48633"
+    const m = address.match(/^(.*),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5})$/);
+    node.address = m
+      ? {
+          '@type': 'PostalAddress',
+          streetAddress: m[1].trim(),
+          addressLocality: m[2].trim(),
+          addressRegion: m[3],
+          postalCode: m[4],
+          addressCountry: 'US',
+        }
+      : { '@type': 'PostalAddress', streetAddress: address };
+  }
+  return node;
 }
 
 async function main() {
@@ -98,7 +147,9 @@ async function main() {
     .eq('is_active', true);
   const { data: landing } = await sb
     .from('partner_landing_pages')
-    .select('partner_id, hero_subheadline, hero_image_url, about_body')
+    .select(
+      'partner_id, hero_subheadline, hero_image_url, about_body, contact_phone, contact_email, contact_address, social_links',
+    )
     .eq('status', 'published');
   const landingByPartner = new Map((landing ?? []).map((l) => [String(l.partner_id), l]));
 
@@ -109,6 +160,7 @@ async function main() {
       description:
         clean(lp?.hero_subheadline) ?? clean(p.description) ?? clean(lp?.about_body, 200),
       image: (lp?.hero_image_url as string) ?? null,
+      jsonLd: localBusinessJsonLd(String(p.slug), String(p.name), lp),
     });
   }
 

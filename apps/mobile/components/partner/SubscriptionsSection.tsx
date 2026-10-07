@@ -29,6 +29,7 @@ import {
 } from '@/hooks/useSquareBookings';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
 import { useAuth } from '@/lib/auth';
+import { SectionHeading } from './SectionHeading';
 
 interface SubscriptionsSectionProps {
   partnerId: string;
@@ -106,8 +107,7 @@ export function SubscriptionsSection({ partnerId }: SubscriptionsSectionProps) {
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
-        <Text style={styles.heading}>Join the Community</Text>
-        <Text style={styles.subheading}>Become a member with a monthly subscription</Text>
+        <SectionHeading title="Join the Community" lede="Become a member with a monthly subscription." />
 
         <View style={styles.grid}>
           {plans.map((plan) => {
@@ -166,18 +166,6 @@ const createStyles = (colors: ThemeColors) =>
       maxWidth: 1000,
       alignSelf: 'center',
       width: '100%' as any,
-    },
-    heading: {
-      fontFamily: fonts.sansBold,
-      fontSize: 32,
-      color: colors.neutral,
-      marginBottom: spacing.xs,
-    },
-    subheading: {
-      fontFamily: fonts.sans,
-      fontSize: fontSize.md,
-      color: colors.neutralVariant,
-      marginBottom: spacing.xxl,
     },
     grid: {
       flexDirection: 'row',

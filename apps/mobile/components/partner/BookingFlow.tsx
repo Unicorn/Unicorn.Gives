@@ -130,22 +130,39 @@ export function BookingFlow({ partnerId, service, teamMembers, contactPhone, onC
 
   const serviceName = service.data.item_data?.name ?? service.display_name ?? 'Service';
 
+  // Progress through the flow. The staff step only exists when there are staff
+  // to choose between, so the count reflects what this visitor will actually
+  // see. The success screen is an outcome, not a step.
+  const flowSteps: Step[] = useMemo(
+    () => (teamMembers.length > 0 ? ['staff', 'date', 'time', 'details', 'confirm'] : ['date', 'time', 'details', 'confirm']),
+    [teamMembers.length],
+  );
+  const stepIndex = flowSteps.indexOf(step);
+  const stepPosition = stepIndex >= 0 ? { current: stepIndex + 1, total: flowSteps.length } : null;
+
   return (
     <Modal visible transparent animationType="slide" onRequestClose={onClose}>
       <View style={styles.overlay}>
         <View style={styles.modal}>
           {/* Header */}
           <View style={styles.header}>
-            <View>
+            <View style={styles.headerText}>
               <Text style={styles.headerTitle}>Book: {serviceName}</Text>
-              <Text style={styles.headerSub}>
-                {step === 'staff' && 'Select a staff member'}
-                {step === 'date' && 'Choose a date'}
-                {step === 'time' && 'Pick a time'}
-                {step === 'details' && 'Your information'}
-                {step === 'confirm' && 'Review & confirm'}
-                {step === 'success' && 'Booking confirmed!'}
-              </Text>
+              <View style={styles.headerMeta}>
+                <Text style={styles.headerSub}>
+                  {step === 'staff' && 'Select a staff member'}
+                  {step === 'date' && 'Choose a date'}
+                  {step === 'time' && 'Pick a time'}
+                  {step === 'details' && 'Your information'}
+                  {step === 'confirm' && 'Review & confirm'}
+                  {step === 'success' && 'Booking confirmed!'}
+                </Text>
+                {stepPosition ? (
+                  <Text style={styles.headerStep}>
+                    Step {stepPosition.current} of {stepPosition.total}
+                  </Text>
+                ) : null}
+              </View>
             </View>
             <Pressable onPress={onClose} style={styles.closeBtn}>
               <MaterialIcons name="close" size={24} color={colors.neutralVariant} />
@@ -454,6 +471,21 @@ const createStyles = (colors: ThemeColors) =>
       padding: spacing.lg,
       borderBottomWidth: 1,
       borderBottomColor: colors.outlineVariant,
+    },
+    headerText: {
+      flex: 1,
+      paddingRight: spacing.md,
+    },
+    headerMeta: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      flexWrap: 'wrap',
+    },
+    headerStep: {
+      fontFamily: fonts.sansMedium,
+      fontSize: fontSize.xs,
+      color: colors.neutralVariant,
     },
     headerTitle: {
       fontFamily: fonts.sansBold,

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
+import { SectionHeading } from './SectionHeading';
 
 interface TeamMember {
   name: string;
@@ -23,7 +24,7 @@ export function TeamSection({ members }: TeamSectionProps) {
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
-        <Text style={styles.heading}>Meet Our Team</Text>
+        <SectionHeading title="Meet Our Team" />
         <View style={styles.list}>
           {members.map((member, i) => (
             <View key={i} style={styles.card}>
@@ -57,12 +58,6 @@ const createStyles = (colors: ThemeColors) =>
       maxWidth: 1000,
       alignSelf: 'center',
       width: '100%' as any,
-    },
-    heading: {
-      fontFamily: fonts.sansBold,
-      fontSize: 32,
-      color: colors.neutral,
-      marginBottom: spacing.xxl,
     },
     list: {
       gap: spacing.xxxl,
