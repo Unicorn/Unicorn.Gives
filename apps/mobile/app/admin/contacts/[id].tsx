@@ -40,6 +40,9 @@ export default function EditContactPage() {
           return;
         }
         setForm({
+          // Spread the defaults so a column the query does not return cannot
+          // silently blank a field on save.
+          ...EMPTY_CONTACT,
           name: data.name ?? '',
           slug: data.slug ?? '',
           role: data.role ?? '',
@@ -52,6 +55,13 @@ export default function EditContactPage() {
           website: data.website ?? '',
           display_order: data.display_order ?? 0,
           region_id: data.region_id ?? '',
+          department_id: data.department_id ?? '',
+          contact_type: data.contact_type ?? 'staff',
+          photo_url: data.photo_url ?? '',
+          bio: data.bio ?? '',
+          term_start: data.term_start ?? '',
+          term_end: data.term_end ?? '',
+          is_department_head: data.is_department_head ?? false,
         });
         setStatus(data.status ?? 'draft');
         setLoading(false);

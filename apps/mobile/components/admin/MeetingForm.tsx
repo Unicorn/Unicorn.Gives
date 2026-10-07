@@ -90,7 +90,7 @@ export function MeetingForm({ data, onChange, errors = {} }: Props) {
       </FormRow>
 
       <FormRow>
-        <FormColumn><DateField label="Meeting Date" value={data.meeting_date} onValueChange={(v) => set('meeting_date', v)} required error={errors.meeting_date} /></FormColumn>
+        <FormColumn><DateField label="Meeting Date" value={data.meeting_date} onChangeText={(v) => set('meeting_date', v)} required error={errors.meeting_date} /></FormColumn>
         <FormColumn><TextField label="Start Time" value={data.start_time} onChangeText={(v) => set('start_time', v)} placeholder="e.g. 6:30 PM" /></FormColumn>
         <FormColumn><TextField label="End Time" value={data.end_time} onChangeText={(v) => set('end_time', v)} placeholder="e.g. 8:00 PM" /></FormColumn>
       </FormRow>

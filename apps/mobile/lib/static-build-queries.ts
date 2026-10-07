@@ -371,7 +371,9 @@ const STATIC_INDEX_PATHS: string[] = [
   paths.community.news,
   paths.history.index,
   paths.government.base,
-  paths.partners.base,
+  // `paths.partners.base` is intentionally absent: there is no /partners route,
+  // only /partners/[partnerSlug]. Listing it pointed crawlers at a URL that
+  // falls back to the home page.
   '/guides',
   '/directory',
   '/sign-in',

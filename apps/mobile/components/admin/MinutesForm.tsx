@@ -113,7 +113,7 @@ export function MinutesForm({ data, onChange, errors = {} }: MinutesFormProps) {
       </FormRow>
 
       <FormRow>
-        <FormColumn><DateField label="Approval Date" value={data.approval_date} onValueChange={(v) => set('approval_date', v)} /></FormColumn>
+        <FormColumn><DateField label="Approval Date" value={data.approval_date} onChangeText={(v) => set('approval_date', v)} /></FormColumn>
         <FormColumn><SelectField label="Approval Status" value={data.approval_status} onValueChange={(v) => set('approval_status', v)} options={APPROVAL_STATUS_OPTIONS} /></FormColumn>
       </FormRow>
 
