@@ -18,12 +18,14 @@ import {
   ActivityIndicator,
   StyleSheet,
   Modal,
+  Linking,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import {
   useSquareAvailability,
   useCreateBooking,
+  type AvailabilitySlot,
   type SquareService,
   type SquareTeamMember,
   type BookingCustomer,
@@ -35,6 +37,8 @@ interface BookingFlowProps {
   partnerId: string;
   service: SquareService;
   teamMembers: SquareTeamMember[];
+  /** Offered as a fallback when Square refuses the booking. */
+  contactPhone?: string | null;
   onClose: () => void;
 }
 
@@ -61,14 +65,16 @@ function formatTime(isoString: string): string {
   });
 }
 
-export function BookingFlow({ partnerId, service, teamMembers, onClose }: BookingFlowProps) {
+export function BookingFlow({ partnerId, service, teamMembers, contactPhone, onClose }: BookingFlowProps) {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   const [step, setStep] = useState<Step>(teamMembers.length > 0 ? 'staff' : 'date');
   const [selectedStaff, setSelectedStaff] = useState<string | undefined>(undefined);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  // The whole slot is kept, not just its start time — Square needs the
+  // team member and catalog version it was quoted against to create the booking.
+  const [selectedSlot, setSelectedSlot] = useState<AvailabilitySlot | null>(null);
   const [customer, setCustomer] = useState<BookingCustomer>({
     given_name: '',
     family_name: '',
@@ -91,6 +97,8 @@ export function BookingFlow({ partnerId, service, teamMembers, onClose }: Bookin
   const {
     slots,
     loading: slotsLoading,
+    error: slotsError,
+    refresh: retrySlots,
   } = useSquareAvailability(
     step === 'time' ? partnerId : undefined,
     variationId,
@@ -103,10 +111,15 @@ export function BookingFlow({ partnerId, service, teamMembers, onClose }: Bookin
 
   const handleSubmit = useCallback(async () => {
     if (!selectedSlot || !customer.given_name) return;
+    // Square rejects a booking unless the segment names a concrete team member
+    // and the catalog version the slot was quoted against. Both ride along on
+    // the availability result, so prefer those over anything we inferred.
+    const segment = selectedSlot.appointment_segments?.[0];
     const result = await create({
-      service_variation_id: variationId,
-      team_member_id: selectedStaff,
-      start_at: selectedSlot,
+      service_variation_id: segment?.service_variation_id ?? variationId,
+      service_variation_version: segment?.service_variation_version,
+      team_member_id: selectedStaff ?? segment?.team_member_id,
+      start_at: selectedSlot.start_at,
       customer,
       note: note || undefined,
     });
@@ -202,6 +215,21 @@ export function BookingFlow({ partnerId, service, teamMembers, onClose }: Bookin
                 )}
                 {slotsLoading ? (
                   <ActivityIndicator color={colors.primary} style={{ marginTop: spacing.xl }} />
+                ) : slotsError ? (
+                  // Distinct from an empty day on purpose: a backend failure used
+                  // to render as "no available times", which hid a four-month outage.
+                  <View style={styles.errorState}>
+                    <MaterialIcons name="error-outline" size={28} color={colors.error} />
+                    <Text style={styles.errorStateTitle}>Couldn&apos;t load available times</Text>
+                    <Text style={styles.errorStateBody}>
+                      Something went wrong on our end — this isn&apos;t a full schedule.
+                      Try again, or call us and we&apos;ll book you in.
+                    </Text>
+                    <Pressable style={styles.retryBtn} onPress={retrySlots}>
+                      <MaterialIcons name="refresh" size={16} color={colors.primary} />
+                      <Text style={styles.retryBtnText}>Try Again</Text>
+                    </Pressable>
+                  </View>
                 ) : slots.length === 0 ? (
                   <Text style={styles.emptyText}>No available times for this date. Try another day.</Text>
                 ) : (
@@ -209,12 +237,12 @@ export function BookingFlow({ partnerId, service, teamMembers, onClose }: Bookin
                     {slots.map((slot, i) => (
                       <Pressable
                         key={i}
-                        style={[styles.timeCard, selectedSlot === slot.start_at && styles.timeCardActive]}
-                        onPress={() => { setSelectedSlot(slot.start_at); setStep('details'); }}
+                        style={[styles.timeCard, selectedSlot?.start_at === slot.start_at && styles.timeCardActive]}
+                        onPress={() => { setSelectedSlot(slot); setStep('details'); }}
                       >
                         <Text style={[
                           styles.timeText,
-                          selectedSlot === slot.start_at && styles.timeTextActive,
+                          selectedSlot?.start_at === slot.start_at && styles.timeTextActive,
                         ]}>
                           {formatTime(slot.start_at)}
                         </Text>
@@ -312,14 +340,38 @@ export function BookingFlow({ partnerId, service, teamMembers, onClose }: Bookin
                     <SummaryRow label="Date" value={formatDate(selectedDate)} colors={colors} styles={styles} />
                   )}
                   {selectedSlot && (
-                    <SummaryRow label="Time" value={formatTime(selectedSlot)} colors={colors} styles={styles} />
+                    <SummaryRow label="Time" value={formatTime(selectedSlot.start_at)} colors={colors} styles={styles} />
                   )}
                   <SummaryRow label="Name" value={`${customer.given_name} ${customer.family_name ?? ''}`} colors={colors} styles={styles} />
                   {customer.email_address && <SummaryRow label="Email" value={customer.email_address} colors={colors} styles={styles} />}
                   {customer.phone_number && <SummaryRow label="Phone" value={customer.phone_number} colors={colors} styles={styles} />}
                 </View>
 
-                {bookingError && <Text style={styles.errorText}>{bookingError}</Text>}
+                {bookingError && (
+                  <View style={styles.submitError}>
+                    <Text style={styles.errorText}>
+                      We couldn&apos;t complete this booking online.
+                    </Text>
+                    {contactPhone ? (
+                      <>
+                        <Text style={styles.submitErrorBody}>
+                          Nothing has been scheduled. Call us and we&apos;ll get you booked in.
+                        </Text>
+                        <Pressable
+                          style={styles.callFallbackBtn}
+                          onPress={() => Linking.openURL(`tel:${contactPhone.replace(/[^\d+]/g, '')}`)}
+                        >
+                          <MaterialIcons name="phone" size={16} color={colors.onPrimary} />
+                          <Text style={styles.callFallbackText}>{contactPhone}</Text>
+                        </Pressable>
+                      </>
+                    ) : (
+                      <Text style={styles.submitErrorBody}>
+                        Nothing has been scheduled. Please call the salon to book.
+                      </Text>
+                    )}
+                  </View>
+                )}
 
                 <Pressable
                   style={styles.primaryBtn}
@@ -501,6 +553,68 @@ const createStyles = (colors: ThemeColors) =>
       color: colors.neutralVariant,
       textAlign: 'center',
       marginTop: spacing.xl,
+    },
+
+    errorState: {
+      alignItems: 'center',
+      gap: spacing.sm,
+      marginTop: spacing.xl,
+      paddingHorizontal: spacing.lg,
+    },
+    errorStateTitle: {
+      fontFamily: fonts.sansBold,
+      fontSize: fontSize.md,
+      color: colors.neutral,
+      textAlign: 'center',
+    },
+    errorStateBody: {
+      fontFamily: fonts.sans,
+      fontSize: fontSize.sm,
+      color: colors.neutralVariant,
+      textAlign: 'center',
+      lineHeight: 20,
+    },
+    submitError: {
+      gap: spacing.sm,
+      alignItems: 'center',
+      paddingVertical: spacing.md,
+    },
+    submitErrorBody: {
+      fontFamily: fonts.sans,
+      fontSize: fontSize.sm,
+      color: colors.neutralVariant,
+      textAlign: 'center',
+      lineHeight: 20,
+    },
+    callFallbackBtn: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      backgroundColor: colors.primary,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm + 2,
+      borderRadius: radii.sm,
+    },
+    callFallbackText: {
+      fontFamily: fonts.sansBold,
+      fontSize: fontSize.md,
+      color: colors.onPrimary,
+    },
+    retryBtn: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      marginTop: spacing.sm,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      borderRadius: radii.sm,
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    retryBtnText: {
+      fontFamily: fonts.sansMedium,
+      fontSize: fontSize.sm,
+      color: colors.primary,
     },
 
     formGroup: { gap: 4 },

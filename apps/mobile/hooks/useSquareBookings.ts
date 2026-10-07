@@ -26,6 +26,9 @@ export interface SquareService {
           price_money?: { amount?: number; currency?: string };
           service_duration?: number; // milliseconds
           available_for_booking?: boolean;
+          // Square rejects an availability search for a variation with no
+          // assigned staff, so this decides whether a service is bookable.
+          team_member_ids?: string[];
         };
       }>;
     };
@@ -151,7 +154,15 @@ export function useSquareAvailability(
         }),
       });
 
-      if (!res.ok) throw new Error('Failed to search availability');
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({})) as {
+          square_status?: number;
+          square_error?: string;
+        };
+        // Logged for diagnosis; the UI shows a plain-language message instead.
+        console.error('Availability search failed', errData.square_status, errData.square_error);
+        throw new Error('Failed to search availability');
+      }
 
       const data = await res.json();
       setSlots(data.availabilities ?? []);
@@ -177,6 +188,10 @@ export function useCreateBooking(partnerId: string | undefined) {
 
   const create = useCallback(async (params: {
     service_variation_id: string;
+    // Square requires the catalog version the slot was quoted against; it comes
+    // back on the availability response and must be echoed here or the booking
+    // is rejected as stale.
+    service_variation_version?: number;
     team_member_id?: string;
     start_at: string;
     customer: BookingCustomer;

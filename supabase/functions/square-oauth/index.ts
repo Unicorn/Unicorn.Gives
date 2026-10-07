@@ -18,6 +18,7 @@ import { squareOAuthUrl, squareBaseUrl } from '../_shared/square.ts';
 const SCOPES = [
   'APPOINTMENTS_READ',
   'APPOINTMENTS_WRITE',
+  'EMPLOYEES_READ', // required by /v2/team-members/search — without it team sync silently returns 0
   'ITEMS_READ',
   'ORDERS_READ',
   'ORDERS_WRITE',

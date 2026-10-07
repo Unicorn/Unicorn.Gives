@@ -12,7 +12,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import {
-  getDecryptedToken,
+  getValidAccessToken,
   retrieveCustomer,
   searchBookings,
   searchSubscriptions,
@@ -71,7 +71,9 @@ Deno.serve(async (req) => {
 
     const stats = { customers: 0, subscriptions: 0, bookings: 0 };
     try {
-      const accessToken = await getDecryptedToken(conn.access_token);
+      const creds = await getValidAccessToken(admin, conn.partner_id);
+      if (!creds) throw new Error('No usable Square connection');
+      const accessToken = creds.accessToken;
 
       const { data: customers } = await admin
         .from('square_customers')
