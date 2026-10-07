@@ -6,10 +6,12 @@ import { Wrapper } from '@/components/layout/Wrapper';
 import { useLocalSearchParams } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useTheme, spacing, radii } from '@/constants/theme';
-import { fetchMunicipalEventsStaticParams } from '@/lib/static-build-queries';
+import { fetchMunicipalEventsStaticParams, scopeToParent } from '@/lib/static-build-queries';
 
-export async function generateStaticParams() {
-  return fetchMunicipalEventsStaticParams();
+export async function generateStaticParams(
+  props: { params?: Record<string, string | string[]> } = {},
+) {
+  return scopeToParent(await fetchMunicipalEventsStaticParams(), props.params);
 }
 
 interface EventDetail {

@@ -7,6 +7,19 @@ import { SubTabs, type SubTabItem } from '@/components/layout/SubTabs';
 import { useTheme } from '@/constants/theme';
 import { routes } from '@/lib/navigation';
 import { fetchResourceLanding } from '@/lib/municipal/resourcePages';
+import { fetchMunicipalityParams } from '@/lib/static-build-queries';
+
+/**
+ * See the county layout: a dynamic segment owning a layout must declare its
+ * params or the static export cannot render the segment at all.
+ */
+export async function generateStaticParams(
+  props: { params?: Record<string, string | string[]> } = {},
+) {
+  const all = await fetchMunicipalityParams();
+  const county = typeof props.params?.countySlug === 'string' ? props.params.countySlug : undefined;
+  return county ? all.filter((m) => m.countySlug === county) : all;
+}
 
 export default function MunicipalityLayout() {
   const { colors } = useTheme();

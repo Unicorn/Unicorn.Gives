@@ -93,6 +93,30 @@ export async function fetchMunicipalityParams(): Promise<MunicipalityParam[]> {
   return out;
 }
 
+/**
+ * Keep only the params belonging to the parent segment being rendered.
+ *
+ * Expo Router passes the parent layout's params into a child's
+ * generateStaticParams. A child that ignores them and returns every
+ * (county, municipality, slug) triple gets crossed with each parent, producing
+ * a page for every slug under every municipality — e.g. one township's minutes
+ * rendered under all four. Filtering here keeps the output to real routes.
+ */
+export function scopeToParent<T extends { countySlug: string; municipalitySlug: string }>(
+  rows: T[],
+  params?: Record<string, string | string[]>,
+): T[] {
+  const county = typeof params?.countySlug === 'string' ? params.countySlug : undefined;
+  const municipality =
+    typeof params?.municipalitySlug === 'string' ? params.municipalitySlug : undefined;
+  if (!county && !municipality) return rows;
+  return rows.filter(
+    (r) =>
+      (!county || r.countySlug === county) &&
+      (!municipality || r.municipalitySlug === municipality),
+  );
+}
+
 async function slugsForRegionTable(
   table: 'minutes' | 'ordinances' | 'contacts' | 'elections',
   statusFilter: 'approved_pending' | 'published',

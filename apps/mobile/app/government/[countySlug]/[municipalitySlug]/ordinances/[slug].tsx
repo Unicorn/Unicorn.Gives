@@ -1,8 +1,10 @@
 import { MunicipalOrdinancesDetail } from '@/components/municipal/MunicipalOrdinancesDetail';
-import { fetchOrdinancesStaticParams } from '@/lib/static-build-queries';
+import { fetchOrdinancesStaticParams, scopeToParent } from '@/lib/static-build-queries';
 
-export async function generateStaticParams() {
-  return fetchOrdinancesStaticParams();
+export async function generateStaticParams(
+  props: { params?: Record<string, string | string[]> } = {},
+) {
+  return scopeToParent(await fetchOrdinancesStaticParams(), props.params);
 }
 
 export default function Screen() {
