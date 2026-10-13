@@ -19,6 +19,7 @@ import { routes } from "@/lib/navigation";
 import { getDefaultDescription } from "@/lib/seo";
 import { supabase } from "@/lib/supabase";
 import { fetchHomeNewsSlugParams } from "@/lib/static-build-queries";
+import { getStaticNewsArticle } from "@/lib/community-snapshot";
 
 export async function generateStaticParams() {
 	return fetchHomeNewsSlugParams();
@@ -49,8 +50,10 @@ export default function NewsArticleDetail() {
 	const rawSlug = useLocalSearchParams<{ slug: string | string[] }>().slug;
 	const slug = normalizeSlug(rawSlug);
 
-	const [item, setItem] = useState<NewsArticle | null>(null);
-	const [phase, setPhase] = useState<"loading" | "done">("loading");
+	// Seeded from the build-time snapshot so the export carries real content; live data replaces it on mount.
+	const seed = getStaticNewsArticle<NewsArticle>(slug);
+	const [item, setItem] = useState<NewsArticle | null>(seed);
+	const [phase, setPhase] = useState<"loading" | "done">(seed ? "done" : "loading");
 
 	useEffect(() => {
 		if (!slug) {

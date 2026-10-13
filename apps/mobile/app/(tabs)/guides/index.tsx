@@ -9,6 +9,7 @@ import { Container } from '@/components/layout/Container';
 import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
+import { getStaticGuides } from '@/lib/community-snapshot';
 
 interface Guide {
   id: string;
@@ -33,7 +34,8 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default function GuidesIndex() {
   const { colors } = useTheme();
   const { width } = useHydratedDimensions();
-  const [guides, setGuides] = useState<Guide[]>([]);
+  // Seeded from the build-time snapshot so the export carries real content; live data replaces it on mount.
+  const [guides, setGuides] = useState<Guide[]>(() => getStaticGuides<Guide>());
   const [filter, setFilter] = useState<string | null>(null);
   const columns = width >= breakpoints.desktop ? 3 : width >= breakpoints.tablet ? 2 : 1;
 

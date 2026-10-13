@@ -20,6 +20,7 @@ import { EventGridCard } from "./EventGridCard";
 import { EventsGrid } from "./EventsGrid";
 import { ViewToggle, type ViewMode } from "./ViewToggle";
 import type { EventItem } from "./eventTypes";
+import { getStaticUpcomingEvents } from "@/lib/community-snapshot";
 
 const CATEGORY_LABELS: Record<string, string> = {
 	government: "Government",
@@ -38,7 +39,10 @@ interface Props {
 }
 
 export function EventsList({ regionId }: Props) {
-	const [events, setEvents] = useState<EventWithDesc[]>([]);
+	// Seeded from the build-time snapshot for the global list; region lists load live.
+	const [events, setEvents] = useState<EventWithDesc[]>(() =>
+		regionId ? [] : getStaticUpcomingEvents<EventWithDesc>(),
+	);
 	const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
 	const [viewMode, setViewMode] = useState<ViewMode>("grid");
 	const { colors } = useTheme();

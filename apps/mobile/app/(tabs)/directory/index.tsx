@@ -8,6 +8,7 @@ import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
+import { getStaticDirectory } from '@/lib/community-snapshot';
 
 interface Partner {
   slug: string;
@@ -17,7 +18,8 @@ interface Partner {
 
 export default function PartnersDirectory() {
   const { colors } = useTheme();
-  const [partners, setPartners] = useState<Partner[]>([]);
+  // Seeded from the build-time snapshot so the export carries real content; live data replaces it on mount.
+  const [partners, setPartners] = useState<Partner[]>(() => getStaticDirectory<Partner>());
 
   useEffect(() => {
     supabase

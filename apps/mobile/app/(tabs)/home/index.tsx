@@ -61,6 +61,7 @@ import { routes } from "@/lib/navigation";
 import { toHref } from "@/lib/navigation/paths";
 import { getDefaultDescription } from "@/lib/seo";
 import { supabase } from "@/lib/supabase";
+import { getStaticHome } from "@/lib/community-snapshot";
 
 const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
 	{
@@ -159,10 +160,12 @@ interface Partner {
 export default function HomeScreen() {
 	const { colors } = useTheme();
 	const [newsletterEmail, setNewsletterEmail] = useState("");
-	const [regions, setRegions] = useState<Region[]>([]);
-	const [news, setNews] = useState<NewsItem[]>([]);
-	const [events, setEvents] = useState<Event[]>([]);
-	const [partners, setPartners] = useState<Partner[]>([]);
+	// Seeded from the build-time snapshot so the export carries real content; live data replaces it on mount.
+	const seed = getStaticHome<Region, NewsItem, Event, Partner>();
+	const [regions, setRegions] = useState<Region[]>(seed.regions);
+	const [news, setNews] = useState<NewsItem[]>(seed.news);
+	const [events, setEvents] = useState<Event[]>(seed.events);
+	const [partners, setPartners] = useState<Partner[]>(seed.partners);
 
 	useEffect(() => {
 		supabase

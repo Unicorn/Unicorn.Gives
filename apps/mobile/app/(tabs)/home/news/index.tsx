@@ -12,6 +12,7 @@ import { fonts, spacing, useTheme, type ThemeColors } from "@/constants/theme";
 import { eventDateBoxFromIso } from "@/lib/events/eventDateFormat";
 import { routes } from "@/lib/navigation";
 import { supabase } from "@/lib/supabase";
+import { getStaticNewsList } from "@/lib/community-snapshot";
 
 interface NewsItem {
 	id: string;
@@ -26,7 +27,8 @@ interface NewsItem {
 
 export default function NewsTab() {
 	const { colors } = useTheme();
-	const [items, setItems] = useState<NewsItem[]>([]);
+	// Seeded from the build-time snapshot so the export carries real content; live data replaces it on mount.
+	const [items, setItems] = useState<NewsItem[]>(() => getStaticNewsList<NewsItem>());
 
 	useEffect(() => {
 		supabase

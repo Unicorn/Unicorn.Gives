@@ -50,7 +50,9 @@ export default function PartnerLanding() {
   const [partner, setPartner] = useState<Partner | null>(
     (seed?.partner as Partner | undefined) ?? null,
   );
-  const [defaultTabs, setDefaultTabs] = useState<PartnerTab[]>([]);
+  const [defaultTabs, setDefaultTabs] = useState<PartnerTab[]>(
+    (seed?.defaultTabs as PartnerTab[] | undefined) ?? [],
+  );
   const [firstPage, setFirstPage] = useState<PartnerPage | null>(null);
   const [landingPage, setLandingPage] = useState<Record<string, unknown> | null>(
     seed?.landingPage ?? null,

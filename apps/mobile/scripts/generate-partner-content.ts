@@ -35,6 +35,11 @@ async function main() {
       .select('*')
       .eq('status', 'published');
     const byId = new Map((landing ?? []).map((l) => [String(l.partner_id), l]));
+    // Tab pages and the type's default tabs, so /partners/<slug>/<tab> can
+    // render its content at export time too.
+    const { data: pages } = await sb.from('partner_pages').select('partner_id, tab_slug, title, body');
+    const { data: types } = await sb.from('partner_types').select('id, default_tabs');
+    const defaultTabsByType = new Map((types ?? []).map((t) => [String(t.id), t.default_tabs ?? []]));
     for (const p of partners ?? []) {
       out.partners[String(p.slug)] = {
         partner: {
@@ -46,6 +51,12 @@ async function main() {
           partner_type_id: p.partner_type_id ?? null,
         },
         landingPage: byId.get(String(p.id)) ?? null,
+        pages: Object.fromEntries(
+          (pages ?? [])
+            .filter((pg) => String(pg.partner_id) === String(p.id) && pg.tab_slug)
+            .map((pg) => [String(pg.tab_slug), { title: pg.title ?? '', body: pg.body ?? '' }]),
+        ),
+        defaultTabs: p.partner_type_id ? defaultTabsByType.get(String(p.partner_type_id)) ?? [] : [],
       };
     }
   } else {

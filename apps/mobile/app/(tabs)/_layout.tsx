@@ -3,7 +3,7 @@ import { Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { breakpoints, useTheme } from '@/constants/theme';
 import { useFeatureModules } from '@/lib/featureModules';
-import { useHydratedDimensions } from '@/hooks/useHydrated';
+import { useHydratedDimensions, useIsHydrated } from '@/hooks/useHydrated';
 
 const TAB_ICONS: Record<string, keyof typeof MaterialIcons.glyphMap> = {
   Home: 'home',
@@ -24,12 +24,17 @@ function TabIcon({ label, focused, color }: { label: string; focused: boolean; c
 
 export default function TabLayout() {
   const { width } = useHydratedDimensions();
+  const hydrated = useIsHydrated();
   const isDesktop = width >= breakpoints.desktop;
   const { colors } = useTheme();
   const { flags } = useFeatureModules();
 
   return (
     <Tabs
+      // The bottom tab bar reads the window frame, which the static render does
+      // not have; rendering nothing until hydration keeps server and client
+      // first renders identical. Desktop never shows it anyway.
+      tabBar={hydrated ? undefined : () => null}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
