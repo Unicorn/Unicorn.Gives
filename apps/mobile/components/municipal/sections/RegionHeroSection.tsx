@@ -71,6 +71,8 @@ export function RegionHeroSection({
 
           {headline ? (
             <Text
+              role="heading"
+              aria-level={1}
               style={[
                 styles.headline,
                 { color: textColor },

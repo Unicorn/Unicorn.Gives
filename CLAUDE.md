@@ -125,7 +125,7 @@ aws cloudfront create-invalidation --distribution-id ER9WIPUKON9J3 --paths "/*"
 - Project ID: `kifhbevwmpqdeuxqnjxa`
 - Migrations: `supabase/migrations/` (applied via `supabase db push` or `supabase migration up`)
 - Check remote status: `supabase migration list --linked` (from `supabase/` dir)
-- Supabase CLI is linked to the project (ref stored in `supabase/.temp/project-ref`)
+- `supabase/.temp/` is CLI scratch state and is gitignored — on a fresh clone run `supabase link --project-ref kifhbevwmpqdeuxqnjxa` (from `supabase/`) before any `--linked` command
 
 ### Web hydration
 

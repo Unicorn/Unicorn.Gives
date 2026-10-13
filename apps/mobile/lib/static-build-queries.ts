@@ -364,7 +364,7 @@ export async function fetchPartnerTabParams(): Promise<PartnerTabParam[]> {
 }
 
 const STATIC_INDEX_PATHS: string[] = [
-  paths.home,
+  // `paths.home` ('/') is absent: it only redirects to /home.
   paths.homeDiscover,
   paths.community.index,
   paths.community.events,
@@ -376,8 +376,7 @@ const STATIC_INDEX_PATHS: string[] = [
   // falls back to the home page.
   '/guides',
   '/directory',
-  '/sign-in',
-  '/sign-up',
+  // /sign-in and /sign-up are noindex; a sitemap must not advertise them.
 ];
 
 /**

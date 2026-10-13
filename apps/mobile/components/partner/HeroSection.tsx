@@ -48,7 +48,9 @@ export function HeroSection({ headline, subheadline, imageUrl, ctaLabel, ctaUrl 
         {/* Text column */}
         <View style={styles.textCol}>
           {headline && (
-            <Text style={[styles.headline, compact && styles.headlineCompact]}>{headline}</Text>
+            <Text role="heading" aria-level={1} style={[styles.headline, compact && styles.headlineCompact]}>
+              {headline}
+            </Text>
           )}
           {subheadline && <Text style={styles.subheadline}>{subheadline}</Text>}
           {ctaLabel && ctaUrl && (

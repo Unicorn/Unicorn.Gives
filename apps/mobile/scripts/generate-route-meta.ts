@@ -47,9 +47,13 @@ function clean(s: unknown, max = 300): string | undefined {
   return t.length > max ? `${t.slice(0, max - 1).trimEnd()}…` : t;
 }
 
-/** Avoid "The Mane — Services · The Mane" when the title already names the partner. */
-function withParent(title: string, parentName: string): string {
+/**
+ * Avoid "The Mane — Services · The Mane" when the title already names the partner,
+ * and avoid a tab page whose title is identical to the landing page's.
+ */
+function withParent(title: string, parentName: string, tabLabel?: string): string {
   const t = title.trim();
+  if (t.toLowerCase() === parentName.toLowerCase() && tabLabel) return `${t} — ${tabLabel}`;
   return t.toLowerCase().includes(parentName.toLowerCase()) ? t : `${t} · ${parentName}`;
 }
 
@@ -142,7 +146,7 @@ async function main() {
   // Partner landing pages + their tabs.
   const { data: partners } = await sb
     .from('partners')
-    .select('id, slug, name, description')
+    .select('id, slug, name, description, tabs')
     .eq('is_active', true);
   const { data: landing } = await sb
     .from('partner_landing_pages')
@@ -171,8 +175,10 @@ async function main() {
   for (const pg of partnerPages ?? []) {
     const parent = partnerById.get(String(pg.partner_id));
     if (!parent || !pg.tab_slug) continue;
+    const tabs = (parent.tabs ?? []) as Array<{ slug?: string; label?: string }>;
+    const tabLabel = tabs.find((t) => t.slug === pg.tab_slug)?.label;
     add(`/partners/${parent.slug}/${pg.tab_slug}`, {
-      title: withParent(String(pg.title ?? pg.tab_slug), String(parent.name)),
+      title: withParent(String(pg.title ?? pg.tab_slug), String(parent.name), tabLabel),
       description: clean(pg.body, 200),
     });
   }
