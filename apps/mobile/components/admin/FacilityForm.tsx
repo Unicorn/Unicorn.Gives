@@ -82,6 +82,7 @@ export function FacilityForm({ data, onChange, errors = {} }: FacilityFormProps)
 	const styles = useMemo(() => createStyles(), []);
 	const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.name);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
 	useEffect(() => {
 		if (slug && !data.slug) {
 			onChange({ ...data, slug });

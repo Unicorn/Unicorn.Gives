@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, Pressable, TextInput, StyleSheet, ActivityIndicator, Switch } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -31,13 +31,13 @@ export default function RegionsAdminPage() {
   const [editForm, setEditForm] = useState<Partial<Region>>({});
   const [saving, setSaving] = useState(false);
 
-  async function loadRegions() {
+  const loadRegions = useCallback(async () => {
     const { data } = await supabase.from('regions').select('*').order('display_order');
     if (data) setRegions(data);
     setLoading(false);
-  }
+  }, []);
 
-  useEffect(() => { loadRegions(); }, []);
+  useEffect(() => { loadRegions(); }, [loadRegions]);
 
   function startEdit(region: Region) {
     setEditingId(region.id);

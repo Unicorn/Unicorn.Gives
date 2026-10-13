@@ -90,6 +90,7 @@ export function BingoGameForm({ data, onChange, errors = {} }: BingoGameFormProp
   const styles = useMemo(() => createStyles(colors), [colors]);
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
   useEffect(() => {
     if (slug && !data.slug) onChange({ ...data, slug });
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, Pressable, TextInput, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -37,13 +37,13 @@ export default function UsersAdminPage() {
   const [editRole, setEditRole] = useState('');
   const [saving, setSaving] = useState(false);
 
-  async function loadProfiles() {
+  const loadProfiles = useCallback(async () => {
     const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
     if (data) setProfiles(data);
     setLoading(false);
-  }
+  }, []);
 
-  useEffect(() => { loadProfiles(); }, []);
+  useEffect(() => { loadProfiles(); }, [loadProfiles]);
 
   async function saveRole(id: string) {
     setSaving(true);

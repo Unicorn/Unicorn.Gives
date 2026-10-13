@@ -102,7 +102,7 @@ export default function MunicipalityLayout() {
       }
     }
     return items;
-  }, [pathname, basePath, countyName, regionName]);
+  }, [pathname, basePath, countyName, regionName, countySlug]);
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>

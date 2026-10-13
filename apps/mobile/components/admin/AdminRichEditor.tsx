@@ -4,7 +4,7 @@
  * Outputs HTML for storage in Supabase `body` columns.
  * Toolbar: bold, italic, headings, lists, links, code blocks.
  */
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -97,8 +97,10 @@ function TipTapEditor({
   styles: ReturnType<typeof createStyles>;
 }) {
   // Auto-convert markdown to HTML on initial load so the WYSIWYG editor
-  // can render it. All subsequent saves will be HTML.
-  const initialContent = useMemo(() => markdownToHtml(value), []);
+  // can render it. All subsequent saves will be HTML. Lazy state reads the
+  // prop exactly once on mount, which is the intent: the editor owns the
+  // content after that and must not be reset by parent re-renders.
+  const [initialContent] = useState(() => markdownToHtml(value));
 
   const editor = useEditor({
     extensions: [

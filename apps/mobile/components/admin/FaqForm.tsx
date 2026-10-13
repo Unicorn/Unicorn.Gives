@@ -51,6 +51,7 @@ export function FaqForm({ data, onChange, errors = {} }: FaqFormProps) {
 	const styles = useMemo(() => createStyles(), []);
 	const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.question);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
 	useEffect(() => {
 		if (slug && !data.slug) {
 			onChange({ ...data, slug });
