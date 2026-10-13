@@ -135,6 +135,7 @@ export function EventForm({
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
   // Sync slug back to parent (only for new records — don't overwrite DB slug)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
   useEffect(() => {
     if (slug && !data.slug) {
       onChange({ ...data, slug });

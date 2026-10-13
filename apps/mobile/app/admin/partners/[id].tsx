@@ -126,12 +126,7 @@ export default function EditPartnerPage() {
   const [isActive, setIsActive] = useState(true);
   const [customDomain, setCustomDomain] = useState('');
 
-  useEffect(() => {
-    if (!id) return;
-    loadPartner();
-  }, [id]);
-
-  async function loadPartner() {
+  const loadPartner = useCallback(async () => {
     const { data: p } = await supabase
       .from('partners')
       .select('id, slug, name, description, logo_url, website, is_active, custom_domain')
@@ -183,7 +178,13 @@ export default function EditPartnerPage() {
     }
 
     setLoading(false);
-  }
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+    loadPartner();
+  }, [id, loadPartner]);
+
 
   /* ── Save handlers ── */
 

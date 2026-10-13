@@ -3,7 +3,7 @@
  * and renders sections in the order defined by `section_order`, skipping
  * anything listed in `hidden_sections`. Mirrors the partner LandingPageRenderer.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { BentoGrid, type BentoItem } from '@/components/widgets/BentoGrid';
 import { BentoSection } from '@/components/layout/BentoSection';
@@ -47,7 +47,9 @@ export function RegionLandingRenderer({
   const [events, setEvents] = useState<RegionEventItem[]>([]);
 
   const order = page.section_order?.length ? page.section_order : DEFAULT_ORDER;
-  const hidden = new Set(page.hidden_sections ?? []);
+  // Memoised so it can be an effect dependency; a fresh Set each render
+  // would re-run the fetches on every render.
+  const hidden = useMemo(() => new Set(page.hidden_sections ?? []), [page.hidden_sections]);
 
   useEffect(() => {
     if (page.news_settings?.enabled !== false && !hidden.has('news')) {
@@ -65,8 +67,7 @@ export function RegionLandingRenderer({
           page.events_settings?.exclude_parent_categories ?? ['government'],
       }).then(setEvents);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [regionId, parentId]);
+  }, [regionId, parentId, hidden, page.news_settings, page.events_settings]);
 
   function renderSection(key: string) {
     if (hidden.has(key)) return null;
@@ -155,7 +156,11 @@ export function RegionLandingRenderer({
         if (!page.custom_sections?.length) return null;
         return (
           <View key={key}>
+            {/* CustomSectionItem carries no id, and this list is render-only — reordering
+                happens in the admin on a different component — so an index key cannot
+                cause the stale-state problem the rule exists to catch. */}
             {page.custom_sections.map((item, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: no stable id; render-only list
               <RegionCustomSection key={`custom-${i}`} item={item} />
             ))}
           </View>

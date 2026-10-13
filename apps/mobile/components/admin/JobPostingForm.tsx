@@ -70,6 +70,7 @@ export function JobPostingForm({ data, onChange, errors = {} }: JobPostingFormPr
 	const styles = useMemo(() => createStyles(), []);
 	const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.title);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
 	useEffect(() => {
 		if (slug && !data.slug) {
 			onChange({ ...data, slug });

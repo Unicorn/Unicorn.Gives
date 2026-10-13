@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, Pressable, TextInput, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -27,13 +27,13 @@ export default function SiteSettingsAdminPage() {
   const [newValue, setNewValue] = useState('');
   const [showAdd, setShowAdd] = useState(false);
 
-  async function loadSettings() {
+  const loadSettings = useCallback(async () => {
     const { data } = await supabase.from('site_settings').select('*').order('key');
     if (data) setSettings(data.map((s) => ({ key: s.key, value: s.value, updated_at: s.updated_at })));
     setLoading(false);
-  }
+  }, []);
 
-  useEffect(() => { loadSettings(); }, []);
+  useEffect(() => { loadSettings(); }, [loadSettings]);
 
   function startEdit(setting: Setting) {
     setEditingKey(setting.key);

@@ -34,6 +34,7 @@ export function TagForm({ data, onChange, errors = {} }: TagFormProps) {
   const styles = useMemo(() => createStyles(colors), [colors]);
   const { slug, setSlug, manuallyEdited, resetManual } = useSlugGenerator(data.label);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: sync slug
   useEffect(() => {
     if (slug && !data.slug) {
       onChange({ ...data, slug });

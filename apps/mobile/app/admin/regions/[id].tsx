@@ -4,7 +4,7 @@
  * landing page with hero, quick-access bento, about, news/events settings,
  * custom sections, and newsletter capture.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -209,13 +209,7 @@ export default function EditRegionLandingPage() {
   const [landing, setLanding] = useState<LandingData>({ ...EMPTY_LANDING });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!id) return;
-    load();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  async function load() {
+  const load = useCallback(async () => {
     const { data: r } = await supabase
       .from('regions')
       .select('id, slug, name, type, parent_id')
@@ -265,7 +259,13 @@ export default function EditRegionLandingPage() {
     }
 
     setLoading(false);
-  }
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+    load();
+  }, [id, load]);
+
 
   function update<K extends keyof LandingData>(key: K, value: LandingData[K]) {
     setLanding((prev) => ({ ...prev, [key]: value }));
