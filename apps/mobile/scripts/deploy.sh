@@ -19,7 +19,7 @@ set -a; . "$ROOT/.env"; set +a
 
 # Refuse to delete real pages. Hashed bundles, assets and `[param]` shells may go;
 # an exported route is a `.html` file, so only those count.
-deletions=$(aws s3 sync "$DIST/" "$BUCKET" --delete --dryrun | grep '^(dryrun) delete:' | sed "s|.*1774490745/||" | grep '\.html$' | grep -v '\[' || true)
+deletions=$(aws s3 sync "$DIST/" "$BUCKET" --delete --dryrun --exclude "404.html" | grep '^(dryrun) delete:' | sed "s|.*1774490745/||" | grep '\.html$' | grep -v '\[' || true)
 if [ -n "$deletions" ]; then
   echo "Refusing to deploy: this would delete real routes:" >&2; echo "$deletions" >&2; exit 1
 fi
