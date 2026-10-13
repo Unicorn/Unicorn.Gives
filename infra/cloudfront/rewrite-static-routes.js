@@ -9,7 +9,7 @@
  * extensionless path resolves them all.
  *
  * A miss falls through to CloudFront's custom error response, which serves
- * /+not-found.html with a real 404 status. The not-found page is the same
+ * /404.html (a copy of +not-found.html) with a real 404 status. The not-found page is the same
  * app shell, so client-only deep links (admin/[id], bingo/[slug]) still render
  * once the app hydrates — they just carry a 404 status, which is what search
  * engines should see for them anyway.
@@ -34,6 +34,13 @@ function handler(event) {
 
   if (uri === '/') {
     return request; // DefaultRootObject serves index.html
+  }
+
+  // S3 decodes a literal '+' in the key path as a space, so `/+not-found.html`
+  // and the `+not-found-<hash>.js` route chunk 404 unless the plus is encoded.
+  if (uri.indexOf('+') !== -1) {
+    uri = uri.split('+').join('%2B');
+    request.uri = uri;
   }
 
   if (uri.endsWith('/')) {
