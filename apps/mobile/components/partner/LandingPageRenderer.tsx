@@ -119,8 +119,8 @@ export function LandingPageRenderer({ data, partnerId }: LandingPageRendererProp
         inner = (
           <>
             {(data.custom_sections ?? []).map((section, i) => (
-              <CustomSection
-                key={`custom-${i}`}
+              // biome-ignore lint/suspicious/noArrayIndexKey: no stable id; render-only list
+              <CustomSection key={`custom-${i}`}
                 title={section.title}
                 body={section.body}
                 imageUrl={section.image_url}

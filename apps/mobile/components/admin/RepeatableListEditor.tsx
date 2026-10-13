@@ -74,6 +74,7 @@ export function RepeatableListEditor<T extends object>({
       {hint && <Text style={styles.hint}>{hint}</Text>}
 
       {items.map((item, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: items carry no id; position is the identity in a reorderable editor
         <View key={index} style={styles.itemCard}>
           <View style={styles.itemHeader}>
             <Text style={styles.itemIndex}>#{index + 1}</Text>

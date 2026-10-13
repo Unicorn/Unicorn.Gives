@@ -26,8 +26,8 @@ export function TeamSection({ members }: TeamSectionProps) {
       <View style={styles.inner}>
         <SectionHeading title="Meet Our Team" />
         <View style={styles.list}>
-          {members.map((member, i) => (
-            <View key={i} style={styles.card}>
+          {members.map((member) => (
+            <View key={member.name} style={styles.card}>
               {member.image_url ? (
                 <Image source={{ uri: member.image_url }} style={styles.photo} resizeMode="cover" />
               ) : (

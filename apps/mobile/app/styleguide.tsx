@@ -278,7 +278,7 @@ function FormControls() {
       <Text style={[s.inputLabel, { color: colors.neutral, marginTop: 12 }]}>Radio Buttons</Text>
       <View style={s.controlRow}>
         {['Option A', 'Option B', 'Option C'].map((label, i) => (
-          <Pressable key={i} onPress={() => setRadio(i)} style={s.radioRow}>
+          <Pressable key={label} onPress={() => setRadio(i)} style={s.radioRow}>
             <View style={[s.radioOuter, { borderColor: radio === i ? colors.primary : colors.outline }]}>
               {radio === i && <View style={[s.radioInner, { backgroundColor: colors.primary }]} />}
             </View>

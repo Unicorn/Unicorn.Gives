@@ -25,8 +25,8 @@ export function ServicesGrid({ items }: ServicesGridProps) {
       <View style={styles.inner}>
         <Text style={styles.heading}>Services</Text>
         <View style={styles.list}>
-          {items.map((item, i) => (
-            <View key={i} style={styles.item}>
+          {items.map((item) => (
+            <View key={item.title} style={styles.item}>
               <View style={styles.itemHeader}>
                 <Text style={styles.itemTitle}>{item.title}</Text>
                 {item.price && <Text style={styles.itemPrice}>{item.price}</Text>}

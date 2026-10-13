@@ -61,8 +61,8 @@ export function RegionCustomSection({ item }: RegionCustomSectionProps) {
               <Text style={[styles.title, { color: colors.neutral }]}>{item.title}</Text>
             ) : null}
             <View style={[styles.galleryGrid, isTablet && styles.galleryGridTablet]}>
-              {item.images.map((img, i) => (
-                <View key={i} style={[styles.galleryCell, isTablet && styles.galleryCellTablet]}>
+              {item.images.map((img) => (
+                <View key={img.url} style={[styles.galleryCell, isTablet && styles.galleryCellTablet]}>
                   <Image
                     source={{ uri: img.url }}
                     style={styles.galleryImage}

@@ -251,9 +251,9 @@ export function BookingFlow({ partnerId, service, teamMembers, contactPhone, onC
                   <Text style={styles.emptyText}>No available times for this date. Try another day.</Text>
                 ) : (
                   <View style={styles.timeGrid}>
-                    {slots.map((slot, i) => (
+                    {slots.map((slot) => (
                       <Pressable
-                        key={i}
+                        key={`${slot.start_at}-${slot.appointment_segments[0]?.team_member_id ?? ''}`}
                         style={[styles.timeCard, selectedSlot?.start_at === slot.start_at && styles.timeCardActive]}
                         onPress={() => { setSelectedSlot(slot); setStep('details'); }}
                       >

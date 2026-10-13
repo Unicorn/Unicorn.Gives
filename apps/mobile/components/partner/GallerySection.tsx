@@ -25,7 +25,7 @@ export function GallerySection({ images }: GallerySectionProps) {
         <Text style={styles.heading}>Gallery</Text>
         <View style={styles.grid}>
           {images.map((img, i) => (
-            <Pressable key={i} style={styles.thumb} onPress={() => setSelected(i)}>
+            <Pressable key={img.url} style={styles.thumb} onPress={() => setSelected(i)}>
               <Image source={{ uri: img.url }} style={styles.thumbImage} resizeMode="cover" />
               {img.caption && <Text style={styles.caption} numberOfLines={1}>{img.caption}</Text>}
             </Pressable>
