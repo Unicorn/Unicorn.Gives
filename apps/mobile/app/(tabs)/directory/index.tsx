@@ -9,6 +9,7 @@ import { Container } from '@/components/layout/Container';
 import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { getStaticDirectory } from '@/lib/community-snapshot';
+import { SeoHead } from '@/components/SeoHead';
 
 interface Partner {
   slug: string;
@@ -33,6 +34,7 @@ export default function PartnersDirectory() {
 
   return (
     <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <SeoHead title='Directory' description='Local business and community directory.' />
       <RegionHeroSection
         eyebrow="Directory"
         headline="Community"

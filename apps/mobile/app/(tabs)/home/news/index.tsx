@@ -13,6 +13,7 @@ import { eventDateBoxFromIso } from "@/lib/events/eventDateFormat";
 import { routes } from "@/lib/navigation";
 import { supabase } from "@/lib/supabase";
 import { getStaticNewsList } from "@/lib/community-snapshot";
+import { SeoHead } from "@/components/SeoHead";
 
 interface NewsItem {
 	id: string;
@@ -50,6 +51,7 @@ export default function NewsTab() {
 
 	return (
 		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
+			<SeoHead title="News" />
 			<RegionHeroSection
 				eyebrow={NEWS_TAB_HERO.eyebrow}
 				headline={NEWS_TAB_HERO.title}

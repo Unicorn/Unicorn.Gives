@@ -6,7 +6,7 @@
  */
 import { useMemo, useState } from 'react';
 import { View, Text, Pressable, ActivityIndicator, TextInput, ScrollView, StyleSheet, Linking } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTheme, fonts, fontSize, spacing, radii, breakpoints, type ThemeColors } from '@/constants/theme';
 import { useSquareServices, type SquareService, type SquareCategory } from '@/hooks/useSquareBookings';
 import { useHydratedDimensions } from '@/hooks/useHydrated';

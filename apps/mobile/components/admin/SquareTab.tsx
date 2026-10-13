@@ -3,7 +3,7 @@
  * Shows connection status, feature toggles, location picker, and sync controls.
  */
 import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useSquareConnection, type SquareFeatureConfig } from '@/hooks/useSquareConnection';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { useMemo } from 'react';

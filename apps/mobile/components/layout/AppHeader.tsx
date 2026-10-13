@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import { Link, useRouter, usePathname } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useAuth } from '@/lib/auth';
 import { useFeatureModules } from '@/lib/featureModules';
 import type { ModuleKey } from '@/constants/featureModules';

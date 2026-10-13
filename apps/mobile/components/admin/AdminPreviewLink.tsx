@@ -4,7 +4,7 @@
  */
 import { useMemo } from 'react';
 import { Pressable, Text, Linking, Platform, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 

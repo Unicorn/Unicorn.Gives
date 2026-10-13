@@ -20,6 +20,7 @@ import {
 } from "@/constants/hornContent";
 import { fonts, fontSize, radii, shadows, spacing, useTheme, type ThemeColors } from "@/constants/theme";
 import { routes } from "@/lib/navigation";
+import { SeoHead } from "@/components/SeoHead";
 
 export default function CommunityTab() {
 	const { colors } = useTheme();
@@ -27,6 +28,7 @@ export default function CommunityTab() {
 
 	return (
 		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
+			<SeoHead title="Community" />
 			<RegionHeroSection
 				eyebrow={HORN_HERO.eyebrow}
 				headline="The Community Center:"

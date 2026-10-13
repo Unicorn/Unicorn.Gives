@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { View, Text, Switch, StyleSheet, ActivityIndicator } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';

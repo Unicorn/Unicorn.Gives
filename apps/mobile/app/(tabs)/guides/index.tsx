@@ -10,6 +10,7 @@ import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSec
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
 import { getStaticGuides } from '@/lib/community-snapshot';
+import { SeoHead } from '@/components/SeoHead';
 
 interface Guide {
   id: string;
@@ -55,6 +56,7 @@ export default function GuidesIndex() {
 
   return (
     <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <SeoHead title='Guides' description='Step-by-step guides for common local tasks and services.' />
       <RegionHeroSection
         eyebrow="Civic Guides"
         headline="What do you need"

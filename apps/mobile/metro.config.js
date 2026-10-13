@@ -16,4 +16,7 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, 'node_modules'),
 ];
 
+// Subset web fonts ship as woff2 (see scripts/subset-fonts.ts); native keeps ttf.
+config.resolver.assetExts = [...config.resolver.assetExts, 'woff2'];
+
 module.exports = config;

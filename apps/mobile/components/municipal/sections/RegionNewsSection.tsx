@@ -4,7 +4,7 @@
  */
 import { StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Container } from '@/components/layout/Container';
 import {
   breakpoints,

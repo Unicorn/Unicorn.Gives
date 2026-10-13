@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { View, Text, Pressable, TextInput, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useAdminQuery } from '@/hooks/useAdminQuery';
 import { useAdminMutation } from '@/hooks/useAdminMutation';

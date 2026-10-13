@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "subset-font": "^2.9.0",
     "tsx": "^4.21.0",
     "typescript": "~5.9.2"
   },

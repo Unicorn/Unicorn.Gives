@@ -6,7 +6,10 @@
  * Accessors are typed by the caller: each page passes the row type its own
  * query returns, and the generator mirrors that query's columns.
  */
-import data from './community-snapshot-data.json';
+// The JSON is deliberately NOT imported here. Route chunks are split per page on
+// web, and a module imported by more than one route lands in the shared chunk
+// every visitor downloads. The section's layout (one chunk) imports the data and
+// registers it; pages read it through these accessors.
 
 type Row = Record<string, unknown>;
 type Snapshot = {
@@ -17,7 +20,12 @@ type Snapshot = {
   directory: { partners: Row[] };
 };
 
-const snap = data as unknown as Partial<Snapshot>;
+let snap: Partial<Snapshot> = {};
+
+/** Called once, at module scope, by app/(tabs)/_layout.tsx. */
+export function registerCommunitySnapshot(data: unknown) {
+  snap = data as Partial<Snapshot>;
+}
 
 export function getStaticGuides<T>(): T[] {
   return (snap.guides?.list ?? []) as T[];

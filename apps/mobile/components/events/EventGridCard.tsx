@@ -6,7 +6,7 @@
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 import type { Href } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Card } from '@/components/ui/Card';
 import { ContentCoverImage } from '@/components/ContentCoverImage';
 import {

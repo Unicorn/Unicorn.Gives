@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { View, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
 

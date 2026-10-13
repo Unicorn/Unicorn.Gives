@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Linking } from 'react-native';
 import { Link } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { supabase } from '@/lib/supabase';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';

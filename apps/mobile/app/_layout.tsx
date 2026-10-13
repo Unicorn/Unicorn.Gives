@@ -1,16 +1,5 @@
-import {
-  Manrope_400Regular,
-  Manrope_600SemiBold,
-  Manrope_700Bold,
-} from '@expo-google-fonts/manrope';
-import {
-  Newsreader_400Regular,
-  Newsreader_400Regular_Italic,
-  Newsreader_700Bold,
-} from '@expo-google-fonts/newsreader';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { MaterialIcons } from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -44,20 +33,32 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    // The icon font must be registered here too: @expo/vector-icons renders an
-    // empty <Text/> until Font.isLoaded() is true, and on the static render that
-    // is only true for fonts registered through useFonts. Without it the server
-    // emits blank icons while the client's first render (which sees the exported
-    // @font-face) draws glyphs — a hydration mismatch on every page with an icon.
-    ...MaterialIcons.font,
-    Manrope_400Regular,
-    Manrope_600SemiBold,
-    Manrope_700Bold,
-    Newsreader_400Regular,
-    Newsreader_400Regular_Italic,
-    Newsreader_700Bold,
-  });
+  // Subset fonts (scripts/subset-fonts.ts): Latin-only text faces and only the
+  // MaterialIcons glyphs the app references — ~120 KB per page instead of 1 MB.
+  // Web gets woff2, native ttf. `material` is the family @expo/vector-icons
+  // uses; registering it here is also what lets the static render draw icons
+  // (Font.isLoaded is only true on the server for fonts loaded this way).
+  const [loaded, error] = useFonts(
+    Platform.OS === 'web'
+      ? {
+          material: require('../assets/fonts/subset/MaterialIcons.woff2'),
+          Manrope_400Regular: require('../assets/fonts/subset/Manrope_400Regular.woff2'),
+          Manrope_600SemiBold: require('../assets/fonts/subset/Manrope_600SemiBold.woff2'),
+          Manrope_700Bold: require('../assets/fonts/subset/Manrope_700Bold.woff2'),
+          Newsreader_400Regular: require('../assets/fonts/subset/Newsreader_400Regular.woff2'),
+          Newsreader_400Regular_Italic: require('../assets/fonts/subset/Newsreader_400Regular_Italic.woff2'),
+          Newsreader_700Bold: require('../assets/fonts/subset/Newsreader_700Bold.woff2'),
+        }
+      : {
+          material: require('../assets/fonts/subset/MaterialIcons.ttf'),
+          Manrope_400Regular: require('../assets/fonts/subset/Manrope_400Regular.ttf'),
+          Manrope_600SemiBold: require('../assets/fonts/subset/Manrope_600SemiBold.ttf'),
+          Manrope_700Bold: require('../assets/fonts/subset/Manrope_700Bold.ttf'),
+          Newsreader_400Regular: require('../assets/fonts/subset/Newsreader_400Regular.ttf'),
+          Newsreader_400Regular_Italic: require('../assets/fonts/subset/Newsreader_400Regular_Italic.ttf'),
+          Newsreader_700Bold: require('../assets/fonts/subset/Newsreader_700Bold.ttf'),
+        },
+  );
 
   useEffect(() => {
     if (error) throw error;

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { View, Text, Pressable, Linking, Platform, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 import { useTheme, fonts, fontSize, spacing, radii, teal, type ThemeColors } from '@/constants/theme';
 import { SectionHeading } from './SectionHeading';

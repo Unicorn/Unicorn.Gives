@@ -8,6 +8,7 @@ import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { RegionHeroSection } from '@/components/municipal/sections/RegionHeroSection';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
+import { SeoHead } from '@/components/SeoHead';
 
 const DEFAULT_COUNTY = 'clare-county';
 
@@ -50,6 +51,7 @@ export default function GovernmentIndex() {
 
   return (
     <Wrapper style={styles.container} contentContainerStyle={styles.content}>
+      <SeoHead title='Government' description='Township, city, village and county government information.' />
       <RegionHeroSection
         eyebrow={county.type}
         headline={county.name}

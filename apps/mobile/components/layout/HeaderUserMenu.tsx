@@ -1,5 +1,5 @@
 import { View, Text, Pressable, Modal, StyleSheet, Platform } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/lib/auth';
 import { routes, toHref } from '@/lib/navigation';

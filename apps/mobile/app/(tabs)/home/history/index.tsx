@@ -9,6 +9,7 @@ import { HISTORY_TAB_HERO } from "@/constants/homeDiscoverHistory";
 import { fonts, fontSize, letterSpacing, radii, shadows, spacing, useTheme, type ThemeColors } from "@/constants/theme";
 import { getLoreDoc, LORE_ORDER } from "@/lib/lore";
 import { routes } from "@/lib/navigation";
+import { SeoHead } from "@/components/SeoHead";
 
 export default function HistoryTab() {
 	const { colors } = useTheme();
@@ -16,6 +17,7 @@ export default function HistoryTab() {
 
 	return (
 		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
+			<SeoHead title="History" />
 			<RegionHeroSection
 				eyebrow={HISTORY_TAB_HERO.eyebrow}
 				headline={HISTORY_TAB_HERO.title}

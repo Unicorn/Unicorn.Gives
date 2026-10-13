@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Switch } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { FormField } from './fields/FormField';

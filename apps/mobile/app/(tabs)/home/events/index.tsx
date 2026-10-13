@@ -1,5 +1,11 @@
 import { EventsList } from '@/components/events/EventsList';
+import { SeoHead } from '@/components/SeoHead';
 
 export default function EventsTab() {
-  return <EventsList />;
+  return (
+    <>
+      <SeoHead title="Events" />
+      <EventsList />
+    </>
+  );
 }
