@@ -69,8 +69,15 @@ function isPrivateRoute(route: string): boolean {
   return /^\/(admin|user|sign-in|sign-up|\+not-found|_sitemap)(\/|$)/.test(route);
 }
 
+/** Section label for signed-in surfaces that carry no route metadata. */
+function privateTitle(route: string): string {
+  if (route.startsWith('/admin')) return 'Admin';
+  if (route.startsWith('/user')) return 'Account';
+  return SITE_NAME;
+}
+
 function headBlock(route: string, meta: RouteMeta): string {
-  const title = `${meta.title} · ${SITE_NAME}`;
+  const title = meta.title === SITE_NAME ? SITE_NAME : `${meta.title} · ${SITE_NAME}`;
   const canonical = `${SITE_URL}${route === '/' ? '/' : route}`;
   const img = absolute(meta.image);
   const parts = [
@@ -130,8 +137,9 @@ function main() {
     const route = routeForFile(file);
     let meta = routes[route];
     if (!meta && isPrivateRoute(route)) {
-      // No title worth inventing, but these must still be marked noindex.
-      meta = { title: SITE_NAME };
+      // Signed-in surfaces have no DB-backed title, but they still need one
+      // that is not the site name twice. They are marked noindex below.
+      meta = { title: privateTitle(route) };
     }
     if (!meta) {
       skipped++;
