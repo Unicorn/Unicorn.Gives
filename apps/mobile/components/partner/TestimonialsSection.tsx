@@ -25,8 +25,8 @@ export function TestimonialsSection({ items }: TestimonialsSectionProps) {
       <View style={styles.inner}>
         <Text style={styles.heading}>What People Say</Text>
         <View style={styles.grid}>
-          {items.map((item, i) => (
-            <View key={i} style={styles.card}>
+          {items.map((item) => (
+            <View key={item.quote} style={styles.card}>
               <MaterialIcons name="format-quote" size={24} color={colors.primary} />
               <Text style={styles.quote}>{item.quote}</Text>
               <View style={styles.attribution}>

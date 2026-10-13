@@ -94,7 +94,7 @@ export function TownshipDocumentScreen({
             <View style={[styles.card, { backgroundColor: colors.surface }]}>
               <Text style={[styles.cardTitle, { color: colors.neutral }]}>Quick Facts</Text>
               {meta.map((item, i) => (
-                <View key={i} style={[styles.metaRow, i < meta.length - 1 && { borderBottomWidth: 1, borderBottomColor: colors.outlineVariant }]}>
+                <View key={item.label} style={[styles.metaRow, i < meta.length - 1 && { borderBottomWidth: 1, borderBottomColor: colors.outlineVariant }]}>
                   <MaterialIcons name={item.icon as any} size={20} color={colors.neutralVariant} />
                   <View style={styles.metaTextBlock}>
                     <Text style={[styles.metaLabel, { color: colors.neutralVariant }]}>{item.label}</Text>
@@ -106,11 +106,11 @@ export function TownshipDocumentScreen({
           )}
 
           {/* Content Sections */}
-          {sections.map((section, si) => (
-            <View key={si} style={[styles.card, { backgroundColor: colors.surface }]}>
+          {sections.map((section) => (
+            <View key={section.title} style={[styles.card, { backgroundColor: colors.surface }]}>
               <Text style={[styles.cardTitle, { color: colors.neutral }]}>{section.title}</Text>
-              {section.items.map((item, ii) => (
-                <View key={ii} style={styles.bulletRow}>
+              {section.items.map((item) => (
+                <View key={item} style={styles.bulletRow}>
                   <Text style={[styles.bullet, { color: colors.primary }]}>{'  \u2022  '}</Text>
                   <Text style={[styles.bulletText, { color: colors.neutral }]}>{item}</Text>
                 </View>
@@ -123,7 +123,7 @@ export function TownshipDocumentScreen({
             <View style={[styles.card, { backgroundColor: colors.surface }]}>
               <Text style={[styles.cardTitle, { color: colors.neutral }]}>What's Inside</Text>
               {tableOfContents.map((chapter, i) => (
-                <View key={i} style={[styles.tocRow, i < tableOfContents.length - 1 && { borderBottomWidth: 1, borderBottomColor: colors.outlineVariant }]}>
+                <View key={chapter} style={[styles.tocRow, i < tableOfContents.length - 1 && { borderBottomWidth: 1, borderBottomColor: colors.outlineVariant }]}>
                   <Text style={[styles.tocNumber, { color: colors.primary }]}>{i + 1}</Text>
                   <Text style={[styles.tocText, { color: colors.neutral }]}>{chapter}</Text>
                 </View>

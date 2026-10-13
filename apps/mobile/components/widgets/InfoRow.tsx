@@ -47,8 +47,8 @@ export function InfoRowGroup({ title, rows }: InfoRowGroupProps) {
     <View style={[styles.group, { backgroundColor: colors.surface }]}>
       {title && <Text style={[styles.groupTitle, { color: colors.primary }]}>{title}</Text>}
       <View style={styles.groupRows}>
-        {rows.map((row, i) => (
-          <InfoRow key={i} {...row} />
+        {rows.map((row) => (
+          <InfoRow key={row.label} {...row} />
         ))}
       </View>
     </View>

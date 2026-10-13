@@ -97,9 +97,13 @@ export function AdminImageUpload({
               </View>
             </View>
           ) : (
-            <div
+            <button
+              type="button"
               style={{
                 display: 'flex',
+                width: '100%',
+                font: 'inherit',
+                color: 'inherit',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -137,7 +141,7 @@ export function AdminImageUpload({
                   <Text style={styles.dropHint}>PNG, JPEG, WebP, GIF · Max 20 MB</Text>
                 </>
               )}
-            </div>
+            </button>
           )}
 
           {/* Hidden file input */}

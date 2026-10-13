@@ -42,7 +42,9 @@ export default function PartnersAdminPage() {
       if (partnerData) setPartners(partnerData as Partner[]);
       if (landingData) {
         const map = new Map<string, string>();
-        (landingData as LandingStatus[]).forEach((lp) => map.set(lp.partner_id, lp.status));
+        (landingData as LandingStatus[]).forEach((lp) => {
+          map.set(lp.partner_id, lp.status);
+        });
         setLandingStatuses(map);
       }
       setLoading(false);

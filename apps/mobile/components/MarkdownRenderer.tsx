@@ -23,6 +23,35 @@ const READING_MEASURE = 660;
 export function MarkdownRenderer({ content }: { content: string }) {
 	const { colors } = useTheme();
 	const router = useRouter();
+	const openMarkdownUrl = useCallback(
+		(rawUrl: string) => {
+			const normalized = normalizeMarkdownUrl(rawUrl);
+			if (
+				normalized.startsWith("http://") ||
+				normalized.startsWith("https://") ||
+				normalized.startsWith("mailto:") ||
+				normalized.startsWith("tel:") ||
+				normalized.startsWith("#")
+			) {
+				void Linking.openURL(normalized);
+				return;
+			}
+
+			const mapped = contentPathToAppHref(normalized);
+			if (mapped != null) {
+				router.push(mapped);
+				return;
+			}
+
+			if (normalized.startsWith("/")) {
+				router.push(toHref(normalized));
+				return;
+			}
+
+			void Linking.openURL(normalized);
+		},
+		[router],
+	);
 
 	if (!content) return null;
 
@@ -84,37 +113,6 @@ export function MarkdownRenderer({ content }: { content: string }) {
 		);
 	}
 
-	const openMarkdownUrl = useCallback(
-		(rawUrl: string) => {
-			const normalized = normalizeMarkdownUrl(rawUrl);
-			if (
-				normalized.startsWith("http://") ||
-				normalized.startsWith("https://") ||
-				normalized.startsWith("mailto:") ||
-				normalized.startsWith("tel:") ||
-				normalized.startsWith("#")
-			) {
-				void Linking.openURL(normalized);
-				return;
-			}
-
-			const mapped = contentPathToAppHref(normalized);
-			if (mapped != null) {
-				router.push(mapped);
-				return;
-			}
-
-			if (normalized.startsWith("/")) {
-				router.push(toHref(normalized));
-				return;
-			}
-
-			void Linking.openURL(normalized);
-		},
-		[router],
-	);
-
-	if (!content) return null;
 	const blocks = content.split("\n\n");
 
 	return (

@@ -49,7 +49,7 @@ export function BingoGrid({
         const Wrapper = readOnly || !onToggle ? View : Pressable;
         return (
           <Wrapper
-            key={i}
+            key={cell.squareId ?? 'free'}
             style={[
               styles.cell,
               cellSize > 0 && { width: cellSize, height: cellSize },
