@@ -23,8 +23,8 @@ type Row = Record<string, unknown>;
 async function main() {
   const url = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
   const key = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
+  // No timestamp: the file is committed and must only change when content does.
   const out = {
-    generatedAt: new Date().toISOString(),
     guides: { list: [] as Row[], bySlug: {} as Record<string, { guide: Row; contacts: Row[]; forms: Row[] }> },
     news: { list: [] as Row[], bySlug: {} as Record<string, Row> },
     events: { list: [] as Row[], bySlug: {} as Record<string, Row> },
