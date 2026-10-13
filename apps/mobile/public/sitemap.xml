@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://unicorn.gives/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/directory</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/government</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/government/clare-county</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
@@ -340,6 +339,4 @@
   <url><loc>https://unicorn.gives/partners/the-mane/book</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/partners/the-mane/hours</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://unicorn.gives/partners/the-mane/services</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://unicorn.gives/sign-in</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://unicorn.gives/sign-up</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
 </urlset>

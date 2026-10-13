@@ -104,13 +104,12 @@ pnpm install
 # 1. Build (generates partner static params + sitemap + Expo web export)
 pnpm nx run mobile:build
 
-# 2. Deploy to S3 (source env for AWS creds)
-source .env
-aws s3 sync apps/mobile/dist/ s3://unicorn-gives-web-391668783184-1774490745 --delete
-
-# 3. Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id ER9WIPUKON9J3 --paths "/*"
+# 2. Deploy: syncs to S3 with Cache-Control (immutable for hashed assets, revalidate for
+#    pages), refuses to delete real routes, invalidates CloudFront and waits for it.
+apps/mobile/scripts/deploy.sh
 ```
+
+Never run a bare `aws s3 sync` — it uploads without `Cache-Control`, and every visitor then revalidates the 4 MB bundle and 40 font files on each page view. CloudFront settings (custom error responses, security headers policy, certificate, www redirect) are documented in `infra/cloudfront/README.md`.
 
 ### Environment variables
 
