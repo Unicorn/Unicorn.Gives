@@ -10,6 +10,7 @@ import {
 } from '@expo-google-fonts/newsreader';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -44,6 +45,12 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
+    // The icon font must be registered here too: @expo/vector-icons renders an
+    // empty <Text/> until Font.isLoaded() is true, and on the static render that
+    // is only true for fonts registered through useFonts. Without it the server
+    // emits blank icons while the client's first render (which sees the exported
+    // @font-face) draws glyphs — a hydration mismatch on every page with an icon.
+    ...MaterialIcons.font,
     Manrope_400Regular,
     Manrope_600SemiBold,
     Manrope_700Bold,

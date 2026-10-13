@@ -22,8 +22,11 @@ interface FeatureModulesValue {
 
 const FeatureModulesContext = createContext<FeatureModulesValue | null>(null);
 
-// Synchronous read is safe here: HydrationGate mounts this provider only after
-// hydration, so the cached value never participates in a hydration pass.
+// The cache may only be applied after mount. Routes that server-render (see
+// lib/ssrRoutes.ts) hydrate with this provider in the tree, and the server has
+// no localStorage — so reading it during the first render makes the client's
+// first render disagree with the exported HTML whenever cached flags differ
+// from the defaults (React error #418).
 function readCache(): ModuleFlags | null {
   if (Platform.OS !== 'web' || typeof window === 'undefined') return null;
   try {
@@ -35,8 +38,14 @@ function readCache(): ModuleFlags | null {
 }
 
 export function FeatureModulesProvider({ children }: { children: ReactNode }) {
-  const [flags, setFlags] = useState<ModuleFlags>(() => readCache() ?? DEFAULT_MODULE_FLAGS);
+  const [flags, setFlags] = useState<ModuleFlags>(DEFAULT_MODULE_FLAGS);
   const [loaded, setLoaded] = useState(false);
+
+  // Apply the cached flags once hydrated, before the network round-trip lands.
+  useEffect(() => {
+    const cached = readCache();
+    if (cached) setFlags(cached);
+  }, []);
 
   const refresh = useCallback(async () => {
     const { data, error } = await supabase

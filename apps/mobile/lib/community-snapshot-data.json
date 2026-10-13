@@ -1,0 +1,1880 @@
+{
+  "generatedAt": "2026-10-13T22:40:01.078Z",
+  "guides": {
+    "list": [
+      {
+        "id": "5088a24c-d58b-4cac-bda1-384906df721d",
+        "slug": "animal-shelter-adoption",
+        "title": "Adopting from the Clare County Animal Shelter",
+        "description": "How to adopt a pet from the county animal shelter",
+        "category": "services",
+        "icon": "🐾",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "2e208953-932c-4b5b-b9a2-ccdacddac5db",
+        "slug": "appeal-assessment",
+        "title": "Appealing Your Property Assessment",
+        "description": "How to challenge your property tax assessment in Grant Township, Clare County, Michigan. Board of Review process and Michigan Tax Tribunal options.",
+        "category": "taxes",
+        "icon": "📊",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "29c32d81-5f37-4893-98ec-03a3767d0281",
+        "slug": "zoning-variance",
+        "title": "Applying for a Zoning Variance",
+        "description": "How to apply for a zoning variance through the Grant Township Zoning Board of Appeals in Clare County, Michigan.",
+        "category": "property",
+        "icon": "⚖️",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "deff0613-20aa-4f2b-80cb-58df27ef8142",
+        "slug": "build-pole-barn",
+        "title": "Building a Pole Barn or Accessory Building",
+        "description": "Step-by-step guide to building a pole barn, garage, or accessory building in Grant Township, Clare County. Permits, setbacks, and inspections explained.",
+        "category": "property",
+        "icon": "🏗️",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "00f6201c-3007-4c95-ad36-7304a7b780cd",
+        "slug": "principal-residence-exemption",
+        "title": "Claiming the Principal Residence Exemption",
+        "description": "How to claim the Principal Residence Exemption (PRE) in Grant Township, Clare County, Michigan to reduce your property taxes.",
+        "category": "taxes",
+        "icon": "🏠",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "31f22398-e7db-45a8-bcbe-03010dde3269",
+        "slug": "veterans-services",
+        "title": "Clare County Veterans Services",
+        "description": "Benefits assistance, claims support, and resources for veterans",
+        "category": "services",
+        "icon": "🎖️",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "7151f31a-1467-415f-b29f-a145e8d5e8b6",
+        "slug": "spongy-moth",
+        "title": "Dealing with Spongy Moths and Invasive Species",
+        "description": "How to identify, report, and treat spongy moths and other invasive species in Clare County, Michigan. Tool rentals, treatment options, and local resources.",
+        "category": "nature",
+        "icon": "🦋",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "d57ac30a-3ee3-4c48-8d2a-23803d3a54fd",
+        "slug": "property-split",
+        "title": "Dividing or Splitting Your Property",
+        "description": "How to split or divide your land in Grant Township, Clare County, Michigan. Requirements, applications, and Planning Commission review process.",
+        "category": "property",
+        "icon": "📐",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "6f9c5a72-35c6-409e-ba20-63421e1c35e4",
+        "slug": "building-permit",
+        "title": "Getting a Building Permit",
+        "description": "How to get a building permit in Clare County, Michigan. When you need one, where to apply, and what inspections are required.",
+        "category": "property",
+        "icon": "🔨",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "4dc158df-e5af-490b-849a-024c6b3f7446",
+        "slug": "burn-permit",
+        "title": "Getting a Burn Permit",
+        "description": "How to get a burn permit in Clare County, Michigan. Rules for open burning, what you can and can't burn, and fire safety contacts.",
+        "category": "safety",
+        "icon": "🔥",
+        "jurisdiction": "state"
+      },
+      {
+        "id": "4c4fa248-677e-475b-854d-94e421157d9e",
+        "slug": "soil-erosion-permit",
+        "title": "Getting a Soil Erosion Permit",
+        "description": "When you need a soil erosion permit in Clare County, Michigan, how to apply, and what inspections are required for projects near water or on large sites.",
+        "category": "nature",
+        "icon": "🏗️",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "29ad4f37-a1e2-45df-a99b-cefbcec3f928",
+        "slug": "free-forestry-advice",
+        "title": "Getting Free Forestry Advice",
+        "description": "How to get free professional forestry advice in Clare County, Michigan through the Conservation District Forester, including habitat planning, pest management, and federal program connections.",
+        "category": "nature",
+        "icon": "🌲",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "3b367afd-5cd3-4273-8016-3bcf86b538a6",
+        "slug": "native-plants",
+        "title": "Getting Started with Native Plants",
+        "description": "How to buy native plants and trees in Clare County, Michigan through the Conservation District plant sale, plus invasive species tools and local conservation resources.",
+        "category": "nature",
+        "icon": "🌿",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "b0b88883-399b-454a-a5ed-e79c852e9d1e",
+        "slug": "blight-notice",
+        "title": "I Got a Blight or Nuisance Notice",
+        "description": "What to do if you receive a blight or nuisance violation notice in Grant Township, Clare County, Michigan. Steps to comply, appeal, and avoid fines.",
+        "category": "property",
+        "icon": "📋",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "00b4e83f-8231-4c42-b44e-6f76658c31ed",
+        "slug": "dog-license",
+        "title": "Licensing Your Dog",
+        "description": "How to license your dog in Clare County, Michigan, including costs, where to apply, rabies vaccination requirements, and late fees.",
+        "category": "services",
+        "icon": "🐕",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "c417d8e4-ce52-4965-aebe-688473d811eb",
+        "slug": "pay-property-taxes",
+        "title": "Paying Your Property Taxes",
+        "description": "How to pay property taxes in Grant Township, Clare County, Michigan. Payment methods, deadlines, and what happens if you pay late.",
+        "category": "taxes",
+        "icon": "💰",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "9bf643e2-859d-4854-87d7-de33e42fe6a8",
+        "slug": "rv-on-vacant-lot",
+        "title": "Putting an RV or Temporary Storage on a Vacant Lot",
+        "description": "Rules for placing an RV, camper, or temporary storage on vacant property in Grant Township, Clare County, Michigan.",
+        "category": "property",
+        "icon": "🚐",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "cc4f9766-1db8-4135-abc4-726d8227e5bf",
+        "slug": "qualified-forest-program",
+        "title": "Qualified Forest Program Tax Savings",
+        "description": "How the Qualified Forest Program works in Michigan. Save on property taxes if you own 20+ acres of forested land in Clare County.",
+        "category": "taxes",
+        "icon": "🌲",
+        "jurisdiction": "state"
+      },
+      {
+        "id": "90bc6780-9b4d-4243-96d8-0de6da7d4dfe",
+        "slug": "register-to-vote",
+        "title": "Registering to Vote and Absentee Ballots",
+        "description": "How to register to vote, request an absentee ballot, and find your polling location in Clare County, Michigan.",
+        "category": "government",
+        "icon": "🗳️",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "663bf428-4458-4c5b-b532-301e52244195",
+        "slug": "report-non-emergency",
+        "title": "Reporting a Non-Emergency to the Sheriff",
+        "description": "How to report non-emergency incidents to the Clare County Sheriff, file reports, get accident reports, fingerprinting, and animal control contacts.",
+        "category": "safety",
+        "icon": "🛡️",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "859664e2-b186-4aae-8041-7bd294242dce",
+        "slug": "drain-commissioner",
+        "title": "Reporting Drainage Issues",
+        "description": "How to report flooding, drainage problems, or ditch maintenance needs",
+        "category": "property",
+        "icon": "🌊",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "51bb2101-1f7b-4883-8fa1-74e429dcfad6",
+        "slug": "county-road-issues",
+        "title": "Reporting Road Problems",
+        "description": "How to report potholes, road damage, or maintenance needs on county roads",
+        "category": "services",
+        "icon": "🚧",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "d1f880a0-133f-4818-89a7-74909f4d9d46",
+        "slug": "emergency-alerts",
+        "title": "Signing Up for Emergency Alerts",
+        "description": "How to sign up for emergency alerts in Clare County, Michigan, including text alerts, Smart911, text-to-911, and NOAA weather radio information.",
+        "category": "safety",
+        "icon": "🚨",
+        "jurisdiction": "county"
+      },
+      {
+        "id": "5f5102ff-995e-4d4f-9194-19b7ad6e24ff",
+        "slug": "foia-request",
+        "title": "Submitting a FOIA Request",
+        "description": "How to submit a Freedom of Information Act (FOIA) request in Clare County, Michigan at the township or county level, including timelines, fees, and appeal process.",
+        "category": "government",
+        "icon": "📄",
+        "jurisdiction": "township"
+      },
+      {
+        "id": "355743c6-6eb5-44db-8394-730fd232deda",
+        "slug": "county-gis-maps",
+        "title": "Using Clare County GIS Maps",
+        "description": "How to look up property information, parcels, and zoning using the county GIS system",
+        "category": "property",
+        "icon": "🗺️",
+        "jurisdiction": "county"
+      }
+    ],
+    "bySlug": {
+      "animal-shelter-adoption": {
+        "guide": {
+          "id": "5088a24c-d58b-4cac-bda1-384906df721d",
+          "slug": "animal-shelter-adoption",
+          "title": "Adopting from the Clare County Animal Shelter",
+          "description": "How to adopt a pet from the county animal shelter",
+          "body": "The Clare County Animal Shelter is open for adoptions 10am to 4pm, Monday through Friday. Located in Harrison. Walk-ins welcome to view available animals. Adoption fees vary. The shelter also handles stray animal reports and animal control services. After-hours animal emergencies: (989) 539-1336 (Central Dispatch).",
+          "category": "services",
+          "scenario": "I want to adopt a dog or cat — how does the county shelter work?",
+          "icon": "🐾",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-26",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-26T05:33:00.606202+00:00",
+          "published_at": "2026-03-26T05:33:00.606202+00:00"
+        },
+        "contacts": [
+          {
+            "id": "190f30f4-6d7c-4a54-9a7e-2854f897a2a9",
+            "guide_id": "5088a24c-d58b-4cac-bda1-384906df721d",
+            "name": "Bob Dodson",
+            "role": "Animal Shelter Director",
+            "phone": "(989) 539-3221",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": []
+      },
+      "appeal-assessment": {
+        "guide": {
+          "id": "2e208953-932c-4b5b-b9a2-ccdacddac5db",
+          "slug": "appeal-assessment",
+          "title": "Appealing Your Property Assessment",
+          "description": "How to challenge your property tax assessment in Grant Township, Clare County, Michigan. Board of Review process and Michigan Tax Tribunal options.",
+          "body": "<p>Every year, the township assessor determines the assessed value of your property. If you believe your assessment is too high — meaning it does not reflect what your property would actually sell for — you have the right to appeal.</p>\n<h2>Steps to Appeal</h2>\n<ol>\n<li><strong>Review your assessment notice.</strong> You will receive it in February. It shows your property&#39;s assessed value (which should be roughly 50% of market value) and taxable value. Make sure the property details (acreage, square footage, number of bedrooms) are correct.</li>\n<li><strong>Talk to the assessor first.</strong> Call Casey Guthrie at (231) 350-9123 before the Board of Review meets. Sometimes errors in property data can be corrected without a formal appeal. Casey can explain how your value was calculated.</li>\n<li><strong>Gather your evidence.</strong> Strong appeals include:<ul>\n<li>Recent sale prices of comparable properties nearby</li>\n<li>A recent appraisal of your property</li>\n<li>Photos showing condition issues that affect value</li>\n<li>Documentation of damage, flooding, or other problems</li>\n</ul>\n</li>\n<li><strong>Attend the March Board of Review.</strong> The Board of Review meets in March (exact dates are posted at the township office and on the website). You can appear in person or submit a written appeal by letter. Bring copies of all your evidence.</li>\n<li><strong>Present your case clearly.</strong> Explain why you believe the assessed value exceeds 50% of your property&#39;s true market value. Stick to facts and comparable sales — emotion will not move the board.</li>\n<li><strong>Receive the decision.</strong> The Board of Review will notify you of their decision in writing.</li>\n</ol>\n<h2>If You Disagree with the Board of Review</h2>\n<p>You can appeal further to the <strong>Michigan Tax Tribunal</strong>. For residential property valued under $100,000, use the Small Claims Division (simpler, no lawyer needed). The filing deadline is <strong>July 31</strong> of the tax year. Visit <a href=\"https://michigan.gov/taxtrib\">michigan.gov/taxtrib</a> for forms and instructions.</p>\n<h2>Key Details</h2>\n<ul>\n<li><strong>The Board of Review cannot raise your assessment</strong> based on your appeal. You will not be penalized for showing up.</li>\n<li><strong>You must appeal to the Board of Review first</strong> before going to the Michigan Tax Tribunal.</li>\n<li><strong>Deadline matters.</strong> If you miss the March Board of Review, your next chance is the following year (with limited exceptions for July and December sessions).</li>\n</ul>\n",
+          "category": "taxes",
+          "scenario": "I think my property assessment is wrong — how do I appeal?",
+          "icon": "📊",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "902f7477-d9b4-4232-9ac0-75f32c925d36",
+            "guide_id": "2e208953-932c-4b5b-b9a2-ccdacddac5db",
+            "name": "Casey Guthrie",
+            "role": "Township Assessor",
+            "phone": "(231) 350-9123",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "5de1e45a-89d0-4b67-a0c2-0d5584d33510",
+            "guide_id": "2e208953-932c-4b5b-b9a2-ccdacddac5db",
+            "name": "Grant Township Board of Review",
+            "role": "Board of Review",
+            "phone": "(989) 588-9841",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": []
+      },
+      "zoning-variance": {
+        "guide": {
+          "id": "29c32d81-5f37-4893-98ec-03a3767d0281",
+          "slug": "zoning-variance",
+          "title": "Applying for a Zoning Variance",
+          "description": "How to apply for a zoning variance through the Grant Township Zoning Board of Appeals in Clare County, Michigan.",
+          "body": "<p>A zoning variance lets you do something that the zoning ordinance normally would not allow — like building closer to a property line than the setback requires, or putting a structure on a lot that does not quite meet size requirements. Variances are granted by the Zoning Board of Appeals (ZBA), not the Zoning Administrator.</p>\n<h2>When You Need a Variance</h2>\n<p>You need a variance when your project does not meet the standard zoning rules and there is no other way to accomplish it. Common examples include:</p>\n<ul>\n<li>A setback that cannot be met due to lot shape or size</li>\n<li>A building that slightly exceeds height or coverage limits</li>\n<li>A use that is not quite permitted in your zone but is close</li>\n</ul>\n<p>A variance is <strong>not</strong> a way around the rules — you must show that strict application of the ordinance creates an unnecessary hardship specific to your property.</p>\n<h2>Steps to Apply</h2>\n<ol>\n<li><strong>Confirm you need a variance.</strong> Talk to Dick Hassberger at (989) 588-9841 ext. 5 first. Sometimes there is a simpler path, like adjusting your plans to meet the setback.</li>\n<li><strong>Fill out the ZBA Application for Variance.</strong> Describe your property, your proposed project, and why you cannot meet the standard requirements. Be specific about the hardship.</li>\n<li><strong>Submit the application and fee.</strong> Turn it in to the township office. The application fee covers the cost of the public hearing notice.</li>\n<li><strong>Public hearing notice goes out.</strong> The township notifies neighboring property owners by mail and publishes a notice in the local newspaper. This happens at least 15 days before the hearing.</li>\n<li><strong>Attend the ZBA hearing.</strong> Present your case to the board. Bring a site plan, photos, and any supporting documents. Neighbors may speak for or against your request.</li>\n<li><strong>ZBA makes a decision.</strong> The board votes at the hearing or shortly after. They can approve, deny, or approve with conditions.</li>\n</ol>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Application fee:</strong> Typically $200-$400 (covers public notice costs).</li>\n<li><strong>Timeline:</strong> 4-6 weeks from application to hearing, depending on the ZBA meeting schedule.</li>\n<li><strong>Approval is not guaranteed.</strong> The ZBA must find that the hardship is unique to your property and not self-created.</li>\n</ul>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Claiming financial hardship.</strong> The fact that meeting the setback makes your project more expensive is generally not enough. The hardship must relate to the physical characteristics of your property.</li>\n<li><strong>Starting work before getting the variance.</strong> If you build first and apply later, the ZBA is less likely to be sympathetic.</li>\n<li><strong>Not attending the hearing.</strong> If you do not show up, the ZBA will likely deny your application.</li>\n</ul>\n",
+          "category": "property",
+          "scenario": "I need a zoning variance — how does that work?",
+          "icon": "⚖️",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "e72316ec-5d21-43e2-a9fb-f95b0e09f48b",
+            "guide_id": "29c32d81-5f37-4893-98ec-03a3767d0281",
+            "name": "Tamara McCaslin",
+            "role": "ZBA Chair",
+            "phone": "(989) 588-9841",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "9c3771b5-c8dc-4acb-93f7-2a431ffd7854",
+            "guide_id": "29c32d81-5f37-4893-98ec-03a3767d0281",
+            "name": "Dick Hassberger",
+            "role": "Zoning Administrator",
+            "phone": "(989) 588-9841 ext. 5",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": [
+          {
+            "id": "af2400ce-81f3-40fe-857d-8ad0076e2e2b",
+            "guide_id": "29c32d81-5f37-4893-98ec-03a3767d0281",
+            "name": "ZBA Application for Variance",
+            "url": "/forms/zba-variance-application.pdf",
+            "format": "PDF",
+            "display_order": 0
+          }
+        ]
+      },
+      "build-pole-barn": {
+        "guide": {
+          "id": "deff0613-20aa-4f2b-80cb-58df27ef8142",
+          "slug": "build-pole-barn",
+          "title": "Building a Pole Barn or Accessory Building",
+          "description": "Step-by-step guide to building a pole barn, garage, or accessory building in Grant Township, Clare County. Permits, setbacks, and inspections explained.",
+          "body": "<p>Putting up a pole barn, detached garage, or shed is one of the most common building projects in the township. You will need approvals from two places — the township for zoning and the county for building — so plan ahead.</p>\n<h2>Steps to Get Started</h2>\n<ol>\n<li><strong>Check your zoning district.</strong> Call Dick Hassberger at (989) 588-9841 ext. 5 to confirm what is allowed on your parcel. Residential, agricultural, and commercial zones have different rules for accessory buildings.</li>\n<li><strong>Know your setbacks.</strong> Accessory buildings typically must be set back a minimum distance from property lines, roads, and your primary structure. Setbacks vary by zone — Dick can tell you the exact numbers for your property.</li>\n<li><strong>Apply for a township zoning permit.</strong> Submit the Zoning Permit Application to the township office with a site plan showing the building location, dimensions, and distances to property lines.</li>\n<li><strong>Apply for a county building permit.</strong> Once your zoning permit is approved, contact the Clare County Building Department at (989) 539-2761. You will need construction plans, including foundation details and structural specs.</li>\n<li><strong>Schedule inspections.</strong> The county requires inspections at key stages — typically foundation, framing, and final. Do not pour concrete or close up walls before the inspector signs off.</li>\n<li><strong>Get your certificate of occupancy.</strong> After the final inspection passes, you are good to go.</li>\n</ol>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Cost:</strong> Township zoning permits are typically $50-$100. County building permits vary by project size.</li>\n<li><strong>Timeline:</strong> Allow 2-4 weeks for permit processing. Do not start building before both permits are in hand.</li>\n<li><strong>Size limits:</strong> Accessory buildings generally cannot be larger than your primary structure. Confirm the maximum allowed square footage for your zone.</li>\n</ul>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Skipping the zoning permit.</strong> The county will not issue a building permit without township zoning approval first.</li>\n<li><strong>Building too close to the property line.</strong> This is the most common violation and can result in an order to move or remove the structure.</li>\n<li><strong>Starting work before permits are issued.</strong> Building without permits can result in fines, a stop-work order, or being required to tear down the structure.</li>\n</ul>\n",
+          "category": "property",
+          "scenario": "I want to build a pole barn or accessory building",
+          "icon": "🏗️",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "2cbdad74-2141-434f-a75e-fb942d235e63",
+            "guide_id": "deff0613-20aa-4f2b-80cb-58df27ef8142",
+            "name": "Dick Hassberger",
+            "role": "Zoning Administrator",
+            "phone": "(989) 588-9841 ext. 5",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "ccf53d32-ddae-4a87-b730-7907e20ed3c2",
+            "guide_id": "deff0613-20aa-4f2b-80cb-58df27ef8142",
+            "name": "Clare County Building Department",
+            "role": "Building Inspector",
+            "phone": "(989) 539-2761",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": [
+          {
+            "id": "408e4bbb-31bc-45f8-be23-6842f0bf8a57",
+            "guide_id": "deff0613-20aa-4f2b-80cb-58df27ef8142",
+            "name": "Zoning Permit Application",
+            "url": "/forms/zoning-permit-application.pdf",
+            "format": "PDF",
+            "display_order": 0
+          },
+          {
+            "id": "f3184ffc-6a9b-4f05-888b-43236f6c4355",
+            "guide_id": "deff0613-20aa-4f2b-80cb-58df27ef8142",
+            "name": "Building Permit Application",
+            "url": "/forms/building-permit-application.pdf",
+            "format": "PDF",
+            "display_order": 1
+          }
+        ]
+      },
+      "principal-residence-exemption": {
+        "guide": {
+          "id": "00f6201c-3007-4c95-ad36-7304a7b780cd",
+          "slug": "principal-residence-exemption",
+          "title": "Claiming the Principal Residence Exemption",
+          "description": "How to claim the Principal Residence Exemption (PRE) in Grant Township, Clare County, Michigan to reduce your property taxes.",
+          "body": "<p>The Principal Residence Exemption (PRE) is one of the biggest tax savings available to Michigan homeowners. It exempts your primary home from up to 18 mills of school operating taxes — which can save you hundreds or even thousands of dollars per year.</p>\n<h2>Who Qualifies</h2>\n<p>You qualify if the property is your <strong>primary residence</strong> — the place where you live most of the year, where you are registered to vote, and where you file your Michigan income tax from. You can only claim the exemption on one property.</p>\n<h2>How to Claim It</h2>\n<ol>\n<li><strong>Fill out Form 2368</strong> — the Principal Residence Exemption Affidavit. You can get it from the township office or download it from the Michigan Department of Treasury website.</li>\n<li><strong>Submit it to the township assessor.</strong> File it with Casey Guthrie by <strong>June 1</strong> to receive the exemption on that year&#39;s summer tax bill. If you file after June 1 but before November 1, it takes effect the following year.</li>\n<li><strong>You only need to file once</strong> as long as you continue to live in the home. You do not need to reapply each year.</li>\n</ol>\n<h2>If You Move</h2>\n<p>When you move out of the home — whether you sell it, rent it, or simply stop living there — you <strong>must</strong> file a <strong>Rescind form (Form 2602)</strong> within 90 days. Failing to rescind when required can result in penalties, back taxes, and interest.</p>\n<h2>How Much You Save</h2>\n<p>The exemption removes up to 18 mills of school operating taxes from your bill. On a home with a taxable value of $50,000, that is roughly <strong>$900 per year</strong> in savings. The exact amount depends on your local millage rates.</p>\n<h2>Key Details</h2>\n<ul>\n<li><strong>New homeowners:</strong> File as soon as you move in. Do not assume the previous owner&#39;s exemption transfers to you — it does not.</li>\n<li><strong>Rental properties</strong> do not qualify. If you rent out your home, you must rescind the exemption.</li>\n<li><strong>Seasonal or vacation homes</strong> do not qualify. It must be where you actually live.</li>\n</ul>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Forgetting to file after buying a home.</strong> The exemption is not automatic. You must submit the affidavit.</li>\n<li><strong>Keeping the exemption after moving out.</strong> Michigan audits these. If you are caught claiming a PRE on a property that is not your primary residence, you will owe back taxes plus penalties.</li>\n<li><strong>Missing the June 1 deadline.</strong> Filing late means waiting until the next tax year for savings.</li>\n</ul>\n",
+          "category": "taxes",
+          "scenario": "How do I claim the principal residence exemption?",
+          "icon": "🏠",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "6b84154e-855c-4cef-92c1-43ceebafa7d1",
+            "guide_id": "00f6201c-3007-4c95-ad36-7304a7b780cd",
+            "name": "Casey Guthrie",
+            "role": "Township Assessor",
+            "phone": "(231) 350-9123",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": [
+          {
+            "id": "af7d6989-fccb-417d-9eae-4a80e2bcfead",
+            "guide_id": "00f6201c-3007-4c95-ad36-7304a7b780cd",
+            "name": "Principal Residence Exemption Affidavit (Form 2368)",
+            "url": "/forms/principal-residence-exemption-affidavit.pdf",
+            "format": "PDF",
+            "display_order": 0
+          },
+          {
+            "id": "fadbe62e-bae5-4cb5-bf0a-e9c827555ce4",
+            "guide_id": "00f6201c-3007-4c95-ad36-7304a7b780cd",
+            "name": "Rescind Principal Residence Exemption (Form 2602)",
+            "url": "/forms/rescind-principal-residence-exemption.pdf",
+            "format": "PDF",
+            "display_order": 1
+          }
+        ]
+      },
+      "veterans-services": {
+        "guide": {
+          "id": "31f22398-e7db-45a8-bcbe-03010dde3269",
+          "slug": "veterans-services",
+          "title": "Clare County Veterans Services",
+          "description": "Benefits assistance, claims support, and resources for veterans",
+          "body": "The Clare County Veterans Services office assists veterans and their families with VA benefits claims, healthcare enrollment, pension applications, and connecting to state and federal resources. Located at 225 W Main St, Harrison. Open Monday through Friday, 8am to 4:30pm. Both Karl Hauser (Director) and Allisha Gary (VSO) can help with claims filing and benefits questions. No appointment needed but recommended for complex claims.",
+          "category": "services",
+          "scenario": "I'm a veteran — what services and benefits help are available in Clare County?",
+          "icon": "🎖️",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-26",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-26T05:33:00.606202+00:00",
+          "published_at": "2026-03-26T05:33:00.606202+00:00"
+        },
+        "contacts": [
+          {
+            "id": "38ff52cc-46c5-4def-a1f6-4ecdcbbc75b8",
+            "guide_id": "31f22398-e7db-45a8-bcbe-03010dde3269",
+            "name": "Karl Hauser",
+            "role": "Veterans Services Director",
+            "phone": "(989) 539-3273",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "69a7016c-984e-4112-b75f-2ad08393b925",
+            "guide_id": "31f22398-e7db-45a8-bcbe-03010dde3269",
+            "name": "Allisha Gary",
+            "role": "Veterans Service Officer",
+            "phone": "(989) 539-3273",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": []
+      },
+      "spongy-moth": {
+        "guide": {
+          "id": "7151f31a-1467-415f-b29f-a145e8d5e8b6",
+          "slug": "spongy-moth",
+          "title": "Dealing with Spongy Moths and Invasive Species",
+          "description": "How to identify, report, and treat spongy moths and other invasive species in Clare County, Michigan. Tool rentals, treatment options, and local resources.",
+          "body": "<p>Spongy moths (formerly called gypsy moths) are one of the most damaging invasive pests in Michigan. Their caterpillars strip leaves from oaks, aspens, and other hardwoods, weakening and sometimes killing trees over repeated years. Clare County has active monitoring and treatment programs through the Conservation District.</p>\n<h2>How to Identify Spongy Moths</h2>\n<ul>\n<li><strong>Egg masses</strong> (fall-spring): Tan, fuzzy patches about the size of a quarter, found on tree trunks, firewood, outdoor furniture, and vehicles.</li>\n<li><strong>Caterpillars</strong> (May-July): Hairy caterpillars with pairs of blue and red dots running down their backs.</li>\n<li><strong>Adults</strong> (July-August): Males are brown and fly; females are white with dark markings and do not fly.</li>\n</ul>\n<h2>What to Do</h2>\n<ol>\n<li><strong>Check your property</strong> in late winter or early spring for egg masses. Scrape them into a bucket of soapy water to destroy them.</li>\n<li><strong>Contact Toni Maize</strong> at (989) 539-6401 to report heavy infestations. The Conservation District tracks populations and coordinates treatment.</li>\n<li><strong>Set traps.</strong> The District can supply or recommend pheromone traps to monitor moth activity on your property.</li>\n<li><strong>Consider treatment.</strong> For significant infestations, aerial spraying with Foray 48B (a biological insecticide made from Bt bacteria) is the most common approach. It targets caterpillars and is safe for people, pets, and wildlife. The District coordinates group treatment areas to keep costs down.</li>\n<li><strong>Rent tools.</strong> The Conservation District rents invasive-species management equipment at $12-25 per day — brush cutters, sprayers, and applicators.</li>\n</ol>\n<h2>Other Invasive Species</h2>\n<p>The Central Michigan Cooperative Invasive Species Management Area (CM-CISMA) covers Clare County and provides identification help, educational workshops, and management resources for invasives like autumn olive, phragmites, and Japanese knotweed. Contact the Conservation District to connect with CM-CISMA programs.</p>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Do not move firewood.</strong> Spongy moth egg masses hitchhike on firewood. Buy it where you burn it.</li>\n<li><strong>Do not wait.</strong> Small populations are easier to manage. Scraping 20 egg masses now prevents thousands of caterpillars later.</li>\n<li><strong>Do not use broad-spectrum insecticides.</strong> They kill beneficial insects along with the moths. Bt-based products like Foray 48B are targeted and effective.</li>\n</ul>\n",
+          "category": "nature",
+          "scenario": "I have spongy moths or invasive species on my property",
+          "icon": "🦋",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "43a4f286-cab9-4a33-afb3-5ea7679c5a33",
+            "guide_id": "7151f31a-1467-415f-b29f-a145e8d5e8b6",
+            "name": "Toni Maize",
+            "role": "Spongy Moth Coordinator",
+            "phone": "(989) 539-6401",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": []
+      },
+      "property-split": {
+        "guide": {
+          "id": "d57ac30a-3ee3-4c48-8d2a-23803d3a54fd",
+          "slug": "property-split",
+          "title": "Dividing or Splitting Your Property",
+          "description": "How to split or divide your land in Grant Township, Clare County, Michigan. Requirements, applications, and Planning Commission review process.",
+          "body": "<p>If you want to sell part of your land, give a parcel to a family member, or create a separate buildable lot, you will need to go through the township&#39;s land division process. This is governed by <strong>Ordinance 27: Land Division</strong> and <strong>Ordinance 35: Lot Splitting</strong>, along with Michigan&#39;s Land Division Act.</p>\n<h2>Before You Start</h2>\n<p>Not every parcel can be split. To be eligible, the resulting lots typically must:</p>\n<ul>\n<li>Meet the minimum lot size for your zoning district</li>\n<li>Have adequate road frontage</li>\n<li>Be able to support a well and septic system (if not on municipal services)</li>\n<li>Comply with all current zoning setback requirements</li>\n</ul>\n<h2>Steps to Split Your Property</h2>\n<ol>\n<li><strong>Talk to the Zoning Administrator first.</strong> Call Dick Hassberger at (989) 588-9841 ext. 5. He can review your parcel and let you know if a split is feasible before you spend money on surveys.</li>\n<li><strong>Hire a licensed surveyor.</strong> You will need a professional survey showing the proposed division, existing structures, easements, and dimensions of all resulting parcels.</li>\n<li><strong>Submit a Land Division Application.</strong> Bring your completed application and survey to the township office. Include a description of both the parent parcel and the proposed new parcels.</li>\n<li><strong>Planning Commission review.</strong> The Planning Commission will review your application at their next meeting. They check that both parcels meet zoning requirements and that the split does not create landlocked parcels or other problems.</li>\n<li><strong>Get approval and record the deed.</strong> Once approved, you can record the new parcel descriptions with the Clare County Register of Deeds.</li>\n</ol>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Cost:</strong> Application fees plus surveyor costs (surveys typically run $500-$1,500 depending on complexity).</li>\n<li><strong>Timeline:</strong> Plan for 4-8 weeks from application to approval, depending on the Planning Commission meeting schedule.</li>\n<li><strong>Michigan law limits</strong> the number of times a parcel can be divided. Your parent parcel&#39;s division history matters.</li>\n</ul>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Splitting before checking zoning.</strong> If the resulting lots are too small or lack road frontage, the split will be denied.</li>\n<li><strong>Selling land before the split is recorded.</strong> The legal division must be completed and recorded with the county before any transfer.</li>\n<li><strong>Forgetting about easements.</strong> Existing utility or access easements can complicate a split. Your surveyor should identify these early.</li>\n</ul>\n",
+          "category": "property",
+          "scenario": "I want to divide or split my property",
+          "icon": "📐",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "b809bf6f-1535-4d1c-b452-d01c6142df51",
+            "guide_id": "d57ac30a-3ee3-4c48-8d2a-23803d3a54fd",
+            "name": "Dick Hassberger",
+            "role": "Zoning Administrator",
+            "phone": "(989) 588-9841 ext. 5",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "5fc0dbd3-b9a1-4174-93b4-6f90fea76e05",
+            "guide_id": "d57ac30a-3ee3-4c48-8d2a-23803d3a54fd",
+            "name": "Grant Township Planning Commission",
+            "role": "Planning Commission",
+            "phone": "(989) 588-9841",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": [
+          {
+            "id": "c6050a6c-4695-49f8-b1b4-81d6bf851612",
+            "guide_id": "d57ac30a-3ee3-4c48-8d2a-23803d3a54fd",
+            "name": "Land Division Application",
+            "url": "/forms/land-division-application.pdf",
+            "format": "PDF",
+            "display_order": 0
+          }
+        ]
+      },
+      "building-permit": {
+        "guide": {
+          "id": "6f9c5a72-35c6-409e-ba20-63421e1c35e4",
+          "slug": "building-permit",
+          "title": "Getting a Building Permit",
+          "description": "How to get a building permit in Clare County, Michigan. When you need one, where to apply, and what inspections are required.",
+          "body": "<p>Almost any construction project — new buildings, additions, decks, electrical work, plumbing, mechanical systems — requires a building permit from Clare County. The process starts at the township level, then moves to the county.</p>\n<h2>Do I Need a Permit?</h2>\n<p>You likely need a permit if you are:</p>\n<ul>\n<li>Building anything new (house, garage, pole barn, shed over 200 sq ft)</li>\n<li>Adding on to an existing structure</li>\n<li>Doing electrical, plumbing, or mechanical work</li>\n<li>Installing or replacing a roof (in some cases)</li>\n<li>Putting in a deck or porch</li>\n</ul>\n<p>You probably do <strong>not</strong> need one for minor repairs, painting, or small sheds under 200 square feet. When in doubt, call the county at (989) 539-2761.</p>\n<h2>Steps to Get Your Permit</h2>\n<ol>\n<li><strong>Get a township zoning permit first.</strong> Contact Dick Hassberger at (989) 588-9841 ext. 5. Submit a Zoning Permit Application with a site plan. The township confirms your project meets local zoning rules.</li>\n<li><strong>Apply for the county building permit.</strong> Bring your approved zoning permit plus construction plans to the Clare County Building Department. Plans should include dimensions, materials, structural details, and a site drawing.</li>\n<li><strong>Pay the permit fee.</strong> Fees are based on project value and type. Expect $75-$300 for typical residential projects.</li>\n<li><strong>Post your permit.</strong> Display it at the job site where inspectors can see it.</li>\n<li><strong>Call for inspections.</strong> The county requires inspections at specific stages — footing, framing, insulation, and final are common. Schedule each one before moving to the next phase.</li>\n<li><strong>Get final approval.</strong> Once the final inspection passes, you receive a certificate of completion.</li>\n</ol>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Timeline:</strong> Permit review typically takes 1-2 weeks.</li>\n<li><strong>Permits expire</strong> if work does not start within 6 months.</li>\n<li><strong>Contractors</strong> should pull their own permits for trade work (electrical, plumbing).</li>\n</ul>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Skipping the township step.</strong> The county requires zoning approval before they will process your building permit.</li>\n<li><strong>Starting work before the permit is issued.</strong> This can result in double fees, stop-work orders, or required demolition.</li>\n<li><strong>Not scheduling inspections.</strong> Covering up work before an inspection means you may have to tear it out so the inspector can see it.</li>\n</ul>\n",
+          "category": "property",
+          "scenario": "I need a building permit — where do I start?",
+          "icon": "🔨",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "7af59482-ca86-49ef-a36b-bacae3e3d70a",
+            "guide_id": "6f9c5a72-35c6-409e-ba20-63421e1c35e4",
+            "name": "Clare County Building Department",
+            "role": "Building Permits & Inspections",
+            "phone": "(989) 539-2761",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "4c0053a1-835d-416d-a8d6-8f6775dd3def",
+            "guide_id": "6f9c5a72-35c6-409e-ba20-63421e1c35e4",
+            "name": "Dick Hassberger",
+            "role": "Zoning Administrator",
+            "phone": "(989) 588-9841 ext. 5",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": [
+          {
+            "id": "d0be4af8-a864-4f42-8cc2-0ccb96eecd0e",
+            "guide_id": "6f9c5a72-35c6-409e-ba20-63421e1c35e4",
+            "name": "Building Permit Application",
+            "url": "/forms/building-permit-application.pdf",
+            "format": "PDF",
+            "display_order": 0
+          },
+          {
+            "id": "ab771986-c898-4c22-ad3d-5b20999e363c",
+            "guide_id": "6f9c5a72-35c6-409e-ba20-63421e1c35e4",
+            "name": "Zoning Permit Application",
+            "url": "/forms/zoning-permit-application.pdf",
+            "format": "PDF",
+            "display_order": 1
+          }
+        ]
+      },
+      "burn-permit": {
+        "guide": {
+          "id": "4dc158df-e5af-490b-849a-024c6b3f7446",
+          "slug": "burn-permit",
+          "title": "Getting a Burn Permit",
+          "description": "How to get a burn permit in Clare County, Michigan. Rules for open burning, what you can and can't burn, and fire safety contacts.",
+          "body": "<p>In Michigan, you need a burn permit from the DNR before doing any open burning outdoors. Permits are free, quick to get, and required by law. Burning without one can result in fines — and if your fire spreads, you are liable for suppression costs.</p>\n<h2>How to Get a Burn Permit</h2>\n<ol>\n<li><strong>Call the Michigan DNR burn permit line</strong> at <strong>1-866-922-2876</strong>. This is an automated system available 24/7.</li>\n<li><strong>Or go online</strong> at Michigan.gov/BurnPermit.</li>\n<li><strong>Answer a few questions</strong> about your location and what you plan to burn.</li>\n<li><strong>Get your permit number.</strong> The system issues permits based on current fire danger conditions. If conditions are too dry or windy, permits will be denied for that day.</li>\n<li><strong>Burn during permitted hours only.</strong> Burning is generally allowed from 6 PM to 8 AM during fire season (typically March through May). Outside fire season, daytime burning may be permitted depending on conditions.</li>\n</ol>\n<h2>What You Can Burn</h2>\n<ul>\n<li>Brush and woody debris from your own property</li>\n<li>Leaves and yard waste (check local rules)</li>\n<li>Campfires in a proper fire ring</li>\n</ul>\n<h2>What You Cannot Burn</h2>\n<ul>\n<li><strong>Household garbage or trash</strong> — this is illegal in Michigan</li>\n<li><strong>Construction materials, plastics, or treated wood</strong></li>\n<li><strong>Tires, furniture, or appliances</strong></li>\n<li><strong>Anything during a burn ban</strong> — these are issued when fire danger is extreme</li>\n</ul>\n<h2>Fire Safety Rules</h2>\n<ul>\n<li>Keep your fire at least <strong>50 feet from any structure</strong></li>\n<li>Have water or a fire extinguisher on hand</li>\n<li>Never leave a fire unattended</li>\n<li>Make sure the fire is <strong>completely out</strong> before you leave — drown, stir, and feel for heat</li>\n</ul>\n<h2>Local Fire Department Info</h2>\n<p>The fire department siren test runs on the <strong>first Thursday of every month at 3:00 PM</strong>. If you hear the siren at any other time, it signals an actual emergency.</p>\n<p>For fire emergencies, call <strong>911</strong>. For non-emergency fire questions, contact Fire Chief Dale Majewski at (989) 429-8887.</p>\n",
+          "category": "safety",
+          "scenario": "How do I get a burn permit?",
+          "icon": "🔥",
+          "jurisdiction": "state",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "2b788cf2-a49d-4847-aade-2a18640f28f1",
+            "guide_id": "4dc158df-e5af-490b-849a-024c6b3f7446",
+            "name": "Dale Majewski",
+            "role": "Fire Chief",
+            "phone": "(989) 429-8887",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": []
+      },
+      "soil-erosion-permit": {
+        "guide": {
+          "id": "4c4fa248-677e-475b-854d-94e421157d9e",
+          "slug": "soil-erosion-permit",
+          "title": "Getting a Soil Erosion Permit",
+          "description": "When you need a soil erosion permit in Clare County, Michigan, how to apply, and what inspections are required for projects near water or on large sites.",
+          "body": "<p>Michigan law requires a soil erosion and sedimentation control (SESC) permit for earth-moving projects near water or on larger parcels. The Clare Conservation District handles these permits locally. Getting one before you dig protects waterways, keeps you legal, and avoids costly fines.</p>\n<h2>Do I Need a Permit?</h2>\n<p>You need a soil erosion permit if your project meets <strong>either</strong> of these thresholds:</p>\n<ul>\n<li><strong>Near water:</strong> Any earth disturbance of 225 square feet or more within 500 feet of a lake, stream, river, or wetland.</li>\n<li><strong>Large sites:</strong> Any earth disturbance of 1 acre or more, regardless of distance to water.</li>\n</ul>\n<p>Common projects that trigger permits include driveways, foundations, ponds, grading, shoreline work, and septic system installations near water.</p>\n<h2>How to Apply</h2>\n<ol>\n<li><strong>Call Christiane Rathke</strong> at (989) 539-6401 before you start. She can tell you quickly whether your project needs a permit.</li>\n<li><strong>Submit an application</strong> to the Clare Conservation District at 545 N. McEwan St., Harrison. Include a site plan showing the work area, waterways, and erosion control measures you plan to use (silt fencing, straw blankets, etc.).</li>\n<li><strong>Pay the permit fee.</strong> Fees vary by project size.</li>\n<li><strong>Get your permit</strong> before any earth-moving begins. Typical turnaround is a few business days for straightforward projects.</li>\n<li><strong>Install erosion controls</strong> before starting work. The District will inspect your site.</li>\n<li><strong>Final inspection.</strong> Once the site is stabilized (ground cover re-established), request a final inspection to close out the permit.</li>\n</ol>\n<h2>Larger or Complex Projects</h2>\n<p>If your project involves wetland fill, stream crossings, or other impacts to regulated waters, you may also need a permit from EGLE (Michigan Department of Environment, Great Lakes, and Energy). Christiane can help you determine whether a state permit applies and point you in the right direction.</p>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Starting work before the permit is issued.</strong> This can result in fines and a stop-work order.</li>\n<li><strong>Skipping erosion controls.</strong> Bare soil washes into waterways fast, especially on slopes. Install silt fencing and seed exposed areas promptly.</li>\n<li><strong>Forgetting to request final inspection.</strong> Your permit stays open until the site is signed off.</li>\n</ul>\n",
+          "category": "nature",
+          "scenario": "I need a soil erosion permit for my project near water",
+          "icon": "🏗️",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "ccd87c40-f1dd-418e-8f0e-96209fe21c84",
+            "guide_id": "4c4fa248-677e-475b-854d-94e421157d9e",
+            "name": "Christiane Rathke",
+            "role": "District Administrator & Soil Erosion Agent",
+            "phone": "(989) 539-6401",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": []
+      },
+      "free-forestry-advice": {
+        "guide": {
+          "id": "29ad4f37-a1e2-45df-a99b-cefbcec3f928",
+          "slug": "free-forestry-advice",
+          "title": "Getting Free Forestry Advice",
+          "description": "How to get free professional forestry advice in Clare County, Michigan through the Conservation District Forester, including habitat planning, pest management, and federal program connections.",
+          "body": "<p>If you own wooded land in Clare County, you have access to a free professional forester through the Conservation District. Mike Dittenber is the District Forester, and his job is to help private landowners make good decisions about their trees and forests — at no cost.</p>\n<h2>What You Get</h2>\n<p>Mike provides free on-site evaluations covering:</p>\n<ul>\n<li><strong>Tree species identification</strong> and health assessment</li>\n<li><strong>Wildlife habitat improvement</strong> — what to plant, cut, or leave standing for deer, turkey, songbirds, and pollinators</li>\n<li><strong>Pest and disease management</strong> — identifying oak wilt, emerald ash borer, spongy moths, and other threats</li>\n<li><strong>Timber stand improvement</strong> — which trees to thin, which to keep, and when</li>\n<li><strong>Tree planting recommendations</strong> — species selection for your soil type and goals</li>\n<li><strong>Forest stewardship plans</strong> — written management plans for your property</li>\n</ul>\n<h2>How to Get Started</h2>\n<ol>\n<li><strong>Call (989) 539-6401</strong> and ask for Mike Dittenber, or stop by the Conservation District office at 545 N. McEwan St. in Harrison.</li>\n<li><strong>Describe your property and goals.</strong> Whether you want better deer habitat, timber income, fire protection, or just healthier woods, Mike can help.</li>\n<li><strong>Schedule a site visit.</strong> Mike will walk your property with you and give specific recommendations based on what he sees.</li>\n<li><strong>Get a written plan</strong> if you want one. Forest stewardship plans are useful for applying to cost-share programs and qualifying for tax benefits.</li>\n</ol>\n<h2>Connections to State and Federal Programs</h2>\n<p>Mike can connect you with programs that help pay for conservation work:</p>\n<ul>\n<li><strong>EQIP (Environmental Quality Incentives Program):</strong> Federal cost-share for practices like tree planting, invasive species removal, and wildlife habitat improvements.</li>\n<li><strong>CSP (Conservation Stewardship Program):</strong> Payments for maintaining and improving existing conservation practices.</li>\n<li><strong>Qualified Forest Program:</strong> A Michigan property tax program that reduces taxes on managed forestland. See our separate guide for details.</li>\n</ul>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Cost:</strong> Free. The District Forester position is funded to serve private landowners.</li>\n<li><strong>Property size:</strong> No minimum. Mike helps owners of 5 acres and 500 acres alike.</li>\n<li><strong>Timeline:</strong> Site visits are typically scheduled within a few weeks of your call.</li>\n</ul>\n",
+          "category": "nature",
+          "scenario": "I want free forestry advice for my property",
+          "icon": "🌲",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "c0a0058c-b958-4a4b-a151-566b1a1360c5",
+            "guide_id": "29ad4f37-a1e2-45df-a99b-cefbcec3f928",
+            "name": "Mike Dittenber",
+            "role": "District Forester",
+            "phone": "(989) 539-6401",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": []
+      },
+      "native-plants": {
+        "guide": {
+          "id": "3b367afd-5cd3-4273-8016-3bcf86b538a6",
+          "slug": "native-plants",
+          "title": "Getting Started with Native Plants",
+          "description": "How to buy native plants and trees in Clare County, Michigan through the Conservation District plant sale, plus invasive species tools and local conservation resources.",
+          "body": "<p>The Clare Conservation District runs an annual native plant sale every spring. It is the easiest and most affordable way to get Michigan-native trees, shrubs, and wildflowers for your property. Whether you want to restore a meadow, stabilize a shoreline, or attract pollinators, this is where to start.</p>\n<h2>How to Order</h2>\n<ol>\n<li>Watch for the Conservation District catalog, usually available in late winter. You can pick one up at their office at 545 N. McEwan St. in Harrison or request one by calling (989) 539-6401.</li>\n<li>Review the catalog for available species. They typically carry conifers, hardwood seedlings, native wildflower plugs, seed mixes, and shrubs suited to northern Michigan.</li>\n<li>Fill out the order form and return it with payment before the deadline (orders usually close in early April).</li>\n<li>Pick up your plants at the scheduled dates:<ul>\n<li><strong>Trees and shrubs:</strong> May 7-9</li>\n<li><strong>Wildflowers and plugs:</strong> May 21-23</li>\n</ul>\n</li>\n<li>Plant according to the included care instructions. The District staff are happy to answer questions about spacing and site prep.</li>\n</ol>\n<h2>Tool Rental for Invasive Species</h2>\n<p>The Conservation District rents tools to help you manage invasive species on your property. Equipment like brush cutters and herbicide applicators are available at $12-25 per day. Call (989) 539-6401 to check availability and reserve.</p>\n<h2>Tips for Success</h2>\n<ul>\n<li><strong>Match plants to your site.</strong> Sun, shade, wet, dry — native species have preferences. Ask Mike Dittenber for free advice on what grows best where you are.</li>\n<li><strong>Start small.</strong> A 10x10 ft native planting is a great first project.</li>\n<li><strong>Remove invasives first.</strong> Planting natives into a patch of autumn olive or garlic mustard sets them up to fail. Clear the area before you plant.</li>\n<li><strong>Be patient.</strong> Most native plantings take 2-3 growing seasons to establish. The first year they sleep, the second year they creep, the third year they leap.</li>\n</ul>\n",
+          "category": "nature",
+          "scenario": "I want to support conservation with native plants — how do I get started?",
+          "icon": "🌿",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "58b0a98c-c6a7-4a0d-9d19-bf0c17ff4e72",
+            "guide_id": "3b367afd-5cd3-4273-8016-3bcf86b538a6",
+            "name": "Christiane Rathke",
+            "role": "District Administrator",
+            "phone": "(989) 539-6401",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "f3691fc5-a9ae-48ff-9bd7-82738d29964f",
+            "guide_id": "3b367afd-5cd3-4273-8016-3bcf86b538a6",
+            "name": "Mike Dittenber",
+            "role": "District Forester",
+            "phone": "(989) 539-6401",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": []
+      },
+      "blight-notice": {
+        "guide": {
+          "id": "b0b88883-399b-454a-a5ed-e79c852e9d1e",
+          "slug": "blight-notice",
+          "title": "I Got a Blight or Nuisance Notice",
+          "description": "What to do if you receive a blight or nuisance violation notice in Grant Township, Clare County, Michigan. Steps to comply, appeal, and avoid fines.",
+          "body": "<p>Getting a blight or nuisance notice in the mail can feel alarming, but it is not a fine — it is a heads-up that something on your property needs attention. The township enforces these rules under <strong>Ordinance 32: Nuisance &amp; Blight</strong> to keep the community safe and property values stable.</p>\n<h2>What Counts as Blight</h2>\n<p>Common violations include junk vehicles (unregistered, inoperable, or missing parts), accumulated trash or debris, overgrown vegetation blocking roads or sidewalks, abandoned appliances, and dilapidated structures. If it creates a health hazard, attracts pests, or drags down the neighborhood, it likely qualifies.</p>\n<h2>Steps to Handle Your Notice</h2>\n<ol>\n<li><strong>Read the notice carefully.</strong> It will describe the specific violation, the ordinance section, and your deadline to fix it — typically 30 days.</li>\n<li><strong>Contact Ken Logan</strong> at (989) 588-9841 ext. 8 if anything is unclear. He can explain exactly what needs to change.</li>\n<li><strong>Fix the issue within the deadline.</strong> Remove junk vehicles, clean up debris, mow overgrowth, or demolish unsafe structures.</li>\n<li><strong>Document your cleanup.</strong> Take dated photos showing the property before and after. This protects you if there is a dispute.</li>\n<li><strong>Notify the enforcement officer</strong> once the work is done so they can close out the violation.</li>\n</ol>\n<h2>If You Want to Appeal</h2>\n<p>You have the right to appeal the notice. Submit a written appeal to the Township Board before your compliance deadline. You will get a hearing where you can present your case. Bring photos and any evidence supporting your position.</p>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Ignoring the notice.</strong> It will not go away. Fines and legal action can follow.</li>\n<li><strong>Partial cleanup.</strong> Make sure you address everything listed in the notice, not just the most visible item.</li>\n<li><strong>Assuming a fence hides the problem.</strong> Screening junk behind a fence does not fix a blight violation unless the ordinance specifically allows it.</li>\n</ul>\n",
+          "category": "property",
+          "scenario": "I got a blight/nuisance notice — what do I do?",
+          "icon": "📋",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "b232a9b6-f684-45e1-9c8f-129b5e3a45a2",
+            "guide_id": "b0b88883-399b-454a-a5ed-e79c852e9d1e",
+            "name": "Ken Logan",
+            "role": "Ordinance Enforcement Officer",
+            "phone": "(989) 588-9841 ext. 8",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "d5e6969f-68de-4e52-9bbd-59a791c9d690",
+            "guide_id": "b0b88883-399b-454a-a5ed-e79c852e9d1e",
+            "name": "Dick Hassberger",
+            "role": "Zoning Administrator",
+            "phone": "(989) 588-9841 ext. 5",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": []
+      },
+      "dog-license": {
+        "guide": {
+          "id": "00b4e83f-8231-4c42-b44e-6f76658c31ed",
+          "slug": "dog-license",
+          "title": "Licensing Your Dog",
+          "description": "How to license your dog in Clare County, Michigan, including costs, where to apply, rabies vaccination requirements, and late fees.",
+          "body": "<p>Michigan law requires all dogs over four months old to be licensed. It is not optional — it is the law, and it helps reunite lost dogs with their owners. Licenses are handled through the Clare County Treasurer&#39;s Office.</p>\n<h2>How to Get a Dog License</h2>\n<ol>\n<li><strong>Get your dog vaccinated for rabies.</strong> You will need a current rabies vaccination certificate from your veterinarian. The vaccine must be up to date at the time of licensing.</li>\n<li><strong>Visit the County Treasurer&#39;s Office</strong> at the Clare County Building, 225 W. Main St., Harrison. Bring your rabies certificate.</li>\n<li><strong>Pay the license fee</strong> and receive your tag. Attach the tag to your dog&#39;s collar.</li>\n</ol>\n<h2>License Costs</h2>\n<table>\n<thead>\n<tr>\n<th>Type</th>\n<th>On Time</th>\n<th>Late (after June 1)</th>\n</tr>\n</thead>\n<tbody><tr>\n<td>Spayed/neutered</td>\n<td>$10</td>\n<td>$30</td>\n</tr>\n<tr>\n<td>Not spayed/neutered</td>\n<td>$25</td>\n<td>$50</td>\n</tr>\n<tr>\n<td>Senior citizen (65+), spayed/neutered</td>\n<td>$10</td>\n<td>$30</td>\n</tr>\n<tr>\n<td>Replacement tag</td>\n<td>$5</td>\n<td>—</td>\n</tr>\n</tbody></table>\n<p><strong>Unsanctioned (unlicensed) dog fine:</strong> Up to $70 plus the license fee.</p>\n<p>Licenses run from January 1 through December 31 each year. You can renew starting in December for the following year. After June 1, late fees apply automatically.</p>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Who needs a license:</strong> All dogs over four months old living in Clare County.</li>\n<li><strong>Proof of rabies:</strong> Required every time you license or renew.</li>\n<li><strong>Multiple dogs:</strong> Each dog needs its own license.</li>\n<li><strong>Where to pay:</strong> County Treasurer&#39;s Office only. Licenses are not available at the township level.</li>\n</ul>\n<h2>Lost or Found Dogs</h2>\n<p>If your dog goes missing or you find a stray, contact Animal Control Officer Bob Dodson at <strong>(989) 539-3221</strong>. The dog license tag is the fastest way for animal control to identify a dog and contact its owner.</p>\n<p>The Clare County Animal Shelter holds strays and works to reunite pets with owners. Check with them if your dog is lost — and make sure that license tag is on the collar.</p>\n",
+          "category": "services",
+          "scenario": "How do I license my dog?",
+          "icon": "🐕",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "e3cccf5b-82fc-4679-bcda-893aecfefd05",
+            "guide_id": "00b4e83f-8231-4c42-b44e-6f76658c31ed",
+            "name": "Jenny Beemer-Fritzinger",
+            "role": "County Treasurer",
+            "phone": "(989) 539-7801",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "0b2b4b30-c172-4abf-aceb-2005c62d63dd",
+            "guide_id": "00b4e83f-8231-4c42-b44e-6f76658c31ed",
+            "name": "Bob Dodson",
+            "role": "Animal Control Officer",
+            "phone": "(989) 539-3221",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": []
+      },
+      "pay-property-taxes": {
+        "guide": {
+          "id": "c417d8e4-ce52-4965-aebe-688473d811eb",
+          "slug": "pay-property-taxes",
+          "title": "Paying Your Property Taxes",
+          "description": "How to pay property taxes in Grant Township, Clare County, Michigan. Payment methods, deadlines, and what happens if you pay late.",
+          "body": "<p>Property taxes in Michigan are billed twice a year — summer and winter. The township treasurer handles collection during the initial payment window, then unpaid taxes roll over to the county.</p>\n<h2>Payment Deadlines</h2>\n<ul>\n<li><strong>Summer taxes:</strong> Due <strong>September 14</strong>. Bills go out in July.</li>\n<li><strong>Winter taxes:</strong> Due <strong>December 14</strong> without penalty. You can pay winter taxes through <strong>February 14</strong> with a small penalty added.</li>\n<li>After February 14, all unpaid taxes are turned over to the Clare County Treasurer and additional penalties and interest apply.</li>\n</ul>\n<h2>How to Pay</h2>\n<ol>\n<li><strong>By mail.</strong> Send a check or money order to the Grant Township Treasurer at the township office. Include your tax bill stub.</li>\n<li><strong>In person.</strong> Visit the township office during business hours. Cash, check, and money order are accepted.</li>\n<li><strong>Online.</strong> Pay at <a href=\"https://bsaonline.com\">bsaonline.com</a> using a credit card, debit card, or e-check. Note: <strong>credit and debit card payments carry a 3% convenience fee.</strong> E-check fees are lower.</li>\n<li><strong>Through your mortgage company.</strong> If your taxes are escrowed, your lender pays directly. Verify with your mortgage company that payments are being made on time.</li>\n</ol>\n<h2>What Happens If You Pay Late</h2>\n<ul>\n<li>After the September or December deadline, a <strong>1% penalty per month</strong> is added.</li>\n<li>After February 14, unpaid taxes transfer to the <strong>Clare County Treasurer</strong> at (989) 539-7801. At that point, additional interest and fees accumulate.</li>\n<li>After several years of non-payment, the property can go to <strong>tax foreclosure sale</strong>. Do not let it get to this point — contact the county treasurer to set up a payment plan if you are struggling.</li>\n</ul>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Partial payments</strong> are accepted by the township treasurer before the delinquency deadline.</li>\n<li><strong>If you recently purchased your property,</strong> you may not receive a bill if the address has not been updated. You are still responsible for payment. Call Maggie Carey at (989) 588-9841 ext. 3 to confirm your bill.</li>\n<li><strong>Keep your receipts.</strong> Always retain proof of payment for your records.</li>\n</ul>\n",
+          "category": "taxes",
+          "scenario": "How do I pay my property taxes?",
+          "icon": "💰",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "a11cbc89-b48d-44ad-9e80-cc1f7e7fc349",
+            "guide_id": "c417d8e4-ce52-4965-aebe-688473d811eb",
+            "name": "Maggie Carey",
+            "role": "Township Treasurer",
+            "phone": "(989) 588-9841 ext. 3",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "c56c2557-c29b-42be-9276-37825e3d7d40",
+            "guide_id": "c417d8e4-ce52-4965-aebe-688473d811eb",
+            "name": "Jenny Beemer-Fritzinger",
+            "role": "Clare County Treasurer",
+            "phone": "(989) 539-7801",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": []
+      },
+      "rv-on-vacant-lot": {
+        "guide": {
+          "id": "9bf643e2-859d-4854-87d7-de33e42fe6a8",
+          "slug": "rv-on-vacant-lot",
+          "title": "Putting an RV or Temporary Storage on a Vacant Lot",
+          "description": "Rules for placing an RV, camper, or temporary storage on vacant property in Grant Township, Clare County, Michigan.",
+          "body": "<p>If you own a vacant lot in the township and want to park an RV, camper, or place a temporary storage unit on it, you cannot just drop it off and go. The township has rules about what is allowed, for how long, and under what conditions.</p>\n<h2>Steps to Follow</h2>\n<ol>\n<li><strong>Contact the Zoning Administrator.</strong> Call Dick Hassberger at (989) 588-9841 ext. 5 before you move anything onto the property. He will tell you what is permitted in your specific zoning district.</li>\n<li><strong>Apply for a special zoning permit.</strong> Fill out the Zoning Permit for RVs/Temporary Storage. You will need to describe what you are placing, where on the lot it will sit, and how long it will be there.</li>\n<li><strong>Meet the requirements.</strong> Common conditions include:<ul>\n<li>The RV or storage unit must be in good condition (no junk or deteriorating units)</li>\n<li>It must be placed at least the minimum setback distance from property lines and roads</li>\n<li>You cannot use an RV as a permanent residence on a vacant lot without proper septic, well, and electrical hookups</li>\n<li>Temporary storage units may have a time limit (often 6-12 months)</li>\n</ul>\n</li>\n<li><strong>Keep the property maintained.</strong> Mow the grass, keep the area clean, and make sure your RV or storage unit does not become a blight issue.</li>\n<li><strong>Renew or remove on time.</strong> If your permit has an expiration date, either renew it before it lapses or remove the unit.</li>\n</ol>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Living in an RV</strong> on vacant land is generally not allowed without meeting the same requirements as a permanent dwelling — septic system, well or water supply, and electrical service.</li>\n<li><strong>Storage containers</strong> (shipping containers, semi-trailers) may face additional restrictions depending on your zone.</li>\n<li><strong>No permit means enforcement.</strong> If you skip the permit, you risk a nuisance notice and fines.</li>\n</ul>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Assuming your own land means no rules apply.</strong> Zoning rules apply to all parcels regardless of ownership.</li>\n<li><strong>Leaving an RV year-round without a permit.</strong> Even seasonal use needs approval.</li>\n<li><strong>Using a storage unit as a living space.</strong> This is a code violation and a safety hazard.</li>\n</ul>\n",
+          "category": "property",
+          "scenario": "I want to put an RV or temporary storage on my vacant lot",
+          "icon": "🚐",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "a91a3058-b5e0-4bc2-8d05-ecb72f690447",
+            "guide_id": "9bf643e2-859d-4854-87d7-de33e42fe6a8",
+            "name": "Dick Hassberger",
+            "role": "Zoning Administrator",
+            "phone": "(989) 588-9841 ext. 5",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": [
+          {
+            "id": "afea9670-83bb-4060-b088-10e4f794cd8b",
+            "guide_id": "9bf643e2-859d-4854-87d7-de33e42fe6a8",
+            "name": "Zoning Permit for RVs/Temporary Storage",
+            "url": "/forms/zoning-permit-rv-storage.pdf",
+            "format": "PDF",
+            "display_order": 0
+          }
+        ]
+      },
+      "qualified-forest-program": {
+        "guide": {
+          "id": "cc4f9766-1db8-4135-abc4-726d8227e5bf",
+          "slug": "qualified-forest-program",
+          "title": "Qualified Forest Program Tax Savings",
+          "description": "How the Qualified Forest Program works in Michigan. Save on property taxes if you own 20+ acres of forested land in Clare County.",
+          "body": "<p>If you own 20 or more acres of forested land in Michigan, the Qualified Forest Program (QFP) can significantly reduce your property taxes. Enrolled parcels are exempt from the school operating millage — the same millage that the Principal Residence Exemption covers for homeowners — saving you up to 18 mills.</p>\n<h2>How It Works</h2>\n<p>The QFP is a state program that encourages landowners to actively manage their forests. In exchange for following a professional forest management plan, you get a property tax reduction on the forested portion of your land. The program is managed by the Michigan Department of Natural Resources (DNR).</p>\n<h2>Steps to Enroll</h2>\n<ol>\n<li><strong>Check eligibility.</strong> Your property must be at least <strong>20 contiguous acres</strong> of forested land. It does not need to be 100% wooded, but the primary character must be forest. The land can include your home site.</li>\n<li><strong>Contact the district forester.</strong> Call Mike Dittenber at (989) 539-6401. He covers the Clare County area and can visit your property to assess whether it qualifies.</li>\n<li><strong>Get a forest management plan.</strong> A registered forester (the DNR can help you find one) will create a plan for your property. The plan covers timber stand types, recommended harvests, wildlife habitat, and management activities over a multi-year period.</li>\n<li><strong>Submit your application.</strong> File it with the DNR along with your forest management plan. Applications are due by <strong>September 1</strong> for the following tax year.</li>\n<li><strong>Follow the plan.</strong> Once enrolled, you are committed to carrying out the management activities in your plan. The DNR may inspect your property to verify compliance.</li>\n</ol>\n<h2>What You Save</h2>\n<p>Enrolled parcels are exempt from up to <strong>18 mills</strong> of school operating taxes — the largest single component of most property tax bills. On a parcel with a taxable value of $40,000, that could mean roughly <strong>$720 per year</strong> in savings.</p>\n<h2>Key Details</h2>\n<ul>\n<li><strong>It is a long-term commitment.</strong> Parcels must stay enrolled for a minimum period or face penalties for withdrawal.</li>\n<li><strong>Public access is not required.</strong> Unlike the Commercial Forest program, the QFP does not require you to open your land to public hunting or recreation.</li>\n<li><strong>You can still use the land.</strong> Hunting, hiking, and enjoying your property are all fine. The plan is about sustainable forest management, not locking up the land.</li>\n<li><strong>Timber harvests</strong> recommended in your plan can also generate income.</li>\n</ul>\n<h2>Common Mistakes</h2>\n<ul>\n<li><strong>Assuming any wooded land qualifies.</strong> The 20-acre minimum is firm, and the land must be primarily forested.</li>\n<li><strong>Ignoring the management plan.</strong> Enrolling and then doing nothing can result in removal from the program and back taxes.</li>\n<li><strong>Not knowing about the program at all.</strong> Many eligible landowners miss out simply because they have never heard of the QFP. If you own wooded acreage, it is worth a phone call to find out.</li>\n</ul>\n",
+          "category": "taxes",
+          "scenario": "What is the Qualified Forest Program and can I save on taxes?",
+          "icon": "🌲",
+          "jurisdiction": "state",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "91ca45f1-0af3-4377-bc55-cce9c5ff01e3",
+            "guide_id": "cc4f9766-1db8-4135-abc4-726d8227e5bf",
+            "name": "Mike Dittenber",
+            "role": "District Forester, Michigan DNR",
+            "phone": "(989) 539-6401",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": []
+      },
+      "register-to-vote": {
+        "guide": {
+          "id": "90bc6780-9b4d-4243-96d8-0de6da7d4dfe",
+          "slug": "register-to-vote",
+          "title": "Registering to Vote and Absentee Ballots",
+          "description": "How to register to vote, request an absentee ballot, and find your polling location in Clare County, Michigan.",
+          "body": "<p>Every Michigan citizen 18 or older has the right to vote. You can register at any time, vote absentee without giving a reason, and even register on Election Day. Here is how it all works in Clare County.</p>\n<h2>How to Register to Vote</h2>\n<ol>\n<li><strong>Online:</strong> Go to Michigan.gov/Vote and follow the prompts. You will need your Michigan driver&#39;s license or state ID number.</li>\n<li><strong>By mail:</strong> Download a voter registration form from Michigan.gov/Vote, fill it out, and mail it to Clerk Carol Majewski at the Township Hall.</li>\n<li><strong>In person:</strong> Visit the Township Hall during office hours. Bring your Michigan driver&#39;s license or state ID, or a document showing your name and current address.</li>\n<li><strong>On Election Day:</strong> You can register and vote the same day at the Township Clerk&#39;s office. Bring proof of residency (driver&#39;s license, utility bill, bank statement, or government mail with your name and address).</li>\n</ol>\n<h2>Absentee Voting</h2>\n<p>Any registered voter in Michigan can vote absentee. You do not need a reason.</p>\n<ol>\n<li><strong>Request an absentee ballot</strong> by submitting an Absentee Ballot Application to the Township Clerk. You can mail it, drop it off, or submit it online at Michigan.gov/Vote.</li>\n<li><strong>Permanent absentee voter list:</strong> Ask the Clerk to add you to the permanent list, and you will automatically receive an application before every election.</li>\n<li><strong>Return your ballot</strong> by mail or drop it in the <strong>ballot drop box at Township Hall</strong>. Ballots must be received by 8:00 PM on Election Day.</li>\n</ol>\n<h2>Key Details</h2>\n<ul>\n<li><strong>Registration deadline:</strong> 15 days before the election for mail and online registration. Same-day registration is available in person.</li>\n<li><strong>ID requirement:</strong> Photo ID at the polls, or you can sign an affidavit if you do not have one.</li>\n<li><strong>Find your polling location:</strong> Check Michigan.gov/Vote or call the Clerk at (989) 588-9841 ext. 2.</li>\n</ul>\n<h2>Help Run Elections</h2>\n<p>Clare County needs election inspectors for every election. If you are interested in serving, contact Clerk Carol Majewski. Training is provided, and inspectors are paid for their time.</p>\n",
+          "category": "government",
+          "scenario": "How do I register to vote or get an absentee ballot?",
+          "icon": "🗳️",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "e902a7aa-ad5d-4162-bb7d-4a62e768b99d",
+            "guide_id": "90bc6780-9b4d-4243-96d8-0de6da7d4dfe",
+            "name": "Carol Majewski",
+            "role": "Township Clerk",
+            "phone": "(989) 588-9841 ext. 2",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "e059820e-a41f-4da5-88ec-474b686dd1df",
+            "guide_id": "90bc6780-9b4d-4243-96d8-0de6da7d4dfe",
+            "name": "Lori Mott",
+            "role": "County Clerk",
+            "phone": "(989) 539-7131",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": [
+          {
+            "id": "d9dfa128-3673-4ba2-ac9e-7a033d322f5f",
+            "guide_id": "90bc6780-9b4d-4243-96d8-0de6da7d4dfe",
+            "name": "Absentee Ballot Application",
+            "url": "/forms/absentee-ballot-application.pdf",
+            "format": "PDF",
+            "display_order": 0
+          }
+        ]
+      },
+      "report-non-emergency": {
+        "guide": {
+          "id": "663bf428-4458-4c5b-b532-301e52244195",
+          "slug": "report-non-emergency",
+          "title": "Reporting a Non-Emergency to the Sheriff",
+          "description": "How to report non-emergency incidents to the Clare County Sheriff, file reports, get accident reports, fingerprinting, and animal control contacts.",
+          "body": "<p>Not everything requires a 911 call. For situations that are not life-threatening and not actively in progress, the Clare County Sheriff&#39;s Office has a non-emergency line and in-person services.</p>\n<h2>When to Call 911 vs. Non-Emergency</h2>\n<p><strong>Call 911</strong> for:</p>\n<ul>\n<li>Crimes in progress</li>\n<li>Medical emergencies</li>\n<li>Fires</li>\n<li>Accidents with injuries</li>\n<li>Any situation where someone is in immediate danger</li>\n</ul>\n<p><strong>Call non-emergency (989) 539-1336</strong> for:</p>\n<ul>\n<li>Property damage you discovered after the fact</li>\n<li>Noise complaints</li>\n<li>Suspicious activity that is not an immediate threat</li>\n<li>Requesting a welfare check</li>\n<li>Following up on a previous report</li>\n<li>General questions for the sheriff&#39;s office</li>\n</ul>\n<p>The non-emergency line is staffed 24 hours a day, 7 days a week through Central Dispatch.</p>\n<h2>How to File a Report</h2>\n<ol>\n<li><strong>Call (989) 539-1336</strong> and describe the situation. A dispatcher will determine whether a deputy needs to respond or if a report can be taken by phone.</li>\n<li><strong>Get a report number.</strong> Keep this for your records and for insurance purposes.</li>\n<li><strong>For in-person reports,</strong> visit the Sheriff&#39;s Office at 225 W. Main St. in Harrison during business hours.</li>\n</ol>\n<h2>Getting Copies of Reports</h2>\n<ul>\n<li><strong>Accident reports:</strong> Available from the Sheriff&#39;s Office. There may be a small fee for copies.</li>\n<li><strong>Incident reports:</strong> Request through the office or via FOIA if needed.</li>\n</ul>\n<h2>Fingerprinting Services</h2>\n<p>The Sheriff&#39;s Office provides fingerprinting for employment, licensing, and background checks.</p>\n<ul>\n<li><strong>Hours:</strong> Monday through Friday, 8:30 AM - 3:30 PM</li>\n<li><strong>Location:</strong> 225 W. Main St., Harrison</li>\n<li><strong>No appointment needed</strong> — walk-ins are welcome</li>\n</ul>\n<h2>Animal Control</h2>\n<p>For stray animals, aggressive dogs, or animal welfare concerns, contact Animal Control Officer Bob Dodson at <strong>(989) 539-3221</strong>. Animal control handles:</p>\n<ul>\n<li>Stray and loose animals</li>\n<li>Dog bite reports</li>\n<li>Animal cruelty complaints</li>\n<li>Lost and found pets (check the county animal shelter)</li>\n</ul>\n",
+          "category": "safety",
+          "scenario": "I need to report a non-emergency to the sheriff",
+          "icon": "🛡️",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "8b096a71-2f23-4770-9c9b-3cd9b92b9bdc",
+            "guide_id": "663bf428-4458-4c5b-b532-301e52244195",
+            "name": "Sheriff John Wilson",
+            "role": "Clare County Sheriff",
+            "phone": "(989) 539-7166",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "29ae8835-0c75-49e0-a36f-28bb9f944e34",
+            "guide_id": "663bf428-4458-4c5b-b532-301e52244195",
+            "name": "Central Dispatch",
+            "role": "Non-Emergency Line (24/7)",
+            "phone": "(989) 539-1336",
+            "email": null,
+            "display_order": 1
+          },
+          {
+            "id": "b82e7689-c350-43ed-9b36-5207b16a4e13",
+            "guide_id": "663bf428-4458-4c5b-b532-301e52244195",
+            "name": "Bob Dodson",
+            "role": "Animal Control Officer",
+            "phone": "(989) 539-3221",
+            "email": null,
+            "display_order": 2
+          }
+        ],
+        "forms": []
+      },
+      "drain-commissioner": {
+        "guide": {
+          "id": "859664e2-b186-4aae-8041-7bd294242dce",
+          "slug": "drain-commissioner",
+          "title": "Reporting Drainage Issues",
+          "description": "How to report flooding, drainage problems, or ditch maintenance needs",
+          "body": "The Clare County Drain Commissioner manages county drains, drainage districts, and stormwater infrastructure. Report drainage issues, blocked culverts, or flooding to the Drain Commissioner's office at (989) 539-7320. The office is at 225 W Main St, Harrison. Drainage Board meetings are held as needed to address district-wide matters. For emergency flooding or road washouts, contact Central Dispatch at (989) 539-1336.",
+          "category": "property",
+          "scenario": "My property has drainage problems or flooding — who do I contact?",
+          "icon": "🌊",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-26",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-26T05:33:00.606202+00:00",
+          "published_at": "2026-03-26T05:33:00.606202+00:00"
+        },
+        "contacts": [
+          {
+            "id": "235774c8-6349-4ffd-a2d6-6ccb33f701e1",
+            "guide_id": "859664e2-b186-4aae-8041-7bd294242dce",
+            "name": "William Faber",
+            "role": "Drain Commissioner",
+            "phone": "(989) 539-7320",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "bd32c426-05af-48f8-ae6a-98191b5f3ea0",
+            "guide_id": "859664e2-b186-4aae-8041-7bd294242dce",
+            "name": "Colleen Ritchie",
+            "role": "Deputy Drain Commissioner",
+            "phone": "(989) 539-7320",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": []
+      },
+      "county-road-issues": {
+        "guide": {
+          "id": "51bb2101-1f7b-4883-8fa1-74e429dcfad6",
+          "slug": "county-road-issues",
+          "title": "Reporting Road Problems",
+          "description": "How to report potholes, road damage, or maintenance needs on county roads",
+          "body": "The Clare County Road Commission is a separate entity from county government and maintains county roads, bridges, and rights-of-way. Report potholes, road damage, fallen trees, flooding, or other road hazards by calling (989) 539-2151 during business hours. For after-hours emergencies affecting road safety, call Central Dispatch at (989) 539-1336. Note: city streets in Clare and Harrison are maintained by their respective city governments, not the Road Commission.",
+          "category": "services",
+          "scenario": "There's a pothole or road damage on my road — how do I report it?",
+          "icon": "🚧",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-26",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-26T05:33:00.606202+00:00",
+          "published_at": "2026-03-26T05:33:00.606202+00:00"
+        },
+        "contacts": [
+          {
+            "id": "2908797f-bc03-423b-93e6-a6071f4cf35b",
+            "guide_id": "51bb2101-1f7b-4883-8fa1-74e429dcfad6",
+            "name": "Clare County Road Commission",
+            "role": "Road Maintenance",
+            "phone": "(989) 539-2151",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": []
+      },
+      "emergency-alerts": {
+        "guide": {
+          "id": "d1f880a0-133f-4818-89a7-74909f4d9d46",
+          "slug": "emergency-alerts",
+          "title": "Signing Up for Emergency Alerts",
+          "description": "How to sign up for emergency alerts in Clare County, Michigan, including text alerts, Smart911, text-to-911, and NOAA weather radio information.",
+          "body": "<p>Clare County has several ways to keep you informed during emergencies — severe weather, road closures, missing persons, and other critical events. Signing up takes a few minutes and could make a real difference when it matters.</p>\n<h2>Text Alerts (Fastest Way)</h2>\n<ol>\n<li><strong>Text the word &quot;ClareCoAlerts&quot; to 67283</strong> from your cell phone.</li>\n<li>You will receive a confirmation message. Reply to confirm your subscription.</li>\n<li>You will now get text alerts for emergencies in Clare County.</li>\n</ol>\n<p>This is the fastest way to get notified. Alerts go out for severe weather, evacuations, road closures, and other urgent situations.</p>\n<h2>Smart911</h2>\n<ol>\n<li><strong>Go to Smart911.com</strong> and create a free account.</li>\n<li>Enter your household information — names, medical conditions, pets, and your address.</li>\n<li>When you call 911, dispatchers automatically see your profile, which helps them send the right help faster.</li>\n</ol>\n<p>Smart911 is especially valuable if someone in your household has medical conditions, mobility limitations, or communication challenges.</p>\n<h2>Text-to-911</h2>\n<p>If you cannot safely make a voice call, you can <strong>text 911</strong> in Clare County. This works for:</p>\n<ul>\n<li>Situations where speaking would put you in danger</li>\n<li>Deaf or hard-of-hearing callers</li>\n<li>Medical emergencies where you cannot speak</li>\n</ul>\n<p>Always call if you can. Text if you cannot.</p>\n<h2>NOAA Weather Alerts</h2>\n<p>A NOAA weather radio provides automated alerts for severe weather, even when the power is out. You can buy one at most hardware stores for $20-40. Clare County is covered by the Houghton Lake transmitter.</p>\n<h2>Important Numbers to Save</h2>\n<table>\n<thead>\n<tr>\n<th>Purpose</th>\n<th>Number</th>\n</tr>\n</thead>\n<tbody><tr>\n<td><strong>Emergencies</strong></td>\n<td>911</td>\n</tr>\n<tr>\n<td><strong>Non-emergency dispatch</strong></td>\n<td>(989) 539-1336 (24/7)</td>\n</tr>\n<tr>\n<td><strong>Central Dispatch office</strong></td>\n<td>(989) 539-7166</td>\n</tr>\n<tr>\n<td><strong>Emergency Management</strong></td>\n<td>(989) 539-6161</td>\n</tr>\n</tbody></table>\n",
+          "category": "safety",
+          "scenario": "How do I sign up for emergency alerts?",
+          "icon": "🚨",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "da149b4a-4513-4c61-b6ea-8aef484a1d1e",
+            "guide_id": "d1f880a0-133f-4818-89a7-74909f4d9d46",
+            "name": "Marlana Terrian",
+            "role": "Central Dispatch Director",
+            "phone": "(989) 539-7166 ext. 4226",
+            "email": null,
+            "display_order": 0
+          },
+          {
+            "id": "3ab99657-eb7c-4f7e-91e9-7fc00aa6e914",
+            "guide_id": "d1f880a0-133f-4818-89a7-74909f4d9d46",
+            "name": "Jerry Becker",
+            "role": "Emergency Management Director",
+            "phone": "(989) 539-6161",
+            "email": null,
+            "display_order": 1
+          }
+        ],
+        "forms": []
+      },
+      "foia-request": {
+        "guide": {
+          "id": "5f5102ff-995e-4d4f-9194-19b7ad6e24ff",
+          "slug": "foia-request",
+          "title": "Submitting a FOIA Request",
+          "description": "How to submit a Freedom of Information Act (FOIA) request in Clare County, Michigan at the township or county level, including timelines, fees, and appeal process.",
+          "body": "<p>Michigan&#39;s Freedom of Information Act (FOIA) gives you the right to request public records from any government body — the township, the county, or any public agency. You do not need to explain why you want the records, and the government must respond within 5 business days.</p>\n<h2>What You Can Request</h2>\n<p>FOIA covers most government records, including:</p>\n<ul>\n<li>Meeting minutes and agendas</li>\n<li>Budgets and financial reports</li>\n<li>Contracts and agreements</li>\n<li>Correspondence (emails, letters)</li>\n<li>Permits and applications</li>\n<li>Personnel records (with some exemptions)</li>\n</ul>\n<p>Some records are exempt from FOIA, including certain law enforcement investigation files, attorney-client communications, and personal information protected by privacy laws.</p>\n<h2>How to Submit a Request</h2>\n<ol>\n<li><strong>Decide who has the records.</strong> Township records (zoning, local meetings, township finances) go to the Township Clerk. County records (court records, county budgets, sheriff records) go to the County FOIA Coordinator.</li>\n<li><strong>Write your request.</strong> Be as specific as possible — dates, names, and subject matter help staff find what you need quickly. You can use the FOIA Request Form or write your own letter.</li>\n<li><strong>Submit your request:</strong><ul>\n<li><strong>Township:</strong> Mail, deliver, or email to Clerk Carol Majewski at (989) 588-9841 ext. 2</li>\n<li><strong>County:</strong> Email <a href=\"mailto:FOIA@clareco.net\">FOIA@clareco.net</a> or call (989) 539-2588</li>\n</ul>\n</li>\n</ol>\n<h2>Timelines and Fees</h2>\n<ul>\n<li><strong>Response deadline:</strong> 5 business days. The government may extend this by 10 additional business days with written notice.</li>\n<li><strong>Fees:</strong> You may be charged for copies (typically $0.10/page), labor to find records (hourly rate), and postage. You can request a detailed cost itemization before paying.</li>\n<li><strong>Fee waivers:</strong> The first $20 of search costs is waived. Indigent individuals and nonprofit organizations may qualify for reduced fees.</li>\n</ul>\n<h2>If Your Request Is Denied</h2>\n<ol>\n<li>You will receive a written denial explaining the reason and the specific FOIA exemption cited.</li>\n<li><strong>Appeal to the head of the public body</strong> within 180 days.</li>\n<li>If the appeal is denied, you can file a lawsuit in Circuit Court.</li>\n</ol>\n",
+          "category": "government",
+          "scenario": "How do I submit a FOIA request?",
+          "icon": "📄",
+          "jurisdiction": "township",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-25",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-25T23:44:34.302363+00:00",
+          "published_at": "2026-03-25T23:44:34.302363+00:00"
+        },
+        "contacts": [
+          {
+            "id": "7dad37b1-ccde-4030-b76d-09475f639695",
+            "guide_id": "5f5102ff-995e-4d4f-9194-19b7ad6e24ff",
+            "name": "Carol Majewski",
+            "role": "Township Clerk",
+            "phone": "(989) 588-9841 ext. 2",
+            "email": "clerk@unicorntownship.org",
+            "display_order": 0
+          },
+          {
+            "id": "c7ef8d53-c21c-4282-84f3-17098db34e13",
+            "guide_id": "5f5102ff-995e-4d4f-9194-19b7ad6e24ff",
+            "name": "Clare County FOIA Coordinator",
+            "role": "County FOIA",
+            "phone": "(989) 539-2588",
+            "email": "FOIA@clareco.net",
+            "display_order": 1
+          }
+        ],
+        "forms": [
+          {
+            "id": "3970d483-12ed-4b11-9286-c945cd431de7",
+            "guide_id": "5f5102ff-995e-4d4f-9194-19b7ad6e24ff",
+            "name": "FOIA Request Form",
+            "url": "/forms/foia-request.pdf",
+            "format": "PDF",
+            "display_order": 0
+          },
+          {
+            "id": "76b2c4bc-bbd9-4c98-aab4-e5b459565602",
+            "guide_id": "5f5102ff-995e-4d4f-9194-19b7ad6e24ff",
+            "name": "Detailed Cost Itemization Request",
+            "url": "/forms/foia-cost-itemization.pdf",
+            "format": "PDF",
+            "display_order": 1
+          }
+        ]
+      },
+      "county-gis-maps": {
+        "guide": {
+          "id": "355743c6-6eb5-44db-8394-730fd232deda",
+          "slug": "county-gis-maps",
+          "title": "Using Clare County GIS Maps",
+          "description": "How to look up property information, parcels, and zoning using the county GIS system",
+          "body": "Step-by-step guide to using the Fetch GIS portal at app.fetchgis.com/clare. Search by address or parcel number. View property boundaries, ownership, assessed values, and zoning. The BS&A Online portal (bsaonline.com) provides additional property tax and assessment data. For questions about assessments, contact the Equalization Department.",
+          "category": "property",
+          "scenario": "I want to look up property boundaries, ownership, or zoning information — how do I use the county maps?",
+          "icon": "🗺️",
+          "jurisdiction": "county",
+          "related_guide_ids": null,
+          "last_verified": "2026-03-26",
+          "status": "published",
+          "author_id": null,
+          "created_at": "2026-03-26T05:33:00.606202+00:00",
+          "published_at": "2026-03-26T05:33:00.606202+00:00"
+        },
+        "contacts": [
+          {
+            "id": "518b063c-a933-4b6b-a86c-03e8c1331329",
+            "guide_id": "355743c6-6eb5-44db-8394-730fd232deda",
+            "name": "Pete Preston",
+            "role": "Equalization Director",
+            "phone": "(989) 539-7894",
+            "email": null,
+            "display_order": 0
+          }
+        ],
+        "forms": [
+          {
+            "id": "aebf3d68-aa49-4aca-9274-365b16c6f9e7",
+            "guide_id": "355743c6-6eb5-44db-8394-730fd232deda",
+            "name": "Clare County GIS Portal",
+            "url": "https://app.fetchgis.com/clare",
+            "format": "Web",
+            "display_order": 0
+          }
+        ]
+      }
+    }
+  },
+  "news": {
+    "list": [
+      {
+        "id": "faced075-9b90-45f2-a941-bf49ebc6e82c",
+        "slug": "welcome-to-unicorn-gives",
+        "title": "Welcome to the New Unicorn Gives Community Hub",
+        "date": "2026-03-25",
+        "category": "community",
+        "description": "Introducing our expanded website serving all of Lincoln Township — your central source for local news, events, and government transparency",
+        "image_url": null,
+        "featured": true
+      },
+      {
+        "id": "9eaef541-5bef-4f0b-9c74-1a5839872403",
+        "slug": "gardening-club-launches",
+        "title": "Lincoln Township Gardening Club: Dig In This Spring!",
+        "date": "2026-03-22",
+        "category": "community",
+        "description": "Join our new weekly gardening club with Saturday meetups and monthly classes",
+        "image_url": null,
+        "featured": false
+      },
+      {
+        "id": "40511cca-535c-475a-98a9-55d27652f596",
+        "slug": "the-horn-grand-opening",
+        "title": "The Horn: From Historic Grocery to Community Hub",
+        "date": "2026-03-20",
+        "category": "community",
+        "description": "How a beloved Lake George landmark was transformed into a vibrant community center and artisan goods shop",
+        "image_url": null,
+        "featured": true
+      },
+      {
+        "id": "0058e178-3fa5-4e1d-8bdc-8516ff6d2425",
+        "slug": "our-mission-building-community",
+        "title": "Our Mission: Building a Stronger Lincoln Township Together",
+        "date": "2026-03-15",
+        "category": "community",
+        "description": "Why Unicorn Gives exists and how we're investing in our community's future",
+        "image_url": null,
+        "featured": false
+      },
+      {
+        "id": "f9b6e35c-dcd8-4a8f-a2e1-2ad99966a515",
+        "slug": "county-services-directory",
+        "title": "Clare County Services Directory",
+        "date": "2026-03-01",
+        "category": "public-notice",
+        "description": "A guide to county government services and how to access them",
+        "image_url": null,
+        "featured": false
+      },
+      {
+        "id": "3c22e43a-ed86-4402-bcbf-8322a300c7c0",
+        "slug": "board-meeting-schedule-2026",
+        "title": "2026 Board of Commissioners Meeting Schedule",
+        "date": "2026-01-01",
+        "category": "public-notice",
+        "description": "Regular meeting dates for the Clare County Board of Commissioners in 2026",
+        "image_url": null,
+        "featured": true
+      },
+      {
+        "id": "baab8d54-10da-4f88-9e8c-00617a8ffcca",
+        "slug": "county-budget-fy2026",
+        "title": "Clare County FY2026 Budget Approved",
+        "date": "2025-12-16",
+        "category": "government-action",
+        "description": "The Board of Commissioners approved the fiscal year 2026 county budget",
+        "image_url": null,
+        "featured": false
+      }
+    ],
+    "bySlug": {
+      "welcome-to-unicorn-gives": {
+        "id": "faced075-9b90-45f2-a941-bf49ebc6e82c",
+        "title": "Welcome to the New Unicorn Gives Community Hub",
+        "date": "2026-03-25",
+        "category": "community",
+        "description": "Introducing our expanded website serving all of Lincoln Township — your central source for local news, events, and government transparency",
+        "body": "<p>We are excited to announce the launch of the expanded Unicorn Gives community hub — your central destination for everything happening in Lincoln Township.</p>\n<p>For too long, finding basic information about our township meant digging through scattered sources, attending meetings you might not know about, or relying on word of mouth. That changes today. This site brings it all together in one place, for everyone.</p>\n<h2>What You Will Find Here</h2>\n<p>Our new website brings together information from across the community:</p>\n<ul>\n<li><strong>Township Government</strong> — Board meeting minutes, budgets, public notices, and the transparency our residents deserve</li>\n<li><strong>Unicorn Gives</strong> — Our nonprofit programs, volunteer opportunities, and community initiatives</li>\n<li><strong>The Horn</strong> — Events, hours, membership info, and everything happening at our community center in Lake George</li>\n<li><strong>The Mane</strong> — Services, appointments, and news from our local salon and boutique</li>\n</ul>\n<h2>Why We Built This</h2>\n<p>Lincoln Township deserves a central place to stay informed. Whether you want to know when the next board meeting is, what events are coming up at The Horn, or how your tax dollars are being spent, it should be easy to find. This site is our commitment to openness and community connection.</p>\n<h2>Get Involved</h2>\n<p>There are many ways to be part of what we are building:</p>\n<ul>\n<li><a href=\"/events\">Browse community events</a> and mark your calendar</li>\n<li><a href=\"/volunteer\">Volunteer your time</a> with Unicorn Gives</li>\n<li><a href=\"/about-the-horn\">Visit The Horn</a> in downtown Lake George</li>\n<li><a href=\"/public-notices\">Check out public notices</a> and stay informed on township business</li>\n</ul>\n<p>We are just getting started. Watch this space for more news, events, and community updates as we grow together.</p>\n",
+        "author_name": "Unicorn Gives",
+        "source": null,
+        "source_url": null,
+        "image_url": null
+      },
+      "gardening-club-launches": {
+        "id": "9eaef541-5bef-4f0b-9c74-1a5839872403",
+        "title": "Lincoln Township Gardening Club: Dig In This Spring!",
+        "date": "2026-03-22",
+        "category": "community",
+        "description": "Join our new weekly gardening club with Saturday meetups and monthly classes",
+        "body": "<p>Spring is here, and so is the Lincoln Township Gardening Club. Whether you have been gardening for decades or have never touched a trowel, this new weekly club is your invitation to get your hands dirty alongside your neighbors.</p>\n<h2>What to Expect</h2>\n<p>The Gardening Club meets every Saturday morning at The Horn in Lake George. Each week brings a mix of hands-on activity and friendly conversation:</p>\n<ul>\n<li><strong>Hands-on gardening</strong> — Work together on community plots and individual projects</li>\n<li><strong>Tips and technique sharing</strong> — Learn from experienced local gardeners and share what you know</li>\n<li><strong>Seed and plant swaps</strong> — Bring extras from your garden, take home something new</li>\n<li><strong>Community plot maintenance</strong> — Help tend shared garden spaces that benefit the whole township</li>\n</ul>\n<h2>Monthly Classes</h2>\n<p>On the first Saturday of each month, we host a special class focused on a single topic. Upcoming sessions will cover subjects like:</p>\n<ul>\n<li>Composting basics and building healthy soil</li>\n<li>Native Michigan plants for pollinators and wildlife</li>\n<li>Container gardening for small spaces and beginners</li>\n<li>Seasonal planning and succession planting</li>\n<li>Preserving your harvest</li>\n</ul>\n<p>Each class is designed to be practical and hands-on. You will leave with knowledge you can put to work in your own yard that same day.</p>\n<h2>All Skill Levels Welcome</h2>\n<p>You do not need experience, tools, or a green thumb to join. The whole point is learning together and building community around something we all share — a love of growing things. Beginners are especially encouraged to come out and give it a try.</p>\n<h2>Details</h2>\n<ul>\n<li><strong>When:</strong> Every Saturday, 9:00 AM</li>\n<li><strong>Where:</strong> The Horn, Lake George village</li>\n<li><strong>Monthly Class:</strong> First Saturday of each month (same time, same place)</li>\n<li><strong>Cost:</strong> Free and open to all</li>\n</ul>\n<h2>How to Join</h2>\n<p>Just show up on a Saturday morning. No registration required. If you want to learn more or have questions before your first visit, stop by The Horn during regular hours or check the <a href=\"/events-horn\">events page</a> for details.</p>\n<p>See you in the garden.</p>\n",
+        "author_name": "The Horn",
+        "source": null,
+        "source_url": null,
+        "image_url": null
+      },
+      "the-horn-grand-opening": {
+        "id": "40511cca-535c-475a-98a9-55d27652f596",
+        "title": "The Horn: From Historic Grocery to Community Hub",
+        "date": "2026-03-20",
+        "category": "community",
+        "description": "How a beloved Lake George landmark was transformed into a vibrant community center and artisan goods shop",
+        "body": "<p>In the heart of Lake George village, a building with decades of history has found new life. The former Lake George Grocery — a longtime staple of the community — has been transformed into The Horn, a community center and artisan goods shop serving Lincoln Township and beyond.</p>\n<h2>A Building Worth Saving</h2>\n<p>Lake George Grocery was more than a store. It was a gathering point, a place where neighbors ran into each other and caught up on local news. When the opportunity arose to purchase the building in 2021, Unicorn saw a chance to preserve that spirit while giving the space a new purpose.</p>\n<h2>The Transformation</h2>\n<p>With a $200,000 investment in renovations, the building was carefully updated while honoring its character. The result is a flexible, welcoming space that serves the community in multiple ways. After months of work, The Horn soft-launched in 2022 and has been growing ever since.</p>\n<h2>What The Horn Offers</h2>\n<p>Today, The Horn is a true community hub:</p>\n<ul>\n<li><strong>Artisan Goods Shop</strong> — Locally made products, handcrafted goods, and unique finds from Michigan makers</li>\n<li><strong>Community Gathering Space</strong> — A comfortable area for meetups, clubs, and casual connection</li>\n<li><strong>Event Venue</strong> — Host to workshops, seasonal markets, classes, and celebrations throughout the year</li>\n<li><strong>Local Commerce Hub</strong> — A place where small producers and artisans can reach customers and build their businesses</li>\n</ul>\n<h2>The Vision</h2>\n<p>The Horn exists to give Lincoln Township a living room — a place where people come together not because they have to, but because they want to. Whether you are shopping for a handmade gift, attending a gardening club meeting, or just stopping in to say hello, The Horn is here for you.</p>\n<h2>Come Visit</h2>\n<p>The Horn is located in downtown Lake George village. Stop by during our regular hours to browse the shop, learn about upcoming events, or just see the space for yourself. Check our <a href=\"/hours-horn\">hours and location</a> for details, or visit the <a href=\"/events-horn\">events page</a> to see what is coming up next.</p>\n<p>We would love to see you there.</p>\n",
+        "author_name": "Unicorn Gives",
+        "source": null,
+        "source_url": null,
+        "image_url": null
+      },
+      "our-mission-building-community": {
+        "id": "0058e178-3fa5-4e1d-8bdc-8516ff6d2425",
+        "title": "Our Mission: Building a Stronger Lincoln Township Together",
+        "date": "2026-03-15",
+        "category": "community",
+        "description": "Why Unicorn Gives exists and how we're investing in our community's future",
+        "body": "<p>Unicorn Gives was founded with a simple belief: small communities thrive when people invest in them — not just with money, but with time, energy, and genuine care. Lincoln Township is our home, and we are committed to making it stronger for everyone who lives here.</p>\n<h2>Three Pillars of Community Investment</h2>\n<p>Our work is built around three connected efforts, each playing a different role in strengthening the township:</p>\n<h3>The Horn — Community Center</h3>\n<p><a href=\"/about-the-horn\">The Horn</a> is our physical home base in Lake George village. A renovated historic building, it serves as a community gathering space, artisan goods shop, and event venue. It is the place where neighbors meet, local makers sell their work, and new ideas take root.</p>\n<h3>The Mane — Local Business Revitalization</h3>\n<p><a href=\"/about-the-mane\">The Mane</a> represents our investment in local commerce. By operating and supporting small businesses in the township, we help keep economic activity local and create opportunities for residents. A healthy local economy means a healthier community.</p>\n<h3>Civic Engagement — Township Transparency</h3>\n<p>This website is our third pillar. We believe residents deserve easy access to information about how their township operates — meeting schedules, budgets, public notices, and planning decisions. An informed community is an empowered community. We publish township information here so that everyone can participate in the decisions that affect their daily lives.</p>\n<h2>Our Values</h2>\n<p>Everything we do is guided by four core principles:</p>\n<ul>\n<li><strong>Community First</strong> — Every decision starts with the question: does this benefit the people who live here?</li>\n<li><strong>Transparency</strong> — We share information openly, whether it is about our own programs or township government</li>\n<li><strong>Inclusion</strong> — Our doors, programs, and information are open to everyone in the township</li>\n<li><strong>Action</strong> — Good intentions matter, but results matter more. We show up and do the work.</li>\n</ul>\n<h2>How You Can Help</h2>\n<p>Building a stronger community is not a one-organization job. Here is how you can be part of it:</p>\n<ul>\n<li><strong><a href=\"/volunteer\">Volunteer</a></strong> — Lend your time and skills to community programs and events</li>\n<li><strong><a href=\"/events\">Attend Events</a></strong> — Show up, connect with neighbors, and be part of what is happening</li>\n<li><strong><a href=\"/news\">Stay Informed</a></strong> — Follow the news and subscribe for updates on township matters</li>\n<li><strong><a href=\"/about-the-horn\">Visit The Horn</a></strong> — Support local artisans and be part of our gathering space</li>\n</ul>\n<p>Lincoln Township has a bright future. We are glad you are here to help build it.</p>\n",
+        "author_name": "Unicorn Gives",
+        "source": null,
+        "source_url": null,
+        "image_url": null
+      },
+      "county-services-directory": {
+        "id": "f9b6e35c-dcd8-4a8f-a2e1-2ad99966a515",
+        "title": "Clare County Services Directory",
+        "date": "2026-03-01",
+        "category": "public-notice",
+        "description": "A guide to county government services and how to access them",
+        "body": "Clare County government offices are open Monday through Friday, 8am to 4:30pm at 225 W Main St, Harrison, MI 48625 (PO Box 438). Main phone: (989) 539-2510. Key services include property tax payments (Treasurer, 989-539-7801), dog licensing (Treasurer), vital records (Clerk, 989-539-7131), building permits (clareco-buildingdev.net), FOIA requests (FOIA@clareco.net), GIS/property maps (app.fetchgis.com/clare), and election information (clareclerkrod.com/election/).",
+        "author_name": "Clare County Administration",
+        "source": "Clare County",
+        "source_url": "https://www.clareco.net",
+        "image_url": null
+      },
+      "board-meeting-schedule-2026": {
+        "id": "3c22e43a-ed86-4402-bcbf-8322a300c7c0",
+        "title": "2026 Board of Commissioners Meeting Schedule",
+        "date": "2026-01-01",
+        "category": "public-notice",
+        "description": "Regular meeting dates for the Clare County Board of Commissioners in 2026",
+        "body": "The Clare County Board of Commissioners meets on the 3rd Wednesday of each month at 9:00 AM at 225 W Main St, Harrison. 2026 dates: April 15, May 20, June 17, July 15, August 19, September 16, September 30, October 21, November 12, December 16. Meetings are open to the public. Virtual attendance is available via Zoom. Contact (989) 539-2510 for more information.",
+        "author_name": "Clare County Administration",
+        "source": "Clare County",
+        "source_url": "https://www.clareco.net",
+        "image_url": null
+      },
+      "county-budget-fy2026": {
+        "id": "baab8d54-10da-4f88-9e8c-00617a8ffcca",
+        "title": "Clare County FY2026 Budget Approved",
+        "date": "2025-12-16",
+        "category": "government-action",
+        "description": "The Board of Commissioners approved the fiscal year 2026 county budget",
+        "body": "The Clare County Board of Commissioners approved the fiscal year 2026 budget at their December meeting. The budget covers county operations including all departments, courts, and services. County offices are located at 225 W Main St, Harrison, MI 48625. The full budget document is available through the County Administrator's office at (989) 539-2510.",
+        "author_name": "Clare County Administration",
+        "source": "Clare County",
+        "source_url": "https://www.clareco.net",
+        "image_url": null
+      }
+    }
+  },
+  "events": {
+    "list": [
+      {
+        "id": "6019ea63-e0aa-4719-9345-97a6b1d4e04b",
+        "slug": "",
+        "title": "Farwell Holiday Lights Festival",
+        "description": "Holiday celebration with light displays and community festivities",
+        "date": "2026-12-05",
+        "time": "5pm-9pm",
+        "location": "Village of Farwell, MI",
+        "category": "community",
+        "recurring": true,
+        "tags": [
+          "festival",
+          "winter",
+          "family-friendly",
+          "free"
+        ],
+        "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/event-covers/b15222aa-32ca-4c90-a361-d8a78d020bf0/73934242-1139-4cb0-b763-e814f56e1a7b.jpg",
+        "featured": false
+      }
+    ],
+    "bySlug": {
+      "native-plant-pickup-flowers": {
+        "id": "98122e95-06e4-48f5-8c2a-96f394469ae1",
+        "title": "Native Plant Sale Pickup (Wildflowers & Garden Kits)",
+        "description": "Pick up your pre-ordered wildflowers and garden kits from the Clare Conservation District spring plant sale",
+        "category": "conservation",
+        "date": "2026-05-21",
+        "time": "9:00 AM - 4:00 PM",
+        "location": "Harrison City Hall Maintenance Shop, 2105 Sullivan Dr, Harrison, MI",
+        "cost": null,
+        "recurring": false,
+        "recurrence_rule": null,
+        "body": "Pick up your pre-ordered wildflowers and garden kits from the Clare Conservation District's annual spring plant sale. Pickup runs May 21-23. Bring your order confirmation and a vehicle suitable for transporting your plants.",
+        "image_url": null
+      },
+      "native-plant-pickup-trees": {
+        "id": "a65578bc-6f07-4edc-adb6-c88fd4bea2b7",
+        "title": "Native Plant Sale Pickup (Trees & Shrubs)",
+        "description": "Pick up your pre-ordered native trees and shrubs from the Clare Conservation District spring plant sale",
+        "category": "conservation",
+        "date": "2026-05-07",
+        "time": "9:00 AM - 4:00 PM",
+        "location": "Harrison City Hall Maintenance Shop, 2105 Sullivan Dr, Harrison, MI",
+        "cost": null,
+        "recurring": false,
+        "recurrence_rule": null,
+        "body": "Pick up your pre-ordered native trees and shrubs from the Clare Conservation District's annual spring plant sale. Pickup runs May 7-9. Bring your order confirmation and a vehicle suitable for transporting your plants.",
+        "image_url": null
+      },
+      "planning-commission-april-2026": {
+        "id": "ba9b3e44-c97b-4df9-a61c-c31a8a45972a",
+        "title": "Planning Commission Meeting",
+        "description": "Regular monthly meeting of the Lincoln Township Planning Commission",
+        "category": "government",
+        "date": "2026-04-14",
+        "time": "7:00 PM",
+        "location": "Lincoln Township Hall, 175 Lake George Ave, Lake George, MI",
+        "cost": null,
+        "recurring": true,
+        "recurrence_rule": "1st Tuesday after 2nd Monday monthly",
+        "body": "The Planning Commission meets monthly to review site plans, zoning requests, and land use matters. Meetings are open to the public.",
+        "image_url": null
+      },
+      "sad-hearings-may-2026": {
+        "id": "e7851613-22bb-4ab1-97b0-87976a091d42",
+        "title": "Special Assessment District Public Hearings (Shingle, Bertha & Lake George)",
+        "description": "Public hearings for Special Assessment Districts on Shingle Lake, Lake Bertha, and Lake George",
+        "category": "government",
+        "date": "2026-05-08",
+        "time": "4:00 PM",
+        "location": "Lincoln Township Hall, 175 Lake George Ave, Lake George, MI",
+        "cost": null,
+        "recurring": false,
+        "recurrence_rule": null,
+        "body": "Lincoln Township will hold public hearings for the Special Assessment Districts on Shingle Lake, Lake Bertha, and Lake George. Property owners within these SAD boundaries are encouraged to attend and provide input on the proposed assessments for lake maintenance and improvement projects.",
+        "image_url": null
+      },
+      "conservation-board-april-2026": {
+        "id": "716e0e5f-c3e3-4f12-bb38-d258073b9a65",
+        "title": "Conservation District Board Meeting",
+        "description": "Regular monthly meeting of the Clare Conservation District Board of Directors",
+        "category": "conservation",
+        "date": "2026-04-21",
+        "time": "6:30 PM",
+        "location": "Harrison District Library, Harrison, MI",
+        "cost": null,
+        "recurring": true,
+        "recurrence_rule": "3rd Tuesday monthly",
+        "body": "The Clare Conservation District Board meets monthly to discuss conservation programs, projects, and district business. Meetings are open to the public.",
+        "image_url": null
+      },
+      "county-commissioners-april-2026": {
+        "id": "5abe6207-6cfd-483b-bb90-30b2e9140c73",
+        "title": "Clare County Board of Commissioners Meeting",
+        "description": "Regular monthly meeting of the Clare County Board of Commissioners",
+        "category": "government",
+        "date": "2026-04-15",
+        "time": "9:00 AM",
+        "location": "Clare County Courthouse, 225 W Main St, Harrison, MI",
+        "cost": null,
+        "recurring": true,
+        "recurrence_rule": "3rd Wednesday monthly",
+        "body": "The Clare County Board of Commissioners meets monthly to conduct county business. Meetings are open to the public.",
+        "image_url": null
+      },
+      "board-of-commissioners-meeting": {
+        "id": "0a3572d3-3126-4ede-ad58-1d85ab582d75",
+        "title": "Clare County Board of Commissioners Meeting",
+        "description": "Regular monthly meeting of the Clare County Board of Commissioners",
+        "category": "government",
+        "date": "2026-04-15",
+        "time": "9:00 AM",
+        "location": "225 W Main St, Harrison, MI 48625",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "3rd Wednesday monthly",
+        "body": "Regular meeting of the Clare County Board of Commissioners. Open to the public. 2026 meeting dates: April 15, May 20, June 17, July 15, August 19, September 16, September 30, October 21, November 12, December 16. Virtual attendance via Zoom available.",
+        "image_url": null
+      },
+      "clare-county-fair": {
+        "id": "889ace0c-5de4-48cd-aaa9-aa76483f41c2",
+        "title": "Clare County Fair",
+        "description": "One of Michigan's longest-running county fairs, since 1883",
+        "category": "community",
+        "date": "2026-07-18",
+        "time": "Gates open at 8am daily",
+        "location": "Clare County Fairgrounds, Harrison, MI",
+        "cost": "Varies",
+        "recurring": true,
+        "recurrence_rule": "Annually in July",
+        "body": "Running since 1883, the Clare County Fair is a week-long tradition featuring livestock shows, carnival rides, demolition derby, live entertainment, and 4-H exhibits at the fairgrounds in Harrison.",
+        "image_url": null
+      },
+      "drain-board-meeting": {
+        "id": "f28fd52e-f1f8-4106-b259-046f8eef9faa",
+        "title": "Clare County Drain Board Meeting",
+        "description": "Regular meeting of the Clare County Drainage Board",
+        "category": "government",
+        "date": "2026-04-15",
+        "time": "TBD",
+        "location": "225 W Main St, Harrison, MI 48625",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "As scheduled",
+        "body": "Meetings of the Clare County Drainage Board address drainage district matters, drain maintenance, and improvement projects. Meeting dates are posted on the county calendar. Contact the Drain Commissioner at (989) 539-7320.",
+        "image_url": null
+      },
+      "farwell-farmers-market": {
+        "id": "1f751a56-9336-4285-987e-30d6eafdf35c",
+        "title": "Farwell Farmers Market",
+        "description": "Fresh local produce, baked goods, and crafts every Saturday morning",
+        "category": "community",
+        "date": "2026-05-02",
+        "time": "9am-1pm",
+        "location": "Downtown Farwell, MI",
+        "cost": "Free admission",
+        "recurring": true,
+        "recurrence_rule": "Saturdays, May through October",
+        "body": "The Farwell Farmers Market features local growers and makers every Saturday morning from May through October, 9am to 1pm. Find fresh produce, baked goods, honey, preserves, and handmade crafts.",
+        "image_url": null
+      },
+      "frostbite-festival": {
+        "id": "097977d0-358d-4e1b-ad51-291a224cda3d",
+        "title": "Frostbite Festival",
+        "description": "Harrison's winter celebration with ice fishing, snowmobile events, and more",
+        "category": "community",
+        "date": "2026-01-24",
+        "time": null,
+        "location": "Harrison, MI — Budd Lake and downtown",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "Annually in January",
+        "body": "Harrison's Frostbite Festival celebrates winter on Budd Lake and throughout downtown. Events include ice fishing contests, snowmobile racing, winter games, and warming stations with hot cocoa.",
+        "image_url": null
+      },
+      "lake-daze": {
+        "id": "cbfc770f-19fd-4b46-8398-711714b88216",
+        "title": "Lake Daze Festival",
+        "description": "Summer community celebration in Lake, Michigan",
+        "category": "community",
+        "date": "2026-07-04",
+        "time": null,
+        "location": "Lake, MI",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "Annually around July 4th",
+        "body": "The community of Lake celebrates summer with the annual Lake Daze festival, featuring food, games, fireworks, and small-town fun.",
+        "image_url": null
+      },
+      "lake-improvement-board-meeting": {
+        "id": "a062d3d2-8abd-4158-9402-33973e3880ee",
+        "title": "Lake Improvement Board Meeting",
+        "description": "Meetings for Clare County lake improvement boards",
+        "category": "government",
+        "date": "2026-04-15",
+        "time": "TBD",
+        "location": "225 W Main St, Harrison, MI 48625",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "As scheduled",
+        "body": "Clare County lake improvement boards meet to address lake management, weed control, water quality, and special assessments. Multiple boards serve different lakes. Meeting schedules are posted on the county calendar.",
+        "image_url": null
+      },
+      "lumberjack-festival": {
+        "id": "7828f0e2-89cd-41d3-b022-4a58227c1636",
+        "title": "Farwell Lumberjack Festival",
+        "description": "Celebrating Farwell's logging heritage with competitions and family fun",
+        "category": "community",
+        "date": "2026-08-15",
+        "time": null,
+        "location": "Village of Farwell, MI",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "Annually in August",
+        "body": "Farwell honors its logging heritage with lumberjack competitions, live music, craft vendors, food, and family activities. The village was a hub for Michigan's lumber industry in the 1800s.",
+        "image_url": null
+      },
+      "summer-concert-series": {
+        "id": "2e2f0a05-d97d-4184-b0e8-082c62b5b105",
+        "title": "Summer Concert Series",
+        "description": "Free Thursday evening concerts in Shamrock Park",
+        "category": "community",
+        "date": "2026-06-04",
+        "time": "6pm-8pm",
+        "location": "Shamrock Park, Clare, MI",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "Thursdays, June through July",
+        "body": "Bring a lawn chair and enjoy free live music at Shamrock Park in Clare every Thursday evening from June through July, 6-8pm.",
+        "image_url": null
+      },
+      "summerfest": {
+        "id": "550e8f82-ae84-4d66-9060-dba55e4c30a7",
+        "title": "Clare Summerfest",
+        "description": "Summer celebration in downtown Clare with music, vendors, and activities",
+        "category": "community",
+        "date": "2026-06-20",
+        "time": "10am-10pm",
+        "location": "Downtown Clare, McEwan Street",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "Annually in June",
+        "body": "Downtown Clare comes alive for Summerfest weekend with live music, food vendors, craft booths, and family activities along McEwan Street.",
+        "image_url": null
+      },
+      "twp-board-april-2026": {
+        "id": "da24aebc-c5fb-4ad8-8643-dc1c4f95a0d0",
+        "title": "Lincoln Township Board Meeting",
+        "description": "Regular monthly meeting of the Lincoln Township Board of Trustees",
+        "category": "government",
+        "date": "2026-04-13",
+        "time": "7:00 PM",
+        "location": "Lincoln Township Hall, 175 Lake George Ave, Lake George, MI",
+        "cost": null,
+        "recurring": true,
+        "recurrence_rule": "2nd Monday monthly",
+        "body": "The Lincoln Township Board meets on the second Monday of each month to conduct regular township business. Meetings are open to the public and include time for public comment.",
+        "image_url": null
+      },
+      "twp-board-may-2026": {
+        "id": "a95cf7f7-8ecb-4174-92b2-1b7fd449f5e7",
+        "title": "Lincoln Township Board Meeting",
+        "description": "Regular monthly meeting of the Lincoln Township Board of Trustees",
+        "category": "government",
+        "date": "2026-05-11",
+        "time": "7:00 PM",
+        "location": "Lincoln Township Hall, 175 Lake George Ave, Lake George, MI",
+        "cost": null,
+        "recurring": true,
+        "recurrence_rule": "2nd Monday monthly",
+        "body": "The Lincoln Township Board meets on the second Monday of each month to conduct regular township business. Meetings are open to the public and include time for public comment.",
+        "image_url": null
+      },
+      "yoders-auction": {
+        "id": "b7901c1c-ba06-4876-a8f3-24b3277511a9",
+        "title": "Yoder's Quilt Auction & Flea Market",
+        "description": "Amish quilt auction and flea market near Clare",
+        "category": "community",
+        "date": "2026-05-01",
+        "time": "Fridays and Saturdays, seasonal",
+        "location": "10885 N Leaton Rd, Clare, MI",
+        "cost": "Free admission",
+        "recurring": true,
+        "recurrence_rule": "Fridays and Saturdays, seasonal",
+        "body": "The local Amish community hosts quilt auctions and flea markets at Yoder's on Leaton Road. Handcrafted quilts, furniture, baked goods, and produce. Contact (989) 386-2872 for schedule. Note: closed Thursdays.",
+        "image_url": null
+      },
+      "irish-festival": {
+        "id": "c103a082-7bb2-454d-b439-d73a6ff3c510",
+        "title": "Clare Irish Festival",
+        "description": "Annual celebration of Clare's Irish heritage with music, food, and family fun",
+        "category": "community",
+        "date": "2026-03-14",
+        "time": "All Day",
+        "location": "Downtown Clare, McEwan Street",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "Annually in March",
+        "body": "Clare's signature celebration of its Irish heritage. Live Irish music, traditional food, green beer, parade, and family activities throughout downtown. Clare was named after County Clare, Ireland in 1843.",
+        "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/event-covers/b15222aa-32ca-4c90-a361-d8a78d020bf0/5d6eae80-014f-4dff-8abd-2f6870eb52d0.jpg"
+      },
+      "": {
+        "id": "6019ea63-e0aa-4719-9345-97a6b1d4e04b",
+        "title": "Farwell Holiday Lights Festival",
+        "description": "Holiday celebration with light displays and community festivities",
+        "category": "community",
+        "date": "2026-12-05",
+        "time": "5pm-9pm",
+        "location": "Village of Farwell, MI",
+        "cost": "Free",
+        "recurring": true,
+        "recurrence_rule": "Annually in early December",
+        "body": "Farwell welcomes the holiday season with festive light displays, visits with Santa, carolers, hot chocolate, and community spirit throughout the village.",
+        "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/event-covers/b15222aa-32ca-4c90-a361-d8a78d020bf0/73934242-1139-4cb0-b763-e814f56e1a7b.jpg"
+      },
+      "vernal-pool-monitoring": {
+        "id": "1336cc8b-c873-4a4c-bc22-7138c0db54f5",
+        "title": "Vernal Pool Monitoring Event",
+        "description": "Learn how to identify and monitor vernal pools, critical seasonal wetland habitats for amphibians and invertebrates",
+        "category": "conservation",
+        "date": "2026-05-29",
+        "time": "TBD",
+        "location": "Clare Conservation District Habitat Education Property, Clare County, MI",
+        "cost": null,
+        "recurring": false,
+        "recurrence_rule": null,
+        "body": "Join the Clare Conservation District for a hands-on vernal pool monitoring event. Learn how to identify vernal pools, the unique seasonal wetlands that provide critical breeding habitat for salamanders, frogs, and aquatic invertebrates. No experience necessary.",
+        "image_url": null
+      },
+      "beyond-maps-edge-group": {
+        "id": "fef1e6b4-8efc-48f7-b582-78c8fb9932b7",
+        "title": "Beyond the Maps Edge: Treasure Hunt Group",
+        "description": "A community of puzzle-solvers, map-readers, and curious minds chasing real-world treasures.",
+        "category": "community",
+        "date": "2026-04-06",
+        "time": "6:00-8:00pm",
+        "location": "The Horn - 304 Lake George St, Lake, MI 48632",
+        "cost": "Donation Based",
+        "recurring": true,
+        "recurrence_rule": "Every Monday",
+        "body": "<p>We are a group of puzzle-solvers, map-readers, and curious minds chasing real-world treasures. We are starting with Beyond the Map's Edge (<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"http://treasure.quest\">treasure.quest</a>). For the spring and summer of 2026.<br><br>We meet every Monday to share what we've uncovered, debate theories, and push the puzzle forward together. No prior experience required, just a sharp eye and a spirit of collaboration.<br><br>If any member of this group cracks the final puzzle and claims the reward, the prize is shared equally among all active members (capped at $100,000 per member). Any amount beyond that goes directly to Unicorn Gives, our local 501(c)3 nonprofit serving Clare County, Michigan so that the treasure benefits our community no matter what.<br><br>The hunt is the adventure. The solve is for everyone.</p>",
+        "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/event-covers/b15222aa-32ca-4c90-a361-d8a78d020bf0/ca6d0a6d-375b-42dd-a45b-f84753793561.jpg"
+      },
+      "little-forks-conservation-program": {
+        "id": "a54bdc78-d5b1-4796-b62a-0a9dd7e5cb30",
+        "title": "Free Conservation Program — Land Protection Options",
+        "description": "Learn about conservation easements, land protection options, and the Forest & Water Fund at this free program hosted by Little Forks Conservancy",
+        "category": "conservation",
+        "date": "2026-04-11",
+        "time": "10:00 AM - 12:00 PM",
+        "location": "Jay's & Webber Wildlife and Education Center, 3891 East Surrey Rd, Clare, MI",
+        "cost": "Free",
+        "recurring": false,
+        "recurrence_rule": null,
+        "body": "Local landowners are invited to learn about land protection options such as conservation easements and how to preserve natural features while maintaining property ownership. The program will also feature information on the Forest & Water Fund, which offers financial support for land management and conservation efforts.\n\nPresented by Shelby Gentle, Land Conservation Specialist with Little Forks Conservancy, and Vic Lane, Project Manager with the Michigan Forest Association.\n\nNo registration required and no obligation to participate in any conservation program. For more information, contact Shelby Gentle at (989) 835-4886 ext. 103 or sgentle@littleforks.org.",
+        "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/event-covers/b15222aa-32ca-4c90-a361-d8a78d020bf0/f16d8007-e4c3-4d45-a263-aecd6fdf09b3.jpg"
+      }
+    }
+  },
+  "home": {
+    "regions": [
+      {
+        "id": "26714a81-7b03-47de-a18a-e2582eed7e96",
+        "slug": "clare-county",
+        "name": "Clare County",
+        "type": "county"
+      },
+      {
+        "id": "d6722c2e-a8b0-4f5a-b1f9-9f517aff03cd",
+        "slug": "lincoln-township",
+        "name": "Lincoln Township",
+        "type": "township"
+      },
+      {
+        "id": "6f591cb9-2102-4549-9818-bf7c7fd514ea",
+        "slug": "city-of-clare",
+        "name": "City of Clare",
+        "type": "city"
+      },
+      {
+        "id": "620aa92e-0204-4966-b945-0a92803830a7",
+        "slug": "city-of-harrison",
+        "name": "City of Harrison",
+        "type": "city"
+      },
+      {
+        "id": "692dace4-b7c5-4462-bff1-9ff7e748ba32",
+        "slug": "village-of-farwell",
+        "name": "Village of Farwell",
+        "type": "village"
+      }
+    ],
+    "news": [
+      {
+        "slug": "welcome-to-unicorn-gives",
+        "title": "Welcome to the New Unicorn Gives Community Hub",
+        "date": "2026-03-25",
+        "category": "community",
+        "image_url": null
+      },
+      {
+        "slug": "gardening-club-launches",
+        "title": "Lincoln Township Gardening Club: Dig In This Spring!",
+        "date": "2026-03-22",
+        "category": "community",
+        "image_url": null
+      },
+      {
+        "slug": "the-horn-grand-opening",
+        "title": "The Horn: From Historic Grocery to Community Hub",
+        "date": "2026-03-20",
+        "category": "community",
+        "image_url": null
+      }
+    ],
+    "events": [
+      {
+        "slug": "",
+        "title": "Farwell Holiday Lights Festival",
+        "date": "2026-12-05",
+        "time": "5pm-9pm",
+        "location": "Village of Farwell, MI",
+        "image_url": "https://kifhbevwmpqdeuxqnjxa.supabase.co/storage/v1/object/public/event-covers/b15222aa-32ca-4c90-a361-d8a78d020bf0/73934242-1139-4cb0-b763-e814f56e1a7b.jpg"
+      }
+    ],
+    "partners": [
+      {
+        "slug": "the-mane",
+        "name": "The Mane",
+        "description": "Salon and community space"
+      },
+      {
+        "slug": "the-horn",
+        "name": "The Horn",
+        "description": "Community center serving Lincoln Township and surrounding areas"
+      }
+    ]
+  },
+  "directory": {
+    "partners": [
+      {
+        "slug": "the-mane",
+        "name": "The Mane",
+        "description": "Salon and community space"
+      },
+      {
+        "slug": "the-horn",
+        "name": "The Horn",
+        "description": "Community center serving Lincoln Township and surrounding areas"
+      }
+    ]
+  }
+}

@@ -15,6 +15,10 @@ type Snapshot = {
     partner_type_id: string | null;
   };
   landingPage: Record<string, unknown> | null;
+  /** Tab pages keyed by tab slug. */
+  pages?: Record<string, { title: string; body: string }>;
+  /** The partner type's default tabs, used when the partner defines none. */
+  defaultTabs?: unknown;
 };
 
 const partners = (data as { partners: Record<string, Snapshot> }).partners ?? {};

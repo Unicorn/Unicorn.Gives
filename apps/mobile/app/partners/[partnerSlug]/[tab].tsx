@@ -12,6 +12,7 @@ import { useTheme, spacing } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
 import { getDefaultDescription } from '@/lib/seo';
 import { fetchPartnerTabParams } from '@/lib/static-build-queries';
+import { getStaticPartner } from '@/lib/partner-content-static';
 
 type PartnerTab = { label: string; slug: string; order: number };
 
@@ -44,9 +45,13 @@ export async function generateStaticParams(
 export default function PartnerTab() {
   const { colors } = useTheme();
   const { partnerSlug, tab } = useLocalSearchParams<{ partnerSlug: string; tab: string }>();
-  const [partner, setPartner] = useState<Partner | null>(null);
-  const [defaultTabs, setDefaultTabs] = useState<PartnerTab[]>([]);
-  const [page, setPage] = useState<PartnerPage | null>(null);
+  // Seed from the build-time snapshot so the export carries the tab's content;
+  // server and client first render read the same JSON, so hydration agrees.
+  // Live data still replaces it on mount.
+  const seed = getStaticPartner(partnerSlug);
+  const [partner, setPartner] = useState<Partner | null>((seed?.partner as Partner | undefined) ?? null);
+  const [defaultTabs, setDefaultTabs] = useState<PartnerTab[]>((seed?.defaultTabs as PartnerTab[] | undefined) ?? []);
+  const [page, setPage] = useState<PartnerPage | null>((tab ? seed?.pages?.[tab] : undefined) ?? null);
 
   useEffect(() => {
     if (!partnerSlug) return;

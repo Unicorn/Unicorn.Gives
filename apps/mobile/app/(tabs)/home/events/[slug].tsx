@@ -21,6 +21,7 @@ import { routes } from "@/lib/navigation";
 import { getDefaultDescription } from "@/lib/seo";
 import { supabase } from "@/lib/supabase";
 import { fetchHomeEventsSlugParams } from "@/lib/static-build-queries";
+import { getStaticEvent } from "@/lib/community-snapshot";
 
 export async function generateStaticParams() {
 	return fetchHomeEventsSlugParams();
@@ -73,7 +74,8 @@ export default function EventDetail() {
 	const isTablet = width >= breakpoints.tablet;
 	const rawSlug = useLocalSearchParams<{ slug: string | string[] }>().slug;
 	const slug = normalizeSlug(rawSlug);
-	const [item, setItem] = useState<EventRow | null>(null);
+	// Seeded from the build-time snapshot so the export carries real content; live data replaces it on mount.
+	const [item, setItem] = useState<EventRow | null>(() => getStaticEvent<EventRow>(slug));
 
 	useEffect(() => {
 		if (!slug) return;

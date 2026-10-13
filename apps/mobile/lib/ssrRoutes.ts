@@ -8,16 +8,18 @@
  * in step with the seeding work and verify against a production build — dev
  * builds do not reproduce hydration failures.
  */
-const SSR_SAFE_PREFIXES = ['/partners', '/government'];
+const SSR_SAFE_PREFIXES = ['/partners', '/government', '/guides', '/home', '/directory'];
 
 /**
- * Routes under the `(tabs)` group cannot be added here. Seeding them is not
- * enough: the Tabs navigator itself renders differently on the server than on
- * the client's first render, so `/guides` and `/home/news` still threw React
- * #418 with fully seeded data, while `/partners` and `/styleguide` — both
- * outside `(tabs)` — hydrated cleanly. Verified against production builds on
- * 2026-10-07. Top-level routes such as `/government` are not affected by this
- * and remain candidates once seeded.
+ * Routes under the `(tabs)` group were unroutable here until 2026-10-13. Two
+ * things made the Tabs navigator's first render differ from the export: the
+ * bottom tab bar reads the window frame (now hidden until hydration, see
+ * app/(tabs)/_layout.tsx), and every MaterialIcons glyph rendered as an empty
+ * <Text/> on the server because the icon font was not registered through
+ * useFonts (see app/_layout.tsx). With both fixed, a `(tabs)` route qualifies
+ * on the same terms as any other: seed its first render from a snapshot
+ * (scripts/generate-community-snapshot.ts) and verify against a production
+ * build — dev builds do not reproduce hydration failures.
  */
 
 export function isSsrSafeRoute(pathname: string | null | undefined): boolean {

@@ -9,6 +9,7 @@ import { SeoHead } from '@/components/SeoHead';
 import { Container } from '@/components/layout/Container';
 import { getDefaultDescription } from '@/lib/seo';
 import { fetchGuideSlugParams } from '@/lib/static-build-queries';
+import { getStaticGuide } from '@/lib/community-snapshot';
 
 export async function generateStaticParams() {
   return fetchGuideSlugParams();
@@ -42,9 +43,11 @@ interface GuideForm {
 export default function GuideDetail() {
   const { colors } = useTheme();
   const { slug } = useLocalSearchParams<{ slug: string }>();
-  const [guide, setGuide] = useState<Guide | null>(null);
-  const [contacts, setContacts] = useState<GuideContact[]>([]);
-  const [forms, setForms] = useState<GuideForm[]>([]);
+  // Seeded from the build-time snapshot so the export carries real content; live data replaces it on mount.
+  const seed = getStaticGuide<Guide, GuideContact, GuideForm>(slug);
+  const [guide, setGuide] = useState<Guide | null>(seed?.guide ?? null);
+  const [contacts, setContacts] = useState<GuideContact[]>(seed?.contacts ?? []);
+  const [forms, setForms] = useState<GuideForm[]>(seed?.forms ?? []);
 
   useEffect(() => {
     if (!slug) return;
