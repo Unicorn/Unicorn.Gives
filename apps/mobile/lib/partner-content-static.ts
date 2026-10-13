@@ -3,7 +3,10 @@
  * render so the static export ships real HTML. See
  * scripts/generate-partner-content.ts.
  */
-import data from './partner-content-data.json';
+// The JSON is deliberately NOT imported here. Route chunks are split per page on
+// web, and a module imported by more than one route lands in the shared chunk
+// every visitor downloads. The section's layout (one chunk) imports the data and
+// registers it; pages read it through these accessors.
 
 type Snapshot = {
   partner: {
@@ -21,7 +24,12 @@ type Snapshot = {
   defaultTabs?: unknown;
 };
 
-const partners = (data as { partners: Record<string, Snapshot> }).partners ?? {};
+let partners: Record<string, Snapshot> = {};
+
+/** Called once, at module scope, by app/partners/_layout.tsx. */
+export function registerPartnerContent(data: unknown) {
+  partners = (data as { partners?: Record<string, Snapshot> }).partners ?? {};
+}
 
 export function getStaticPartner(slug: string | undefined): Snapshot | null {
   if (!slug) return null;

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Linking, Platform } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTheme, fonts, fontSize, spacing, letterSpacing, radii, shadows } from '@/constants/theme';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';

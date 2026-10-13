@@ -1,9 +1,14 @@
 import { Tabs } from 'expo-router';
 import { Text, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { breakpoints, useTheme } from '@/constants/theme';
 import { useFeatureModules } from '@/lib/featureModules';
 import { useHydratedDimensions, useIsHydrated } from '@/hooks/useHydrated';
+import { registerCommunitySnapshot } from '@/lib/community-snapshot';
+import communitySnapshot from '@/lib/community-snapshot-data.json';
+
+// Registered at module scope so the data sits in this layout's chunk only (see lib/*-snapshot.ts).
+registerCommunitySnapshot(communitySnapshot);
 
 const TAB_ICONS: Record<string, keyof typeof MaterialIcons.glyphMap> = {
   Home: 'home',

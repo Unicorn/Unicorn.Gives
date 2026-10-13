@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { supabase } from '@/lib/supabase';
 import { Wrapper } from '@/components/layout/Wrapper';

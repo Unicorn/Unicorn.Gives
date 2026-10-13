@@ -16,7 +16,7 @@ import {
   Platform,
 } from 'react-native';
 import { Slot, useRouter, usePathname } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { LoadingView, RequireAdmin } from '@/lib/routeGuards';
 import { useAuth } from '@/lib/auth';

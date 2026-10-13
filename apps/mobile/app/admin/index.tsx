@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';

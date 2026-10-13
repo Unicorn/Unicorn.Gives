@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { invokeAdminAi, type EventAiContext } from '@/lib/adminAi';

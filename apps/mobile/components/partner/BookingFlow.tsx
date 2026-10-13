@@ -20,7 +20,7 @@ import {
   Modal,
   Linking,
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import {
   useSquareAvailability,

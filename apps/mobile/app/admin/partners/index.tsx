@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { supabase } from '@/lib/supabase';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';

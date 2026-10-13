@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Text, StyleSheet, ActivityIndicator, type ViewStyle } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { AnimatedPressable } from './AnimatedPressable';
 import {

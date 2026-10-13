@@ -6,7 +6,7 @@
  */
 import { useMemo, useState, type ReactNode } from 'react';
 import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { markdownToHtml } from '@/lib/contentFormat';

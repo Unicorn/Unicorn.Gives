@@ -1,5 +1,6 @@
+import { useCallback } from 'react';
 import { Platform } from 'react-native';
-import { usePathname } from 'expo-router';
+import { useFocusEffect, usePathname } from 'expo-router';
 // Same Helmet instance as expo-router's Head.Provider (avoids duplicate titles on static export).
 import { Helmet } from 'expo-router/vendor/react-helmet-async/lib/index.js';
 
@@ -36,12 +37,23 @@ export function SeoHead({
   noIndex = false,
 }: SeoHeadProps) {
   const pathname = usePathname();
-
-  // Helmet requires a HelmetProvider (web-only); skip on native to avoid crash.
-  if (Platform.OS !== 'web') return null;
   const site = getSiteName();
   const pageTitle =
     !appendSiteName || title.includes(site) ? title : `${title} · ${site}`;
+
+  // Tab screens stay mounted after you leave them, so several SeoHeads are
+  // alive at once and Helmet keeps whichever won last. Re-assert the title
+  // whenever this screen gains focus so the browser tab follows navigation.
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS === 'web' && typeof document !== 'undefined') {
+        document.title = pageTitle;
+      }
+    }, [pageTitle]),
+  );
+
+  // Helmet requires a HelmetProvider (web-only); skip on native to avoid crash.
+  if (Platform.OS !== 'web') return null;
   const desc = (description ?? '').trim() || getDefaultDescription();
   const path = pathname?.startsWith('/') ? pathname : `/${pathname ?? ''}`;
   const url = absoluteUrl(path);

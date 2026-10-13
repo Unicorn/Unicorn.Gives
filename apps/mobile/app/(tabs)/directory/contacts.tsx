@@ -5,6 +5,7 @@ import { useTheme, fonts, fontSize, letterSpacing, spacing, radii, shadows, type
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
+import { SeoHead } from '@/components/SeoHead';
 
 interface Contact {
   id: string;
@@ -64,6 +65,7 @@ export default function ContactsDirectory() {
 
   return (
     <Wrapper contentContainerStyle={styles.content}>
+      <SeoHead title='Contacts' />
       <Container>
       <Text style={styles.heading}>Contact Directory</Text>
       <Text style={styles.subheading}>Government officials and staff across Clare County.</Text>

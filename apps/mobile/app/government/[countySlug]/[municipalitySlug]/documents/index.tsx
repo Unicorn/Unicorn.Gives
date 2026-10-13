@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Redirect } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRegion } from '@/lib/hooks/useRegion';
 import { useMunicipalRoute } from '@/lib/useMunicipalRoute';
 import {

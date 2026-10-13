@@ -2,7 +2,7 @@
  * Grid / List view toggle segmented control.
  */
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { fonts, fontSize, radii, spacing, useTheme } from '@/constants/theme';
 
 export type ViewMode = 'grid' | 'list';

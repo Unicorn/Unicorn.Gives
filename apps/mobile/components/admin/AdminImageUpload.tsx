@@ -4,7 +4,7 @@
  */
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { View, Text, Pressable, Image, TextInput, StyleSheet, ActivityIndicator, Platform } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useStorageUpload } from '@/hooks/useStorageUpload';
 import { resolveAbsoluteAssetUrl } from '@/lib/resolveAssetUrl';

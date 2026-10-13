@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { View, Text, Image, Pressable, Modal, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 
 interface GalleryItem {
