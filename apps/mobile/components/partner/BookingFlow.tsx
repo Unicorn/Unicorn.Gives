@@ -174,6 +174,9 @@ export function BookingFlow({ partnerId, service, teamMembers, contactPhone, onC
             {step === 'staff' && (
               <View style={styles.stepContent}>
                 <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Any available staff member"
+                  accessibilityState={{ selected: !selectedStaff }}
                   style={[styles.optionCard, !selectedStaff && styles.optionCardActive]}
                   onPress={() => { setSelectedStaff(undefined); setStep('date'); }}
                 >
@@ -183,6 +186,9 @@ export function BookingFlow({ partnerId, service, teamMembers, contactPhone, onC
                 {teamMembers.map((member) => (
                   <Pressable
                     key={member.square_id}
+                    accessibilityRole="button"
+                    accessibilityLabel={member.display_name ?? 'Staff Member'}
+                    accessibilityState={{ selected: selectedStaff === member.square_id }}
                     style={[styles.optionCard, selectedStaff === member.square_id && styles.optionCardActive]}
                     onPress={() => { setSelectedStaff(member.square_id); setStep('date'); }}
                   >
@@ -202,6 +208,9 @@ export function BookingFlow({ partnerId, service, teamMembers, contactPhone, onC
                     return (
                       <Pressable
                         key={day.toISOString()}
+                        accessibilityRole="button"
+                        accessibilityLabel={formatDate(day)}
+                        accessibilityState={{ selected: isSelected }}
                         style={[styles.dateCard, isSelected && styles.dateCardActive]}
                         onPress={() => { setSelectedDate(day); setStep('time'); }}
                       >
@@ -254,6 +263,9 @@ export function BookingFlow({ partnerId, service, teamMembers, contactPhone, onC
                     {slots.map((slot) => (
                       <Pressable
                         key={`${slot.start_at}-${slot.appointment_segments[0]?.team_member_id ?? ''}`}
+                        accessibilityRole="button"
+                        accessibilityLabel={formatTime(slot.start_at)}
+                        accessibilityState={{ selected: selectedSlot?.start_at === slot.start_at }}
                         style={[styles.timeCard, selectedSlot?.start_at === slot.start_at && styles.timeCardActive]}
                         onPress={() => { setSelectedSlot(slot); setStep('details'); }}
                       >
