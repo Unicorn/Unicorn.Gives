@@ -144,7 +144,7 @@ export default function NewsArticleDetail() {
 				<Text style={[styles.category, { color: colors.neutralVariant }]}>
 					{categoryLabel}
 				</Text>
-				<Text style={[styles.title, { color: colors.neutral }]}>
+				<Text role="heading" aria-level={1} style={[styles.title, { color: colors.neutral }]}>
 					{item.title}
 				</Text>
 				<View

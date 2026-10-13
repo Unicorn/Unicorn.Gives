@@ -33,7 +33,9 @@ export function SectionHeading({ title, lede }: SectionHeadingProps) {
 
   return (
     <View style={styles.wrap}>
-      <Text style={[styles.title, compact && styles.titleCompact]}>{title}</Text>
+      <Text role="heading" aria-level={2} style={[styles.title, compact && styles.titleCompact]}>
+        {title}
+      </Text>
       {lede ? <Text style={styles.lede}>{lede}</Text> : null}
       <View style={styles.rule} />
     </View>

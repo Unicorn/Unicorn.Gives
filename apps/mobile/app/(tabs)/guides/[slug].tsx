@@ -80,7 +80,7 @@ export default function GuideDetail() {
       <Container>
       <View style={styles.header}>
         {guide.icon && <Text style={styles.icon}>{guide.icon}</Text>}
-        <Text style={styles.title}>{guide.title}</Text>
+        <Text role="heading" aria-level={1} style={styles.title}>{guide.title}</Text>
         <Text style={styles.desc}>{guide.description}</Text>
         <Text style={styles.meta}>{guide.category} · {guide.jurisdiction}</Text>
         {guide.last_verified && (

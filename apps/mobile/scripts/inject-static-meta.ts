@@ -78,10 +78,12 @@ function privateTitle(route: string): string {
 
 function headBlock(route: string, meta: RouteMeta): string {
   const title = meta.title === SITE_NAME ? SITE_NAME : `${meta.title} · ${SITE_NAME}`;
-  const canonical = `${SITE_URL}${route === '/' ? '/' : route}`;
+  // `/` only redirects to /home, so /home is the canonical home page.
+  const canonical = `${SITE_URL}${route === '/' ? '/home' : route}`;
   const img = absolute(meta.image);
   const parts = [
-    `<title>${esc(title)}</title>`,
+    // data-rh lets Helmet adopt this element on hydration instead of adding another.
+    `<title data-rh="true">${esc(title)}</title>`,
     `<link rel="canonical" href="${esc(canonical)}"/>`,
     `<meta property="og:title" content="${esc(title)}"/>`,
     `<meta property="og:url" content="${esc(canonical)}"/>`,
@@ -150,6 +152,10 @@ function main() {
     // Drop the shared default description so it cannot win over ours.
     html = html.replace(/<meta name="description" content="[^"]*"\s*\/?>/i, '');
     html = html.replace(/<!--static-meta-->[\s\S]*?<!--\/static-meta-->/, '');
+    // The export already contains Helmet's <title data-rh="true"> (empty on routes the
+    // hydration gate hides). document.title reads the FIRST <title>, so a second one
+    // appended by us is never what the browser shows. Replace it instead.
+    html = html.replace(/<title[^>]*>[^<]*<\/title>/gi, '');
 
     const block = headBlock(route, meta);
     if (html.includes('</head>')) {
