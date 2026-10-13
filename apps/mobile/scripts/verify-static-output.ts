@@ -63,7 +63,9 @@ function main() {
 	const untitled = files.filter((f) => {
 		const rel = relative(distDir, f).split(sep).join("/");
 		if (EXEMPT.test(rel) || rel.includes("[")) return false; // [param] files are not served
-		return !readFileSync(f, "utf-8").includes("<title>");
+		// The injected title carries data-rh so Helmet adopts it; match any attributes
+		// and require non-empty text, since Helmet leaves an empty title on gated routes.
+		return !/<title[^>]*>[^<]+<\/title>/.test(readFileSync(f, "utf-8"));
 	});
 	if (untitled.length > 0) {
 		failures.push(
