@@ -11,7 +11,11 @@ served through this distribution. These settings are applied with the AWS CLI
 - **Viewer-request function** `unicorn-gives-rewrite-static-routes`
   (source: `rewrite-static-routes.js`): appends `.html` to extensionless paths and
   `index.html` to trailing slashes so clean URLs hit the exported page; 301s
-  `www.unicorn.gives` to the apex, preserving path and query.
+  `www.unicorn.gives` to the apex, preserving path and query; and percent-encodes
+  any `+` in the path, because S3 decodes a literal `+` in a key as a space. That
+  last rule matters for Expo's `+not-found` route: both `/+not-found.html` and the
+  `+not-found-<hash>.js` route chunk returned the 404 page (as `text/html`) before
+  it, which broke the client-side not-found screen under route splitting.
   Publish a change with:
   ```bash
   FN=unicorn-gives-rewrite-static-routes
