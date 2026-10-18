@@ -118,6 +118,18 @@ export function moduleForPublicPath(pathname: string): ModuleKey | null {
   return matchPathPrefix(pathname, PUBLIC_PATH_MODULES);
 }
 
+/**
+ * Whether a link target is reachable: true for external URLs and paths no
+ * module owns, otherwise whether that module is on. Use it to drop links
+ * that a route guard would only bounce back to "/".
+ */
+export function isPublicPathEnabled(href: string, flags: ModuleFlags): boolean {
+  if (!href.startsWith('/')) return true;
+  const pathname = href.split(/[?#]/)[0];
+  const mod = moduleForPublicPath(pathname);
+  return mod === null || flags[mod];
+}
+
 function matchPathPrefix(pathname: string, map: Record<string, ModuleKey>): ModuleKey | null {
   for (const [prefix, mod] of Object.entries(map)) {
     // `prefix + '/'` so /admin/partner-pages never matches the /admin/partners prefix

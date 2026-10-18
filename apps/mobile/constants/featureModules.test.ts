@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   DEFAULT_MODULE_FLAGS,
+  isPublicPathEnabled,
   moduleForAdminPath,
   moduleForPublicPath,
   normalizeFlags,
@@ -83,5 +84,30 @@ describe('moduleForPublicPath', () => {
     expect(moduleForPublicPath('/sign-in')).toBeNull();
     // prefix must match on a segment boundary
     expect(moduleForPublicPath('/governmentx')).toBeNull();
+  });
+});
+
+describe('isPublicPathEnabled', () => {
+  const off = (key: keyof typeof DEFAULT_MODULE_FLAGS) => ({ ...DEFAULT_MODULE_FLAGS, [key]: false });
+
+  it('allows everything when all modules are on', () => {
+    expect(isPublicPathEnabled('/guides', DEFAULT_MODULE_FLAGS)).toBe(true);
+    expect(isPublicPathEnabled('/partners/the-horn/membership', DEFAULT_MODULE_FLAGS)).toBe(true);
+  });
+
+  it('blocks paths owned by a disabled module, ignoring query and hash', () => {
+    expect(isPublicPathEnabled('/partners/the-horn/membership', off('directory'))).toBe(false);
+    expect(isPublicPathEnabled('/government?tab=minutes', off('municipal'))).toBe(false);
+    expect(isPublicPathEnabled('/guides#permits', off('community'))).toBe(false);
+  });
+
+  it('allows paths no module owns and external links', () => {
+    expect(isPublicPathEnabled('/home/community', off('community'))).toBe(true);
+    expect(isPublicPathEnabled('/', off('municipal'))).toBe(true);
+    expect(isPublicPathEnabled('https://horn.love', off('directory'))).toBe(true);
+  });
+
+  it('does not treat a lookalike prefix as owned', () => {
+    expect(isPublicPathEnabled('/guidesbook', off('community'))).toBe(true);
   });
 });

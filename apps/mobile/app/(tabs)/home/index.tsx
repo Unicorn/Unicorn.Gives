@@ -62,8 +62,11 @@ import { toHref } from "@/lib/navigation/paths";
 import { getDefaultDescription } from "@/lib/seo";
 import { supabase } from "@/lib/supabase";
 import { getStaticHome } from "@/lib/community-snapshot";
+import { useFeatureModules } from "@/lib/featureModules";
+import type { ModuleKey } from "@/constants/featureModules";
 
-const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
+// Each tile names the feature module that owns where it links (see #129).
+const SERVICE_DIRECTORY_ITEMS: (BentoItem & { module: ModuleKey })[] = [
 	{
 		key: "gov",
 		icon: "account-balance",
@@ -73,6 +76,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
 		span: "full",
 		colorScheme: "surface",
 		href: routes.government.county("clare-county"),
+		module: "municipal",
 	},
 	{
 		key: "permits",
@@ -82,6 +86,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
 		span: "half",
 		colorScheme: "surface",
 		href: toHref("/guides"),
+		module: "community",
 	},
 	{
 		key: "property",
@@ -92,6 +97,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
 		span: "half",
 		colorScheme: "surface",
 		href: toHref("/guides"),
+		module: "community",
 	},
 	{
 		key: "nature",
@@ -102,6 +108,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
 		span: "half",
 		colorScheme: "surface",
 		href: toHref("/guides"),
+		module: "community",
 	},
 	{
 		key: "safety",
@@ -112,6 +119,7 @@ const SERVICE_DIRECTORY_ITEMS: BentoItem[] = [
 		span: "half",
 		colorScheme: "surface",
 		href: toHref("/guides"),
+		module: "community",
 	},
 ];
 
@@ -159,6 +167,9 @@ interface Partner {
 
 export default function HomeScreen() {
 	const { colors } = useTheme();
+	// Hide sections whose links a disabled module would only bounce back to "/".
+	const { flags } = useFeatureModules();
+	const serviceItems = SERVICE_DIRECTORY_ITEMS.filter((item) => flags[item.module]);
 	const [newsletterEmail, setNewsletterEmail] = useState("");
 	// Seeded from the build-time snapshot so the export carries real content; live data replaces it on mount.
 	const seed = getStaticHome<Region, NewsItem, Event, Partner>();
@@ -317,7 +328,7 @@ export default function HomeScreen() {
 							</AnimatedPressable>
 						</Link>
 
-						{partners.length > 0 && (
+						{flags.directory && partners.length > 0 && (
 							<>
 								<Text style={styles.sectionTitle}>Community partners</Text>
 								<View style={styles.partnerFeatureRow}>
@@ -413,6 +424,7 @@ export default function HomeScreen() {
 									<Text style={styles.bentoTileLink}>Open problem solver</Text>
 								</AnimatedPressable>
 							</Link>
+							{flags.municipal && (
 							<Link href={govHref} asChild>
 								<AnimatedPressable
 									variant="card"
@@ -436,6 +448,9 @@ export default function HomeScreen() {
 									<Text style={styles.bentoTileLink}>Browse government</Text>
 								</AnimatedPressable>
 							</Link>
+							)}
+							{flags.community && (
+							<>
 							<View
 								style={[
 									styles.bentoEventsTile,
@@ -534,17 +549,21 @@ export default function HomeScreen() {
 									</AnimatedPressable>
 								</Link>
 							</View>
+							</>
+							)}
 						</View>
 
 						{/* Service Directory Bento */}
+						{serviceItems.length > 0 && (
 						<BentoSection flushHorizontal>
 							<BentoGrid
 								eyebrow="Official Resources"
 								title="Service Directories"
 								subtitle="Access essential county services, township ordinances, and community resources in one central place."
-								items={SERVICE_DIRECTORY_ITEMS}
+								items={serviceItems}
 							/>
 						</BentoSection>
+						)}
 
 						<View style={styles.newsletterBand}>
 							<Text style={styles.newsletterTitle}>
@@ -595,7 +614,7 @@ export default function HomeScreen() {
 											{HOME_NEWSLETTER_CTA_EXTERNAL}
 										</Text>
 									</AnimatedPressable>
-								) : (
+								) : flags.community ? (
 									<Link href={routes.community.news.index()} asChild>
 										<AnimatedPressable
 											variant="button"
@@ -606,7 +625,7 @@ export default function HomeScreen() {
 											</Text>
 										</AnimatedPressable>
 									</Link>
-								)}
+								) : null}
 							</View>
 						</View>
 					</View>

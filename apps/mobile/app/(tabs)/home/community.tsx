@@ -19,12 +19,17 @@ import {
 	HORN_QUOTE,
 } from "@/constants/hornContent";
 import { fonts, fontSize, radii, shadows, spacing, useTheme, type ThemeColors } from "@/constants/theme";
+import { useFeatureModules } from "@/lib/featureModules";
+import { isPublicPathEnabled } from "@/constants/featureModules";
 import { routes } from "@/lib/navigation";
 import { SeoHead } from "@/components/SeoHead";
 
 export default function CommunityTab() {
 	const { colors } = useTheme();
 	const styles = useMemo(() => createStyles(colors), [colors]);
+	// The hero links to The Horn's partner page (directory module); the
+	// explore cards to events and news (community module). See #129.
+	const { flags } = useFeatureModules();
 
 	return (
 		<Wrapper style={styles.container} contentContainerStyle={styles.content}>
@@ -34,14 +39,16 @@ export default function CommunityTab() {
 				headline="The Community Center:"
 				headlineAccent="The Horn"
 				subheadline={HORN_HERO.description}
-				primaryCta={{
-					label: HORN_HERO.ctaLabel,
-					url: routes.partners.index("the-horn") as string,
-				}}
-				secondaryCta={{
-					label: HORN_HERO.secondaryCtaLabel,
-					url: routes.partners.index("the-horn") as string,
-				}}
+				primaryCta={
+					flags.directory
+						? { label: HORN_HERO.ctaLabel, url: routes.partners.index("the-horn") as string }
+						: null
+				}
+				secondaryCta={
+					flags.directory
+						? { label: HORN_HERO.secondaryCtaLabel, url: routes.partners.index("the-horn") as string }
+						: null
+				}
 			/>
 			<Container style={styles.section}>
 				<View style={styles.stack}>
@@ -57,7 +64,10 @@ export default function CommunityTab() {
 					/>
 
 					{/* Visit Info */}
-					<InfoRowGroup title={HORN_INFO.title} rows={[...HORN_INFO.rows]} />
+					<InfoRowGroup
+						title={HORN_INFO.title}
+						rows={HORN_INFO.rows.filter((r) => !("href" in r) || isPublicPathEnabled(r.href, flags))}
+					/>
 
 					{/* Decorative quote */}
 					<QuoteCallout
@@ -67,6 +77,7 @@ export default function CommunityTab() {
 					/>
 
 					{/* Existing navigation links */}
+					{flags.community && (
 					<View style={styles.navSection}>
 						<Text style={styles.navSectionTitle}>Explore Community</Text>
 						<Link href={routes.community.events.index()} asChild>
@@ -101,6 +112,7 @@ export default function CommunityTab() {
 							</AnimatedPressable>
 						</Link>
 					</View>
+					)}
 				</View>
 			</Container>
 		</Wrapper>
