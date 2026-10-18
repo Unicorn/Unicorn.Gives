@@ -12,6 +12,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { getValidAccessToken } from '../_shared/square.ts';
 import { linkSubscription, type SquareSubscription } from '../_shared/subscriptionLink.ts';
+import { settlePaymentByOrder } from '../_shared/paymentSettle.ts';
 
 const BOOKING_EVENTS = new Set([
   'booking.created',
@@ -32,6 +33,11 @@ const SUBSCRIPTION_EVENTS = new Set([
 const CUSTOMER_EVENTS = new Set([
   'customer.created',
   'customer.updated',
+]);
+
+// Payment-link orders for one-time memberships and day passes.
+const ORDER_EVENTS = new Set([
+  'order.updated',
 ]);
 
 const INVOICE_EVENTS = new Set([
@@ -204,6 +210,11 @@ Deno.serve(async (req) => {
         );
         console.log(`subscription ${sub.id}: ${outcome}`);
       }
+    }
+
+    if (partnerId && ORDER_EVENTS.has(eventType) && event.data?.id) {
+      const creds = await getValidAccessToken(admin, partnerId);
+      if (creds) await settlePaymentByOrder(admin, creds.accessToken, event.data.id);
     }
 
     if (partnerId && INVOICE_EVENTS.has(eventType)) {

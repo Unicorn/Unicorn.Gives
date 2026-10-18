@@ -25,6 +25,7 @@ import type { PartnerMenuConfig } from '@/constants/partnerMenus';
 import { Container } from '@/components/layout/Container';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
 import { useMySubscriptions } from '@/hooks/useMyAccount';
+import { useAuth } from '@/lib/auth';
 import { hrefToPathString, routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import {
@@ -120,7 +121,6 @@ export function PartnerMenuBar({ partnerId, partnerSlug, tabs, config, hoursText
       showsHorizontalScrollIndicator={false}
       style={isWide ? styles.tabScrollWide : undefined}
       contentContainerStyle={styles.tabRow}
-      accessibilityRole="tablist"
     >
       {items.map((item) => {
         const active = item.key === activeKey;
@@ -130,8 +130,8 @@ export function PartnerMenuBar({ partnerId, partnerSlug, tabs, config, hoursText
             <Pressable
               // Link asChild (Slot) rejects style arrays — flatten them.
               style={StyleSheet.flatten([styles.tab, !isWide && styles.tabCompact, active && styles.tabActive])}
-              accessibilityRole="tab"
-              accessibilityState={{ selected: active }}
+              accessibilityRole="link"
+              aria-current={active ? 'page' : undefined}
               accessibilityLabel={showTeaser ? `${item.label}, ${teaser}` : item.label}
             >
               {item.key === 'home' && (
@@ -238,10 +238,38 @@ function useNextEventTeaser(partnerId: string, config: PartnerMenuConfig): strin
   return teaser;
 }
 
+/** An active or paused subscription, or a paid one-time month that hasn't run out. */
 function useIsMember(partnerId: string): boolean {
+  const { user } = useAuth();
   const { subscriptions } = useMySubscriptions();
-  return subscriptions.some(
-    (s) => s.partner_id === partnerId && (s.status === 'active' || s.status === 'paused'),
+  const [hasPaidMonth, setHasPaidMonth] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setHasPaidMonth(false);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from('partner_payments')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('partner_id', partnerId)
+        .eq('kind', 'membership_one_time')
+        .eq('status', 'paid')
+        .gt('covers_until', new Date().toISOString())
+        .limit(1);
+      if (!cancelled) setHasPaidMonth((data?.length ?? 0) > 0);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, partnerId]);
+
+  return (
+    hasPaidMonth ||
+    subscriptions.some((s) => s.partner_id === partnerId && (s.status === 'active' || s.status === 'paused'))
   );
 }
 

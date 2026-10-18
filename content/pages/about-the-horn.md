@@ -21,18 +21,17 @@ The renovation preserved the character of this historic village building while c
 
 ### What We Offer
 
+- **Morning Coffee & Quiet Space** — Start the day with a coffee and a calm corner to read, work, or just be
 - **Members-Only Club** — 24/7 access to a private community space with games, Wi-Fi, kitchen, and more
-- **VIP Lounge** — An adults-only space for members who want to BYOB and smoke indoors
 - **Community Gathering Space** — A welcoming place to connect with neighbors and friends during public hours
 - **Events & Entertainment** — Game nights, bonfire nights, potlucks, and community programming year-round with discounted member rates
 - **Late-Night Safe Space** — A comfortable place to hang out when everywhere else is closed
 - **Work-Friendly Environment** — Free Wi-Fi and a quiet daytime setup for remote work and projects
+- **Members' Lounge** — An adults-only lounge for members only — bring your own drinks and smoke indoors
 
 ### Become a Member
 
-The Horn offers individual, couple, and family memberships starting at **$40/month**, with an optional VIP add-on for **$20/month** more. Members get 24/7 key access, discounted event rates, exclusive events, and a real community.
-
-Memberships launch **Memorial Weekend** — sign up early at **[horn.love](https://horn.love)**.
+Membership at The Horn is **pay what you can** — anywhere from $10 to $100 or more, monthly or one-time. Members get 24/7 key access, discounted event rates, exclusive events, and a real community, and can bring one guest. Not ready to join? Grab a **$10 day pass**.
 
 **[See Membership Details & Pricing](/membership)**
 
