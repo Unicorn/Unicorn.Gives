@@ -24,16 +24,7 @@ import {
   squareFetch,
   updateSubscriptionState,
 } from '../_shared/square.ts';
-
-function mapStatus(s: string | undefined): string {
-  switch (s) {
-    case 'ACTIVE': return 'active';
-    case 'PAUSED': return 'paused';
-    case 'CANCELED': return 'canceled';
-    case 'DEACTIVATED': return 'deactivated';
-    default: return 'pending';
-  }
-}
+import { linkSubscription, reconcilePendingCheckouts, type SquareSubscription } from '../_shared/subscriptionLink.ts';
 
 const rateState = new Map<string, number>();
 const REFRESH_RATE_LIMIT_MS = 5000;
@@ -98,12 +89,34 @@ Deno.serve(async (req) => {
       }
       rateState.set(userId, now);
 
+      const stats = { subscriptions: 0, bookings: 0, customers: 0, pending_linked: 0 };
+
+      // A member back from checkout before the webhook landed: follow their
+      // pending checkouts' orders. Runs first because it can map the customer
+      // the loop below then refreshes.
+      const { data: pendingPartners } = await admin
+        .from('square_subscriptions')
+        .select('partner_id')
+        .eq('user_id', userId)
+        .eq('status', 'pending')
+        .is('square_subscription_id', null)
+        .not('square_order_id', 'is', null);
+      for (const partnerId of new Set<string>((pendingPartners ?? []).map((r: { partner_id: string }) => r.partner_id))) {
+        const creds = await getValidAccessToken(admin, partnerId);
+        if (!creds?.locationId) continue;
+        stats.pending_linked += await reconcilePendingCheckouts(
+          admin,
+          creds.accessToken,
+          partnerId,
+          creds.locationId,
+          userId,
+        );
+      }
+
       const { data: customers } = await admin
         .from('square_customers')
         .select('partner_id, square_customer_id')
         .eq('user_id', userId);
-
-      const stats = { subscriptions: 0, bookings: 0, customers: 0 };
 
       for (const cust of customers ?? []) {
         const { data: conn } = await admin
@@ -131,30 +144,8 @@ Deno.serve(async (req) => {
 
         const subs = await searchSubscriptions(token, cust.square_customer_id, conn.location_id);
         for (const sub of subs) {
-          const s = sub as {
-            id?: string;
-            plan_variation_id?: string;
-            status?: string;
-            start_date?: string;
-            canceled_date?: string;
-            charged_through_date?: string;
-            canceled_at_period_end?: boolean;
-          };
-          if (!s.id) continue;
-          await admin.from('square_subscriptions').upsert({
-            partner_id: cust.partner_id,
-            user_id: userId,
-            square_subscription_id: s.id,
-            square_customer_id: cust.square_customer_id,
-            plan_variation_id: s.plan_variation_id ?? null,
-            status: mapStatus(s.status),
-            started_at: s.start_date ?? null,
-            canceled_at: s.canceled_date ?? null,
-            current_period_end: s.charged_through_date ?? null,
-            cancel_at_period_end: s.canceled_at_period_end ?? false,
-            raw: s,
-            updated_at: new Date().toISOString(),
-          }, { onConflict: 'square_subscription_id' });
+          if (!(sub as SquareSubscription).id) continue;
+          await linkSubscription(admin, token, cust.partner_id, sub as SquareSubscription);
           stats.subscriptions++;
         }
 
