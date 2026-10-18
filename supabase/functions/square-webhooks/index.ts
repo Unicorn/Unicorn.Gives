@@ -10,6 +10,8 @@
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
+import { getValidAccessToken } from '../_shared/square.ts';
+import { linkSubscription, type SquareSubscription } from '../_shared/subscriptionLink.ts';
 
 const BOOKING_EVENTS = new Set([
   'booking.created',
@@ -37,21 +39,6 @@ const INVOICE_EVENTS = new Set([
   'invoice.scheduled_charge_failed',
   'invoice.updated',
 ]);
-
-function mapSquareSubscriptionStatus(status: string | undefined): string {
-  switch (status) {
-    case 'ACTIVE':
-      return 'active';
-    case 'PAUSED':
-      return 'paused';
-    case 'CANCELED':
-      return 'canceled';
-    case 'DEACTIVATED':
-      return 'deactivated';
-    default:
-      return 'pending';
-  }
-}
 
 async function verifySignature(
   body: string,
@@ -203,33 +190,19 @@ Deno.serve(async (req) => {
     }
 
     if (partnerId && SUBSCRIPTION_EVENTS.has(eventType)) {
-      const sub = event.data?.object?.subscription as {
-        id?: string;
-        customer_id?: string;
-        plan_variation_id?: string;
-        status?: string;
-        start_date?: string;
-        canceled_date?: string;
-        charged_through_date?: string;
-        canceled_at_period_end?: boolean;
-      } | undefined;
+      const sub = event.data?.object?.subscription as SquareSubscription | undefined;
 
       if (sub?.id) {
-        const userId = await resolveUserId(sub.customer_id);
-        await admin.from('square_subscriptions').upsert({
-          partner_id: partnerId,
-          user_id: userId,
-          square_subscription_id: sub.id,
-          square_customer_id: sub.customer_id ?? null,
-          plan_variation_id: sub.plan_variation_id ?? null,
-          status: mapSquareSubscriptionStatus(sub.status),
-          started_at: sub.start_date ?? null,
-          canceled_at: sub.canceled_date ?? null,
-          current_period_end: sub.charged_through_date ?? null,
-          cancel_at_period_end: sub.canceled_at_period_end ?? false,
-          raw: event.data?.object ?? {},
-          updated_at: new Date().toISOString(),
-        }, { onConflict: 'square_subscription_id' });
+        // A broken connection only weakens matching; the event is still stored.
+        const creds = await getValidAccessToken(admin, partnerId);
+        const { outcome } = await linkSubscription(
+          admin,
+          creds?.accessToken ?? null,
+          partnerId,
+          sub,
+          event.data?.object ?? {},
+        );
+        console.log(`subscription ${sub.id}: ${outcome}`);
       }
     }
 

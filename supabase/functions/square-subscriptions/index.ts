@@ -116,8 +116,6 @@ Deno.serve(async (req) => {
 
     const email = profile.email ?? authUser.email ?? '';
     const displayName = (profile.display_name ?? '').trim();
-    const [givenName, ...rest] = displayName.split(/\s+/);
-    const familyName = rest.join(' ');
 
     // Refreshes the token in place if it has expired or is about to.
     const creds = await getValidAccessToken(admin, body.partner_id);
@@ -153,51 +151,19 @@ Deno.serve(async (req) => {
       return json({ error: 'Plan variation has no price configured in Square' }, 400);
     }
 
-    // Reuse existing Square customer if we already have one for this user+partner.
-    let squareCustomerId: string | undefined;
+    // Square Checkout picks (or creates) the subscription's customer itself by
+    // matching the buyer's phone number, so we don't pre-create one. A
+    // customer we already mapped to this user is still recorded on the
+    // pending row as matching evidence.
     const { data: existingCustomer } = await admin
       .from('square_customers')
       .select('square_customer_id')
       .eq('user_id', authUser.id)
       .eq('partner_id', body.partner_id)
+      .order('synced_at', { ascending: false })
+      .limit(1)
       .maybeSingle();
-
-    if (existingCustomer?.square_customer_id) {
-      squareCustomerId = existingCustomer.square_customer_id;
-    } else {
-      try {
-        const customerRes = await squareFetch('/v2/customers', accessToken, {
-          method: 'POST',
-          body: JSON.stringify({
-            idempotency_key: crypto.randomUUID(),
-            given_name: givenName || email.split('@')[0],
-            family_name: familyName || undefined,
-            email_address: email,
-            reference_id: authUser.id,
-            note: `unicorn_user_id=${authUser.id}`,
-          }),
-        });
-        if (customerRes.ok) {
-          const cd = await customerRes.json() as { customer?: { id: string } };
-          squareCustomerId = cd.customer?.id;
-
-          if (squareCustomerId) {
-            await admin.from('square_customers').upsert({
-              user_id: authUser.id,
-              partner_id: body.partner_id,
-              square_customer_id: squareCustomerId,
-              email,
-              given_name: givenName || null,
-              family_name: familyName || null,
-              raw: cd.customer ?? {},
-              synced_at: new Date().toISOString(),
-            }, { onConflict: 'partner_id,square_customer_id' });
-          }
-        }
-      } catch (e) {
-        console.warn('Customer creation failed (non-fatal):', e);
-      }
-    }
+    const squareCustomerId: string | undefined = existingCustomer?.square_customer_id;
 
     const siteUrl = Deno.env.get('SITE_URL') ?? 'https://unicorn.gives';
     const redirectUrl = body.redirect_url ?? `${siteUrl}/user/account/subscriptions?status=success`;
@@ -206,6 +172,7 @@ Deno.serve(async (req) => {
       idempotency_key: crypto.randomUUID(),
       quick_pay: {
         name: planData.subscription_plan_variation_data?.name ?? 'Membership',
+        // Must match the plan variation's price, or Square treats it as an override.
         price_money: {
           amount: price.amount,
           currency: price.currency ?? 'USD',
@@ -213,11 +180,15 @@ Deno.serve(async (req) => {
         location_id: locationId,
       },
       checkout_options: {
+        // A plan *variation* id: this is what makes Square enroll the buyer in
+        // a recurring subscription instead of taking a one-time payment.
+        subscription_plan_id: body.plan_variation_id,
         ask_for_shipping_address: false,
+        // Cash App Pay and Afterpay are not supported for subscriptions.
         accepted_payment_methods: {
           apple_pay: true,
           google_pay: true,
-          cash_app_pay: true,
+          cash_app_pay: false,
           afterpay_clearpay: false,
         },
         redirect_url: redirectUrl,
@@ -258,6 +229,8 @@ Deno.serve(async (req) => {
       customer_name: displayName || null,
       customer_email: email,
       status: 'pending',
+      square_order_id: linkData.payment_link?.order_id ?? null,
+      square_payment_link_id: linkData.payment_link?.id ?? null,
       raw: { payment_link: linkData.payment_link ?? {} },
     });
 
