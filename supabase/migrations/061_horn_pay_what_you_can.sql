@@ -155,7 +155,7 @@ begin
                    '(<li><strong>Work-Friendly Environment</strong>[^<]*</li>)',
                    '\1' || E'\n' || '<li><strong>Members'' Lounge</strong> — An adults-only lounge for members only — bring your own drinks and smoke indoors</li>'),
                  '<p>The Horn offers individual, couple, and family memberships[^\n]*</p>',
-                 '<p>Membership at The Horn is <strong>pay what you can</strong> — anywhere from $10 to $100 or more, monthly or one-time. Members get 24/7 key access, discounted event rates, exclusive events, and a real community, and can bring one guest. Not ready to join? Grab a <strong>$10 day pass</strong>.</p>'),
+                 '<p>Membership at The Horn is <strong>pay what you can</strong>, monthly or one-time. Members get 24/7 key access, discounted event rates, exclusive events, and a real community, and can bring one guest. Not ready to join? Grab a <strong>$10 day pass</strong>.</p>'),
                '<p>Memberships launch <strong>Memorial Weekend</strong>[^\n]*</p>\n?', ''),
              'href="/membership"', 'href="/partners/the-horn/membership"', 'g'),
       updated_at = now()

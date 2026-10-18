@@ -99,7 +99,7 @@ export const HORN_INFO = {
 		{
 			icon: "card-membership",
 			label: "Membership",
-			value: "Pay what you can — $10 to $100 or more",
+			value: "Pay what you can",
 			secondaryValue: "Monthly or one-time · Bring one guest",
 		},
 		{
