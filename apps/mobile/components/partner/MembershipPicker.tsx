@@ -95,8 +95,8 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
         </View>
       )}
 
-      <Text style={styles.heading}>Pay what you can</Text>
-      <Text style={styles.lede}>Choose how often, then pick what works for you.</Text>
+      <Text style={styles.heading}>Choose your membership</Text>
+      <Text style={styles.lede}>Pick monthly or one-time, then choose what you can pay.</Text>
 
       <View style={styles.segment} accessibilityRole="radiogroup" accessibilityLabel="How often">
         {(['monthly', 'one_time'] as const).map((f) => {
