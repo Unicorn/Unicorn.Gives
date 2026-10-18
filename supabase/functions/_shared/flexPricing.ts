@@ -15,8 +15,6 @@ export const MIN_AMOUNT_CENTS = 1_000;
 /** Guards against typos like $5000 for $50; larger gifts can go through the Horn directly. */
 export const MAX_AMOUNT_CENTS = 100_000;
 export const DAY_PASS_CENTS = 1_000;
-/** A one-time membership payment covers this many days. */
-export const ONE_TIME_COVER_DAYS = 30;
 
 export type FlexValidation =
   | { ok: true; kind: FlexKind; amountCents: number }
@@ -41,9 +39,19 @@ export function validateFlexCheckout(kind: unknown, amountCents: unknown): FlexV
   return { ok: true, kind, amountCents };
 }
 
-/** When a one-time membership paid at `paidAt` stops granting access. */
+/**
+ * When a one-time membership paid at `paidAt` stops granting access: one
+ * calendar month later, same time of day. Clamped to the last day of a
+ * shorter month, so Jan 31 runs to Feb 28 (29 in a leap year), not Mar 3.
+ */
 export function oneTimeCoversUntil(paidAt: Date): Date {
-  return new Date(paidAt.getTime() + ONE_TIME_COVER_DAYS * 24 * 60 * 60 * 1000);
+  const end = new Date(paidAt.getTime());
+  const day = end.getUTCDate();
+  end.setUTCDate(1);
+  end.setUTCMonth(end.getUTCMonth() + 1);
+  const lastDay = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth() + 1, 0)).getUTCDate();
+  end.setUTCDate(Math.min(day, lastDay));
+  return end;
 }
 
 /** Line-item name shown on Square's checkout page and receipt. */

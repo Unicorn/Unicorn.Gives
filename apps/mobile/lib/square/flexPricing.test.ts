@@ -36,8 +36,17 @@ describe('validateFlexCheckout', () => {
 });
 
 describe('oneTimeCoversUntil', () => {
-  it('covers 30 days from payment', () => {
-    expect(oneTimeCoversUntil(new Date('2026-10-01T12:00:00Z')).toISOString()).toBe('2026-10-31T12:00:00.000Z');
+  const until = (iso: string) => oneTimeCoversUntil(new Date(iso)).toISOString();
+
+  it('covers one calendar month from payment', () => {
+    expect(until('2026-10-18T15:30:00Z')).toBe('2026-11-18T15:30:00.000Z');
+    expect(until('2026-12-05T09:00:00Z')).toBe('2027-01-05T09:00:00.000Z');
+  });
+
+  it('clamps to the end of a shorter month', () => {
+    expect(until('2027-01-31T12:00:00Z')).toBe('2027-02-28T12:00:00.000Z');
+    expect(until('2028-01-31T12:00:00Z')).toBe('2028-02-29T12:00:00.000Z');
+    expect(until('2026-03-31T12:00:00Z')).toBe('2026-04-30T12:00:00.000Z');
   });
 });
 
