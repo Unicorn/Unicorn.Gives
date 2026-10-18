@@ -82,7 +82,7 @@ begin
   update public.partner_pages
   set body = $html$<h2>Your Place. Any Time of Day.</h2>
 <p>The Horn is a nonprofit community space designed to bring people together — a place rooted in belonging. Start your morning with a coffee and a quiet corner to read, work, or think. Spend the afternoon with neighbors. Unwind in the evening, and know there's somewhere safe and welcoming to be long after everywhere else has closed.</p>
-<p>Members get 24/7 access, so The Horn fits your day — whatever your day looks like.</p>
+<p>Members get 24/7 access, so The Horn fits your day — whatever your day looks like. No closing time.</p>
 <hr>
 <h2>Pay What You Can</h2>
 <p>We believe a place to belong shouldn't depend on what's in your wallet. There's one membership, and you choose what to pay.</p>
@@ -147,7 +147,7 @@ begin
 
 The Horn is a nonprofit community space designed to bring people together — a place rooted in belonging. Start your morning with a coffee and a quiet corner to read, work, or think. Spend the afternoon with neighbors. Unwind in the evening, and know there's somewhere safe and welcoming to be long after everywhere else has closed.
 
-Members get 24/7 access, so The Horn fits your day — whatever your day looks like.
+Members get 24/7 access, so The Horn fits your day — whatever your day looks like. No closing time.
 
 ---
 

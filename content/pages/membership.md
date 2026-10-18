@@ -11,7 +11,7 @@ order: 26
 
 The Horn is a nonprofit community space designed to bring people together — a place rooted in belonging. Start your morning with a coffee and a quiet corner to read, work, or think. Spend the afternoon with neighbors. Unwind in the evening, and know there's somewhere safe and welcoming to be long after everywhere else has closed.
 
-Members get 24/7 access, so The Horn fits your day — whatever your day looks like.
+Members get 24/7 access, so The Horn fits your day — whatever your day looks like. No closing time.
 
 ---
 
