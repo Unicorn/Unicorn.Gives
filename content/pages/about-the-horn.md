@@ -33,7 +33,7 @@ The renovation preserved the character of this historic village building while c
 
 Membership at The Horn is **pay what you can**, monthly or one-time. Members get 24/7 key access, discounted event rates, exclusive events, and a real community, and can bring one guest. Not ready to join? Grab a **$10 day pass**.
 
-**[See Membership Details & Pricing](/membership)**
+**[See Membership Details & Pricing](/partners/the-horn/membership)**
 
 ### Events
 

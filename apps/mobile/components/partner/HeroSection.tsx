@@ -11,6 +11,8 @@ import {
   type ThemeColors,
 } from '@/constants/theme';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
+import { Link } from 'expo-router';
+import { toHref } from '@/lib/navigation/paths';
 
 function handleCtaPress(ctaUrl: string) {
   // In-page anchor: scroll to the matching element on web; no-op on native.
@@ -24,6 +26,11 @@ function handleCtaPress(ctaUrl: string) {
     return;
   }
   Linking.openURL(ctaUrl);
+}
+
+/** An in-app path ("/partners/…"), not a protocol-relative "//host" URL. */
+function isAppPath(url: string) {
+  return url.startsWith('/') && !url.startsWith('//');
 }
 
 interface HeroSectionProps {
@@ -53,7 +60,15 @@ export function HeroSection({ headline, subheadline, imageUrl, ctaLabel, ctaUrl 
             </Text>
           )}
           {subheadline && <Text style={styles.subheadline}>{subheadline}</Text>}
-          {ctaLabel && ctaUrl && (
+          {ctaLabel && ctaUrl && isAppPath(ctaUrl) && (
+            // In-app path: route through the router (a real link on web).
+            <Link href={toHref(ctaUrl)} asChild>
+              <Pressable style={styles.cta}>
+                <Text style={styles.ctaText}>{ctaLabel}</Text>
+              </Pressable>
+            </Link>
+          )}
+          {ctaLabel && ctaUrl && !isAppPath(ctaUrl) && (
             <Pressable
               style={styles.cta}
               onPress={() => handleCtaPress(ctaUrl)}
