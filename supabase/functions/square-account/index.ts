@@ -24,7 +24,7 @@ import {
   squareFetch,
   updateSubscriptionState,
 } from '../_shared/square.ts';
-import { linkSubscription, reconcilePendingCheckouts, type SquareSubscription } from '../_shared/subscriptionLink.ts';
+import { reconcilePendingCheckouts, tryLinkSubscription, type SquareSubscription } from '../_shared/subscriptionLink.ts';
 import { reconcilePendingPayments } from '../_shared/paymentSettle.ts';
 
 const rateState = new Map<string, number>();
@@ -157,8 +157,9 @@ Deno.serve(async (req) => {
         const subs = await searchSubscriptions(token, cust.square_customer_id, conn.location_id);
         for (const sub of subs) {
           if (!(sub as SquareSubscription).id) continue;
-          await linkSubscription(admin, token, cust.partner_id, sub as SquareSubscription);
-          stats.subscriptions++;
+          if (await tryLinkSubscription(admin, token, cust.partner_id, sub as SquareSubscription)) {
+            stats.subscriptions++;
+          }
         }
 
         const bks = await searchBookings(token, cust.square_customer_id, conn.location_id);

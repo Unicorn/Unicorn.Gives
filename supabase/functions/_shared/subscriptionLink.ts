@@ -174,20 +174,26 @@ export async function linkSubscription(
   // a profile with the same email. The Square email is unverified buyer
   // input, so it must match exactly — never as a LIKE pattern.
   if (!userId && customerEmail) {
+    const wanted = customerEmail.trim().toLowerCase();
     const { data: profile } = await admin
       .from('profiles')
-      .select('id')
-      .ilike('email', escapeLike(customerEmail.trim()))
+      .select('id, email')
+      .ilike('email', escapeLike(wanted))
       .maybeSingle();
-    if (profile?.id) {
+    // PostgREST also reads `*` as a wildcard, which can't be escaped, so
+    // confirm the match exactly.
+    if (profile?.id && (profile.email as string | null)?.trim().toLowerCase() === wanted) {
       userId = profile.id;
       outcome = 'profile_email';
     }
   }
 
+  // Leave user_id out when we found no owner, so this can't clear one that a
+  // concurrent run has just set.
   check(
     (await admin.from('square_subscriptions')
-      .upsert({ ...fields, user_id: userId }, { onConflict: 'square_subscription_id' })).error,
+      .upsert({ ...fields, ...(userId ? { user_id: userId } : {}) }, { onConflict: 'square_subscription_id' }))
+      .error,
     'save subscription',
   );
   await rememberCustomer(admin, partnerId, userId, sub.customer_id, customer);
@@ -206,17 +212,19 @@ async function promotePending(
   squareSubscriptionId: string,
   row: Record<string, unknown>,
 ) {
-  const promote = () => admin.from('square_subscriptions').update(row).eq('id', pendingId);
-  let { error } = await promote();
+  let { error } = await admin.from('square_subscriptions').update(row).eq('id', pendingId);
   if (error?.code === UNIQUE_VIOLATION) {
-    check(
-      (await admin.from('square_subscriptions')
-        .delete()
-        .eq('square_subscription_id', squareSubscriptionId)
-        .is('user_id', null)).error,
-      'replace unowned subscription',
-    );
-    ({ error } = await promote());
+    // Keep what only invoice events fill in on the row being replaced.
+    const { data: removed, error: deleteErr } = await admin.from('square_subscriptions')
+      .delete()
+      .eq('square_subscription_id', squareSubscriptionId)
+      .is('user_id', null)
+      .select('next_billing_at');
+    check(deleteErr, 'replace unowned subscription');
+    const nextBillingAt = removed?.[0]?.next_billing_at ?? null;
+    ({ error } = await admin.from('square_subscriptions')
+      .update({ ...row, ...(nextBillingAt ? { next_billing_at: nextBillingAt } : {}) })
+      .eq('id', pendingId));
   }
   check(error, 'promote pending checkout');
 }
@@ -291,9 +299,27 @@ export async function reconcilePendingCheckouts(
 
     const subs = await searchSubscriptions(accessToken, customerId, locationId);
     for (const sub of subs) {
-      const { outcome } = await linkSubscription(admin, accessToken, partnerId, sub as SquareSubscription);
-      if (outcome !== 'existing' && outcome !== 'unlinked') linked++;
+      const outcome = await tryLinkSubscription(admin, accessToken, partnerId, sub as SquareSubscription);
+      if (outcome && outcome !== 'existing' && outcome !== 'unlinked') linked++;
     }
   }
   return linked;
+}
+
+/**
+ * `linkSubscription` for batch syncs: logs a failure and returns null, so one
+ * bad subscription doesn't stop the rest of a partner's reconcile or refresh.
+ */
+export async function tryLinkSubscription(
+  admin: any,
+  accessToken: string | null,
+  partnerId: string,
+  sub: SquareSubscription,
+): Promise<LinkOutcome | null> {
+  try {
+    return (await linkSubscription(admin, accessToken, partnerId, sub)).outcome;
+  } catch (e) {
+    console.error(`Linking subscription ${sub.id} failed:`, e instanceof Error ? e.message : e);
+    return null;
+  }
 }
