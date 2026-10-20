@@ -87,7 +87,7 @@ The booking is created directly in your Square account — it shows up in your S
 Pulls the latest services, team members, and availability from Square. Use this after making changes in your Square Dashboard.
 
 ### Disconnect
-Removes the Square connection and clears all synced data from your partner page. You can reconnect anytime.
+Removes the Square connection and clears synced services and plans from your partner page. Member subscriptions keep billing in Square, and their records are kept — reconnect anytime and they reappear.
 
 ### Location
 If your Square account has multiple locations, you can choose which one to display on your partner page.

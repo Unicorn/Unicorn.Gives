@@ -28,6 +28,7 @@ const SCOPES = [
   'GIFTCARDS_READ',
   'SUBSCRIPTIONS_READ',
   'SUBSCRIPTIONS_WRITE',
+  'INVOICES_READ', // subscription invoice.* webhooks (next billing date, failed charges)
   'PAYMENTS_WRITE',
 ].join('+');
 
@@ -237,11 +238,14 @@ Deno.serve(async (req) => {
         });
       }
 
+      // Drop the connection and the caches it feeds. Member records
+      // (square_subscriptions, square_customers, square_bookings) stay: the
+      // subscriptions keep billing in Square regardless of our OAuth link, and
+      // reconnecting reattaches to the same rows by their Square ids.
       await admin.from('square_connections').delete().eq('partner_id', body.partner_id);
       await admin.from('square_feature_config').delete().eq('partner_id', body.partner_id);
       await admin.from('square_bookings_cache').delete().eq('partner_id', body.partner_id);
       await admin.from('square_catalog_cache').delete().eq('partner_id', body.partner_id);
-      await admin.from('square_subscriptions').delete().eq('partner_id', body.partner_id);
 
       return json({ success: true });
     }
