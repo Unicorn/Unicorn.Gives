@@ -18,8 +18,8 @@ import {
   searchSubscriptions,
 } from '../_shared/square.ts';
 import {
-  linkSubscription,
   reconcilePendingCheckouts,
+  tryLinkSubscription,
   type SquareSubscription,
 } from '../_shared/subscriptionLink.ts';
 
@@ -100,8 +100,9 @@ Deno.serve(async (req) => {
         const subs = await searchSubscriptions(accessToken, cust.square_customer_id, conn.location_id);
         for (const sub of subs) {
           if (!(sub as SquareSubscription).id) continue;
-          await linkSubscription(admin, accessToken, conn.partner_id, sub as SquareSubscription);
-          stats.subscriptions++;
+          if (await tryLinkSubscription(admin, accessToken, conn.partner_id, sub as SquareSubscription)) {
+            stats.subscriptions++;
+          }
         }
 
         const bks = await searchBookings(accessToken, cust.square_customer_id, conn.location_id);
