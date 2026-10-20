@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { type Href, Link } from 'expo-router';
 import { useTheme, fonts, fontSize, spacing, radii, shadows } from '@/constants/theme';
 
 interface InfoRowProps {
@@ -23,6 +24,15 @@ export function InfoRow({ icon, label, value, secondaryValue, href }: InfoRowPro
       </View>
     </View>
   );
+
+  // In-app paths navigate through the router; anything else opens externally.
+  if (href?.startsWith('/')) {
+    return (
+      <Link href={href as Href} asChild>
+        <TouchableOpacity accessibilityRole="link">{content}</TouchableOpacity>
+      </Link>
+    );
+  }
 
   if (href) {
     return (

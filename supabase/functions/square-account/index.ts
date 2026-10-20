@@ -25,6 +25,7 @@ import {
   updateSubscriptionState,
 } from '../_shared/square.ts';
 import { reconcilePendingCheckouts, tryLinkSubscription, type SquareSubscription } from '../_shared/subscriptionLink.ts';
+import { reconcilePendingPayments } from '../_shared/paymentSettle.ts';
 
 const rateState = new Map<string, number>();
 const REFRESH_RATE_LIMIT_MS = 5000;
@@ -89,19 +90,29 @@ Deno.serve(async (req) => {
       }
       rateState.set(userId, now);
 
-      const stats = { subscriptions: 0, bookings: 0, customers: 0, pending_linked: 0 };
+      const stats = { subscriptions: 0, bookings: 0, customers: 0, pending_linked: 0, payments_settled: 0 };
 
       // A member back from checkout before the webhook landed: follow their
-      // pending checkouts' orders. Runs first because it can map the customer
-      // the loop below then refreshes.
-      const { data: pendingPartners } = await admin
-        .from('square_subscriptions')
-        .select('partner_id')
-        .eq('user_id', userId)
-        .eq('status', 'pending')
-        .is('square_subscription_id', null)
-        .not('square_order_id', 'is', null);
-      for (const partnerId of new Set<string>((pendingPartners ?? []).map((r: { partner_id: string }) => r.partner_id))) {
+      // pending checkouts' orders (subscriptions and one-time payments). Runs
+      // first because it can map the customer the loop below then refreshes.
+      const [{ data: pendingSubs }, { data: pendingPayments }] = await Promise.all([
+        admin
+          .from('square_subscriptions')
+          .select('partner_id')
+          .eq('user_id', userId)
+          .eq('status', 'pending')
+          .is('square_subscription_id', null)
+          .not('square_order_id', 'is', null),
+        admin
+          .from('partner_payments')
+          .select('partner_id')
+          .eq('user_id', userId)
+          .eq('status', 'pending'),
+      ]);
+      const pendingPartners = new Set<string>(
+        [...(pendingSubs ?? []), ...(pendingPayments ?? [])].map((r: { partner_id: string }) => r.partner_id),
+      );
+      for (const partnerId of pendingPartners) {
         const creds = await getValidAccessToken(admin, partnerId);
         if (!creds?.locationId) continue;
         stats.pending_linked += await reconcilePendingCheckouts(
@@ -111,6 +122,7 @@ Deno.serve(async (req) => {
           creds.locationId,
           userId,
         );
+        stats.payments_settled += await reconcilePendingPayments(admin, creds.accessToken, partnerId, userId);
       }
 
       const { data: customers } = await admin

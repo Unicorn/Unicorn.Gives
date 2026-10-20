@@ -5,6 +5,10 @@
  * POST { action: 'create_checkout', partner_id, plan_variation_id, tier?, redirect_url? }
  *      — REQUIRES Authorization: Bearer <user jwt>. Customer info is pulled
  *        from the authenticated profile; no arbitrary email accepted.
+ * POST { action: 'create_flex_checkout', partner_id, kind, amount_cents? }
+ *      — pay-what-you-can: kind 'monthly' (subscription billed at the chosen
+ *        amount), 'one_time' (a month of membership) or 'day_pass' (fixed
+ *        price). Same auth rules; the server validates the amount.
  *
  * Deploy: `supabase functions deploy square-subscriptions`
  * Config: `[functions.square-subscriptions] verify_jwt = false` in config.toml
@@ -12,6 +16,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { getValidAccessToken, squareFetch } from '../_shared/square.ts';
+import { flexItemName, validateFlexCheckout } from '../_shared/flexPricing.ts';
 
 const rateState = new Map<string, number>();
 const RATE_LIMIT_MS = 500;
@@ -29,7 +34,22 @@ type CreateCheckoutRequest = {
   redirect_url?: string;
 };
 
-type SubscriptionsRequest = ListPlansRequest | CreateCheckoutRequest;
+type CreateFlexCheckoutRequest = {
+  action: 'create_flex_checkout';
+  partner_id: string;
+  kind: unknown;
+  amount_cents?: unknown;
+};
+
+type SubscriptionsRequest = ListPlansRequest | CreateCheckoutRequest | CreateFlexCheckoutRequest;
+
+const ACCEPTED_PAYMENT_METHODS = {
+  apple_pay: true,
+  google_pay: true,
+  // Cash App Pay and Afterpay are not supported for subscriptions.
+  cash_app_pay: false,
+  afterpay_clearpay: false,
+};
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -64,7 +84,7 @@ Deno.serve(async (req) => {
     // Verify subscriptions are enabled
     const { data: config } = await admin
       .from('square_feature_config')
-      .select('subscriptions_enabled')
+      .select('subscriptions_enabled, membership_plan_variation_id')
       .eq('partner_id', body.partner_id)
       .single();
 
@@ -84,11 +104,11 @@ Deno.serve(async (req) => {
       return json({ plans: plans ?? [] });
     }
 
-    if (body.action !== 'create_checkout') {
+    if (body.action !== 'create_checkout' && body.action !== 'create_flex_checkout') {
       return json({ error: 'Unknown action' }, 400);
     }
 
-    // ── create_checkout: require authenticated user ──
+    // ── checkouts: require authenticated user ──
     const authHeader = req.headers.get('Authorization') ?? '';
     const jwt = authHeader.replace(/^Bearer\s+/i, '');
     if (!jwt) {
@@ -123,6 +143,117 @@ Deno.serve(async (req) => {
       return json({ error: 'No Square connection for this partner' }, 404);
     }
     const { accessToken, locationId } = creds;
+    const siteUrl = Deno.env.get('SITE_URL') ?? 'https://unicorn.gives';
+
+    // A customer we already mapped to this user is recorded on the pending
+    // row as matching evidence. Square Checkout picks (or creates) the
+    // actual customer itself by the buyer's phone number, so we don't
+    // pre-create one.
+    const { data: existingCustomer } = await admin
+      .from('square_customers')
+      .select('square_customer_id')
+      .eq('user_id', authUser.id)
+      .eq('partner_id', body.partner_id)
+      .order('synced_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    const squareCustomerId: string | undefined = existingCustomer?.square_customer_id;
+
+    // ── create_flex_checkout: pay-what-you-can and day passes ──
+    if (body.action === 'create_flex_checkout') {
+      const v = validateFlexCheckout(body.kind, body.amount_cents);
+      if (!v.ok) return json({ error: v.error }, 400);
+
+      const { data: partner } = await admin
+        .from('partners')
+        .select('name, slug')
+        .eq('id', body.partner_id)
+        .single();
+      if (!partner) return json({ error: 'Partner not found' }, 404);
+
+      // Monthly bills under one Square plan; the chosen amount overrides its price.
+      let planVariationId: string | null = null;
+      if (v.kind === 'monthly') {
+        planVariationId = config.membership_plan_variation_id ?? null;
+        if (!planVariationId) {
+          const { data: plans } = await admin
+            .from('square_catalog_cache')
+            .select('square_id')
+            .eq('partner_id', body.partner_id)
+            .eq('data_type', 'subscription_plan')
+            .eq('is_active', true)
+            .limit(2);
+          if (plans?.length === 1) planVariationId = plans[0].square_id;
+        }
+        if (!planVariationId) {
+          return json({ error: 'Monthly membership is not set up yet' }, 409);
+        }
+      }
+
+      const redirectUrl = v.kind === 'monthly'
+        ? `${siteUrl}/user/account/subscriptions?status=success`
+        : `${siteUrl}/partners/${partner.slug}/membership?status=paid`;
+
+      const flexRes = await squareFetch('/v2/online-checkout/payment-links', accessToken, {
+        method: 'POST',
+        body: JSON.stringify({
+          idempotency_key: crypto.randomUUID(),
+          quick_pay: {
+            name: flexItemName(v.kind, partner.name),
+            price_money: { amount: v.amountCents, currency: 'USD' },
+            location_id: locationId,
+          },
+          checkout_options: {
+            ...(planVariationId ? { subscription_plan_id: planVariationId } : {}),
+            ask_for_shipping_address: false,
+            accepted_payment_methods: ACCEPTED_PAYMENT_METHODS,
+            redirect_url: redirectUrl,
+            enable_coupon: false,
+            enable_loyalty: false,
+          },
+          pre_populated_data: { buyer_email: email },
+        }),
+      });
+      if (!flexRes.ok) {
+        console.error('Flex payment link creation failed:', await flexRes.text());
+        return json({ error: 'Failed to create checkout link' }, 502);
+      }
+      const flexLink = (await flexRes.json() as {
+        payment_link?: { id?: string; url?: string; order_id?: string };
+      }).payment_link;
+      if (!flexLink?.url) {
+        return json({ error: 'Square did not return a checkout URL' }, 502);
+      }
+
+      if (v.kind === 'monthly') {
+        await admin.from('square_subscriptions').insert({
+          partner_id: body.partner_id,
+          user_id: authUser.id,
+          square_customer_id: squareCustomerId ?? null,
+          plan_variation_id: planVariationId,
+          amount_cents: v.amountCents,
+          customer_name: displayName || null,
+          customer_email: email,
+          status: 'pending',
+          square_order_id: flexLink.order_id ?? null,
+          square_payment_link_id: flexLink.id ?? null,
+          raw: { payment_link: flexLink },
+        });
+      } else {
+        await admin.from('partner_payments').insert({
+          partner_id: body.partner_id,
+          user_id: authUser.id,
+          kind: v.kind === 'one_time' ? 'membership_one_time' : 'day_pass',
+          amount_cents: v.amountCents,
+          status: 'pending',
+          square_order_id: flexLink.order_id ?? null,
+          square_payment_link_id: flexLink.id ?? null,
+          raw: { payment_link: flexLink },
+        });
+      }
+
+      return json({ checkout_url: flexLink.url, payment_link_id: flexLink.id });
+    }
 
     // Look up the plan variation to extract the first-phase price.
     const { data: planRow } = await admin
@@ -151,21 +282,6 @@ Deno.serve(async (req) => {
       return json({ error: 'Plan variation has no price configured in Square' }, 400);
     }
 
-    // Square Checkout picks (or creates) the subscription's customer itself by
-    // matching the buyer's phone number, so we don't pre-create one. A
-    // customer we already mapped to this user is still recorded on the
-    // pending row as matching evidence.
-    const { data: existingCustomer } = await admin
-      .from('square_customers')
-      .select('square_customer_id')
-      .eq('user_id', authUser.id)
-      .eq('partner_id', body.partner_id)
-      .order('synced_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    const squareCustomerId: string | undefined = existingCustomer?.square_customer_id;
-
-    const siteUrl = Deno.env.get('SITE_URL') ?? 'https://unicorn.gives';
     const redirectUrl = body.redirect_url ?? `${siteUrl}/user/account/subscriptions?status=success`;
 
     const linkBody = {
@@ -184,13 +300,7 @@ Deno.serve(async (req) => {
         // a recurring subscription instead of taking a one-time payment.
         subscription_plan_id: body.plan_variation_id,
         ask_for_shipping_address: false,
-        // Cash App Pay and Afterpay are not supported for subscriptions.
-        accepted_payment_methods: {
-          apple_pay: true,
-          google_pay: true,
-          cash_app_pay: false,
-          afterpay_clearpay: false,
-        },
+        accepted_payment_methods: ACCEPTED_PAYMENT_METHODS,
         redirect_url: redirectUrl,
         enable_coupon: false,
         enable_loyalty: false,

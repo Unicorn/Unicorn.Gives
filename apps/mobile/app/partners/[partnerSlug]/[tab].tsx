@@ -8,6 +8,9 @@ import { AppHeader } from '@/components/layout/AppHeader';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { SubTabs } from '@/components/layout/SubTabs';
+import { PartnerMenuBar } from '@/components/partner/PartnerMenuBar';
+import { MembershipPicker } from '@/components/partner/MembershipPicker';
+import { getPartnerMenu } from '@/constants/partnerMenus';
 import { useTheme, spacing } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
 import { getDefaultDescription } from '@/lib/seo';
@@ -106,6 +109,7 @@ export default function PartnerTab() {
 
   const effectiveTabs = partner.tabs && partner.tabs.length > 0 ? partner.tabs : defaultTabs;
   const tabs = routes.partners.tabItems(partnerSlug, effectiveTabs);
+  const menu = getPartnerMenu(partnerSlug);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -114,13 +118,31 @@ export default function PartnerTab() {
         description={partner.description ?? undefined}
       />
       <AppHeader title={partner.name} />
-      {tabs.length > 0 && <SubTabs tabs={tabs} />}
+      {menu ? (
+        <PartnerMenuBar
+          partnerId={partner.id}
+          partnerSlug={partnerSlug}
+          tabs={effectiveTabs}
+          config={menu}
+          hoursText={seed?.landingPage?.contact_hours as string | null | undefined}
+        />
+      ) : (
+        tabs.length > 0 && <SubTabs tabs={tabs} />
+      )}
       <Wrapper contentContainerStyle={styles.content}>
         <Container>
           {page ? (
             <MarkdownRenderer content={page.body} />
           ) : (
             <Text style={[styles.loading, { color: colors.neutralVariant }]}>No content for this tab yet.</Text>
+          )}
+          {menu?.joinTab && menu.joinTab === tab && (
+            <MembershipPicker
+              partnerId={partner.id}
+              partnerSlug={partnerSlug}
+              partnerName={partner.name}
+              joinTab={menu.joinTab}
+            />
           )}
         </Container>
       </Wrapper>

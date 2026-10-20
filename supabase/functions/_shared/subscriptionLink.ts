@@ -32,15 +32,29 @@ export interface SquareSubscription {
 
 export type LinkOutcome = MatchReason | 'existing' | 'customer_map' | 'profile_email' | 'unlinked';
 
+export interface SquareOrder {
+  id?: string;
+  customer_id?: string;
+  state?: string;
+  tenders?: unknown[];
+  net_amount_due_money?: { amount?: number };
+  closed_at?: string;
+  updated_at?: string;
+}
+
+export async function retrieveOrder(accessToken: string, orderId: string): Promise<SquareOrder | null> {
+  const res = await squareFetch(`/v2/orders/${orderId}`, accessToken, { method: 'GET' });
+  if (!res.ok) return null;
+  const data = await res.json() as { order?: SquareOrder };
+  return data.order ?? null;
+}
+
 /** The customer Square attached to a payment-link order once it was paid. */
 export async function retrieveOrderCustomerId(
   accessToken: string,
   orderId: string,
 ): Promise<string | null> {
-  const res = await squareFetch(`/v2/orders/${orderId}`, accessToken, { method: 'GET' });
-  if (!res.ok) return null;
-  const data = await res.json() as { order?: { customer_id?: string } };
-  return data.order?.customer_id ?? null;
+  return (await retrieveOrder(accessToken, orderId))?.customer_id ?? null;
 }
 
 async function mappedUserId(admin: any, partnerId: string, customerId: string | undefined) {
@@ -222,7 +236,7 @@ function check(error: { message?: string } | null | undefined, what: string) {
 }
 
 /** Map the Square customer to the user so later events resolve directly. */
-async function rememberCustomer(
+export async function rememberCustomer(
   admin: any,
   partnerId: string,
   userId: string | null,

@@ -9,6 +9,8 @@ import { AppHeader } from '@/components/layout/AppHeader';
 import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { SubTabs } from '@/components/layout/SubTabs';
+import { PartnerMenuBar } from '@/components/partner/PartnerMenuBar';
+import { getPartnerMenu } from '@/constants/partnerMenus';
 import { useTheme, spacing } from '@/constants/theme';
 import { SeoHead } from '@/components/SeoHead';
 import { getDefaultDescription } from '@/lib/seo';
@@ -126,6 +128,9 @@ export default function PartnerLanding() {
     );
   }
 
+  const effectiveTabs = partner.tabs && partner.tabs.length > 0 ? partner.tabs : defaultTabs;
+  const menu = getPartnerMenu(partnerSlug);
+
   // Landing page mode — full marketing layout
   if (landingPage) {
     return (
@@ -136,6 +141,15 @@ export default function PartnerLanding() {
           imageUrl={landingPage.hero_image_url as string | undefined}
         />
         <AppHeader title={partner.name} />
+        {menu && (
+          <PartnerMenuBar
+            partnerId={partner.id}
+            partnerSlug={partnerSlug}
+            tabs={effectiveTabs}
+            config={menu}
+            hoursText={landingPage.contact_hours as string | null | undefined}
+          />
+        )}
         <ScrollView contentContainerStyle={styles.landingContent}>
           <LandingPageRenderer data={landingPage} partnerId={partner.id} />
         </ScrollView>
@@ -144,7 +158,6 @@ export default function PartnerLanding() {
   }
 
   // Tab-based fallback — existing behavior
-  const effectiveTabs = partner.tabs && partner.tabs.length > 0 ? partner.tabs : defaultTabs;
   const tabs = routes.partners.tabItems(partnerSlug, effectiveTabs);
 
   return (

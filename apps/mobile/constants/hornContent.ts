@@ -27,20 +27,20 @@ export const HORN_QUOTE = {
 
 export const HORN_PERKS = [
 	{
+		key: "coffee",
+		icon: "local-cafe",
+		title: "Morning Coffee & Quiet Space",
+		description:
+			"Start the day with a coffee and a calm corner to read, work, or just be.",
+		span: "full" as const,
+		colorScheme: "surface" as const,
+	},
+	{
 		key: "access",
 		icon: "vpn-key",
 		title: "24/7 Access",
 		description:
 			"Members get key access around the clock, 365 days a year. Your schedule, your space.",
-		span: "full" as const,
-		colorScheme: "surface" as const,
-	},
-	{
-		key: "lounge",
-		icon: "weekend",
-		title: "Members-Only Cigar Lounge",
-		description:
-			"An adults-only space for members who want to BYOB and smoke indoors.",
 		span: "half" as const,
 		colorScheme: "surface" as const,
 	},
@@ -67,9 +67,18 @@ export const HORN_PERKS = [
 		icon: "nightlight-round",
 		title: "Late-Night Safe Hangout",
 		description:
-			"A safe, welcoming place to be after 2 AM. No bar scene, no pressure — just good company.",
+			"A safe, welcoming place to be when everywhere else is closed. No bar scene, no pressure — just good company.",
 		span: "half" as const,
 		colorScheme: "primary" as const,
+	},
+	{
+		key: "lounge",
+		icon: "weekend",
+		title: "Members' Lounge",
+		description:
+			"An adults-only lounge for members only — bring your own drinks and smoke indoors.",
+		span: "full" as const,
+		colorScheme: "surface" as const,
 	},
 ];
 
@@ -90,14 +99,19 @@ export const HORN_INFO = {
 		{
 			icon: "card-membership",
 			label: "Membership",
-			value: "Starting at $40/month individual",
-			secondaryValue: "Couple $60/mo · Family $100/mo · VIP add-on $20/mo",
+			value: "Pay what you can",
+			secondaryValue: "Monthly or one-time · Bring one guest",
+		},
+		{
+			icon: "confirmation-number",
+			label: "Day Pass",
+			value: "$10 for a full day",
 		},
 		{
 			icon: "link",
-			label: "Sign Up",
-			value: "horn.love",
-			href: "https://horn.love",
+			label: "Join",
+			value: "Choose your membership",
+			href: "/partners/the-horn/membership",
 		},
 	],
 } as const;

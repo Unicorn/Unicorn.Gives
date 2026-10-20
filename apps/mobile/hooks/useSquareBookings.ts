@@ -330,6 +330,57 @@ export function useCreateSubscriptionCheckout(partnerId: string | undefined) {
   return { create, loading, error };
 }
 
+/* ── useFlexCheckout (pay-what-you-can membership + day pass) ── */
+
+export type FlexCheckoutKind = 'monthly' | 'one_time' | 'day_pass';
+
+export function useFlexCheckout(partnerId: string | undefined) {
+  const [loading, setLoading] = useState<FlexCheckoutKind | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const create = useCallback(async (
+    kind: FlexCheckoutKind,
+    amountCents?: number,
+  ): Promise<{ checkout_url: string } | null> => {
+    if (!partnerId) return null;
+    setLoading(kind);
+    setError(null);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (!token) {
+        setError('Sign in required');
+        return null;
+      }
+      const res = await fetch(`${supabaseUrl}/functions/v1/square-subscriptions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          action: 'create_flex_checkout',
+          partner_id: partnerId,
+          kind,
+          amount_cents: amountCents,
+        }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error((errData as { error?: string }).error ?? 'Couldn’t start checkout');
+      }
+      return await res.json() as { checkout_url: string };
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Couldn’t start checkout');
+      return null;
+    } finally {
+      setLoading(null);
+    }
+  }, [partnerId]);
+
+  return { create, loading, error };
+}
+
 /* ── useSquareFeatureConfig (public read) ── */
 
 export function useSquareFeatureConfig(partnerId: string | undefined) {
