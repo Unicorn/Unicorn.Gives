@@ -37,10 +37,12 @@ create table if not exists partner_payments (
 alter table partner_payments enable row level security;
 
 -- Writes come only from edge functions (service role).
+drop policy if exists "partner_payments: user read own" on partner_payments;
 create policy "partner_payments: user read own"
   on partner_payments for select
   using (user_id = auth.uid());
 
+drop policy if exists "partner_payments: admin read" on partner_payments;
 create policy "partner_payments: admin read"
   on partner_payments for select
   using (
@@ -58,6 +60,7 @@ create index if not exists idx_partner_payments_pending
   on partner_payments(partner_id, created_at desc)
   where status = 'pending';
 
+drop trigger if exists trg_partner_payments_updated on partner_payments;
 create trigger trg_partner_payments_updated
   before update on partner_payments
   for each row execute function set_updated_at();
@@ -134,8 +137,7 @@ begin
 </ul>
 <hr>
 <h2>Join Today</h2>
-<p>Choose monthly or one-time, pick what you can pay, and you're in. Or pick up a $10 day pass to try it out.</p>$html$,
-      updated_at = now()
+<p>Choose monthly or one-time, pick what you can pay, and you're in. Or pick up a $10 day pass to try it out.</p>$html$
   where partner_id = horn_id
     and tab_slug = 'membership';
 
@@ -247,8 +249,7 @@ $md$,
                  '<p>The Horn offers individual, couple, and family memberships[^\n]*</p>',
                  '<p>Membership at The Horn is <strong>pay what you can</strong>, monthly or one-time. Members get 24/7 key access, discounted event rates, exclusive events, and a real community, and can bring one guest. Not ready to join? Grab a <strong>$10 day pass</strong>.</p>'),
                '<p>Memberships launch <strong>Memorial Weekend</strong>[^\n]*</p>\n?', ''),
-             'href="/membership"', 'href="/partners/the-horn/membership"', 'g'),
-      updated_at = now()
+             'href="/membership"', 'href="/partners/the-horn/membership"', 'g')
   where partner_id = horn_id
     and tab_slug = 'about'
     and body like '%VIP Lounge%';
