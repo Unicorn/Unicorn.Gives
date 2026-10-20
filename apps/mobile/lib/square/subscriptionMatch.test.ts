@@ -3,6 +3,7 @@ import {
   escapeLike,
   mapSquareSubscriptionStatus,
   matchPendingCheckout,
+  priceOverrideNeeded,
   type IncomingSubscription,
   type PendingCheckout,
 } from '../../../../supabase/functions/_shared/subscriptionMatch';
@@ -125,5 +126,23 @@ describe('escapeLike', () => {
 
   it('leaves ordinary addresses unchanged', () => {
     expect(escapeLike('member@example.com')).toBe('member@example.com');
+  });
+});
+
+describe('priceOverrideNeeded', () => {
+  it('sets the chosen amount when Square has no override or a different one', () => {
+    expect(priceOverrideNeeded(2500, { status: 'ACTIVE' })).toBe(true);
+    expect(priceOverrideNeeded(2500, { status: 'ACTIVE', price_override_money: { amount: 1000 } })).toBe(true);
+  });
+
+  it('leaves a matching override alone', () => {
+    expect(priceOverrideNeeded(2500, { status: 'ACTIVE', price_override_money: { amount: 2500 } })).toBe(false);
+  });
+
+  it('skips fixed-tier subscriptions and ended ones', () => {
+    expect(priceOverrideNeeded(null, { status: 'ACTIVE' })).toBe(false);
+    expect(priceOverrideNeeded(undefined, { status: 'ACTIVE' })).toBe(false);
+    expect(priceOverrideNeeded(2500, { status: 'CANCELED' })).toBe(false);
+    expect(priceOverrideNeeded(2500, { status: 'DEACTIVATED' })).toBe(false);
   });
 });
