@@ -3,7 +3,7 @@
  * Displays Square subscription plan variations as tier cards and opens
  * a signup modal that creates a Square hosted checkout link.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
   StyleSheet,
   Linking,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, usePathname, useRouter } from 'expo-router';
 import {
   useTheme,
   fonts,
@@ -73,11 +73,32 @@ export function SubscriptionsSection({ partnerId }: SubscriptionsSectionProps) {
   const { create, loading: checkoutLoading, error: checkoutError } = useCreateSubscriptionCheckout(partnerId);
   const [pendingPlanId, setPendingPlanId] = useState<string | null>(null);
 
+  // Signed-out visitors come back from sign-in to this page with ?join=<plan>.
+  // Read it after mount (the first render must match the static export), then
+  // bring the chosen plan into view so they can carry on.
+  const pathname = usePathname();
+  const params = useLocalSearchParams<{ join?: string }>();
+  const [resumePlanId, setResumePlanId] = useState<string | null>(null);
+  const sectionRef = useRef<View>(null);
+  useEffect(() => {
+    setResumePlanId(typeof params.join === 'string' ? params.join : null);
+  }, [params.join]);
+  const resumeReady = resumePlanId != null && plans.some((p) => p.square_id === resumePlanId);
+  useEffect(() => {
+    if (!resumeReady) return;
+    const el = sectionRef.current as unknown as { scrollIntoView?: (o: object) => void } | null;
+    el?.scrollIntoView?.({ behavior: 'smooth', block: 'start' });
+    // The screen may still be transitioning in, or content above still
+    // loading and pushing this down: settle once more.
+    const settle = setTimeout(() => el?.scrollIntoView?.({ block: 'start' }), 1000);
+    return () => clearTimeout(settle);
+  }, [resumeReady]);
+
   async function handleJoin(plan: SquareSubscriptionPlan) {
     const name = plan.data.subscription_plan_variation_data?.name ?? plan.display_name ?? '';
     const tier = inferTier(name);
     if (!user) {
-      const redirect = `/partners?join=${encodeURIComponent(plan.square_id)}`;
+      const redirect = `${pathname}?join=${encodeURIComponent(plan.square_id)}`;
       router.push(`/sign-in?redirect=${encodeURIComponent(redirect)}` as any);
       return;
     }
@@ -105,7 +126,7 @@ export function SubscriptionsSection({ partnerId }: SubscriptionsSectionProps) {
   if (plans.length === 0) return null;
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} ref={sectionRef}>
       <View style={styles.inner}>
         <SectionHeading title="Join the Community" lede="Become a member with a monthly subscription." />
 
@@ -124,7 +145,7 @@ export function SubscriptionsSection({ partnerId }: SubscriptionsSectionProps) {
                   width: columns === 1 ? '100%' : (`${(100 - (columns - 1) * 1.5) / columns}%` as any),
                 }}
               >
-                <View style={styles.card}>
+                <View style={[styles.card, resumePlanId === plan.square_id && styles.cardResumed]}>
                   <Text style={styles.tierName}>{name}</Text>
                   <View style={styles.priceRow}>
                     <Text style={styles.price}>{formatPrice(price)}</Text>
@@ -141,7 +162,9 @@ export function SubscriptionsSection({ partnerId }: SubscriptionsSectionProps) {
                     {checkoutLoading && pendingPlanId === plan.square_id ? (
                       <ActivityIndicator color={colors.onPrimary} />
                     ) : (
-                      <Text style={styles.joinBtnText}>{user ? 'Join' : 'Sign in to join'}</Text>
+                      <Text style={styles.joinBtnText}>
+                        {!user ? 'Sign in to join' : resumePlanId === plan.square_id ? 'Continue to payment' : 'Join'}
+                      </Text>
                     )}
                   </Pressable>
                 </View>
@@ -180,6 +203,9 @@ const createStyles = (colors: ThemeColors) =>
       borderRadius: radii.md,
       padding: spacing.xl,
       gap: spacing.md,
+    },
+    cardResumed: {
+      borderColor: colors.primary,
     },
     tierName: {
       fontFamily: fonts.sansBold,
