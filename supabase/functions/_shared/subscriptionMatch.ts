@@ -113,6 +113,32 @@ export function priceOverrideNeeded(
   return sub.price_override_money?.amount !== chosenCents;
 }
 
+export type ScheduledActionType = 'PAUSE' | 'RESUME' | 'CANCEL';
+
+/**
+ * The next pause / resume / cancel Square has scheduled, from a
+ * subscription's `actions` (earliest first). Other action types (plan swaps,
+ * billing-anchor changes) aren't shown to members.
+ */
+export function nextScheduledAction(
+  actions: Array<{ type?: string; effective_date?: string }>,
+): { type: ScheduledActionType; date: string } | null {
+  const shown = actions
+    .filter((a): a is { type: ScheduledActionType; effective_date: string } =>
+      (a.type === 'PAUSE' || a.type === 'RESUME' || a.type === 'CANCEL') && typeof a.effective_date === 'string'
+    )
+    .sort((a, b) => a.effective_date.localeCompare(b.effective_date));
+  return shown[0] ? { type: shown[0].type, date: shown[0].effective_date } : null;
+}
+
+/**
+ * Canceled, but still paid up: Square keeps the subscription ACTIVE until
+ * its `canceled_date`, the end of the period the member paid for.
+ */
+export function isCancelingAtPeriodEnd(sub: { status?: string; canceled_date?: string }): boolean {
+  return sub.status === 'ACTIVE' && Boolean(sub.canceled_date);
+}
+
 export function mapSquareSubscriptionStatus(status: string | undefined): string {
   switch (status) {
     case 'ACTIVE':

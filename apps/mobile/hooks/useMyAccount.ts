@@ -20,7 +20,11 @@ export interface MySubscription {
   canceled_at: string | null;
   current_period_end: string | null;
   next_billing_at: string | null;
+  /** Canceled but still paid up: active until `canceled_at`. */
   cancel_at_period_end: boolean;
+  /** A pause / resume / cancel Square has scheduled, and when it takes effect. */
+  scheduled_action: 'PAUSE' | 'RESUME' | 'CANCEL' | null;
+  scheduled_action_date: string | null;
   updated_at: string;
 }
 
