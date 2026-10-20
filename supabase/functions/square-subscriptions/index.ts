@@ -330,7 +330,9 @@ Deno.serve(async (req) => {
       return json({ error: 'Square did not return a checkout URL' }, 502);
     }
 
-    await admin.from('square_subscriptions').insert({
+    // Without this row the paid subscription can't find its member, so don't
+    // hand out the link if it wasn't saved.
+    const { error: pendingErr } = await admin.from('square_subscriptions').insert({
       partner_id: body.partner_id,
       user_id: authUser.id,
       square_customer_id: squareCustomerId ?? null,
@@ -343,6 +345,10 @@ Deno.serve(async (req) => {
       square_payment_link_id: linkData.payment_link?.id ?? null,
       raw: { payment_link: linkData.payment_link ?? {} },
     });
+    if (pendingErr) {
+      console.error('Pending checkout insert failed:', pendingErr.message);
+      return json({ error: 'Could not start checkout' }, 500);
+    }
 
     return json({ checkout_url: checkoutUrl, payment_link_id: linkData.payment_link?.id });
   } catch (e) {

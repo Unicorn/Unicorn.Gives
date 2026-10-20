@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  escapeLike,
   mapSquareSubscriptionStatus,
   matchPendingCheckout,
   type IncomingSubscription,
@@ -112,5 +113,17 @@ describe('mapSquareSubscriptionStatus', () => {
     expect(mapSquareSubscriptionStatus('DEACTIVATED')).toBe('deactivated');
     expect(mapSquareSubscriptionStatus('PENDING')).toBe('pending');
     expect(mapSquareSubscriptionStatus(undefined)).toBe('pending');
+  });
+});
+
+describe('escapeLike', () => {
+  it('makes LIKE wildcards literal', () => {
+    expect(escapeLike('j_doe@gmail.com')).toBe('j\\_doe@gmail.com');
+    expect(escapeLike('100%@example.com')).toBe('100\\%@example.com');
+    expect(escapeLike('back\\slash@example.com')).toBe('back\\\\slash@example.com');
+  });
+
+  it('leaves ordinary addresses unchanged', () => {
+    expect(escapeLike('member@example.com')).toBe('member@example.com');
   });
 });
