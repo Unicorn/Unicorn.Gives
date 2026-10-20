@@ -26,8 +26,7 @@ const CATALOG_EVENTS = new Set([
 
 const SUBSCRIPTION_EVENTS = new Set([
   'subscription.created',
-  'subscription.updated',
-  'subscription.canceled',
+  'subscription.updated', // Square reports cancellation as an update
 ]);
 
 const CUSTOMER_EVENTS = new Set([
@@ -65,7 +64,17 @@ async function verifySignature(
   const data = encoder.encode(webhookUrl + body);
   const sig = await crypto.subtle.sign('HMAC', key, data);
   const computed = btoa(String.fromCharCode(...new Uint8Array(sig)));
-  return computed === signature;
+  return timingSafeEqual(computed, signature);
+}
+
+/** Compare without exiting at the first differing byte. */
+function timingSafeEqual(a: string, b: string): boolean {
+  const x = new TextEncoder().encode(a);
+  const y = new TextEncoder().encode(b);
+  if (x.length !== y.length) return false;
+  let diff = 0;
+  for (let i = 0; i < x.length; i++) diff |= x[i] ^ y[i];
+  return diff === 0;
 }
 
 Deno.serve(async (req) => {
@@ -88,7 +97,9 @@ Deno.serve(async (req) => {
 
   const bodyText = await req.text();
   const signature = req.headers.get('x-square-hmacsha256-signature') ?? '';
-  const webhookUrl = `${supabaseUrl}/functions/v1/square-webhooks`;
+  // Square signs the notification URL exactly as registered in its developer
+  // dashboard. Set SQUARE_WEBHOOK_URL if that differs from the default.
+  const webhookUrl = Deno.env.get('SQUARE_WEBHOOK_URL') ?? `${supabaseUrl}/functions/v1/square-webhooks`;
 
   const valid = await verifySignature(bodyText, signature, signatureKey, webhookUrl);
   if (!valid) {
