@@ -90,6 +90,15 @@ export function matchPendingCheckout(
   return null;
 }
 
+/**
+ * Escape LIKE wildcards so ILIKE compares literally (case-insensitively).
+ * Needed wherever a Square-supplied value — unverified buyer input — is
+ * matched against our data.
+ */
+export function escapeLike(value: string): string {
+  return value.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
+
 export function mapSquareSubscriptionStatus(status: string | undefined): string {
   switch (status) {
     case 'ACTIVE':

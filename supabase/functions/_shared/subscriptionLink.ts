@@ -8,6 +8,7 @@
  */
 import { retrieveCustomer, searchSubscriptions, squareFetch } from './square.ts';
 import {
+  escapeLike,
   mapSquareSubscriptionStatus,
   matchPendingCheckout,
   PENDING_WINDOW_DAYS,
@@ -81,20 +82,24 @@ export async function linkSubscription(
     updated_at: now,
   };
 
-  // Already known: update state, but never drop an established owner.
-  const { data: existing } = await admin
+  // Already known with an owner: update state, never drop the owner.
+  const { data: existing, error: existingErr } = await admin
     .from('square_subscriptions')
     .select('id, user_id')
     .eq('square_subscription_id', sub.id)
     .maybeSingle();
-  if (existing) {
-    const userId = existing.user_id ?? await mappedUserId(admin, partnerId, sub.customer_id);
-    await admin.from('square_subscriptions')
-      .update({ ...fields, user_id: userId })
-      .eq('id', existing.id);
-    return { userId, outcome: 'existing' };
+  check(existingErr, 'look up subscription');
+  if (existing?.user_id) {
+    check(
+      (await admin.from('square_subscriptions').update(fields).eq('id', existing.id)).error,
+      'update subscription',
+    );
+    return { userId: existing.user_id, outcome: 'existing' };
   }
 
+  // New, or saved earlier without an owner (a Square error or a racing
+  // webhook made the first match miss): keep looking, so the hourly
+  // reconcile can still link it.
   let userId = await mappedUserId(admin, partnerId, sub.customer_id);
   let outcome: LinkOutcome = userId ? 'customer_map' : 'unlinked';
 
@@ -145,21 +150,20 @@ export async function linkSubscription(
     if (match) {
       userId = userId ?? match.row.user_id;
       outcome = match.reason;
-      await admin.from('square_subscriptions')
-        .update({ ...fields, user_id: userId })
-        .eq('id', match.row.id);
+      await promotePending(admin, match.row.id, sub.id, { ...fields, user_id: userId });
       await rememberCustomer(admin, partnerId, userId, sub.customer_id, customer);
       return { userId, outcome };
     }
   }
 
   // Bought outside our checkout (e.g. in the Square dashboard): last resort,
-  // a profile with the same email.
+  // a profile with the same email. The Square email is unverified buyer
+  // input, so it must match exactly — never as a LIKE pattern.
   if (!userId && customerEmail) {
     const { data: profile } = await admin
       .from('profiles')
       .select('id')
-      .ilike('email', customerEmail)
+      .ilike('email', escapeLike(customerEmail.trim()))
       .maybeSingle();
     if (profile?.id) {
       userId = profile.id;
@@ -167,10 +171,46 @@ export async function linkSubscription(
     }
   }
 
-  await admin.from('square_subscriptions')
-    .upsert({ ...fields, user_id: userId }, { onConflict: 'square_subscription_id' });
+  check(
+    (await admin.from('square_subscriptions')
+      .upsert({ ...fields, user_id: userId }, { onConflict: 'square_subscription_id' })).error,
+    'save subscription',
+  );
   await rememberCustomer(admin, partnerId, userId, sub.customer_id, customer);
   return { userId, outcome };
+}
+
+/**
+ * Turn the pending checkout row into the subscription's row. If the
+ * subscription was already saved without an owner (an earlier miss, or a
+ * concurrent webhook), that row holds the unique Square id: drop it and let
+ * the pending row — which carries the checkout's details — take its place.
+ */
+async function promotePending(
+  admin: any,
+  pendingId: string,
+  squareSubscriptionId: string,
+  row: Record<string, unknown>,
+) {
+  const promote = () => admin.from('square_subscriptions').update(row).eq('id', pendingId);
+  let { error } = await promote();
+  if (error?.code === UNIQUE_VIOLATION) {
+    check(
+      (await admin.from('square_subscriptions')
+        .delete()
+        .eq('square_subscription_id', squareSubscriptionId)
+        .is('user_id', null)).error,
+      'replace unowned subscription',
+    );
+    ({ error } = await promote());
+  }
+  check(error, 'promote pending checkout');
+}
+
+const UNIQUE_VIOLATION = '23505';
+
+function check(error: { message?: string } | null | undefined, what: string) {
+  if (error) throw new Error(`Failed to ${what}: ${error.message ?? 'unknown error'}`);
 }
 
 /** Map the Square customer to the user so later events resolve directly. */
@@ -182,16 +222,26 @@ async function rememberCustomer(
   customer: Record<string, unknown> | null,
 ) {
   if (!userId || !customerId) return;
-  await admin.from('square_customers').upsert({
-    user_id: userId,
-    partner_id: partnerId,
-    square_customer_id: customerId,
-    email: (customer?.email_address as string | undefined) ?? null,
-    given_name: (customer?.given_name as string | undefined) ?? null,
-    family_name: (customer?.family_name as string | undefined) ?? null,
-    ...(customer ? { raw: customer } : {}),
-    synced_at: new Date().toISOString(),
-  }, { onConflict: 'partner_id,square_customer_id' });
+  // Only write the details we actually fetched, so a failed or skipped
+  // customer lookup doesn't null out what's already stored.
+  const details = customer
+    ? {
+      email: (customer.email_address as string | undefined) ?? null,
+      given_name: (customer.given_name as string | undefined) ?? null,
+      family_name: (customer.family_name as string | undefined) ?? null,
+      raw: customer,
+    }
+    : {};
+  check(
+    (await admin.from('square_customers').upsert({
+      user_id: userId,
+      partner_id: partnerId,
+      square_customer_id: customerId,
+      ...details,
+      synced_at: new Date().toISOString(),
+    }, { onConflict: 'partner_id,square_customer_id' })).error,
+    'map customer to user',
+  );
 }
 
 /**
@@ -228,7 +278,7 @@ export async function reconcilePendingCheckouts(
     const subs = await searchSubscriptions(accessToken, customerId, locationId);
     for (const sub of subs) {
       const { outcome } = await linkSubscription(admin, accessToken, partnerId, sub as SquareSubscription);
-      if (outcome !== 'existing') linked++;
+      if (outcome !== 'existing' && outcome !== 'unlinked') linked++;
     }
   }
   return linked;
