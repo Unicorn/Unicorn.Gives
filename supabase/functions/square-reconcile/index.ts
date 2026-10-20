@@ -23,6 +23,7 @@ import {
   type SquareSubscription,
 } from '../_shared/subscriptionLink.ts';
 import { reconcilePendingPayments } from '../_shared/paymentSettle.ts';
+import { expireStaleCheckouts } from '../_shared/checkoutExpiry.ts';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -65,7 +66,15 @@ Deno.serve(async (req) => {
       status: 'running',
     }).select('id').single();
 
-    const stats = { customers: 0, subscriptions: 0, bookings: 0, pending_linked: 0, payments_settled: 0 };
+    const stats = {
+      customers: 0,
+      subscriptions: 0,
+      bookings: 0,
+      pending_linked: 0,
+      payments_settled: 0,
+      checkouts_expired: 0,
+      paid_unlinked: 0,
+    };
     try {
       const creds = await getValidAccessToken(admin, conn.partner_id);
       if (!creds) throw new Error('No usable Square connection');
@@ -80,6 +89,10 @@ Deno.serve(async (req) => {
         conn.location_id,
       );
       stats.payments_settled = await reconcilePendingPayments(admin, accessToken, conn.partner_id);
+      const expiry = await expireStaleCheckouts(admin, accessToken, conn.partner_id);
+      stats.checkouts_expired = expiry.expired;
+      stats.payments_settled += expiry.settled;
+      stats.paid_unlinked = expiry.paid_unlinked;
 
       const { data: customers } = await admin
         .from('square_customers')

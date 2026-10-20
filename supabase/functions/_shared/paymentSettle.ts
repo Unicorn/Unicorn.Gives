@@ -52,8 +52,8 @@ export async function settlePaymentByOrder(admin: any, accessToken: string, orde
 }
 
 /**
- * Re-check recent pending payments for a partner (optionally one member's),
- * and give up on ones left unpaid past the window so they stop being polled.
+ * Re-check recent pending payments for a partner (optionally one member's).
+ * Ones left unpaid past the window are retired by expireStaleCheckouts.
  */
 export async function reconcilePendingPayments(
   admin: any,
@@ -78,12 +78,5 @@ export async function reconcilePendingPayments(
     if (await settlePayment(admin, accessToken, row)) settled++;
   }
 
-  if (!userId) {
-    await admin.from('partner_payments')
-      .update({ status: 'canceled' })
-      .eq('partner_id', partnerId)
-      .eq('status', 'pending')
-      .lt('created_at', since);
-  }
   return settled;
 }

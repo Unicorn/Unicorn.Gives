@@ -73,6 +73,9 @@ export function useMySubscriptions() {
       .from('square_subscriptions')
       .select('*')
       .eq('user_id', user.id)
+      // A pending row is a checkout that hasn't been paid (or confirmed) yet,
+      // not a membership; abandoned ones would otherwise show forever.
+      .neq('status', 'pending')
       .order('updated_at', { ascending: false });
     if (e) setError(e.message);
     setSubscriptions((data ?? []) as MySubscription[]);
