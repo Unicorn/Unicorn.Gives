@@ -17,16 +17,11 @@ import {
   searchBookings,
   searchSubscriptions,
 } from '../_shared/square.ts';
-
-function mapStatus(s: string | undefined): string {
-  switch (s) {
-    case 'ACTIVE': return 'active';
-    case 'PAUSED': return 'paused';
-    case 'CANCELED': return 'canceled';
-    case 'DEACTIVATED': return 'deactivated';
-    default: return 'pending';
-  }
-}
+import {
+  reconcilePendingCheckouts,
+  tryLinkSubscription,
+  type SquareSubscription,
+} from '../_shared/subscriptionLink.ts';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -69,11 +64,20 @@ Deno.serve(async (req) => {
       status: 'running',
     }).select('id').single();
 
-    const stats = { customers: 0, subscriptions: 0, bookings: 0 };
+    const stats = { customers: 0, subscriptions: 0, bookings: 0, pending_linked: 0 };
     try {
       const creds = await getValidAccessToken(admin, conn.partner_id);
       if (!creds) throw new Error('No usable Square connection');
       const accessToken = creds.accessToken;
+
+      // Checkouts whose subscription webhook never arrived. Runs first so the
+      // customers it maps are refreshed by the loop below.
+      stats.pending_linked = await reconcilePendingCheckouts(
+        admin,
+        accessToken,
+        conn.partner_id,
+        conn.location_id,
+      );
 
       const { data: customers } = await admin
         .from('square_customers')
@@ -95,31 +99,10 @@ Deno.serve(async (req) => {
 
         const subs = await searchSubscriptions(accessToken, cust.square_customer_id, conn.location_id);
         for (const sub of subs) {
-          const s = sub as {
-            id?: string;
-            plan_variation_id?: string;
-            status?: string;
-            start_date?: string;
-            canceled_date?: string;
-            charged_through_date?: string;
-            canceled_at_period_end?: boolean;
-          };
-          if (!s.id) continue;
-          await admin.from('square_subscriptions').upsert({
-            partner_id: conn.partner_id,
-            user_id: cust.user_id,
-            square_subscription_id: s.id,
-            square_customer_id: cust.square_customer_id,
-            plan_variation_id: s.plan_variation_id ?? null,
-            status: mapStatus(s.status),
-            started_at: s.start_date ?? null,
-            canceled_at: s.canceled_date ?? null,
-            current_period_end: s.charged_through_date ?? null,
-            cancel_at_period_end: s.canceled_at_period_end ?? false,
-            raw: s,
-            updated_at: new Date().toISOString(),
-          }, { onConflict: 'square_subscription_id' });
-          stats.subscriptions++;
+          if (!(sub as SquareSubscription).id) continue;
+          if (await tryLinkSubscription(admin, accessToken, conn.partner_id, sub as SquareSubscription)) {
+            stats.subscriptions++;
+          }
         }
 
         const bks = await searchBookings(accessToken, cust.square_customer_id, conn.location_id);
