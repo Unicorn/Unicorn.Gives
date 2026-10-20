@@ -99,6 +99,20 @@ export function escapeLike(value: string): string {
   return value.replace(/[\\%_]/g, (c) => `\\${c}`);
 }
 
+/**
+ * Whether a subscription needs its price override set to the member's
+ * chosen monthly amount. Only pay-what-you-can checkouts record a chosen
+ * amount; fixed-tier subscriptions (no amount) are left to their plan.
+ */
+export function priceOverrideNeeded(
+  chosenCents: number | null | undefined,
+  sub: { status?: string; price_override_money?: { amount?: number } },
+): boolean {
+  if (chosenCents == null || chosenCents <= 0) return false;
+  if (sub.status === 'CANCELED' || sub.status === 'DEACTIVATED') return false;
+  return sub.price_override_money?.amount !== chosenCents;
+}
+
 export function mapSquareSubscriptionStatus(status: string | undefined): string {
   switch (status) {
     case 'ACTIVE':

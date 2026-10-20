@@ -10,6 +10,7 @@ import { retrieveCustomer, searchSubscriptions, squareFetch } from './square.ts'
 import {
   escapeLike,
   mapSquareSubscriptionStatus,
+  priceOverrideNeeded,
   matchPendingCheckout,
   PENDING_WINDOW_DAYS,
   type MatchReason,
@@ -28,6 +29,8 @@ export interface SquareSubscription {
   charged_through_date?: string;
   canceled_at_period_end?: boolean;
   created_at?: string;
+  price_override_money?: { amount?: number; currency?: string };
+  version?: number;
 }
 
 export type LinkOutcome = MatchReason | 'existing' | 'customer_map' | 'profile_email' | 'unlinked';
@@ -99,7 +102,7 @@ export async function linkSubscription(
   // Already known with an owner: update state, never drop the owner.
   const { data: existing, error: existingErr } = await admin
     .from('square_subscriptions')
-    .select('id, user_id')
+    .select('id, user_id, amount_cents')
     .eq('square_subscription_id', sub.id)
     .maybeSingle();
   check(existingErr, 'look up subscription');
@@ -108,6 +111,7 @@ export async function linkSubscription(
       (await admin.from('square_subscriptions').update(fields).eq('id', existing.id)).error,
       'update subscription',
     );
+    await ensureChosenPrice(accessToken, sub, existing.amount_cents);
     return { userId: existing.user_id, outcome: 'existing' };
   }
 
@@ -121,7 +125,7 @@ export async function linkSubscription(
   const since = new Date(Date.now() - PENDING_WINDOW_DAYS * 24 * 60 * 60 * 1000).toISOString();
   let pendingQuery = admin
     .from('square_subscriptions')
-    .select('id, user_id, plan_variation_id, square_customer_id, square_order_id, customer_email, created_at')
+    .select('id, user_id, plan_variation_id, square_customer_id, square_order_id, customer_email, created_at, amount_cents')
     .eq('partner_id', partnerId)
     .eq('status', 'pending')
     .is('square_subscription_id', null)
@@ -165,6 +169,8 @@ export async function linkSubscription(
       userId = userId ?? match.row.user_id;
       outcome = match.reason;
       await promotePending(admin, match.row.id, sub.id, { ...fields, user_id: userId });
+      const chosen = pendingRows.find((r: { id: string }) => r.id === match.row.id)?.amount_cents;
+      await ensureChosenPrice(accessToken, sub, chosen);
       await rememberCustomer(admin, partnerId, userId, sub.customer_id, customer);
       return { userId, outcome };
     }
@@ -233,6 +239,35 @@ const UNIQUE_VIOLATION = '23505';
 
 function check(error: { message?: string } | null | undefined, what: string) {
   if (error) throw new Error(`Failed to ${what}: ${error.message ?? 'unknown error'}`);
+}
+
+/**
+ * Pay-what-you-can monthly memberships bill under one Square plan, with the
+ * member's chosen amount as the checkout price. Square's docs don't say
+ * whether that price carries over to renewals, so set it as the
+ * subscription's price override whenever it doesn't match. A mismatch
+ * self-corrects on the next webhook or reconcile if this call fails.
+ */
+async function ensureChosenPrice(
+  accessToken: string | null,
+  sub: SquareSubscription,
+  chosenCents: number | null | undefined,
+) {
+  if (!accessToken || !sub.id || !priceOverrideNeeded(chosenCents, sub)) return;
+  const res = await squareFetch(`/v2/subscriptions/${sub.id}`, accessToken, {
+    method: 'PUT',
+    body: JSON.stringify({
+      subscription: {
+        price_override_money: { amount: chosenCents, currency: 'USD' },
+        ...(sub.version != null ? { version: sub.version } : {}),
+      },
+    }),
+  });
+  if (!res.ok) {
+    console.error(`Setting the chosen price on subscription ${sub.id} failed:`, await res.text());
+  } else {
+    await res.body?.cancel();
+  }
 }
 
 /** Map the Square customer to the user so later events resolve directly. */
