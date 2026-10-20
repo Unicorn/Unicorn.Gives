@@ -5,6 +5,10 @@
  * POST { action: 'create_checkout', partner_id, plan_variation_id, tier?, redirect_url? }
  *      — REQUIRES Authorization: Bearer <user jwt>. Customer info is pulled
  *        from the authenticated profile; no arbitrary email accepted.
+ * POST { action: 'membership_options', partner_id }
+ *      — public: which of monthly / one-time / day pass can be bought online
+ *        right now, so the picker only offers what will work.
+ *
  * POST { action: 'create_flex_checkout', partner_id, kind, amount_cents? }
  *      — pay-what-you-can: kind 'monthly' (subscription billed at the chosen
  *        amount), 'one_time' (a month of membership) or 'day_pass' (fixed
@@ -41,7 +45,16 @@ type CreateFlexCheckoutRequest = {
   amount_cents?: unknown;
 };
 
-type SubscriptionsRequest = ListPlansRequest | CreateCheckoutRequest | CreateFlexCheckoutRequest;
+type MembershipOptionsRequest = {
+  action: 'membership_options';
+  partner_id: string;
+};
+
+type SubscriptionsRequest =
+  | ListPlansRequest
+  | CreateCheckoutRequest
+  | CreateFlexCheckoutRequest
+  | MembershipOptionsRequest;
 
 const ACCEPTED_PAYMENT_METHODS = {
   apple_pay: true,
@@ -81,12 +94,27 @@ Deno.serve(async (req) => {
       return json({ error: 'Invalid JSON' }, 400);
     }
 
-    // Verify subscriptions are enabled
+    // Verify subscriptions are enabled. `subscriptions_enabled` is the
+    // partner's switch for selling memberships online (monthly, one-time and
+    // day passes); monthly also needs a Square plan to bill under.
     const { data: config } = await admin
       .from('square_feature_config')
       .select('subscriptions_enabled, membership_plan_variation_id')
       .eq('partner_id', body.partner_id)
       .single();
+
+    // ── membership_options: public, never errors on a partner that isn't set up ──
+    if (body.action === 'membership_options') {
+      const { data: conn } = await admin
+        .from('square_connections')
+        .select('location_id')
+        .eq('partner_id', body.partner_id)
+        .maybeSingle();
+      const open = Boolean(config?.subscriptions_enabled && conn?.location_id);
+      const monthly = open &&
+        (await resolveMembershipPlan(admin, body.partner_id, config?.membership_plan_variation_id)) !== null;
+      return json({ monthly, one_time: open, day_pass: open });
+    }
 
     if (!config?.subscriptions_enabled) {
       return json({ error: 'Subscriptions not enabled for this partner' }, 403);
@@ -174,17 +202,7 @@ Deno.serve(async (req) => {
       // Monthly bills under one Square plan; the chosen amount overrides its price.
       let planVariationId: string | null = null;
       if (v.kind === 'monthly') {
-        planVariationId = config.membership_plan_variation_id ?? null;
-        if (!planVariationId) {
-          const { data: plans } = await admin
-            .from('square_catalog_cache')
-            .select('square_id')
-            .eq('partner_id', body.partner_id)
-            .eq('data_type', 'subscription_plan')
-            .eq('is_active', true)
-            .limit(2);
-          if (plans?.length === 1) planVariationId = plans[0].square_id;
-        }
+        planVariationId = await resolveMembershipPlan(admin, body.partner_id, config.membership_plan_variation_id);
         if (!planVariationId) {
           return json({ error: 'Monthly membership is not set up yet' }, 409);
         }
@@ -357,3 +375,20 @@ Deno.serve(async (req) => {
     return json({ error: msg }, 500);
   }
 });
+
+/**
+ * The Square plan variation monthly memberships bill under: the configured
+ * one, or the partner's only active plan. Null when neither applies.
+ */
+// deno-lint-ignore no-explicit-any
+async function resolveMembershipPlan(admin: any, partnerId: string, configured: string | null | undefined) {
+  if (configured) return configured;
+  const { data: plans } = await admin
+    .from('square_catalog_cache')
+    .select('square_id')
+    .eq('partner_id', partnerId)
+    .eq('data_type', 'subscription_plan')
+    .eq('is_active', true)
+    .limit(2);
+  return plans?.length === 1 ? (plans[0].square_id as string) : null;
+}

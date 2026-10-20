@@ -381,6 +381,50 @@ export function useFlexCheckout(partnerId: string | undefined) {
   return { create, loading, error };
 }
 
+/* ── useMembershipOptions (what the picker can sell online) ── */
+
+export interface MembershipOptions {
+  monthly: boolean;
+  one_time: boolean;
+  day_pass: boolean;
+}
+
+const NO_MEMBERSHIP_OPTIONS: MembershipOptions = { monthly: false, one_time: false, day_pass: false };
+
+/**
+ * Which membership purchases will work for this partner right now. `null`
+ * until the server answers; a failed request counts as nothing on sale,
+ * since checkout would fail the same way.
+ */
+export function useMembershipOptions(partnerId: string | undefined) {
+  const [options, setOptions] = useState<MembershipOptions | null>(null);
+
+  useEffect(() => {
+    if (!partnerId) return;
+    let cancelled = false;
+    fetch(`${supabaseUrl}/functions/v1/square-subscriptions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'membership_options', partner_id: partnerId }),
+    })
+      .then((res) => (res.ok ? res.json() : NO_MEMBERSHIP_OPTIONS))
+      .catch(() => NO_MEMBERSHIP_OPTIONS)
+      .then((data: Partial<MembershipOptions>) => {
+        if (cancelled) return;
+        setOptions({
+          monthly: data.monthly === true,
+          one_time: data.one_time === true,
+          day_pass: data.day_pass === true,
+        });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [partnerId]);
+
+  return options;
+}
+
 /* ── useSquareFeatureConfig (public read) ── */
 
 export function useSquareFeatureConfig(partnerId: string | undefined) {
