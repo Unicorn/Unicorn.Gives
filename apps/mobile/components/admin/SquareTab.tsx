@@ -142,15 +142,13 @@ export function SquareTab({ partnerId }: SquareTabProps) {
           styles={styles}
         />
         <FeatureToggle
-          label="Subscriptions"
-          description="Display subscription plans for recurring memberships"
+          label="Memberships"
+          description="Sell memberships and day passes online. Monthly memberships also need one subscription plan in Square — then Sync."
           enabled={featureConfig?.subscriptions_enabled ?? false}
           onToggle={(v) => updateFeature('subscriptions_enabled', v)}
           icon="autorenew"
           colors={colors}
           styles={styles}
-          disabled
-          disabledLabel="Coming soon"
         />
         <FeatureToggle
           label="Retail / Shop"
