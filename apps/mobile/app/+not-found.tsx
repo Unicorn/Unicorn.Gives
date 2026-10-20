@@ -7,6 +7,8 @@ import { Wrapper } from '@/components/layout/Wrapper';
 import { Container } from '@/components/layout/Container';
 import { routes } from '@/lib/navigation';
 import { toHref } from '@/lib/navigation/paths';
+import { useFeatureModules } from '@/lib/featureModules';
+import { isPublicPathEnabled } from '@/constants/featureModules';
 import {
   useTheme,
   fonts,
@@ -26,6 +28,9 @@ const DESTINATIONS = [
 export default function NotFoundScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  // Don't suggest a section that's switched off (#129).
+  const { flags } = useFeatureModules();
+  const destinations = DESTINATIONS.filter((d) => isPublicPathEnabled(d.href as string, flags));
 
   return (
     <Wrapper>
@@ -40,7 +45,7 @@ export default function NotFoundScreen() {
             The link may be out of date, or the page may have moved. Try one of these instead.
           </Text>
           <View style={styles.actions}>
-            {DESTINATIONS.map((d, i) => (
+            {destinations.map((d, i) => (
               <Link key={d.label} href={d.href} style={[styles.button, i === 0 && styles.buttonPrimary]}>
                 <Text style={[styles.buttonText, i === 0 && styles.buttonTextPrimary]}>{d.label}</Text>
               </Link>

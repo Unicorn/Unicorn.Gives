@@ -14,6 +14,8 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
 import { useTheme, fonts, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
+import { useFeatureModules } from '@/lib/featureModules';
+import { moduleForAdminPath } from '@/constants/featureModules';
 import {
   enrichAuditEntries,
   formatActorLabel,
@@ -49,11 +51,23 @@ const CONTENT_TABLES = [
   { table: 'bingo_games', label: 'Bingo Games', icon: 'grid-view' as const, path: '/admin/bingo-games' },
 ];
 
+const QUICK_ACTIONS = [
+  { label: 'New Event', path: '/admin/events/new' },
+  { label: 'New Article', path: '/admin/news/new' },
+  { label: 'New Contact', path: '/admin/contacts/new' },
+];
+
 export default function AdminDashboard() {
   const { colors } = useTheme();
   const { profile } = useAuth();
   const router = useRouter();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  // Cards and shortcuts for a switched-off module would only bounce back here (#129).
+  const { flags } = useFeatureModules();
+  const adminPathEnabled = (path: string) => {
+    const mod = moduleForAdminPath(path);
+    return mod === null || flags[mod];
+  };
 
   const [counts, setCounts] = useState<ContentCount[]>([]);
   const [auditEntries, setAuditEntries] = useState<EnrichedAuditEntry[]>([]);
@@ -115,8 +129,10 @@ export default function AdminDashboard() {
     );
   }
 
-  const totalContent = counts.reduce((sum, c) => sum + c.total, 0);
-  const totalDrafts = counts.reduce((sum, c) => sum + c.drafts, 0);
+  const visibleCounts = counts.filter((c) => adminPathEnabled(c.adminPath));
+  const quickActions = QUICK_ACTIONS.filter((a) => adminPathEnabled(a.path));
+  const totalContent = visibleCounts.reduce((sum, c) => sum + c.total, 0);
+  const totalDrafts = visibleCounts.reduce((sum, c) => sum + c.drafts, 0);
 
   return (
     <ScrollView style={styles.page} contentContainerStyle={styles.pageContent}>
@@ -126,40 +142,31 @@ export default function AdminDashboard() {
           Welcome back{profile?.display_name ? `, ${profile.display_name}` : ''}
         </Text>
         <Text style={styles.headerSubtitle}>
-          {totalContent} total records across {CONTENT_TABLES.length} content types
+          {totalContent} total records across {visibleCounts.length} content types
           {totalDrafts > 0 ? ` \u00b7 ${totalDrafts} drafts` : ''}
         </Text>
       </View>
 
       {/* Quick actions */}
-      <View style={styles.quickActions}>
-        <Pressable
-          style={styles.quickActionBtn}
-          onPress={() => router.push(toHref('/admin/events/new'))}
-        >
-          <MaterialIcons name="add" size={18} color={colors.onPrimary} />
-          <Text style={styles.quickActionText}>New Event</Text>
-        </Pressable>
-        <Pressable
-          style={styles.quickActionBtn}
-          onPress={() => router.push(toHref('/admin/news/new'))}
-        >
-          <MaterialIcons name="add" size={18} color={colors.onPrimary} />
-          <Text style={styles.quickActionText}>New Article</Text>
-        </Pressable>
-        <Pressable
-          style={styles.quickActionBtn}
-          onPress={() => router.push(toHref('/admin/contacts/new'))}
-        >
-          <MaterialIcons name="add" size={18} color={colors.onPrimary} />
-          <Text style={styles.quickActionText}>New Contact</Text>
-        </Pressable>
-      </View>
+      {quickActions.length > 0 && (
+        <View style={styles.quickActions}>
+          {quickActions.map((a) => (
+            <Pressable
+              key={a.path}
+              style={styles.quickActionBtn}
+              onPress={() => router.push(toHref(a.path))}
+            >
+              <MaterialIcons name="add" size={18} color={colors.onPrimary} />
+              <Text style={styles.quickActionText}>{a.label}</Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
 
       {/* Content counts grid */}
       <Text style={styles.sectionTitle}>Content Overview</Text>
       <View style={styles.countsGrid}>
-        {counts.map((c) => (
+        {visibleCounts.map((c) => (
           <Pressable
             key={c.table}
             style={styles.countCard}
