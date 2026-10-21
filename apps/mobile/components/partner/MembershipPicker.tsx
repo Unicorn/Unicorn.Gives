@@ -19,6 +19,7 @@ import { fonts, fontSize, radii, spacing, useTheme, type ThemeColors } from '@/c
 import { useAuth } from '@/lib/auth';
 import { routes } from '@/lib/navigation';
 import { useFlexCheckout, useMembershipOptions, type FlexCheckoutKind } from '@/hooks/useSquareBookings';
+import { useAccountRefresh, useMyPayments } from '@/hooks/useMyAccount';
 import {
   AMOUNT_PRESETS_CENTS,
   DAY_PASS_CENTS,
@@ -27,6 +28,9 @@ import {
   summaryLine,
   type MembershipFrequency,
 } from '@/lib/partners/payWhatYouCan';
+
+/** How long after landing a payment still counts as this checkout's. */
+const CHECKOUT_LOOKBACK_MS = 2 * 60 * 60 * 1000;
 
 interface MembershipPickerProps {
   partnerId: string;
@@ -49,6 +53,9 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
   const [customText, setCustomText] = useState('');
   const [amountError, setAmountError] = useState<string | null>(null);
   const [paid, setPaid] = useState(false);
+  const [landedAt] = useState(() => Date.now());
+  const { payments } = useMyPayments();
+  const { refresh } = useAccountRefresh();
 
   // Restore a choice carried through sign-in, and the post-checkout banner.
   useEffect(() => {
@@ -101,10 +108,35 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
     checkout(activeFrequency, sel.cents);
   }
 
+  // Back from Square with ?status=paid: ask the server to check the order
+  // with Square directly (webhooks can lag), then show the confirmation as
+  // soon as the payment lands (useMyPayments is realtime).
+  useEffect(() => {
+    if (!paid || !user) return;
+    const timers = [setTimeout(() => void refresh(), 2000), setTimeout(() => void refresh(), 15000)];
+    return () => timers.forEach(clearTimeout);
+  }, [paid, user, refresh]);
+
+  const confirmedPayment = paid
+    ? payments.find(
+        (p) => p.partner_id === partnerId && Date.parse(p.paid_at ?? p.created_at) >= landedAt - CHECKOUT_LOOKBACK_MS,
+      )
+    : undefined;
+
   const banner = paid && (
     <View style={styles.banner} accessibilityRole="alert">
-      <MaterialIcons name="check-circle" size={18} color={colors.onPrimaryContainer} />
-      <Text style={styles.bannerText}>Thanks for your payment. It can take a minute to confirm.</Text>
+      {confirmedPayment ? (
+        <MaterialIcons name="check-circle" size={18} color={colors.onPrimaryContainer} />
+      ) : (
+        <ActivityIndicator size="small" color={colors.onPrimaryContainer} />
+      )}
+      <Text style={styles.bannerText}>
+        {!confirmedPayment
+          ? 'Thanks for your payment. It can take a minute to confirm.'
+          : confirmedPayment.kind === 'membership_one_time' && confirmedPayment.covers_until
+            ? `Payment confirmed. You're a member through ${new Date(confirmedPayment.covers_until).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}.`
+            : `Payment confirmed. Enjoy your day at ${partnerName}.`}
+      </Text>
     </View>
   );
 
