@@ -24,8 +24,7 @@ import {
 import type { PartnerMenuConfig } from '@/constants/partnerMenus';
 import { Container } from '@/components/layout/Container';
 import { useHydratedDimensions } from '@/hooks/useHydrated';
-import { useMySubscriptions } from '@/hooks/useMyAccount';
-import { useAuth } from '@/lib/auth';
+import { useMyPayments, useMySubscriptions } from '@/hooks/useMyAccount';
 import { hrefToPathString, routes } from '@/lib/navigation';
 import { supabase } from '@/lib/supabase';
 import {
@@ -240,35 +239,20 @@ function useNextEventTeaser(partnerId: string, config: PartnerMenuConfig): strin
 
 /** An active or paused subscription, or a paid one-time month that hasn't run out. */
 function useIsMember(partnerId: string): boolean {
-  const { user } = useAuth();
   const { subscriptions } = useMySubscriptions();
-  const [hasPaidMonth, setHasPaidMonth] = useState(false);
-
-  useEffect(() => {
-    if (!user) {
-      setHasPaidMonth(false);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      const { data } = await supabase
-        .from('partner_payments')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('partner_id', partnerId)
-        .eq('kind', 'membership_one_time')
-        .eq('status', 'paid')
-        .gt('covers_until', new Date().toISOString())
-        .limit(1);
-      if (!cancelled) setHasPaidMonth((data?.length ?? 0) > 0);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [user, partnerId]);
+  // Realtime-backed, so a one-time month paid on the membership tab flips
+  // "Join" to "My membership" without a reload.
+  const { payments } = useMyPayments();
+  const now = Date.now();
 
   return (
-    hasPaidMonth ||
+    payments.some(
+      (p) =>
+        p.partner_id === partnerId &&
+        p.kind === 'membership_one_time' &&
+        p.covers_until != null &&
+        Date.parse(p.covers_until) > now,
+    ) ||
     subscriptions.some((s) => s.partner_id === partnerId && (s.status === 'active' || s.status === 'paused'))
   );
 }

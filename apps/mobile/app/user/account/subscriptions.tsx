@@ -1,14 +1,23 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, Linking, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { AnimatedPressable } from '@/components/ui/AnimatedPressable';
 import {
+  useAccountRefresh,
+  useMyPayments,
   useMySubscriptions,
   useSubscriptionActions,
+  type MyPayment,
   type MySubscription,
 } from '@/hooks/useMyAccount';
+import { formatDollars } from '@/lib/partners/payWhatYouCan';
+
+/** How long after landing a new subscription still counts as this checkout's. */
+const CHECKOUT_LOOKBACK_MS = 2 * 60 * 60 * 1000;
 
 function formatDate(iso: string | null): string {
   if (!iso) return '—';
@@ -37,7 +46,34 @@ export default function MySubscriptionsScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const { subscriptions, loading, reload } = useMySubscriptions();
+  const { payments, loading: paymentsLoading } = useMyPayments();
   const actions = useSubscriptionActions();
+  const { refresh } = useAccountRefresh();
+
+  // Square sends members back here with ?status=success after checkout, or
+  // ?status=card_updated after updating their card. Read it after mount so
+  // the first render matches the server's.
+  const params = useLocalSearchParams<{ status?: string }>();
+  const [landing, setLanding] = useState<'success' | 'card_updated' | null>(null);
+  const [landedAt] = useState(() => Date.now());
+  const [slow, setSlow] = useState(false);
+  useEffect(() => {
+    if (params.status === 'success' || params.status === 'card_updated') setLanding(params.status);
+  }, [params.status]);
+
+  // Webhooks can lag (or be missing), so after a checkout ask the server to
+  // look the subscription up in Square directly. Realtime then updates the
+  // list as soon as it's linked.
+  useEffect(() => {
+    if (landing !== 'success') return;
+    const lookUp = () => refresh().then(() => reload());
+    const timers = [setTimeout(lookUp, 3000), setTimeout(lookUp, 20000), setTimeout(() => setSlow(true), 60000)];
+    return () => timers.forEach(clearTimeout);
+  }, [landing, refresh, reload]);
+
+  const confirmed =
+    landing === 'success' &&
+    subscriptions.some((s) => s.status === 'active' && Date.parse(s.created_at) >= landedAt - CHECKOUT_LOOKBACK_MS);
 
   async function handlePause(sub: MySubscription) {
     if (!(await confirmAction('Pause this subscription? Billing will stop until you resume.'))) return;
@@ -66,9 +102,32 @@ export default function MySubscriptionsScreen() {
       <Text style={styles.pageTitle}>Subscriptions</Text>
       <Text style={styles.subtitle}>Your active and past memberships.</Text>
 
+      {landing === 'success' && (
+        <View style={styles.banner} accessibilityRole="alert">
+          {confirmed ? (
+            <MaterialIcons name="check-circle" size={18} color={colors.onPrimaryContainer} />
+          ) : (
+            <ActivityIndicator size="small" color={colors.onPrimaryContainer} />
+          )}
+          <Text style={styles.bannerText}>
+            {confirmed
+              ? "You're in. Your membership is active."
+              : slow
+                ? 'Your payment went through, but confirming it is taking longer than usual. This page updates on its own, or check back in a few minutes.'
+                : 'Confirming your membership… This usually takes a few seconds.'}
+          </Text>
+        </View>
+      )}
+      {landing === 'card_updated' && (
+        <View style={styles.banner} accessibilityRole="alert">
+          <MaterialIcons name="check-circle" size={18} color={colors.onPrimaryContainer} />
+          <Text style={styles.bannerText}>Your card was updated.</Text>
+        </View>
+      )}
+
       {loading && <ActivityIndicator color={colors.primary} style={{ marginTop: spacing.lg }} />}
 
-      {!loading && subscriptions.length === 0 && (
+      {!loading && !paymentsLoading && subscriptions.length === 0 && payments.length === 0 && (
         <View style={styles.empty}>
           <Text style={styles.emptyText}>You don't have any subscriptions yet.</Text>
         </View>
@@ -83,6 +142,13 @@ export default function MySubscriptionsScreen() {
               <Text style={styles.tier}>{sub.tier ?? 'Membership'}</Text>
               <StatusChip status={sub.status} />
             </View>
+            {sub.partners?.name || sub.amount_cents ? (
+              <Text style={styles.meta}>
+                {[sub.partners?.name, sub.amount_cents ? `${formatDollars(sub.amount_cents)} / month` : null]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </Text>
+            ) : null}
             {sub.customer_email && (
               <Text style={styles.meta}>Billing to {sub.customer_email}</Text>
             )}
@@ -129,7 +195,39 @@ export default function MySubscriptionsScreen() {
           </View>
         ))}
       </View>
+
+      {payments.length > 0 && (
+        <>
+          <Text style={styles.sectionTitle}>One-time passes</Text>
+          <View style={styles.list}>
+            {payments.map((p) => (
+              <PaymentCard key={p.id} payment={p} styles={styles} />
+            ))}
+          </View>
+        </>
+      )}
     </ScrollView>
+  );
+}
+
+function PaymentCard({ payment: p, styles }: { payment: MyPayment; styles: ReturnType<typeof createStyles> }) {
+  const isMonth = p.kind === 'membership_one_time';
+  const current = isMonth && p.covers_until != null && Date.parse(p.covers_until) > Date.now();
+  return (
+    <View style={styles.card}>
+      <View style={styles.cardHeader}>
+        <Text style={styles.tier}>{isMonth ? 'One-time membership' : 'Day pass'}</Text>
+        {current && <StatusChip status="active" />}
+      </View>
+      <Text style={styles.meta}>
+        {[p.partners?.name, formatDollars(p.amount_cents)].filter(Boolean).join(' · ')}
+      </Text>
+      <Text style={styles.meta}>
+        {isMonth
+          ? `${current ? 'Member through' : 'Covered through'} ${formatDate(p.covers_until)}`
+          : `Bought ${formatDate(p.paid_at)}`}
+      </Text>
+    </View>
   );
 }
 
@@ -201,6 +299,23 @@ const createStyles = (colors: ThemeColors) =>
       color: colors.neutralVariant,
       marginTop: spacing.sm,
       marginBottom: spacing.xl,
+    },
+    banner: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      backgroundColor: colors.primaryContainer,
+      borderRadius: radii.sm,
+      padding: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    bannerText: { flex: 1, fontFamily: fonts.sans, fontSize: fontSize.md, color: colors.onPrimaryContainer },
+    sectionTitle: {
+      fontFamily: fonts.sansBold,
+      fontSize: fontSize.lg,
+      color: colors.neutral,
+      marginTop: spacing.xxl,
+      marginBottom: spacing.md,
     },
     empty: { padding: spacing.xl, alignItems: 'center' },
     emptyText: { fontFamily: fonts.sans, fontSize: fontSize.md, color: colors.neutralVariant },

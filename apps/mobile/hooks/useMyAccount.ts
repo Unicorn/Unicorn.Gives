@@ -1,7 +1,7 @@
 /**
  * Hooks for the authenticated "My Account" surface — reads the user's own
- * Square subscriptions and bookings (RLS enforces ownership) and wraps the
- * square-account edge function for state changes.
+ * Square subscriptions, one-time payments and bookings (RLS enforces
+ * ownership) and wraps the square-account edge function for state changes.
  */
 import { useCallback, useEffect, useState } from 'react';
 import { supabase, supabaseUrl } from '@/lib/supabase';
@@ -21,7 +21,25 @@ export interface MySubscription {
   current_period_end: string | null;
   next_billing_at: string | null;
   cancel_at_period_end: boolean;
+  /** The member's chosen monthly amount (pay-what-you-can); null for fixed tiers. */
+  amount_cents: number | null;
+  /** For an in-app checkout, when the checkout started. */
+  created_at: string;
   updated_at: string;
+  partners: { name: string } | null;
+}
+
+/** A one-time membership month or day pass (partner_payments). */
+export interface MyPayment {
+  id: string;
+  partner_id: string;
+  kind: 'membership_one_time' | 'day_pass';
+  amount_cents: number;
+  status: 'pending' | 'paid' | 'canceled';
+  paid_at: string | null;
+  covers_until: string | null;
+  created_at: string;
+  partners: { name: string } | null;
 }
 
 export interface MyBooking {
@@ -71,7 +89,7 @@ export function useMySubscriptions() {
     setLoading(true);
     const { data, error: e } = await supabase
       .from('square_subscriptions')
-      .select('*')
+      .select('*, partners(name)')
       .eq('user_id', user.id)
       // A pending row is a checkout that hasn't been paid (or confirmed) yet,
       // not a membership; abandoned ones would otherwise show forever.
@@ -85,10 +103,13 @@ export function useMySubscriptions() {
   useEffect(() => { reload(); }, [reload]);
 
   // Realtime: webhook updates should push into the list without manual refresh.
+  // The menu bar and the account page can both be mounted, so each instance
+  // gets its own channel name.
+  const [channelId] = useState(() => Math.random().toString(36).slice(2));
   useEffect(() => {
     if (!user) return;
     const channel = supabase
-      .channel(`my-subs-${user.id}`)
+      .channel(`my-subs-${user.id}-${channelId}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'square_subscriptions', filter: `user_id=eq.${user.id}` },
@@ -96,9 +117,56 @@ export function useMySubscriptions() {
       )
       .subscribe();
     return () => { supabase.removeChannel(channel); };
-  }, [user, reload]);
+  }, [user, reload, channelId]);
 
   return { subscriptions, loading, error, reload };
+}
+
+/**
+ * The member's paid one-time memberships and day passes, newest first.
+ * Pending checkouts aren't listed; they become rows here once paid.
+ */
+export function useMyPayments() {
+  const { user } = useAuth();
+  const [payments, setPayments] = useState<MyPayment[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const reload = useCallback(async () => {
+    if (!user) {
+      setPayments([]);
+      setLoading(false);
+      return;
+    }
+    const { data } = await supabase
+      .from('partner_payments')
+      .select('id, partner_id, kind, amount_cents, status, paid_at, covers_until, created_at, partners(name)')
+      .eq('user_id', user.id)
+      .eq('status', 'paid')
+      .order('paid_at', { ascending: false })
+      .limit(50);
+    setPayments((data ?? []) as unknown as MyPayment[]);
+    setLoading(false);
+  }, [user]);
+
+  useEffect(() => { reload(); }, [reload]);
+
+  // Several components use this at once (menu bar, picker, account page), so
+  // each needs its own channel name.
+  const [channelId] = useState(() => Math.random().toString(36).slice(2));
+  useEffect(() => {
+    if (!user) return;
+    const channel = supabase
+      .channel(`my-payments-${user.id}-${channelId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'partner_payments', filter: `user_id=eq.${user.id}` },
+        () => { reload(); },
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [user, reload, channelId]);
+
+  return { payments, loading, reload };
 }
 
 export function useMyBookings() {
