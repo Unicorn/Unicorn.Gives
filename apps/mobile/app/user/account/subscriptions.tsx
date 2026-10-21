@@ -14,6 +14,7 @@ import {
   type MyPayment,
   type MySubscription,
 } from '@/hooks/useMyAccount';
+import { parseDate, subscriptionOutlook } from '@/lib/account/subscriptionOutlook';
 import { formatDollars } from '@/lib/partners/payWhatYouCan';
 
 /** How long after landing a new subscription still counts as this checkout's. */
@@ -21,11 +22,10 @@ const CHECKOUT_LOOKBACK_MS = 2 * 60 * 60 * 1000;
 
 function formatDate(iso: string | null): string {
   if (!iso) return '—';
-  try {
-    return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-  } catch {
-    return iso;
-  }
+  const d = parseDate(iso);
+  return Number.isNaN(d.getTime())
+    ? iso
+    : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
 function confirmAction(message: string): Promise<boolean> {
@@ -76,7 +76,12 @@ export default function MySubscriptionsScreen() {
     subscriptions.some((s) => s.status === 'active' && Date.parse(s.created_at) >= landedAt - CHECKOUT_LOOKBACK_MS);
 
   async function handlePause(sub: MySubscription) {
-    if (!(await confirmAction('Pause this subscription? Billing will stop until you resume.'))) return;
+    if (
+      !(await confirmAction(
+        'Pause your membership? It pauses at the end of this billing period, and billing stops until you resume.',
+      ))
+    )
+      return;
     await actions.pause(sub.id);
     reload();
   }
@@ -85,7 +90,12 @@ export default function MySubscriptionsScreen() {
     reload();
   }
   async function handleCancel(sub: MySubscription) {
-    if (!(await confirmAction('Cancel this subscription? This cannot be undone.'))) return;
+    if (
+      !(await confirmAction(
+        "Cancel your membership? You'll keep access until the end of the period you've paid for, and won't be charged again.",
+      ))
+    )
+      return;
     await actions.cancel(sub.id);
     reload();
   }
@@ -136,64 +146,76 @@ export default function MySubscriptionsScreen() {
       {actions.error && <Text style={styles.error}>{actions.error}</Text>}
 
       <View style={styles.list}>
-        {subscriptions.map((sub) => (
-          <View key={sub.id} style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.tier}>{sub.tier ?? 'Membership'}</Text>
-              <StatusChip status={sub.status} />
-            </View>
-            {sub.partners?.name || sub.amount_cents ? (
-              <Text style={styles.meta}>
-                {[sub.partners?.name, sub.amount_cents ? `${formatDollars(sub.amount_cents)} / month` : null]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </Text>
-            ) : null}
-            {sub.customer_email && (
-              <Text style={styles.meta}>Billing to {sub.customer_email}</Text>
-            )}
-            {sub.current_period_end && (
-              <Text style={styles.meta}>Renews {formatDate(sub.current_period_end)}</Text>
-            )}
-            {sub.canceled_at && (
-              <Text style={styles.meta}>Canceled {formatDate(sub.canceled_at)}</Text>
-            )}
-
-            <View style={styles.actionsRow}>
-              {sub.status === 'active' && (
+        {subscriptions.map((sub) => {
+          const { ending, pausing } = subscriptionOutlook(sub);
+          return (
+            <View key={sub.id} style={styles.card}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.tier}>{sub.tier ?? 'Membership'}</Text>
+                <StatusChip status={sub.status} label={ending ? 'ending' : undefined} />
+              </View>
+              {sub.partners?.name || sub.amount_cents ? (
+                <Text style={styles.meta}>
+                  {[sub.partners?.name, sub.amount_cents ? `${formatDollars(sub.amount_cents)} / month` : null]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </Text>
+              ) : null}
+              {sub.customer_email && <Text style={styles.meta}>Billing to {sub.customer_email}</Text>}
+              {ending ? (
+                <Text style={styles.meta}>Active until {formatDate(ending)}. You won't be charged again.</Text>
+              ) : (
                 <>
-                  <ActionBtn
-                    label="Pause"
-                    onPress={() => handlePause(sub)}
-                    busy={actions.busy === 'pause_subscription'}
-                    styles={styles}
-                  />
-                  <ActionBtn
-                    label="Update card"
-                    onPress={() => handleUpdateCard(sub)}
-                    busy={actions.busy === 'payment_method_link'}
-                    styles={styles}
-                  />
-                  <ActionBtn
-                    label="Cancel"
-                    variant="danger"
-                    onPress={() => handleCancel(sub)}
-                    busy={actions.busy === 'cancel_subscription'}
-                    styles={styles}
-                  />
+                  {sub.status === 'active' && sub.current_period_end && (
+                    <Text style={styles.meta}>
+                      {pausing ? 'Paid through' : 'Renews'} {formatDate(sub.current_period_end)}
+                    </Text>
+                  )}
+                  {pausing && <Text style={styles.meta}>Pauses {formatDate(pausing)}</Text>}
+                  {(sub.status === 'canceled' || sub.status === 'deactivated') && sub.canceled_at && (
+                    <Text style={styles.meta}>Ended {formatDate(sub.canceled_at)}</Text>
+                  )}
                 </>
               )}
-              {sub.status === 'paused' && (
-                <ActionBtn
-                  label="Resume"
-                  onPress={() => handleResume(sub)}
-                  busy={actions.busy === 'resume_subscription'}
-                  styles={styles}
-                />
-              )}
+
+              <View style={styles.actionsRow}>
+                {sub.status === 'active' && !ending && (
+                  <>
+                    {!pausing && (
+                      <ActionBtn
+                        label="Pause"
+                        onPress={() => handlePause(sub)}
+                        busy={actions.busy === 'pause_subscription'}
+                        styles={styles}
+                      />
+                    )}
+                    <ActionBtn
+                      label="Update card"
+                      onPress={() => handleUpdateCard(sub)}
+                      busy={actions.busy === 'payment_method_link'}
+                      styles={styles}
+                    />
+                    <ActionBtn
+                      label="Cancel"
+                      variant="danger"
+                      onPress={() => handleCancel(sub)}
+                      busy={actions.busy === 'cancel_subscription'}
+                      styles={styles}
+                    />
+                  </>
+                )}
+                {sub.status === 'paused' && (
+                  <ActionBtn
+                    label="Resume"
+                    onPress={() => handleResume(sub)}
+                    busy={actions.busy === 'resume_subscription'}
+                    styles={styles}
+                  />
+                )}
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
 
       {payments.length > 0 && (
@@ -231,10 +253,10 @@ function PaymentCard({ payment: p, styles }: { payment: MyPayment; styles: Retur
   );
 }
 
-function StatusChip({ status }: { status: MySubscription['status'] }) {
+function StatusChip({ status, label }: { status: MySubscription['status']; label?: string }) {
   const { colors } = useTheme();
-  // Status = gold chip per DESIGN_SYSTEM taxonomy; others neutral.
-  const isActive = status === 'active';
+  // Status = gold chip per DESIGN_SYSTEM taxonomy; others (and "ending") neutral.
+  const isActive = status === 'active' && !label;
   const bg = isActive ? colors.goldContainer : colors.surfaceContainer;
   const border = isActive ? colors.gold : colors.outlineVariant;
   const fg = isActive ? colors.gold : colors.neutralVariant;
@@ -250,7 +272,7 @@ function StatusChip({ status }: { status: MySubscription['status'] }) {
       }}
     >
       <Text style={{ fontFamily: fonts.sansBold, fontSize: fontSize.xs, color: fg, textTransform: 'uppercase' }}>
-        {status}
+        {label ?? status}
       </Text>
     </View>
   );
@@ -276,9 +298,7 @@ function ActionBtn({
       disabled={busy}
       style={variant === 'danger' ? styles.dangerBtn : styles.btn}
     >
-      <Text style={variant === 'danger' ? styles.dangerBtnText : styles.btnText}>
-        {busy ? '…' : label}
-      </Text>
+      <Text style={variant === 'danger' ? styles.dangerBtnText : styles.btnText}>{busy ? '…' : label}</Text>
     </AnimatedPressable>
   );
 }

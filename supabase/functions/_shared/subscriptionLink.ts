@@ -9,7 +9,9 @@
 import { retrieveCustomer, searchSubscriptions, squareFetch } from './square.ts';
 import {
   escapeLike,
+  isCancelingAtPeriodEnd,
   mapSquareSubscriptionStatus,
+  nextScheduledAction,
   priceOverrideNeeded,
   matchPendingCheckout,
   PENDING_WINDOW_DAYS,
@@ -27,10 +29,11 @@ export interface SquareSubscription {
   start_date?: string;
   canceled_date?: string;
   charged_through_date?: string;
-  canceled_at_period_end?: boolean;
   created_at?: string;
   price_override_money?: { amount?: number; currency?: string };
   version?: number;
+  /** Present only when requested (searches with include=actions, action responses). */
+  actions?: Array<{ type?: string; effective_date?: string }>;
 }
 
 export type LinkOutcome = MatchReason | 'existing' | 'customer_map' | 'profile_email' | 'unlinked';
@@ -94,7 +97,9 @@ export async function linkSubscription(
     started_at: sub.start_date ?? null,
     canceled_at: sub.canceled_date ?? null,
     current_period_end: sub.charged_through_date ?? null,
-    cancel_at_period_end: sub.canceled_at_period_end ?? false,
+    cancel_at_period_end: isCancelingAtPeriodEnd(sub),
+    // Webhooks don't carry actions; only overwrite when Square sent them.
+    ...(Array.isArray(sub.actions) ? scheduledActionFields(sub.actions) : {}),
     raw,
     updated_at: now,
   };
@@ -236,6 +241,11 @@ async function promotePending(
 }
 
 const UNIQUE_VIOLATION = '23505';
+
+function scheduledActionFields(actions: NonNullable<SquareSubscription['actions']>) {
+  const next = nextScheduledAction(actions);
+  return { scheduled_action: next?.type ?? null, scheduled_action_date: next?.date ?? null };
+}
 
 function check(error: { message?: string } | null | undefined, what: string) {
   if (error) throw new Error(`Failed to ${what}: ${error.message ?? 'unknown error'}`);

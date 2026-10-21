@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
   escapeLike,
+  isCancelingAtPeriodEnd,
+  nextScheduledAction,
   mapSquareSubscriptionStatus,
   matchPendingCheckout,
   priceOverrideNeeded,
@@ -144,5 +146,30 @@ describe('priceOverrideNeeded', () => {
     expect(priceOverrideNeeded(undefined, { status: 'ACTIVE' })).toBe(false);
     expect(priceOverrideNeeded(2500, { status: 'CANCELED' })).toBe(false);
     expect(priceOverrideNeeded(2500, { status: 'DEACTIVATED' })).toBe(false);
+  });
+});
+
+describe('nextScheduledAction', () => {
+  it('picks the earliest pause, resume or cancel and ignores other actions', () => {
+    expect(
+      nextScheduledAction([
+        { type: 'SWAP_PLAN', effective_date: '2026-10-25' },
+        { type: 'RESUME', effective_date: '2026-12-18' },
+        { type: 'PAUSE', effective_date: '2026-11-18' },
+      ]),
+    ).toEqual({ type: 'PAUSE', date: '2026-11-18' });
+  });
+
+  it('returns null when nothing relevant is scheduled', () => {
+    expect(nextScheduledAction([])).toBeNull();
+    expect(nextScheduledAction([{ type: 'SWAP_PLAN', effective_date: '2026-10-25' }])).toBeNull();
+  });
+});
+
+describe('isCancelingAtPeriodEnd', () => {
+  it('is true only while Square still reports ACTIVE with a cancel date', () => {
+    expect(isCancelingAtPeriodEnd({ status: 'ACTIVE', canceled_date: '2026-11-18' })).toBe(true);
+    expect(isCancelingAtPeriodEnd({ status: 'ACTIVE' })).toBe(false);
+    expect(isCancelingAtPeriodEnd({ status: 'CANCELED', canceled_date: '2026-11-18' })).toBe(false);
   });
 });

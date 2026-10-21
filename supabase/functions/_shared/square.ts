@@ -214,6 +214,8 @@ export async function searchSubscriptions(
           location_ids: [locationId],
         },
       },
+      // Scheduled pause / resume / cancel, for the account page.
+      include: ['actions'],
     }),
   });
   if (!res.ok) return [];
@@ -269,17 +271,11 @@ export async function updateSubscriptionState(
   subscriptionId: string,
   action: 'pause' | 'resume' | 'cancel',
 ): Promise<Response> {
-  const endpoint = action === 'cancel'
-    ? `/v2/subscriptions/${subscriptionId}/cancel`
-    : `/v2/subscriptions/${subscriptionId}/actions`;
-  const body = action === 'cancel'
-    ? {}
-    : {
-        action: {
-          type: action === 'pause' ? 'PAUSE' : 'RESUME',
-          effective_date: new Date().toISOString().slice(0, 10),
-        },
-      };
+  // Square schedules all three. Cancel and pause take effect at the end of
+  // the current billing period (the subscription stays ACTIVE until then);
+  // resume takes effect immediately.
+  const endpoint = `/v2/subscriptions/${subscriptionId}/${action}`;
+  const body = action === 'resume' ? { resume_change_timing: 'IMMEDIATE' } : {};
   return squareFetch(endpoint, accessToken, {
     method: 'POST',
     body: JSON.stringify(body),

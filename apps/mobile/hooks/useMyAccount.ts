@@ -20,7 +20,11 @@ export interface MySubscription {
   canceled_at: string | null;
   current_period_end: string | null;
   next_billing_at: string | null;
+  /** Canceled but still paid up: active until `canceled_at`. */
   cancel_at_period_end: boolean;
+  /** A pause / resume / cancel Square has scheduled, and when it takes effect. */
+  scheduled_action: 'PAUSE' | 'RESUME' | 'CANCEL' | null;
+  scheduled_action_date: string | null;
   /** The member's chosen monthly amount (pay-what-you-can); null for fixed tiers. */
   amount_cents: number | null;
   /** For an in-app checkout, when the checkout started. */

@@ -232,15 +232,19 @@ Deno.serve(async (req) => {
         return json({ error: 'Square rejected the request' }, 502);
       }
 
-      // Optimistic local update — webhook will finalize.
-      const localStatus = verb === 'pause' ? 'paused' : verb === 'resume' ? 'active' : 'canceled';
-      await admin.from('square_subscriptions')
-        .update({
-          status: localStatus,
-          cancel_at_period_end: verb === 'cancel' ? true : row ? undefined : false,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', row.id);
+      // Square schedules the change (pause and cancel at the end of the
+      // billing period), so record what it actually says — status, cancel
+      // date and the scheduled action — rather than guessing.
+      const result = await res.json() as {
+        subscription?: SquareSubscription;
+        actions?: SquareSubscription['actions'];
+      };
+      if (result.subscription) {
+        await tryLinkSubscription(admin, token, row.partner_id, {
+          ...result.subscription,
+          actions: result.actions ?? result.subscription.actions ?? [],
+        });
+      }
 
       return json({ ok: true });
     }
