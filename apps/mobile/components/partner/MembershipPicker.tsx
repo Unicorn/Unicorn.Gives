@@ -11,7 +11,7 @@
  * needs a Square plan, and nothing is offered until memberships are switched
  * on and Square is connected — the card then points people to join in person.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Linking, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -53,6 +53,9 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
   const [customText, setCustomText] = useState('');
   const [amountError, setAmountError] = useState<string | null>(null);
   const [paid, setPaid] = useState(false);
+  const [resumeDayPass, setResumeDayPass] = useState(false);
+  const [resuming, setResuming] = useState(false);
+  const cardRef = useRef<View>(null);
   const [landedAt] = useState(() => Date.now());
   const { payments } = useMyPayments();
   const { refresh } = useAccountRefresh();
@@ -60,6 +63,8 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
   // Restore a choice carried through sign-in, and the post-checkout banner.
   useEffect(() => {
     if (params.kind === 'monthly' || params.kind === 'one_time') setFrequency(params.kind);
+    setResumeDayPass(params.kind === 'day_pass');
+    setResuming(params.kind === 'monthly' || params.kind === 'one_time' || params.kind === 'day_pass');
     const cents = Number(params.amount);
     if (Number.isInteger(cents) && cents > 0) {
       if (AMOUNT_PRESETS_CENTS.includes(cents)) setPresetCents(cents);
@@ -84,6 +89,19 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
     : (frequencies[0] ?? frequency);
   const dayPass = options?.day_pass ?? false;
 
+  // Back from sign-in with a choice in the URL: once the options are in,
+  // bring the picker into view so they can carry on where they left off.
+  const resumeReady = resuming && (frequencies.length > 0 || dayPass);
+  useEffect(() => {
+    if (!resumeReady) return;
+    const el = cardRef.current as unknown as { scrollIntoView?: (o: object) => void } | null;
+    el?.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
+    // The screen may still be transitioning in, or content above still
+    // loading and pushing this down: settle once more.
+    const settle = setTimeout(() => el?.scrollIntoView?.({ block: 'center' }), 1000);
+    return () => clearTimeout(settle);
+  }, [resumeReady]);
+
   const selection = selectedCents();
   const summary = 'cents' in selection ? summaryLine(activeFrequency, selection.cents) : null;
 
@@ -91,7 +109,7 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
     if (!user) {
       const back =
         `${routes.partners.tab(partnerSlug, joinTab) as string}` +
-        (kind === 'day_pass' ? '' : `?kind=${kind}&amount=${cents ?? ''}`);
+        (kind === 'day_pass' ? '?kind=day_pass' : `?kind=${kind}&amount=${cents ?? ''}`);
       router.push(`${routes.auth.signIn() as string}?redirect=${encodeURIComponent(back)}` as never);
       return;
     }
@@ -165,7 +183,7 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
   }
 
   return (
-    <View style={styles.card} nativeID="join">
+    <View style={styles.card} nativeID="join" ref={cardRef}>
       {banner}
 
       {frequencies.length > 0 && (
@@ -258,7 +276,7 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
       {frequencies.length > 0 && dayPass && <View style={styles.divider} />}
 
       {dayPass && (
-        <View style={styles.dayPass}>
+        <View style={[styles.dayPass, resumeDayPass && styles.dayPassResumed]}>
           <View style={styles.dayPassText}>
             <Text style={styles.dayPassTitle}>Day pass · {formatDollars(DAY_PASS_CENTS)}</Text>
             <Text style={styles.dayPassBody}>
@@ -269,7 +287,9 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
             {loading === 'day_pass' ? (
               <ActivityIndicator color={colors.primary} />
             ) : (
-              <Text style={styles.secondaryBtnText}>Buy a day pass</Text>
+              <Text style={styles.secondaryBtnText}>
+                {resumeDayPass && user ? 'Continue to payment' : 'Buy a day pass'}
+              </Text>
             )}
           </Pressable>
         </View>
@@ -415,6 +435,12 @@ function createStyles(colors: ThemeColors) {
       flexWrap: 'wrap',
       alignItems: 'center',
       gap: spacing.md,
+    },
+    dayPassResumed: {
+      borderWidth: 1,
+      borderColor: colors.primary,
+      borderRadius: radii.sm,
+      padding: spacing.md,
     },
     dayPassText: { flex: 1, minWidth: 220, gap: spacing.xs },
     dayPassTitle: {
