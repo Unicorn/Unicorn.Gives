@@ -1,3 +1,4 @@
+abc
 account-balance
 account-circle
 add
@@ -15,6 +16,7 @@ assignment
 attach-file
 auto-awesome
 autorenew
+badge
 book
 bookmark
 broken-image
@@ -36,7 +38,9 @@ circle
 close
 cloud-upload
 code
+coffee
 compost
+confirmation-number
 contacts
 content-copy
 create
@@ -93,6 +97,7 @@ light
 light-mode
 link
 list
+local-cafe
 location-city
 location-on
 login
@@ -104,9 +109,11 @@ menu
 menu-book
 miscellaneous-services
 nature
+navigation
 nightlight-round
 open-in-new
 pages
+paid
 park
 payments
 pending
@@ -123,6 +130,7 @@ policy
 pool
 public
 publish
+radio
 radio-button-checked
 radio-button-unchecked
 refresh
@@ -147,6 +155,7 @@ swap-horiz
 swap-vert
 sync
 title
+today
 topic
 undo
 unfold-more
