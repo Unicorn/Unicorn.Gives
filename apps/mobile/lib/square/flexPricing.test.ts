@@ -37,7 +37,7 @@ describe('validateFlexCheckout', () => {
 
 describe('oneTimeCoversUntil', () => {
   const until = (iso: string, currentEnd?: string | null) =>
-    oneTimeCoversUntil(new Date(iso), currentEnd ? new Date(currentEnd) : currentEnd).toISOString();
+    oneTimeCoversUntil(new Date(iso), currentEnd ? new Date(currentEnd) : null).toISOString();
 
   it('covers one calendar month on the Michigan clock', () => {
     // 10 AM EDT to 10 AM EST: same time of day across the clock change.
