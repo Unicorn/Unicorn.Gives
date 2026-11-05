@@ -39,19 +39,53 @@ export function validateFlexCheckout(kind: unknown, amountCents: unknown): FlexV
   return { ok: true, kind, amountCents };
 }
 
+/** The Horn and its partners are in Michigan; "a month" follows their calendar. */
+export const PARTNER_TIME_ZONE = 'America/Detroit';
+
+/** Wall-clock parts of `at` in `timeZone`, expressed as a UTC timestamp. */
+function wallClockAsUtc(at: number, timeZone: string): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hourCycle: 'h23',
+  }).formatToParts(at);
+  const get = (type: string) => Number(parts.find((p) => p.type === type)?.value);
+  return Date.UTC(get('year'), get('month') - 1, get('day'), get('hour'), get('minute'), get('second'));
+}
+
 /**
  * When a one-time membership paid at `paidAt` stops granting access: one
- * calendar month later, same time of day. Clamped to the last day of a
- * shorter month, so Jan 31 runs to Feb 28 (29 in a leap year), not Mar 3.
+ * calendar month later on the partner's clock, same time of day. Clamped to
+ * the last day of a shorter month, so Jan 31 runs to Feb 28 (29 in a leap
+ * year), not Mar 3.
+ *
+ * Buying again before the current month runs out extends it: pass the
+ * unexpired end as `currentEnd` and the new month starts there, so no days
+ * are lost.
  */
-export function oneTimeCoversUntil(paidAt: Date): Date {
-  const end = new Date(paidAt.getTime());
-  const day = end.getUTCDate();
-  end.setUTCDate(1);
-  end.setUTCMonth(end.getUTCMonth() + 1);
-  const lastDay = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth() + 1, 0)).getUTCDate();
-  end.setUTCDate(Math.min(day, lastDay));
-  return end;
+export function oneTimeCoversUntil(
+  paidAt: Date,
+  currentEnd?: Date | null,
+  timeZone: string = PARTNER_TIME_ZONE,
+): Date {
+  const start = currentEnd && currentEnd > paidAt ? currentEnd : paidAt;
+  const local = new Date(wallClockAsUtc(start.getTime(), timeZone));
+  const day = local.getUTCDate();
+  local.setUTCDate(1);
+  local.setUTCMonth(local.getUTCMonth() + 1);
+  const lastDay = new Date(Date.UTC(local.getUTCFullYear(), local.getUTCMonth() + 1, 0)).getUTCDate();
+  local.setUTCDate(Math.min(day, lastDay));
+
+  // Back to an instant. Measure the zone's offset at the result, not at the
+  // start, so a month across a daylight-saving change keeps the time of day.
+  const target = local.getTime();
+  const firstGuess = target - (wallClockAsUtc(target, timeZone) - target);
+  return new Date(target - (wallClockAsUtc(firstGuess, timeZone) - firstGuess));
 }
 
 /** Line-item name shown on Square's checkout page and receipt. */

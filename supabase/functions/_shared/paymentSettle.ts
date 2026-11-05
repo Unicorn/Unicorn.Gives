@@ -20,24 +20,53 @@ interface PendingPayment {
   square_order_id: string;
 }
 
-/** Returns true when the payment was marked paid. */
+/** The unexpired end of a member's paid one-time month, if they have one. */
+async function currentCoverEnd(admin: any, row: PendingPayment, paidAt: Date): Promise<Date | null> {
+  if (!row.user_id) return null;
+  const { data, error } = await admin
+    .from('partner_payments')
+    .select('covers_until')
+    .eq('user_id', row.user_id)
+    .eq('partner_id', row.partner_id)
+    .eq('kind', 'membership_one_time')
+    .eq('status', 'paid')
+    .gt('covers_until', paidAt.toISOString())
+    .order('covers_until', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw new Error(`Failed to load current membership: ${error.message}`);
+  return data?.covers_until ? new Date(data.covers_until) : null;
+}
+
+/**
+ * Returns true when this call marked the payment paid. Throws if the write
+ * fails: reporting it as settled, or as still unpaid, would hide that a
+ * member's money was taken and not recorded. The row stays pending, so the
+ * next webhook or reconcile retries it.
+ */
 export async function settlePayment(admin: any, accessToken: string, row: PendingPayment): Promise<boolean> {
   const order = await retrieveOrder(accessToken, row.square_order_id);
   if (!isOrderPaid(order)) return false;
 
   const paidAt = new Date(order?.closed_at ?? order?.updated_at ?? Date.now());
-  await admin.from('partner_payments')
+  const coversUntil = row.kind === 'membership_one_time'
+    ? oneTimeCoversUntil(paidAt, await currentCoverEnd(admin, row, paidAt)).toISOString()
+    : null;
+
+  const { data: updated, error } = await admin.from('partner_payments')
     .update({
       status: 'paid',
       paid_at: paidAt.toISOString(),
-      covers_until: row.kind === 'membership_one_time' ? oneTimeCoversUntil(paidAt).toISOString() : null,
+      covers_until: coversUntil,
       raw: { order },
     })
     .eq('id', row.id)
-    .eq('status', 'pending');
+    .eq('status', 'pending')
+    .select('id');
+  if (error) throw new Error(`Failed to record payment ${row.id}: ${error.message}`);
 
   await rememberCustomer(admin, row.partner_id, row.user_id, order?.customer_id, null);
-  return true;
+  return (updated?.length ?? 0) > 0;
 }
 
 /** Settle a pending payment by its order id (webhook path). */
@@ -75,7 +104,12 @@ export async function reconcilePendingPayments(
 
   let settled = 0;
   for (const row of (rows ?? []) as PendingPayment[]) {
-    if (await settlePayment(admin, accessToken, row)) settled++;
+    // One failed write shouldn't stop the rest; this row retries next run.
+    try {
+      if (await settlePayment(admin, accessToken, row)) settled++;
+    } catch (e) {
+      console.error(e instanceof Error ? e.message : e);
+    }
   }
 
   return settled;
