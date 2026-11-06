@@ -20,11 +20,24 @@ export function todayISO(now = new Date()): string {
   return `${now.getFullYear()}-${m}-${d}`;
 }
 
-/** Parse a timestamp, or a plain Square date ("2026-11-18") as a local date. */
+/**
+ * The calendar day of a plain Square date, or null for a real timestamp.
+ * Square sends "2026-11-18". Columns of type `date` return it that way, but
+ * `canceled_at` and `current_period_end` are timestamptz, so it comes back as
+ * midnight UTC ("2026-11-18T00:00:00+00:00").
+ */
+export function squareDay(iso: string): string | null {
+  const day = /^(\d{4}-\d{2}-\d{2})(?:T00:00:00(?:\.0+)?(?:Z|\+00(?::?00)?))?$/.exec(iso);
+  return day ? day[1] : null;
+}
+
+/** Parse a timestamp, or a plain Square date as that day in local time. */
 export function parseDate(iso: string): Date {
-  const day = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  const day = squareDay(iso);
+  if (!day) return new Date(iso);
   // new Date('2026-11-18') is UTC midnight, which shows as the 17th in US time.
-  return day ? new Date(Number(day[1]), Number(day[2]) - 1, Number(day[3])) : new Date(iso);
+  const [year, month, date] = day.split('-').map(Number);
+  return new Date(year, month - 1, date);
 }
 
 /** `ending`: the last paid-up date of a canceled subscription; `pausing`: a scheduled pause date. */

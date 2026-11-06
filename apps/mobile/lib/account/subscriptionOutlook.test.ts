@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseDate, subscriptionOutlook, todayISO, type OutlookInput } from './subscriptionOutlook';
+import { parseDate, squareDay, subscriptionOutlook, todayISO, type OutlookInput } from './subscriptionOutlook';
 
 const TODAY = '2026-10-20';
 
@@ -52,6 +52,31 @@ describe('parseDate', () => {
   it('reads a plain Square date as that local calendar day', () => {
     const d = parseDate('2026-11-18');
     expect([d.getFullYear(), d.getMonth(), d.getDate()]).toEqual([2026, 10, 18]);
+  });
+
+  it('reads a Square date stored as midnight UTC as that same day', () => {
+    const d = parseDate('2026-12-01T00:00:00+00:00');
+    expect([d.getFullYear(), d.getMonth(), d.getDate()]).toEqual([2026, 11, 1]);
+  });
+
+  it('leaves real timestamps alone', () => {
+    expect(parseDate('2026-12-01T15:30:00+00:00').getTime()).toBe(Date.UTC(2026, 11, 1, 15, 30));
+  });
+});
+
+describe('squareDay', () => {
+  it('recognizes plain dates and midnight UTC, as the database returns them', () => {
+    expect(squareDay('2026-12-01')).toBe('2026-12-01');
+    expect(squareDay('2026-12-01T00:00:00+00:00')).toBe('2026-12-01');
+    expect(squareDay('2026-12-01T00:00:00Z')).toBe('2026-12-01');
+    expect(squareDay('2026-12-01T00:00:00.000Z')).toBe('2026-12-01');
+  });
+
+  it('treats anything else as a real timestamp', () => {
+    expect(squareDay('2026-12-01T15:30:00+00:00')).toBeNull();
+    expect(squareDay('2026-12-01T00:00:01+00:00')).toBeNull();
+    expect(squareDay('2026-12-01T00:00:00-05:00')).toBeNull();
+    expect(squareDay('not a date')).toBeNull();
   });
 });
 
