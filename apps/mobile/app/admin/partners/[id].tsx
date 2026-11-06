@@ -13,6 +13,7 @@ import { AdminImageUpload } from '@/components/admin/AdminImageUpload';
 import { AdminRichEditor } from '@/components/admin/AdminRichEditor';
 import { RepeatableListEditor } from '@/components/admin/RepeatableListEditor';
 import { SquareTab } from '@/components/admin/SquareTab';
+import { PartnerMembersTab } from '@/components/admin/PartnerMembersTab';
 import { useTheme, fonts, fontSize, spacing, radii, type ThemeColors } from '@/constants/theme';
 import { toHref } from '@/lib/navigation';
 
@@ -99,7 +100,7 @@ const ALL_SECTIONS = [
   { key: 'custom', label: 'Custom Sections' },
 ];
 
-type TabKey = 'general' | 'landing' | 'domain' | 'square';
+type TabKey = 'general' | 'landing' | 'domain' | 'square' | 'members';
 
 /* ── Main Component ── */
 
@@ -281,6 +282,7 @@ export default function EditPartnerPage() {
     { key: 'landing', label: 'Landing Page', icon: 'web' },
     { key: 'domain', label: 'Domain Settings', icon: 'language' },
     { key: 'square', label: 'Square', icon: 'store' },
+    { key: 'members', label: 'Members', icon: 'groups' },
   ];
 
   return (
@@ -355,6 +357,9 @@ export default function EditPartnerPage() {
       )}
       {activeTab === 'square' && (
         <SquareTab partnerId={partner.id} />
+      )}
+      {activeTab === 'members' && (
+        <PartnerMembersTab partnerId={partner.id} />
       )}
 
       <AdminConfirmDialog
