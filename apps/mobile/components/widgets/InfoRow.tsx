@@ -26,7 +26,7 @@ export function InfoRow({ icon, label, value, secondaryValue, href }: InfoRowPro
   );
 
   // In-app paths navigate through the router; anything else opens externally.
-  if (href?.startsWith('/')) {
+  if (href?.startsWith('/') && !href.startsWith('//')) {
     return (
       <Link href={href as Href} asChild>
         <TouchableOpacity accessibilityRole="link">{content}</TouchableOpacity>
