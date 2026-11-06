@@ -31,7 +31,7 @@ export function PartnerMembersTab({ partnerId }: { partnerId: string }) {
         supabase
           .from('square_subscriptions')
           .select(
-            'id, user_id, customer_name, customer_email, tier, amount_cents, status, cancel_at_period_end, canceled_at, next_billing_at, current_period_end, profiles(display_name, email)',
+            'id, user_id, customer_name, customer_email, tier, amount_cents, status, cancel_at_period_end, canceled_at, next_billing_at, current_period_end, scheduled_action, scheduled_action_date, profiles(display_name, email)',
           )
           .eq('partner_id', partnerId)
           .neq('status', 'pending')

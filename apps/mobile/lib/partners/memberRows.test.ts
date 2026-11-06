@@ -16,6 +16,8 @@ function sub(overrides: Partial<MemberSubscription> = {}): MemberSubscription {
     canceled_at: null,
     next_billing_at: null,
     current_period_end: null,
+    scheduled_action: null,
+    scheduled_action_date: null,
     profiles: { display_name: 'Ana Reyes', email: 'ana@example.com' },
     ...overrides,
   };
@@ -68,6 +70,39 @@ describe('subscription rows', () => {
       current: false,
     });
     expect(members([sub({ status: 'deactivated' })])[0].current).toBe(false);
+  });
+
+  it('shows Square dates as the same day, the way the database returns them', () => {
+    expect(
+      members([sub({ cancel_at_period_end: true, canceled_at: '2026-12-01T00:00:00+00:00' })])[0].detail,
+    ).toBe('Active until Dec 1, 2026');
+    expect(members([sub({ status: 'canceled', canceled_at: '2026-10-01T00:00:00+00:00' })])[0].detail).toBe(
+      'Ended Oct 1, 2026',
+    );
+  });
+
+  it('uses the paid-through date for the next bill until an invoice webhook sets one', () => {
+    expect(members([sub({ current_period_end: '2026-12-03T00:00:00+00:00' })])[0].detail).toBe('Next bill Dec 3, 2026');
+    expect(
+      members([sub({ next_billing_at: '2026-12-04T15:00:00Z', current_period_end: '2026-12-03T00:00:00+00:00' })])[0].detail,
+    ).toBe('Next bill Dec 4, 2026');
+  });
+
+  it('shows a scheduled pause, and a scheduled cancel without a canceled date', () => {
+    expect(members([sub({ scheduled_action: 'PAUSE', scheduled_action_date: '2026-12-01' })])[0]).toMatchObject({
+      status: 'Pausing',
+      detail: 'Pauses Dec 1, 2026',
+      current: true,
+    });
+    expect(members([sub({ scheduled_action: 'CANCEL', scheduled_action_date: '2026-12-01' })])[0]).toMatchObject({
+      status: 'Ending',
+      detail: 'Active until Dec 1, 2026',
+      current: true,
+    });
+  });
+
+  it('ignores a scheduled action whose date has passed', () => {
+    expect(members([sub({ scheduled_action: 'PAUSE', scheduled_action_date: '2026-11-01' })])[0].status).toBe('Active');
   });
 
   it('leaves out unfinished checkouts', () => {

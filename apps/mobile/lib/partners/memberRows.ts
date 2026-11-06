@@ -5,6 +5,7 @@
  * month that hasn't run out. Unfinished checkouts are not members and aren't
  * listed.
  */
+import { squareDay, subscriptionOutlook, todayISO, type OutlookInput } from '../account/subscriptionOutlook';
 import { formatDollars } from './payWhatYouCan';
 
 export interface MemberPerson {
@@ -24,6 +25,8 @@ export interface MemberSubscription {
   canceled_at: string | null;
   next_billing_at: string | null;
   current_period_end: string | null;
+  scheduled_action: OutlookInput['scheduled_action'];
+  scheduled_action_date: string | null;
   profiles: MemberPerson | null;
 }
 
@@ -58,11 +61,15 @@ export interface MemberSummary {
   currentCount: number;
 }
 
-/** Dates read on the partner's clock, wherever the admin is. */
+/**
+ * Real timestamps read on the partner's clock, wherever the admin is. A plain
+ * Square date is already a calendar day, so it isn't shifted to any clock.
+ */
 function formatDay(iso: string | null): string {
   if (!iso) return '';
-  return new Date(iso).toLocaleDateString('en-US', {
-    timeZone: 'America/Detroit',
+  const day = squareDay(iso);
+  return new Date(day ? `${day}T00:00:00Z` : iso).toLocaleDateString('en-US', {
+    timeZone: day ? 'UTC' : 'America/Detroit',
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -82,16 +89,32 @@ function person(id: string, userId: string | null, profile: MemberPerson | null,
   };
 }
 
-function subscriptionRow(s: MemberSubscription): MemberRow {
+function subscriptionRow(s: MemberSubscription, today: string): MemberRow {
   const price = s.amount_cents ? formatDollars(s.amount_cents) : s.tier ? capitalize(s.tier) : null;
   const plan = ['Monthly', price].filter(Boolean).join(' · ');
   const who = person(s.id, s.user_id, s.profiles, s.customer_name, s.customer_email);
+  // Same rules as the member's account page.
+  const { ending, pausing } = subscriptionOutlook(
+    {
+      status: s.status as OutlookInput['status'],
+      canceled_at: s.canceled_at,
+      cancel_at_period_end: Boolean(s.cancel_at_period_end),
+      scheduled_action: s.scheduled_action,
+      scheduled_action_date: s.scheduled_action_date,
+    },
+    today,
+  );
 
-  if (s.status === 'active' && s.cancel_at_period_end) {
-    return { id: s.id, ...who, plan, status: 'Ending', detail: `Active until ${formatDay(s.canceled_at ?? s.current_period_end)}`, current: true };
+  if (ending) {
+    return { id: s.id, ...who, plan, status: 'Ending', detail: `Active until ${formatDay(ending)}`, current: true };
+  }
+  if (pausing) {
+    return { id: s.id, ...who, plan, status: 'Pausing', detail: `Pauses ${formatDay(pausing)}`, current: true };
   }
   if (s.status === 'active') {
-    return { id: s.id, ...who, plan, status: 'Active', detail: s.next_billing_at ? `Next bill ${formatDay(s.next_billing_at)}` : null, current: true };
+    // next_billing_at only arrives with invoice webhooks; the paid-through date is always there once billed.
+    const nextBill = s.next_billing_at ?? s.current_period_end;
+    return { id: s.id, ...who, plan, status: 'Active', detail: nextBill ? `Next bill ${formatDay(nextBill)}` : null, current: true };
   }
   if (s.status === 'paused') {
     return { id: s.id, ...who, plan, status: 'Paused', detail: null, current: true };
@@ -120,8 +143,9 @@ export function buildMemberRows(
   payments: MemberPayment[],
   now: number = Date.now(),
 ): MemberSummary {
+  const today = todayISO(new Date(now));
   const members = [
-    ...subscriptions.filter((s) => s.status !== 'pending').map(subscriptionRow),
+    ...subscriptions.filter((s) => s.status !== 'pending').map((s) => subscriptionRow(s, today)),
     ...payments.filter((p) => p.kind !== 'day_pass').map((p) => paymentRow(p, now)),
   ].sort((a, b) => Number(b.current) - Number(a.current) || a.name.localeCompare(b.name));
 
