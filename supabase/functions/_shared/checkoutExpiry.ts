@@ -96,8 +96,14 @@ export async function expireStaleCheckouts(
   if (paymentsErr) throw new Error(`Failed to load stale payments: ${paymentsErr.message}`);
 
   for (const row of payments ?? []) {
-    if (row.square_order_id && await settlePayment(admin, accessToken, row)) {
-      stats.settled++;
+    try {
+      if (row.square_order_id && await settlePayment(admin, accessToken, row)) {
+        stats.settled++;
+        continue;
+      }
+    } catch (e) {
+      // Paid but not recorded: leave it pending for the next run, never cancel it.
+      console.error(e instanceof Error ? e.message : e);
       continue;
     }
     const state = await checkoutState(accessToken, row.square_order_id, row.square_payment_link_id);
