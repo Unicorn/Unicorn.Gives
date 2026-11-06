@@ -36,17 +36,41 @@ describe('validateFlexCheckout', () => {
 });
 
 describe('oneTimeCoversUntil', () => {
-  const until = (iso: string) => oneTimeCoversUntil(new Date(iso)).toISOString();
+  const until = (iso: string, currentEnd?: string | null) =>
+    oneTimeCoversUntil(new Date(iso), currentEnd ? new Date(currentEnd) : null).toISOString();
 
-  it('covers one calendar month from payment', () => {
-    expect(until('2026-10-18T15:30:00Z')).toBe('2026-11-18T15:30:00.000Z');
-    expect(until('2026-12-05T09:00:00Z')).toBe('2027-01-05T09:00:00.000Z');
+  it('covers one calendar month on the Michigan clock', () => {
+    // 10 AM EDT to 10 AM EST: same time of day across the clock change.
+    expect(until('2026-10-18T14:00:00Z')).toBe('2026-11-18T15:00:00.000Z');
+    expect(until('2026-12-05T15:00:00Z')).toBe('2027-01-05T15:00:00.000Z');
+  });
+
+  it('keeps the time of day when clocks go forward', () => {
+    // Mar 1 10 AM EST to Apr 1 10 AM EDT.
+    expect(until('2027-03-01T15:00:00Z')).toBe('2027-04-01T14:00:00.000Z');
   });
 
   it('clamps to the end of a shorter month', () => {
-    expect(until('2027-01-31T12:00:00Z')).toBe('2027-02-28T12:00:00.000Z');
-    expect(until('2028-01-31T12:00:00Z')).toBe('2028-02-29T12:00:00.000Z');
-    expect(until('2026-03-31T12:00:00Z')).toBe('2026-04-30T12:00:00.000Z');
+    expect(until('2027-01-31T17:00:00Z')).toBe('2027-02-28T17:00:00.000Z');
+    expect(until('2028-01-31T17:00:00Z')).toBe('2028-02-29T17:00:00.000Z');
+    expect(until('2026-03-31T16:00:00Z')).toBe('2026-04-30T16:00:00.000Z');
+  });
+
+  it('anchors a late-evening payment to its Michigan date, not the UTC one', () => {
+    // Jan 30 8:30 PM EST is already Jan 31 in UTC. Runs to Feb 28 8:30 PM EST.
+    expect(until('2027-01-31T01:30:00Z')).toBe('2027-03-01T01:30:00.000Z');
+    // Oct 31 9 PM EDT is Nov 1 in UTC. Runs to Nov 30 9 PM EST.
+    expect(until('2026-11-01T01:00:00Z')).toBe('2026-12-01T02:00:00.000Z');
+  });
+
+  it('extends from an unexpired month so no days are lost', () => {
+    // Paid Oct 25 with cover to Nov 18: runs to Dec 18.
+    expect(until('2026-10-25T14:00:00Z', '2026-11-18T15:00:00Z')).toBe('2026-12-18T15:00:00.000Z');
+  });
+
+  it('starts from the payment when the old month has run out', () => {
+    expect(until('2026-10-25T14:00:00Z', '2026-10-01T14:00:00Z')).toBe('2026-11-25T15:00:00.000Z');
+    expect(until('2026-10-25T14:00:00Z', null)).toBe('2026-11-25T15:00:00.000Z');
   });
 });
 
