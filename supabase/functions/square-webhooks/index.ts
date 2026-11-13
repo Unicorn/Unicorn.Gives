@@ -13,6 +13,7 @@ import { corsHeaders, json } from '../_shared/cors.ts';
 import { getValidAccessToken } from '../_shared/square.ts';
 import { linkSubscription, type SquareSubscription } from '../_shared/subscriptionLink.ts';
 import { settlePaymentByOrder } from '../_shared/paymentSettle.ts';
+import { eventLocationId, partnersForEvent } from '../_shared/webhookPartner.ts';
 
 const BOOKING_EVENTS = new Set([
   'booking.created',
@@ -136,15 +137,16 @@ Deno.serve(async (req) => {
     return json({ status: 'already_processed' });
   }
 
-  // Find partner by merchant_id
-  let partnerId: string | null = null;
+  // Find the partners this event is for. Partners can share a Square
+  // account (one location each), so the merchant alone isn't enough.
+  let partnerIds: string[] = [];
   if (merchantId) {
-    const { data: conn } = await admin
+    const { data: conns, error: connsError } = await admin
       .from('square_connections')
-      .select('partner_id')
-      .eq('merchant_id', merchantId)
-      .single();
-    partnerId = conn?.partner_id ?? null;
+      .select('partner_id, location_id')
+      .eq('merchant_id', merchantId);
+    if (connsError) console.error('Failed to load connections:', connsError.message);
+    partnerIds = partnersForEvent(conns ?? [], eventLocationId(event.data?.object));
   }
 
   // Log the event
@@ -152,14 +154,15 @@ Deno.serve(async (req) => {
     event_id: eventId,
     event_type: eventType,
     merchant_id: merchantId,
-    partner_id: partnerId,
+    // One partner when the event is tied to a location; null when it's shared.
+    partner_id: partnerIds.length === 1 ? partnerIds[0] : null,
     payload: event,
     processed: false,
   });
 
   // Helper: resolve user_id from a Square customer id for this partner.
-  async function resolveUserId(customerId: string | undefined): Promise<string | null> {
-    if (!customerId || !partnerId) return null;
+  async function resolveUserId(partnerId: string, customerId: string | undefined): Promise<string | null> {
+    if (!customerId) return null;
     const { data } = await admin
       .from('square_customers')
       .select('user_id')
@@ -169,9 +172,9 @@ Deno.serve(async (req) => {
     return data?.user_id ?? null;
   }
 
-  // Process event
-  try {
-    if (partnerId && CUSTOMER_EVENTS.has(eventType)) {
+  // Process the event for one partner.
+  async function handleForPartner(partnerId: string) {
+    if (CUSTOMER_EVENTS.has(eventType)) {
       const customer = event.data?.object?.customer as {
         id?: string;
         email_address?: string;
@@ -206,7 +209,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    if (partnerId && SUBSCRIPTION_EVENTS.has(eventType)) {
+    if (SUBSCRIPTION_EVENTS.has(eventType)) {
       const sub = event.data?.object?.subscription as SquareSubscription | undefined;
 
       if (sub?.id) {
@@ -223,12 +226,12 @@ Deno.serve(async (req) => {
       }
     }
 
-    if (partnerId && ORDER_EVENTS.has(eventType) && event.data?.id) {
+    if (ORDER_EVENTS.has(eventType) && event.data?.id) {
       const creds = await getValidAccessToken(admin, partnerId);
       if (creds) await settlePaymentByOrder(admin, creds.accessToken, event.data.id);
     }
 
-    if (partnerId && INVOICE_EVENTS.has(eventType)) {
+    if (INVOICE_EVENTS.has(eventType)) {
       const invoice = event.data?.object?.invoice as {
         subscription_id?: string;
         next_payment_amount_money?: { amount?: number };
@@ -241,7 +244,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    if (partnerId && BOOKING_EVENTS.has(eventType)) {
+    if (BOOKING_EVENTS.has(eventType)) {
       const booking = event.data?.object?.booking as {
         id?: string;
         customer_id?: string;
@@ -253,7 +256,7 @@ Deno.serve(async (req) => {
         }>;
       } | undefined;
       if (booking?.id) {
-        const userId = await resolveUserId(booking.customer_id);
+        const userId = await resolveUserId(partnerId, booking.customer_id);
         const segment = booking.appointment_segments?.[0];
         await admin.from('square_bookings').upsert({
           partner_id: partnerId,
@@ -271,7 +274,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    if (partnerId && (BOOKING_EVENTS.has(eventType) || CATALOG_EVENTS.has(eventType))) {
+    if ((BOOKING_EVENTS.has(eventType) || CATALOG_EVENTS.has(eventType))) {
       // Trigger a sync for the affected partner
       // We call the sync endpoint internally using service role
       const features: string[] = [];
@@ -293,6 +296,11 @@ Deno.serve(async (req) => {
         console.error('Sync trigger failed:', errText);
       }
     }
+  }
+
+  // Process event
+  try {
+    for (const partnerId of partnerIds) await handleForPartner(partnerId);
 
     // Mark as processed
     await admin.from('square_webhook_events').update({ processed: true }).eq('event_id', eventId);
