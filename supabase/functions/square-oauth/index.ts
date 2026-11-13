@@ -20,6 +20,7 @@ const SCOPES = [
   'APPOINTMENTS_WRITE',
   'EMPLOYEES_READ', // required by /v2/team-members/search — without it team sync silently returns 0
   'ITEMS_READ',
+  'ITEMS_WRITE', // creating membership tiers (subscription plans) from admin
   'ORDERS_READ',
   'ORDERS_WRITE',
   'MERCHANT_PROFILE_READ',
@@ -161,12 +162,22 @@ Deno.serve(async (req) => {
       const encAccessToken = await encrypt(tokenData.access_token, encryptionKey);
       const encRefreshToken = await encrypt(tokenData.refresh_token, encryptionKey);
 
+      // Re-authorizing (e.g. to grant a new scope) keeps the chosen location
+      // while it's still active: several partners can share one Square
+      // account, and the first location listed may be another partner's.
+      const { data: current } = await admin
+        .from('square_connections')
+        .select('location_id')
+        .eq('partner_id', partnerId)
+        .maybeSingle();
+      const keptLocation = locationIds.some((l) => l.id === current?.location_id) ? current?.location_id : null;
+
       // Upsert connection
       await admin.from('square_connections').upsert({
         partner_id: partnerId,
         merchant_id: tokenData.merchant_id,
         location_ids: locationIds,
-        location_id: locationIds[0]?.id ?? null,
+        location_id: keptLocation ?? locationIds[0]?.id ?? null,
         access_token: encAccessToken,
         refresh_token: encRefreshToken,
         token_expires_at: tokenData.expires_at,
