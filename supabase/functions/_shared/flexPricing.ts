@@ -1,43 +1,11 @@
 /**
- * Pricing rules for pay-what-you-can memberships and day passes.
- *
- * The server is the authority: the client sends the amount the member
- * picked and `validateFlexCheckout` decides what is actually charged. Day
- * passes are always the fixed price, whatever the client sends.
+ * Timing rules for one-time memberships and day passes: how long a one-time
+ * month lasts and when a payment-link order counts as paid. Prices live in
+ * `membershipTiers.ts`.
  *
  * No Deno or Supabase imports: also unit-tested from
  * `apps/mobile/lib/square/flexPricing.test.ts`.
  */
-
-export type FlexKind = 'monthly' | 'one_time' | 'day_pass';
-
-export const MIN_AMOUNT_CENTS = 1_000;
-/** Guards against typos like $5000 for $50; larger gifts can go through the Horn directly. */
-export const MAX_AMOUNT_CENTS = 100_000;
-export const DAY_PASS_CENTS = 1_000;
-
-export type FlexValidation =
-  | { ok: true; kind: FlexKind; amountCents: number }
-  | { ok: false; error: string };
-
-export function validateFlexCheckout(kind: unknown, amountCents: unknown): FlexValidation {
-  if (kind !== 'monthly' && kind !== 'one_time' && kind !== 'day_pass') {
-    return { ok: false, error: 'Choose monthly, one-time, or a day pass' };
-  }
-  if (kind === 'day_pass') {
-    return { ok: true, kind, amountCents: DAY_PASS_CENTS };
-  }
-  if (typeof amountCents !== 'number' || !Number.isInteger(amountCents)) {
-    return { ok: false, error: 'Enter an amount in whole cents' };
-  }
-  if (amountCents < MIN_AMOUNT_CENTS) {
-    return { ok: false, error: 'The minimum is $10' };
-  }
-  if (amountCents > MAX_AMOUNT_CENTS) {
-    return { ok: false, error: 'The maximum online is $1,000' };
-  }
-  return { ok: true, kind, amountCents };
-}
 
 /** The Horn and its partners are in Michigan; "a month" follows their calendar. */
 export const PARTNER_TIME_ZONE = 'America/Detroit';
@@ -86,18 +54,6 @@ export function oneTimeCoversUntil(
   const target = local.getTime();
   const firstGuess = target - (wallClockAsUtc(target, timeZone) - target);
   return new Date(target - (wallClockAsUtc(firstGuess, timeZone) - firstGuess));
-}
-
-/** Line-item name shown on Square's checkout page and receipt. */
-export function flexItemName(kind: FlexKind, partnerName: string): string {
-  switch (kind) {
-    case 'monthly':
-      return `${partnerName} membership (monthly)`;
-    case 'one_time':
-      return `${partnerName} membership (one month)`;
-    case 'day_pass':
-      return `${partnerName} day pass`;
-  }
 }
 
 /**

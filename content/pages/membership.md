@@ -1,6 +1,6 @@
 ---
 title: "Join The Horn"
-description: "Join The Horn — Lake George's community space. Pay what you can, monthly or one-time, for 24/7 access, morning coffee, events, game nights, and more. $10 day passes too."
+description: "Join The Horn — Lake George's community space. Individual, couple, and household memberships, monthly or one-time, for 24/7 access, morning coffee, events, game nights, and more. $10 day passes too."
 lastUpdated: "2026-10-18"
 category: "Community"
 subcategory: "The Horn"
@@ -15,12 +15,15 @@ Members get 24/7 access, so The Horn fits your day — whatever your day looks l
 
 ---
 
-## Pay What You Can
+## Membership
 
-We believe a place to belong shouldn't depend on what's in your wallet. There's one membership, and you choose what to pay.
+Choose the membership that fits who's joining:
 
-- **Monthly** — renews each month at the amount you chose. Change or cancel anytime.
-- **One-time** — pay once for a month of membership. Nothing renews, and your card is never charged again.
+- **Individual** — $50 a month
+- **Couple** — $80 a month
+- **Household** — $120 a month
+
+Pay **monthly** — it renews each month, and you can change or cancel anytime — or **one-time**: pay once for a month of membership. Nothing renews, and your card is never charged again.
 
 Every member can bring **one guest** along. Bringing more friends? Each additional guest just needs a day pass.
 
@@ -85,6 +88,6 @@ An adults-only lounge, for members only, where you can bring your own drinks and
 
 ## Join Today
 
-Choose monthly or one-time, pick what you can pay, and you're in. Or pick up a $10 day pass to try it out.
+Choose your membership, monthly or one-time, and you're in. Or pick up a $10 day pass to try it out.
 
 **[Join The Horn](/partners/the-horn/membership)** · **[Visit](/partners/the-horn/hours)** · **[Events at The Horn](/partners/the-horn/events)** · **[About The Horn](/partners/the-horn/about)**

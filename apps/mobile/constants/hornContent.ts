@@ -99,8 +99,8 @@ export const HORN_INFO = {
 		{
 			icon: "card-membership",
 			label: "Membership",
-			value: "Pay what you can",
-			secondaryValue: "Monthly or one-time · Bring one guest",
+			value: "From $50 a month",
+			secondaryValue: "Individual, couple, or household · Bring one guest",
 		},
 		{
 			icon: "confirmation-number",

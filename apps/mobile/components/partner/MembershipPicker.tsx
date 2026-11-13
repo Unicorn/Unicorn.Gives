@@ -1,18 +1,18 @@
 /**
- * Pay-what-you-can membership picker shown under a partner's membership tab
- * (see `joinTab` in constants/partnerMenus.ts): monthly or one-time, $10–$100
- * presets or any amount above $10, plus a fixed-price day pass.
+ * Membership picker shown under a partner's membership tab (see `joinTab` in
+ * constants/partnerMenus.ts): one of the partner's tiers (e.g. Individual /
+ * Couple / Household), monthly or one-time, plus a fixed-price day pass.
  *
  * Signed-out visitors are sent to sign-in and brought back with their choice
  * in the query string. Query params are applied after mount so the static
  * export and the client's first render match.
  *
  * Only offers what the partner has set up (`membership_options`): monthly
- * needs a Square plan, and nothing is offered until memberships are switched
+ * and one-time need the tiers created in Square, and nothing is offered until memberships are switched
  * on and Square is connected — the card then points people to join in person.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Linking, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { fonts, fontSize, radii, spacing, useTheme, type ThemeColors } from '@/constants/theme';
@@ -21,13 +21,11 @@ import { routes } from '@/lib/navigation';
 import { useFlexCheckout, useMembershipOptions, type FlexCheckoutKind } from '@/hooks/useSquareBookings';
 import { useAccountRefresh, useMyPayments } from '@/hooks/useMyAccount';
 import {
-  AMOUNT_PRESETS_CENTS,
   DAY_PASS_CENTS,
   formatDollars,
-  parseCustomAmount,
   summaryLine,
   type MembershipFrequency,
-} from '@/lib/partners/payWhatYouCan';
+} from '@/lib/partners/membershipPricing';
 
 /** How long after landing a payment still counts as this checkout's. */
 const CHECKOUT_LOOKBACK_MS = 2 * 60 * 60 * 1000;
@@ -44,14 +42,13 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
   const styles = useMemo(() => createStyles(colors), [colors]);
   const router = useRouter();
   const { user } = useAuth();
-  const params = useLocalSearchParams<{ kind?: string; amount?: string; status?: string }>();
+  const params = useLocalSearchParams<{ kind?: string; tier?: string; status?: string }>();
   const { create, loading, error: checkoutError } = useFlexCheckout(partnerId);
   const options = useMembershipOptions(partnerId);
 
   const [frequency, setFrequency] = useState<MembershipFrequency>('monthly');
-  const [presetCents, setPresetCents] = useState<number | null>(null);
-  const [customText, setCustomText] = useState('');
-  const [amountError, setAmountError] = useState<string | null>(null);
+  const [tierId, setTierId] = useState<string | null>(null);
+  const [tierError, setTierError] = useState<string | null>(null);
   const [paid, setPaid] = useState(false);
   const [resumeDayPass, setResumeDayPass] = useState(false);
   const [resuming, setResuming] = useState(false);
@@ -65,19 +62,12 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
     if (params.kind === 'monthly' || params.kind === 'one_time') setFrequency(params.kind);
     setResumeDayPass(params.kind === 'day_pass');
     setResuming(params.kind === 'monthly' || params.kind === 'one_time' || params.kind === 'day_pass');
-    const cents = Number(params.amount);
-    if (Number.isInteger(cents) && cents > 0) {
-      if (AMOUNT_PRESETS_CENTS.includes(cents)) setPresetCents(cents);
-      else setCustomText(String(cents / 100));
-    }
+    if (params.tier) setTierId(params.tier);
     setPaid(params.status === 'paid');
-  }, [params.kind, params.amount, params.status]);
+  }, [params.kind, params.tier, params.status]);
 
-  function selectedCents(): { cents: number } | { error: string } {
-    if (customText.trim()) return parseCustomAmount(customText);
-    if (presetCents != null) return { cents: presetCents };
-    return { error: 'Choose an amount, or enter your own' };
-  }
+  const tiers = options?.tiers ?? [];
+  const tier = tiers.find((t) => t.id === tierId) ?? null;
 
   // Offer only the frequencies that will work; fall back if the chosen (or
   // restored) one isn't available.
@@ -102,28 +92,26 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
     return () => clearTimeout(settle);
   }, [resumeReady]);
 
-  const selection = selectedCents();
-  const summary = 'cents' in selection ? summaryLine(activeFrequency, selection.cents) : null;
+  const summary = tier ? summaryLine(activeFrequency, tier) : null;
 
-  async function checkout(kind: FlexCheckoutKind, cents?: number) {
+  async function checkout(kind: FlexCheckoutKind, chosenTierId?: string) {
     if (!user) {
       const back =
         `${routes.partners.tab(partnerSlug, joinTab) as string}` +
-        (kind === 'day_pass' ? '?kind=day_pass' : `?kind=${kind}&amount=${cents ?? ''}`);
+        (kind === 'day_pass' ? '?kind=day_pass' : `?kind=${kind}&tier=${encodeURIComponent(chosenTierId ?? '')}`);
       router.push(`${routes.auth.signIn() as string}?redirect=${encodeURIComponent(back)}` as never);
       return;
     }
-    const result = await create(kind, cents);
+    const result = await create(kind, chosenTierId);
     if (result?.checkout_url) Linking.openURL(result.checkout_url);
   }
 
   function handleJoin() {
-    const sel = selectedCents();
-    if ('error' in sel) {
-      setAmountError(sel.error);
+    if (!tier) {
+      setTierError('Choose a membership');
       return;
     }
-    checkout(activeFrequency, sel.cents);
+    checkout(activeFrequency, tier.id);
   }
 
   // Back from Square with ?status=paid: ask the server to check the order
@@ -191,8 +179,8 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
           <Text style={styles.heading}>Choose your membership</Text>
           <Text style={styles.lede}>
             {frequencies.length > 1
-              ? 'Pick monthly or one-time, then choose what you can pay.'
-              : `${activeFrequency === 'monthly' ? 'Monthly' : 'One-time'} membership. Choose what you can pay.`}
+              ? 'Pick who’s joining, then pay monthly or one-time.'
+              : `${activeFrequency === 'monthly' ? 'Monthly' : 'One-time'} membership. Pick who’s joining.`}
           </Text>
 
           {frequencies.length > 1 && (
@@ -217,48 +205,32 @@ export function MembershipPicker({ partnerId, partnerSlug, partnerName, joinTab 
             </View>
           )}
 
-          <View style={styles.amounts} accessibilityRole="radiogroup" accessibilityLabel="Amount">
-            {AMOUNT_PRESETS_CENTS.map((cents) => {
-              const on = presetCents === cents && !customText.trim();
+          <View style={styles.tiers} accessibilityRole="radiogroup" accessibilityLabel="Membership">
+            {tiers.map((t) => {
+              const on = tier?.id === t.id;
+              const price = formatDollars(t.amount_cents);
               return (
                 <Pressable
-                  key={cents}
+                  key={t.id}
                   onPress={() => {
-                    setPresetCents(cents);
-                    setCustomText('');
-                    setAmountError(null);
+                    setTierId(t.id);
+                    setTierError(null);
                   }}
-                  style={StyleSheet.flatten([styles.amount, on && styles.amountOn])}
+                  style={StyleSheet.flatten([styles.tier, on && styles.tierOn])}
                   accessibilityRole="radio"
                   aria-checked={on}
-                  accessibilityLabel={formatDollars(cents)}
+                  accessibilityLabel={`${t.name}, ${price}${activeFrequency === 'monthly' ? ' a month' : ''}`}
                 >
-                  <Text style={StyleSheet.flatten([styles.amountText, on && styles.amountTextOn])}>
-                    {formatDollars(cents)}
+                  <Text style={StyleSheet.flatten([styles.tierName, on && styles.tierTextOn])}>{t.name}</Text>
+                  <Text style={StyleSheet.flatten([styles.tierPrice, on && styles.tierTextOn])}>
+                    {price}
+                    {activeFrequency === 'monthly' ? <Text style={styles.tierPer}> / month</Text> : null}
                   </Text>
                 </Pressable>
               );
             })}
           </View>
-
-          <Text style={styles.label}>Other amount</Text>
-          <View style={StyleSheet.flatten([styles.inputWrap, customText.trim() ? styles.inputWrapOn : null])}>
-            <Text style={styles.inputPrefix}>$</Text>
-            <TextInput
-              value={customText}
-              onChangeText={(t) => {
-                setCustomText(t);
-                setAmountError(null);
-              }}
-              placeholder="25"
-              placeholderTextColor={colors.neutralVariant}
-              keyboardType="decimal-pad"
-              inputMode="decimal"
-              style={styles.input}
-              accessibilityLabel="Other amount, in dollars"
-            />
-          </View>
-          {amountError && <Text style={styles.error}>{amountError}</Text>}
+          {tierError && <Text style={styles.error}>{tierError}</Text>}
 
           {summary && <Text style={styles.summary}>{summary}</Text>}
 
@@ -355,52 +327,33 @@ function createStyles(colors: ThemeColors) {
       color: colors.neutral,
     },
     segmentTextOn: { color: colors.onPrimary },
-    amounts: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-    amount: {
-      minWidth: 64,
-      alignItems: 'center',
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.md,
+    tiers: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
+    tier: {
+      flexGrow: 1,
+      flexBasis: 150,
+      gap: spacing.xs,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.lg,
       borderWidth: 1,
       borderColor: colors.outline,
       borderRadius: radii.sm,
     },
-    amountOn: { backgroundColor: colors.primary, borderColor: colors.primary },
-    amountText: {
+    tierOn: { backgroundColor: colors.primary, borderColor: colors.primary },
+    tierName: {
       fontFamily: fonts.sansMedium,
-      fontSize: fontSize.base,
+      fontSize: fontSize.md,
       color: colors.neutral,
     },
-    amountTextOn: { color: colors.onPrimary },
-    label: {
-      fontFamily: fonts.sansMedium,
-      fontSize: fontSize.sm,
-      color: colors.neutralVariant,
+    tierPrice: {
+      fontFamily: fonts.sansBold,
+      fontSize: fontSize.xl,
+      color: colors.neutral,
     },
-    inputWrap: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      maxWidth: 200,
-      borderWidth: 1,
-      borderColor: colors.outline,
-      borderRadius: radii.sm,
-      paddingHorizontal: spacing.md,
-      marginTop: -spacing.xs,
-    },
-    inputWrapOn: { borderColor: colors.primary },
-    inputPrefix: {
-      fontFamily: fonts.sansMedium,
-      fontSize: fontSize.base,
-      color: colors.neutralVariant,
-    },
-    input: {
-      flex: 1,
+    tierPer: {
       fontFamily: fonts.sans,
-      fontSize: fontSize.base,
-      color: colors.neutral,
-      paddingVertical: spacing.sm,
-      paddingLeft: spacing.xs,
+      fontSize: fontSize.sm,
     },
+    tierTextOn: { color: colors.onPrimary },
     error: {
       fontFamily: fonts.sans,
       fontSize: fontSize.sm,

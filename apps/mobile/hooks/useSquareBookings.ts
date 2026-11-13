@@ -330,7 +330,7 @@ export function useCreateSubscriptionCheckout(partnerId: string | undefined) {
   return { create, loading, error };
 }
 
-/* ── useFlexCheckout (pay-what-you-can membership + day pass) ── */
+/* ── useFlexCheckout (membership tiers + day pass) ── */
 
 export type FlexCheckoutKind = 'monthly' | 'one_time' | 'day_pass';
 
@@ -340,7 +340,7 @@ export function useFlexCheckout(partnerId: string | undefined) {
 
   const create = useCallback(async (
     kind: FlexCheckoutKind,
-    amountCents?: number,
+    tierId?: string,
   ): Promise<{ checkout_url: string } | null> => {
     if (!partnerId) return null;
     setLoading(kind);
@@ -362,7 +362,7 @@ export function useFlexCheckout(partnerId: string | undefined) {
           action: 'create_flex_checkout',
           partner_id: partnerId,
           kind,
-          amount_cents: amountCents,
+          tier_id: tierId,
         }),
       });
       if (!res.ok) {
@@ -383,13 +383,29 @@ export function useFlexCheckout(partnerId: string | undefined) {
 
 /* ── useMembershipOptions (what the picker can sell online) ── */
 
+export interface MembershipTierOption {
+  /** Square plan variation id. */
+  id: string;
+  name: string;
+  amount_cents: number;
+}
+
 export interface MembershipOptions {
   monthly: boolean;
   one_time: boolean;
   day_pass: boolean;
+  /** Cheapest first. Monthly and one-time both sell these. */
+  tiers: MembershipTierOption[];
 }
 
-const NO_MEMBERSHIP_OPTIONS: MembershipOptions = { monthly: false, one_time: false, day_pass: false };
+const NO_MEMBERSHIP_OPTIONS: MembershipOptions = { monthly: false, one_time: false, day_pass: false, tiers: [] };
+
+function parseTiers(value: unknown): MembershipTierOption[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((t): t is MembershipTierOption =>
+    typeof t?.id === 'string' && typeof t?.name === 'string' &&
+    typeof t?.amount_cents === 'number' && t.amount_cents > 0);
+}
 
 /**
  * Which membership purchases will work for this partner right now. `null`
@@ -415,6 +431,7 @@ export function useMembershipOptions(partnerId: string | undefined) {
           monthly: data.monthly === true,
           one_time: data.one_time === true,
           day_pass: data.day_pass === true,
+          tiers: parseTiers(data.tiers),
         });
       });
     return () => {

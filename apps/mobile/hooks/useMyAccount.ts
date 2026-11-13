@@ -25,7 +25,7 @@ export interface MySubscription {
   /** A pause / resume / cancel Square has scheduled, and when it takes effect. */
   scheduled_action: 'PAUSE' | 'RESUME' | 'CANCEL' | null;
   scheduled_action_date: string | null;
-  /** The member's chosen monthly amount (pay-what-you-can); null for fixed tiers. */
+  /** The monthly price at checkout (the tier's price); null on older fixed-tier rows. */
   amount_cents: number | null;
   /** For an in-app checkout, when the checkout started. */
   created_at: string;
@@ -38,6 +38,8 @@ export interface MyPayment {
   id: string;
   partner_id: string;
   kind: 'membership_one_time' | 'day_pass';
+  /** Tier name on one-time memberships; null on day passes and older rows. */
+  tier: string | null;
   amount_cents: number;
   status: 'pending' | 'paid' | 'canceled';
   paid_at: string | null;
@@ -143,7 +145,7 @@ export function useMyPayments() {
     }
     const { data } = await supabase
       .from('partner_payments')
-      .select('id, partner_id, kind, amount_cents, status, paid_at, covers_until, created_at, partners(name)')
+      .select('id, partner_id, kind, tier, amount_cents, status, paid_at, covers_until, created_at, partners(name)')
       .eq('user_id', user.id)
       .eq('status', 'paid')
       .order('paid_at', { ascending: false })

@@ -54,6 +54,10 @@ describe('subscription rows', () => {
     expect(members([sub({ amount_cents: null, tier: 'family' })])[0].plan).toBe('Monthly · Family');
   });
 
+  it('names the tier and its price', () => {
+    expect(members([sub({ amount_cents: 8_000, tier: 'Couple' })])[0].plan).toBe('Monthly · Couple · $80');
+  });
+
   it('counts a scheduled cancel as current until it takes effect', () => {
     expect(members([sub({ cancel_at_period_end: true, canceled_at: '2026-12-01T15:00:00Z' })])[0]).toMatchObject({
       status: 'Ending',

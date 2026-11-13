@@ -1,39 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  DAY_PASS_CENTS,
-  flexItemName,
-  isOrderPaid,
-  oneTimeCoversUntil,
-  validateFlexCheckout,
-} from '../../../../supabase/functions/_shared/flexPricing';
-
-describe('validateFlexCheckout', () => {
-  it('accepts monthly and one-time amounts from $10 to $1,000', () => {
-    expect(validateFlexCheckout('monthly', 1_000)).toEqual({ ok: true, kind: 'monthly', amountCents: 1_000 });
-    expect(validateFlexCheckout('one_time', 4_500)).toEqual({ ok: true, kind: 'one_time', amountCents: 4_500 });
-    expect(validateFlexCheckout('monthly', 100_000).ok).toBe(true);
-  });
-
-  it('rejects amounts under $10 or over $1,000', () => {
-    expect(validateFlexCheckout('monthly', 999)).toEqual({ ok: false, error: 'The minimum is $10' });
-    expect(validateFlexCheckout('one_time', 100_001)).toEqual({ ok: false, error: 'The maximum online is $1,000' });
-  });
-
-  it('rejects non-integer or missing amounts', () => {
-    expect(validateFlexCheckout('monthly', 10.5).ok).toBe(false);
-    expect(validateFlexCheckout('monthly', '2000').ok).toBe(false);
-    expect(validateFlexCheckout('one_time', undefined).ok).toBe(false);
-  });
-
-  it('always charges the fixed day-pass price', () => {
-    expect(validateFlexCheckout('day_pass', 1)).toEqual({ ok: true, kind: 'day_pass', amountCents: DAY_PASS_CENTS });
-    expect(validateFlexCheckout('day_pass', undefined)).toEqual({ ok: true, kind: 'day_pass', amountCents: DAY_PASS_CENTS });
-  });
-
-  it('rejects unknown kinds', () => {
-    expect(validateFlexCheckout('vip', 2_000).ok).toBe(false);
-  });
-});
+import { isOrderPaid, oneTimeCoversUntil } from '../../../../supabase/functions/_shared/flexPricing';
 
 describe('oneTimeCoversUntil', () => {
   const until = (iso: string, currentEnd?: string | null) =>
@@ -71,14 +37,6 @@ describe('oneTimeCoversUntil', () => {
   it('starts from the payment when the old month has run out', () => {
     expect(until('2026-10-25T14:00:00Z', '2026-10-01T14:00:00Z')).toBe('2026-11-25T15:00:00.000Z');
     expect(until('2026-10-25T14:00:00Z', null)).toBe('2026-11-25T15:00:00.000Z');
-  });
-});
-
-describe('flexItemName', () => {
-  it('names each kind for the receipt', () => {
-    expect(flexItemName('monthly', 'The Horn')).toBe('The Horn membership (monthly)');
-    expect(flexItemName('one_time', 'The Horn')).toBe('The Horn membership (one month)');
-    expect(flexItemName('day_pass', 'The Horn')).toBe('The Horn day pass');
   });
 });
 
