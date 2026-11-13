@@ -7,7 +7,9 @@
  *    sitemap.xml advertised those URLs to search engines;
  *  - clean URLs resolved to the home page because the flat route aliases were
  *    missing;
- *  - the route aliaser wrote a stray file outside the output directory.
+ *  - the route aliaser wrote a stray file outside the output directory;
+ *  - the entry bundle kept its name while its contents changed, so browsers
+ *    holding it as immutable ran old screens against deleted chunks.
  *
  * A failing build is noisy and cheap. A silent bad deploy is neither.
  */
@@ -16,6 +18,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ENTRY_PATTERN, entryContentName } from "../lib/entryBundle";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const appDir = join(__dirname, "..");
@@ -100,6 +103,28 @@ function main() {
 		if (missing.length > 0) {
 			failures.push(
 				`${missing.length} sitemap URL(s) have no exported page, e.g. ${missing.slice(0, 3).join(", ")}`,
+			);
+		}
+	}
+
+	// 5. The entry bundle's name must follow its contents (scripts/hash-entry-bundle.ts),
+	//    and every page must load an entry that exists.
+	const jsDir = join(distDir, "_expo", "static", "js", "web");
+	if (existsSync(jsDir)) {
+		const entries = readdirSync(jsDir).filter((n) => ENTRY_PATTERN.test(n));
+		for (const name of entries) {
+			const expected = entryContentName(name, readFileSync(join(jsDir, name), "utf-8"));
+			if (expected !== name) {
+				failures.push(`${name} is not named by its contents (expected ${expected}); run hash-entry-bundle`);
+			}
+		}
+		const known = new Set(entries);
+		const broken = files.filter((f) =>
+			[...readFileSync(f, "utf-8").matchAll(/entry-[0-9a-f]{32}\.js/g)].some((m) => !known.has(m[0])),
+		);
+		if (broken.length > 0) {
+			failures.push(
+				`${broken.length} page(s) load an entry bundle that doesn't exist, e.g. ${relative(distDir, broken[0])}`,
 			);
 		}
 	}
