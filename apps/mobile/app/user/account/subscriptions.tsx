@@ -15,7 +15,7 @@ import {
   type MySubscription,
 } from '@/hooks/useMyAccount';
 import { parseDate, subscriptionOutlook } from '@/lib/account/subscriptionOutlook';
-import { formatDollars } from '@/lib/partners/payWhatYouCan';
+import { formatDollars } from '@/lib/partners/membershipPricing';
 
 /** How long after landing a new subscription still counts as this checkout's. */
 const CHECKOUT_LOOKBACK_MS = 2 * 60 * 60 * 1000;
@@ -242,7 +242,7 @@ function PaymentCard({ payment: p, styles }: { payment: MyPayment; styles: Retur
         {current && <StatusChip status="active" />}
       </View>
       <Text style={styles.meta}>
-        {[p.partners?.name, formatDollars(p.amount_cents)].filter(Boolean).join(' · ')}
+        {[p.partners?.name, p.tier, formatDollars(p.amount_cents)].filter(Boolean).join(' · ')}
       </Text>
       <Text style={styles.meta}>
         {isMonth

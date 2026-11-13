@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase, supabaseUrl } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
+import { cachedTiers, type CachedTier } from '@/lib/partners/membershipPricing';
 
 interface SquareLocation {
   id: string;
@@ -26,6 +27,8 @@ export interface SquareFeatureConfig {
   subscriptions_enabled: boolean;
   retail_enabled: boolean;
   gift_cards_enabled: boolean;
+  /** Square plan whose variations are the membership tiers. */
+  membership_plan_id: string | null;
   last_synced_at: string | null;
 }
 
@@ -36,6 +39,7 @@ export function useSquareConnection(partnerId: string | undefined) {
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tiers, setTiers] = useState<CachedTier[]>([]);
 
   const load = useCallback(async () => {
     if (!partnerId) return;
@@ -51,11 +55,24 @@ export function useSquareConnection(partnerId: string | undefined) {
 
     const { data: config } = await supabase
       .from('square_feature_config')
-      .select('partner_id, bookings_enabled, subscriptions_enabled, retail_enabled, gift_cards_enabled, last_synced_at')
+      .select('partner_id, bookings_enabled, subscriptions_enabled, retail_enabled, gift_cards_enabled, membership_plan_id, last_synced_at')
       .eq('partner_id', partnerId)
       .single();
 
     setFeatureConfig(config as SquareFeatureConfig | null);
+
+    const planId = (config as SquareFeatureConfig | null)?.membership_plan_id;
+    if (planId) {
+      const { data: rows } = await supabase
+        .from('square_catalog_cache')
+        .select('square_id, display_name, data')
+        .eq('partner_id', partnerId)
+        .eq('data_type', 'subscription_plan')
+        .eq('is_active', true);
+      setTiers(cachedTiers(rows, planId));
+    } else {
+      setTiers([]);
+    }
     setLoading(false);
   }, [partnerId]);
 
@@ -130,9 +147,8 @@ export function useSquareConnection(partnerId: string | undefined) {
     setError(null);
     try {
   
-      const features: string[] = [];
-      if (featureConfig?.bookings_enabled) features.push('bookings');
-      if (features.length === 0) features.push('bookings'); // default sync
+      // Plans sync only once a membership plan is set, so asking is harmless.
+      const features = ['bookings', 'subscriptions'];
 
       const res = await fetch(`${supabaseUrl}/functions/v1/square-sync`, {
         method: 'POST',
@@ -150,7 +166,31 @@ export function useSquareConnection(partnerId: string | undefined) {
     } finally {
       setSyncing(false);
     }
-  }, [partnerId, session, featureConfig, load]);
+  }, [partnerId, session, load]);
+
+  /** Create the membership tiers in Square. Resolves to an error message, or null on success. */
+  const createMembershipPlan = useCallback(async (
+    planName: string,
+    drafts: Array<{ name: string; amountCents: number }>,
+  ): Promise<string | null> => {
+    if (!partnerId || !session?.access_token) return 'Sign in again to continue';
+    try {
+      const res = await fetch(`${supabaseUrl}/functions/v1/square-sync`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ action: 'create_membership_plan', partner_id: partnerId, plan_name: planName, tiers: drafts }),
+      });
+      const data = await res.json().catch(() => ({})) as { error?: string };
+      if (!res.ok) return data.error ?? 'Creating the tiers failed';
+      await load();
+      return null;
+    } catch (e) {
+      return e instanceof Error ? e.message : 'Creating the tiers failed';
+    }
+  }, [partnerId, session, load]);
 
   return {
     connection,
@@ -163,6 +203,8 @@ export function useSquareConnection(partnerId: string | undefined) {
     updateFeature,
     updateLocation,
     syncNow,
+    tiers,
+    createMembershipPlan,
     reload: load,
   };
 }

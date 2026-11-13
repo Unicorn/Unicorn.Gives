@@ -6,7 +6,7 @@
  * listed.
  */
 import { squareDay, subscriptionOutlook, todayISO, type OutlookInput } from '../account/subscriptionOutlook';
-import { formatDollars } from './payWhatYouCan';
+import { formatDollars } from './membershipPricing';
 
 export interface MemberPerson {
   display_name: string | null;
@@ -34,6 +34,8 @@ export interface MemberPayment {
   id: string;
   user_id: string | null;
   kind: string;
+  /** Tier name on one-time memberships; absent on older rows. */
+  tier?: string | null;
   amount_cents: number;
   paid_at: string | null;
   covers_until: string | null;
@@ -44,7 +46,7 @@ export interface MemberRow {
   id: string;
   name: string;
   email: string | null;
-  /** e.g. "Monthly · $25" */
+  /** e.g. "Monthly · Couple · $80" */
   plan: string;
   status: string;
   /** e.g. "Next bill Nov 3, 2026" */
@@ -90,8 +92,8 @@ function person(id: string, userId: string | null, profile: MemberPerson | null,
 }
 
 function subscriptionRow(s: MemberSubscription, today: string): MemberRow {
-  const price = s.amount_cents ? formatDollars(s.amount_cents) : s.tier ? capitalize(s.tier) : null;
-  const plan = ['Monthly', price].filter(Boolean).join(' · ');
+  const tier = s.tier ? capitalize(s.tier) : null;
+  const plan = ['Monthly', tier, s.amount_cents ? formatDollars(s.amount_cents) : null].filter(Boolean).join(' · ');
   const who = person(s.id, s.user_id, s.profiles, s.customer_name, s.customer_email);
   // Same rules as the member's account page.
   const { ending, pausing } = subscriptionOutlook(
@@ -131,7 +133,7 @@ function paymentRow(p: MemberPayment, now: number): MemberRow {
   return {
     id: p.id,
     ...who,
-    plan: `One-time · ${formatDollars(p.amount_cents)}`,
+    plan: ['One-time', p.tier, formatDollars(p.amount_cents)].filter(Boolean).join(' · '),
     status: current ? 'Active' : 'Expired',
     detail: p.covers_until ? `${current ? 'Member through' : 'Ended'} ${formatDay(p.covers_until)}` : null,
     current,

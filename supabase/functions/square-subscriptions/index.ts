@@ -7,12 +7,14 @@
  *        from the authenticated profile; no arbitrary email accepted.
  * POST { action: 'membership_options', partner_id }
  *      — public: which of monthly / one-time / day pass can be bought online
- *        right now, so the picker only offers what will work.
+ *        right now, and the membership tiers, so the picker only offers what
+ *        will work.
  *
- * POST { action: 'create_flex_checkout', partner_id, kind, amount_cents? }
- *      — pay-what-you-can: kind 'monthly' (subscription billed at the chosen
- *        amount), 'one_time' (a month of membership) or 'day_pass' (fixed
- *        price). Same auth rules; the server validates the amount.
+ * POST { action: 'create_flex_checkout', partner_id, kind, tier_id? }
+ *      — membership tiers: kind 'monthly' (subscription to the tier's Square
+ *        plan variation), 'one_time' (a month at the tier's price) or
+ *        'day_pass' (fixed price). Same auth rules; the server prices every
+ *        checkout from the synced tiers (`_shared/membershipTiers.ts`).
  *
  * Deploy: `supabase functions deploy square-subscriptions`
  * Config: `[functions.square-subscriptions] verify_jwt = false` in config.toml
@@ -20,7 +22,13 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { getValidAccessToken, squareFetch } from '../_shared/square.ts';
-import { flexItemName, validateFlexCheckout } from '../_shared/flexPricing.ts';
+import {
+  type MembershipTier,
+  membershipItemName,
+  phasePriceCents,
+  tiersFromCatalog,
+  validateMembershipCheckout,
+} from '../_shared/membershipTiers.ts';
 
 const rateState = new Map<string, number>();
 const RATE_LIMIT_MS = 500;
@@ -42,7 +50,7 @@ type CreateFlexCheckoutRequest = {
   action: 'create_flex_checkout';
   partner_id: string;
   kind: unknown;
-  amount_cents?: unknown;
+  tier_id?: unknown;
 };
 
 type MembershipOptionsRequest = {
@@ -99,7 +107,7 @@ Deno.serve(async (req) => {
     // day passes); monthly also needs a Square plan to bill under.
     const { data: config } = await admin
       .from('square_feature_config')
-      .select('subscriptions_enabled, membership_plan_variation_id')
+      .select('subscriptions_enabled, membership_plan_id')
       .eq('partner_id', body.partner_id)
       .single();
 
@@ -111,9 +119,13 @@ Deno.serve(async (req) => {
         .eq('partner_id', body.partner_id)
         .maybeSingle();
       const open = Boolean(config?.subscriptions_enabled && conn?.location_id);
-      const monthly = open &&
-        (await resolveMembershipPlan(admin, body.partner_id, config?.membership_plan_variation_id)) !== null;
-      return json({ monthly, one_time: open, day_pass: open });
+      const tiers = open ? await loadTiers(admin, body.partner_id, config?.membership_plan_id) : [];
+      return json({
+        monthly: tiers.length > 0,
+        one_time: tiers.length > 0,
+        day_pass: open,
+        tiers: tiers.map((t) => ({ id: t.id, name: t.name, amount_cents: t.amountCents })),
+      });
     }
 
     if (!config?.subscriptions_enabled) {
@@ -187,9 +199,10 @@ Deno.serve(async (req) => {
       .maybeSingle();
     const squareCustomerId: string | undefined = existingCustomer?.square_customer_id;
 
-    // ── create_flex_checkout: pay-what-you-can and day passes ──
+    // ── create_flex_checkout: membership tiers and day passes ──
     if (body.action === 'create_flex_checkout') {
-      const v = validateFlexCheckout(body.kind, body.amount_cents);
+      const tiers = body.kind === 'day_pass' ? [] : await loadTiers(admin, body.partner_id, config.membership_plan_id);
+      const v = validateMembershipCheckout(body.kind, body.tier_id, tiers);
       if (!v.ok) return json({ error: v.error }, 400);
 
       const { data: partner } = await admin
@@ -199,14 +212,9 @@ Deno.serve(async (req) => {
         .single();
       if (!partner) return json({ error: 'Partner not found' }, 404);
 
-      // Monthly bills under one Square plan; the chosen amount overrides its price.
-      let planVariationId: string | null = null;
-      if (v.kind === 'monthly') {
-        planVariationId = await resolveMembershipPlan(admin, body.partner_id, config.membership_plan_variation_id);
-        if (!planVariationId) {
-          return json({ error: 'Monthly membership is not set up yet' }, 409);
-        }
-      }
+      // Monthly subscribes to the tier's plan variation, at the variation's own
+      // price, so Square bills renewals at that price with no override.
+      const planVariationId = v.kind === 'monthly' ? v.tier.id : null;
 
       const redirectUrl = v.kind === 'monthly'
         ? `${siteUrl}/user/account/subscriptions?status=success`
@@ -217,7 +225,7 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           idempotency_key: crypto.randomUUID(),
           quick_pay: {
-            name: flexItemName(v.kind, partner.name),
+            name: membershipItemName(v.kind, partner.name, v.tier?.name),
             price_money: { amount: v.amountCents, currency: 'USD' },
             location_id: locationId,
           },
@@ -249,6 +257,7 @@ Deno.serve(async (req) => {
           user_id: authUser.id,
           square_customer_id: squareCustomerId ?? null,
           plan_variation_id: planVariationId,
+          tier: v.tier?.name ?? null,
           amount_cents: v.amountCents,
           customer_name: displayName || null,
           customer_email: email,
@@ -262,6 +271,7 @@ Deno.serve(async (req) => {
           partner_id: body.partner_id,
           user_id: authUser.id,
           kind: v.kind === 'one_time' ? 'membership_one_time' : 'day_pass',
+          tier: v.tier?.name ?? null,
           amount_cents: v.amountCents,
           status: 'pending',
           square_order_id: flexLink.order_id ?? null,
@@ -289,14 +299,11 @@ Deno.serve(async (req) => {
     const planData = planRow.data as {
       subscription_plan_variation_data?: {
         name?: string;
-        phases?: Array<{
-          pricing?: { price?: { amount?: number; currency?: string } };
-        }>;
+        phases?: Parameters<typeof phasePriceCents>[0][];
       };
     };
-    const firstPhase = planData.subscription_plan_variation_data?.phases?.[0];
-    const price = firstPhase?.pricing?.price;
-    if (!price?.amount) {
+    const priceCents = phasePriceCents(planData.subscription_plan_variation_data?.phases?.[0]);
+    if (!priceCents) {
       return json({ error: 'Plan variation has no price configured in Square' }, 400);
     }
 
@@ -307,10 +314,7 @@ Deno.serve(async (req) => {
       quick_pay: {
         name: planData.subscription_plan_variation_data?.name ?? 'Membership',
         // Must match the plan variation's price, or Square treats it as an override.
-        price_money: {
-          amount: price.amount,
-          currency: price.currency ?? 'USD',
-        },
+        price_money: { amount: priceCents, currency: 'USD' },
         location_id: locationId,
       },
       checkout_options: {
@@ -376,19 +380,15 @@ Deno.serve(async (req) => {
   }
 });
 
-/**
- * The Square plan variation monthly memberships bill under: the configured
- * one, or the partner's only active plan. Null when neither applies.
- */
+/** The partner's membership tiers, from the synced Square catalog. */
 // deno-lint-ignore no-explicit-any
-async function resolveMembershipPlan(admin: any, partnerId: string, configured: string | null | undefined) {
-  if (configured) return configured;
-  const { data: plans } = await admin
+async function loadTiers(admin: any, partnerId: string, planId: string | null | undefined): Promise<MembershipTier[]> {
+  if (!planId) return [];
+  const { data: rows } = await admin
     .from('square_catalog_cache')
-    .select('square_id')
+    .select('square_id, is_active, data')
     .eq('partner_id', partnerId)
     .eq('data_type', 'subscription_plan')
-    .eq('is_active', true)
-    .limit(2);
-  return plans?.length === 1 ? (plans[0].square_id as string) : null;
+    .eq('is_active', true);
+  return tiersFromCatalog(rows ?? [], planId);
 }

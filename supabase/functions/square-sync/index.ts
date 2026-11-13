@@ -1,10 +1,15 @@
 /**
  * Square Sync Edge Function
  *
- * POST { partner_id, features: ['bookings'] }
+ * POST { partner_id, features: ['bookings', 'subscriptions'] }
+ *      Fetches data from Square APIs and upserts into cache tables.
+ *      Called from admin UI "Sync Now" and by webhook handler.
  *
- * Fetches data from Square APIs and upserts into cache tables.
- * Called from admin UI "Sync Now" and by webhook handler.
+ * POST { action: 'create_membership_plan', partner_id, plan_name, tiers: [{ name, amountCents }] }
+ *      Creates the partner's membership tiers in Square: one subscription
+ *      plan with a fixed-price monthly variation per tier (Square's
+ *      dashboard can only make item-based plans). Records the plan as the
+ *      partner's membership plan and caches the tiers. Admin only.
  *
  * Deploy: `supabase functions deploy square-sync`
  * Config: `[functions.square-sync] verify_jwt = false` in config.toml
@@ -12,11 +17,27 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { getValidAccessToken, squareFetch } from '../_shared/square.ts';
+import { createdPlanId, membershipPlanBatch, validateTierDrafts } from '../_shared/membershipTiers.ts';
 
 type SyncRequest = {
+  action?: 'sync';
   partner_id: string;
   features: string[];
 };
+
+type CreatePlanRequest = {
+  action: 'create_membership_plan';
+  partner_id: string;
+  plan_name: unknown;
+  tiers: unknown;
+};
+
+interface CatalogObject {
+  id: string;
+  type: string;
+  is_deleted?: boolean;
+  subscription_plan_variation_data?: { name?: string; subscription_plan_id?: string };
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -55,7 +76,7 @@ Deno.serve(async (req) => {
     return json({ error: 'Forbidden' }, 403);
   }
 
-  let body: SyncRequest;
+  let body: SyncRequest | CreatePlanRequest;
   try {
     body = await req.json();
   } catch {
@@ -72,6 +93,38 @@ Deno.serve(async (req) => {
     }, 404);
   }
   const { accessToken, locationId } = creds;
+
+  // ── Create membership tiers in Square ──
+  if (body.action === 'create_membership_plan') {
+    const draft = validateTierDrafts(body.plan_name, body.tiers);
+    if (!draft.ok) return json({ error: draft.error }, 400);
+
+    const res = await squareFetch('/v2/catalog/batch-upsert', accessToken, {
+      method: 'POST',
+      body: JSON.stringify(membershipPlanBatch(draft.planName, draft.tiers, crypto.randomUUID())),
+    });
+    const created = await res.json().catch(() => ({})) as {
+      objects?: CatalogObject[];
+      id_mappings?: Array<{ client_object_id?: string; object_id?: string }>;
+      errors?: Array<{ detail?: string; code?: string }>;
+    };
+    const planId = res.ok ? createdPlanId(created) : null;
+    if (!planId) {
+      const detail = created.errors?.map((e) => e.detail ?? e.code).filter(Boolean).join('; ');
+      console.error('Membership plan creation failed:', res.status, JSON.stringify(created));
+      return json({ error: `Square didn't create the plan${detail ? `: ${detail}` : ''}` }, 502);
+    }
+
+    const { error: configErr } = await admin
+      .from('square_feature_config')
+      .upsert({ partner_id: body.partner_id, membership_plan_id: planId }, { onConflict: 'partner_id' });
+    if (configErr) {
+      // The plan exists in Square now; say which one so it can be recorded by hand.
+      return json({ error: `Plan ${planId} was created in Square but not saved here: ${configErr.message}` }, 500);
+    }
+    const cached = await cachePlanVariations(admin, body.partner_id, created.objects ?? [], planId);
+    return json({ success: true, plan_id: planId, tiers: cached });
+  }
 
   const results: Record<string, { synced: number; errors: string[] }> = {};
 
@@ -306,61 +359,35 @@ Deno.serve(async (req) => {
     const subsResult = { synced: 0, errors: [] as string[] };
 
     try {
-      // Fetch SUBSCRIPTION_PLAN catalog objects + variations.
-      const catalogRes = await squareFetch(
-        '/v2/catalog/list?types=SUBSCRIPTION_PLAN,SUBSCRIPTION_PLAN_VARIATION',
-        accessToken,
-      );
+      const { data: config } = await admin
+        .from('square_feature_config')
+        .select('membership_plan_id')
+        .eq('partner_id', body.partner_id)
+        .maybeSingle();
 
-      if (catalogRes.ok) {
-        const data = await catalogRes.json() as {
-          objects?: Array<{
-            id: string;
-            type: string;
-            subscription_plan_data?: {
-              name?: string;
-              subscription_plan_variations?: Array<{
-                id: string;
-                subscription_plan_variation_data?: {
-                  name?: string;
-                  phases?: Array<{
-                    cadence?: string;
-                    pricing?: { price?: { amount?: number; currency?: string } };
-                  }>;
-                };
-              }>;
-            };
-            subscription_plan_variation_data?: {
-              name?: string;
-              subscription_plan_id?: string;
-              phases?: Array<{
-                cadence?: string;
-                pricing?: { price?: { amount?: number; currency?: string } };
-              }>;
-            };
-          }>;
-        };
+      // One Square account can serve several partners (The Horn and The Mane
+      // share one), so cache only this partner's membership plan.
+      const planId = (config?.membership_plan_id as string | null | undefined) ?? null;
+      if (planId) {
+        const objects: CatalogObject[] = [];
+        let cursor: string | undefined;
+        do {
+          const qs = new URLSearchParams({ types: 'SUBSCRIPTION_PLAN_VARIATION' });
+          if (cursor) qs.set('cursor', cursor);
+          const catalogRes = await squareFetch(`/v2/catalog/list?${qs}`, accessToken);
+          if (!catalogRes.ok) {
+            subsResult.errors.push(`Subscription plans: ${catalogRes.status}`);
+            await catalogRes.body?.cancel();
+            break;
+          }
+          const page = await catalogRes.json() as { objects?: CatalogObject[]; cursor?: string };
+          objects.push(...(page.objects ?? []));
+          cursor = page.cursor;
+        } while (cursor);
 
-        let order = 0;
-        for (const obj of data.objects ?? []) {
-          // Only store subscription plan variations — those are what checkout uses.
-          if (obj.type !== 'SUBSCRIPTION_PLAN_VARIATION') continue;
-
-          const displayName = obj.subscription_plan_variation_data?.name ?? null;
-          await admin.from('square_catalog_cache').upsert({
-            partner_id: body.partner_id,
-            data_type: 'subscription_plan',
-            square_id: obj.id,
-            data: obj,
-            display_name: displayName,
-            display_order: order++,
-            is_active: true,
-            synced_at: new Date().toISOString(),
-          }, { onConflict: 'partner_id,data_type,square_id' });
-          subsResult.synced++;
+        if (subsResult.errors.length === 0) {
+          subsResult.synced = (await cachePlanVariations(admin, body.partner_id, objects, planId)).length;
         }
-      } else {
-        subsResult.errors.push(`Subscription plans: ${catalogRes.status}`);
       }
     } catch (e) {
       subsResult.errors.push(e instanceof Error ? e.message : 'Unknown error');
@@ -382,3 +409,41 @@ Deno.serve(async (req) => {
     return json({ error: msg }, 500);
   }
 });
+
+/**
+ * Cache the variations of `planId` as this partner's subscription plans and
+ * retire every other cached plan, so the site only sells current tiers.
+ * Returns the cached variations' names.
+ */
+// deno-lint-ignore no-explicit-any
+async function cachePlanVariations(admin: any, partnerId: string, objects: CatalogObject[], planId: string) {
+  const variations = objects.filter((o) =>
+    o.type === 'SUBSCRIPTION_PLAN_VARIATION' &&
+    !o.is_deleted &&
+    o.subscription_plan_variation_data?.subscription_plan_id === planId
+  );
+  const now = new Date().toISOString();
+  let order = 0;
+  for (const v of variations) {
+    const { error } = await admin.from('square_catalog_cache').upsert({
+      partner_id: partnerId,
+      data_type: 'subscription_plan',
+      square_id: v.id,
+      data: v,
+      display_name: v.subscription_plan_variation_data?.name ?? null,
+      display_order: order++,
+      is_active: true,
+      synced_at: now,
+    }, { onConflict: 'partner_id,data_type,square_id' });
+    if (error) throw new Error(`Caching plan ${v.id} failed: ${error.message}`);
+  }
+  let retire = admin
+    .from('square_catalog_cache')
+    .update({ is_active: false, synced_at: now })
+    .eq('partner_id', partnerId)
+    .eq('data_type', 'subscription_plan');
+  if (variations.length) retire = retire.not('square_id', 'in', `(${variations.map((v) => v.id).join(',')})`);
+  const { error: retireErr } = await retire;
+  if (retireErr) throw new Error(`Retiring old plans failed: ${retireErr.message}`);
+  return variations.map((v) => v.subscription_plan_variation_data?.name ?? v.id);
+}

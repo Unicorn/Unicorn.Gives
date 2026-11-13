@@ -39,7 +39,7 @@ export function PartnerMembersTab({ partnerId }: { partnerId: string }) {
           .limit(ROW_LIMIT),
         supabase
           .from('partner_payments')
-          .select('id, user_id, kind, amount_cents, paid_at, covers_until, profiles(display_name, email)')
+          .select('id, user_id, kind, tier, amount_cents, paid_at, covers_until, profiles(display_name, email)')
           .eq('partner_id', partnerId)
           .eq('status', 'paid')
           .order('paid_at', { ascending: false })
